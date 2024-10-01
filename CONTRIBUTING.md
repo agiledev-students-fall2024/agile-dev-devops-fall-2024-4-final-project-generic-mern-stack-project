@@ -19,6 +19,7 @@ Team members will commit to the following norms and values of the team:
 * Members will improve the product backlog, prepare the sprint backload, and create new tasks for each sprint. 
 
 ## Daily Standups 
+
 * Mon-Fri at 7:00 PM. They will last about 10-15 minutes.
 * Members are expected to be present synchronously.
 * Members will not cover for other members who do not participate.
