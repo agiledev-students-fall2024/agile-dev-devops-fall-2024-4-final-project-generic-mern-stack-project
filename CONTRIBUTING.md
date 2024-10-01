@@ -29,6 +29,7 @@ Team members will commit to the following norms and values of the team:
 * Each member will use Visual Studio Code as an editor to standardize all coding.
 * Don’t code in a too simple or complex way. Start with minimum code that can later be added to.
 * Only push working code into the main branch through small commits. Work on experimental code on branches. 
+* Every team member's code must be peer-reviewed by at least one other member before being merged into the main branch.
 * Provide descriptive commit messages.
 * Write self-documenting code with descriptive naming of files, variables, and functions.
 * Don’t leave dead/commented-out code behind. 
