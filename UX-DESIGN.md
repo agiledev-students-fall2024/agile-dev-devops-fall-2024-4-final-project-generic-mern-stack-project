@@ -5,13 +5,11 @@
 
 ![Alt text](ux-design/Wireframe.png?raw=true "Wireframe")
 
-<<<<<<< HEAD
 ## App Map
 ![App Map](./ux-design/Marconnect_Site_Map.png)
 
 ## Prototype Link
 [Prototype Link](https://www.figma.com/design/1YbOMtilqrs7cn05r9g2nZ/Wireframe?node-id=0-1&t=UoGChbqg2Y5lNGho-1)
-=======
 
 # Desktop
 
@@ -35,4 +33,3 @@
 ![Alt text](ux-design/Call%20with%20Chat%20Mobile.png?raw=true "Wireframe")
 ![Alt text](ux-design/Call%20with%20Code%20Editor%20Mobile.png?raw=true "Wireframe")
 ![Alt text](ux-design/Call%20with%20Whiteboard%20Mobile.png?raw=true "Wireframe")
->>>>>>> 7acd77d1d957218a449e62b8826d6c109fe6dbb6
