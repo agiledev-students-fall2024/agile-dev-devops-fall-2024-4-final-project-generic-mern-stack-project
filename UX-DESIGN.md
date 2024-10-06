@@ -6,7 +6,9 @@ This document outlines the user interface design for the Restaurant Swipe App. B
 ## Prototyping
 - https://www.figma.com/proto/ikVN5KSBcoIDENYbIjQpUU/RestaSwipe?node-id=307-150&node-type=canvas&t=sOK6oeo0Wyq6J6G8-1&scaling=scale-down&content-scaling=fixed&page-id=1%3A27&starting-point-node-id=307%3A150&share=1
 
-## App Map -- TODO
+## App Map
+
+<img src="./ux-design/AppMap.png" alt="App Map" style="max-width: 400px">
 
 1. **Signup/Login Screen**
 2. **OTP Input Screen**
