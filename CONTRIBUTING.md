@@ -32,13 +32,11 @@
 
 **Committing Changes**
    - Write clear and concise commit messages.
-   - Commit messages should reference the issue number (e.g., `#13 Added login functionality`).
 
 **Pull Requests**
    - Create a pull request (PR) when your feature branch is ready to be merged.
    - Ensure your PR includes a description of the changes and references the relevant issue number.
    - Assign at least one reviewer to your PR.
-   - Do not merge your own PR. Wait for approval from at least one other team member.
 
 **Merging Changes**
    - Once your PR is approved, you may merge it into the `main` branch.
