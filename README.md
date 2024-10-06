@@ -15,5 +15,5 @@ This section is a placeholder for instructions on building and testing the proje
 
 ## Contributing
 
-Please see the [Contributing Guidelines](contributing.md) for detailed instructions on how to contribute to this project.
+Please see the [Contributing Guidelines](CONTRIBUTING.md) for detailed instructions on how to contribute to this project.
 
