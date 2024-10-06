@@ -23,8 +23,8 @@
    - Use feature branches for all new development.
    - Branch names should follow the format:
      - `spike/<issue-number>/<description>` (e.g., `spike/6/install-mongo-db-locally`)
-     - `user-story/<user-story-number>/task/<task-number>/<description>` (e.g., `user-story/13/task/9/implement-user-login`)
-     - `task/id/<task-id>` (e.g., `task/id/XXXX`)
+     - `task/<issue-number>/<description>` (e.g., `task/9/add-documentation`)
+     - `misc/<description>`
 
 **Creating a Branch**
    - Always branch off from the `main` branch.
@@ -32,13 +32,11 @@
 
 **Committing Changes**
    - Write clear and concise commit messages.
-   - Commit messages should reference the issue number (e.g., `#13 Added login functionality`).
 
 **Pull Requests**
    - Create a pull request (PR) when your feature branch is ready to be merged.
    - Ensure your PR includes a description of the changes and references the relevant issue number.
    - Assign at least one reviewer to your PR.
-   - Do not merge your own PR. Wait for approval from at least one other team member.
 
 **Merging Changes**
    - Once your PR is approved, you may merge it into the `main` branch.
