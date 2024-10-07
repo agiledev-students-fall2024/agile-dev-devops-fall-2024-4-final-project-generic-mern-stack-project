@@ -54,7 +54,7 @@ Join/Host New Meeting Mobile
 ![Alt text](ux-design/New_Meeting_Mobile.png?raw=true "Wireframe")
 
 Meeting Mobile
-![Alt text](ux-design/Call Mobile.png?raw=true "Wireframe")
+![Alt text](ux-design/Call_Mobile.png?raw=true "Wireframe")
 
 Meeting with Chat Mobile
 ![Alt text](ux-design/Call_with_Chat_Mobile.png?raw=true "Wireframe")
