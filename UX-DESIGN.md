@@ -21,7 +21,7 @@ Sign Up
 ![Alt text](ux-design/Sign-Up.png?raw=true "Sign Up")
 
 Join/Host Meeting
-![Alt text](ux-design/New%20Meeting.png?raw=true "Join/Host Meeting")
+![Alt text](ux-design/New_Meeting.png?raw=true "Join/Host Meeting")
 
 Meeting
 ![Alt text](ux-design/Meeting.png?raw=true "Meeting")
@@ -30,16 +30,16 @@ Meeting with Whiteboard
 ![Alt text](ux-design/Meeting_With_Whiteboard.png?raw=true "Meeting with Whiteboard")
 
 Meeting with Code Editor
-![Alt text](ux-design/Meeting%20with%20Code%20editor.png?raw=true "Meeting with Code Editor")
+![Alt text](ux-design/Meeting_with_Code_editor.png?raw=true "Meeting with Code Editor")
 
 Meeting without Camera
-![Alt text](ux-design/Meeting%20without%20Camera.png.png?raw=true "Meeting without Camera")
+![Alt text](ux-design/Meeting_without_Camera.png?raw=true "Meeting without Camera")
 
 Meeting with Screen Share
-![Alt text](ux-design/Meeting%20with%20Screen%20Share.png.png?raw=true "Meeting with Screen Share")
+![Alt text](ux-design/Meeting_with_Screen_Share.png?raw=true "Meeting with Screen Share")
 
 Meeting without Chat
-![Alt text](ux-design/Meeting%20without%20Chat.png.png?raw=true "Meeting without Chat")
+![Alt text](ux-design\Meeting_without_Chat.png?raw=true "Meeting without Chat")
 
 
 # Mobile
@@ -54,7 +54,7 @@ Join/Host New Meeting Mobile
 ![Alt text](ux-design/New%20Meeting%20Mobile.png?raw=true "Wireframe")
 
 Meeting Mobile
-![Alt text](ux-design/Call%20Mobile.png?raw=true "Wireframe")
+![Alt text](ux-design/New_Meeting_Mobile.png?raw=true "Wireframe")
 
 Meeting with Chat Mobile
 ![Alt text](ux-design/Call_with_Chat_Mobile.png?raw=true "Wireframe")
