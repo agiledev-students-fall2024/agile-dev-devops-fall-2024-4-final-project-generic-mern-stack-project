@@ -1,7 +1,7 @@
 # User Experience Design
 
 ## Prototype
-![prototype](https://www.figma.com/design/v1YjoBHtWq0Mobwi91uYEH/Figma-basics?node-id=692-82&t=BHaIeXMJdUHCqGoS-1)
+[Prototype Link](https://www.figma.com/design/v1YjoBHtWq0Mobwi91uYEH/Figma-basics?node-id=692-82&t=BHaIeXMJdUHCqGoS-1)
 ## App Map
 ![app-map](ux-design/app-map.png)
 ### Desceription
