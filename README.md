@@ -16,8 +16,6 @@ Cyclable’s mission is to make biking in NYC more accessible and enjoyable for 
 - **[Hojong Shim](https://github.com/hojongshim)**
 - **[Rickie Ling](https://github.com/12083568)**
 
-                                              |
-
 ## Project History
 
 Cyclable was born out of a common frustration among cyclists in New York City: despite a growing network of bike lanes, disruptions such as construction, blockages, and traffic often force cyclists into unsafe detours. The idea behind Cyclable is to leverage the collective knowledge of the cycling community to report these blockages in real-time, ensuring safer and more efficient routes for everyone.
