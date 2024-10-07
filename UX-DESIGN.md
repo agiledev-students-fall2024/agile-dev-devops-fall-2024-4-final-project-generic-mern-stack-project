@@ -57,10 +57,10 @@ Meeting Mobile
 ![Alt text](ux-design/Call%20Mobile.png?raw=true "Wireframe")
 
 Meeting with Chat Mobile
-![Alt text](ux-design\Call_with_Chat_Mobile.png?raw=true "Wireframe")
+![Alt text](ux-design/Call_with_Chat_Mobile.png?raw=true "Wireframe")
 
 Meeting with Code Editor Mobile
-![Alt text](ux-design\Call_with_Code_Editor_Mobile.png?raw=true "Wireframe")
+![Alt text](ux-design/Call_with_Code_Editor_Mobile.png?raw=true "Wireframe")
 
 Meeting with Whiteboard Mobile
-![Alt text](ux-design\Call_with_Whiteboard_Mobile.png?raw=true "Wireframe")
+![Alt text](ux-design/Call_with_Whiteboard_Mobile.png?raw=true "Wireframe")
