@@ -1,4 +1,9 @@
-# Project Repository
+# Network
+
+### Project Description
+- Network is an interactive blogging web app that allows users to share any and all inspirational ideas. Blogs can range anywhere from a short blurp to longer  Users can simply sign up for an account, follow their friends and other bloggers, to start using Network. 
+
+Project Repository
 
 This repository will be used for team projects.
 
