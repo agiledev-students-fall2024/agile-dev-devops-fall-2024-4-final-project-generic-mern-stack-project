@@ -1,5 +1,8 @@
 # Network Web App UX Design
-- Below are the app map and the wireframes for Network in order
+- Below are the prototype, app map, and the wireframes for Network
+
+## Prototype
+[Click here to view prototype](https://www.figma.com/design/gbpdmtKQa4fjeIo53t7Qgm/Network-Web-App?node-id=2367-3731&t=vy0LqcjY1OrpPqYG-1)
 
 ## App Map
 ### Network App Map
