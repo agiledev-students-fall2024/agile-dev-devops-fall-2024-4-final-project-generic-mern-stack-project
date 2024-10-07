@@ -9,8 +9,12 @@
 ![App Map](./ux-design/Marconnect_Site_Map.png)
 
 ## Prototype Link
+<<<<<<< HEAD
 [Figma Link](https://www.figma.com/design/1YbOMtilqrs7cn05r9g2nZ/Wireframe?node-id=0-1&t=UoGChbqg2Y5lNGho-1)
 [Prototype Link](https://www.figma.com/proto/1YbOMtilqrs7cn05r9g2nZ/Wireframe?node-id=0-1&t=5T5vCJGueTOBIBBL-1)
+=======
+[Prototype Link](https://www.figma.com/design/1YbOMtilqrs7cn05r9g2nZ/Wireframe?node-id=0-1&t=UoGChbqg2Y5lNGho-1)
+>>>>>>> 091f4212efaccf932a56b92d42e36da5208ecf8f
 
 # Desktop
 
