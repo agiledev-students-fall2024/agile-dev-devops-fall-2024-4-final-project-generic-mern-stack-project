@@ -5,6 +5,12 @@
 
 ![Alt text](ux-design/Wireframe.png?raw=true "Wireframe")
 
+## App Map
+![App Map](./ux-design/Marconnect_Site_Map.png)
+
+## Prototype Link
+[Figma Link](https://www.figma.com/design/1YbOMtilqrs7cn05r9g2nZ/Wireframe?node-id=0-1&t=UoGChbqg2Y5lNGho-1)
+[Prototype Link](https://www.figma.com/proto/1YbOMtilqrs7cn05r9g2nZ/Wireframe?node-id=0-1&t=5T5vCJGueTOBIBBL-1)
 
 # Desktop
 

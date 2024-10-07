@@ -17,7 +17,7 @@ The vision of our project is to become the go-to platform for collaborative vide
 ### Team members
 * Brian Zou (bz2193@nyu.edu, https://github.com/brianzou03)
 * Jack Chen (zc2398@nyu.edu, https://github.com/JackZiyangChen)
-* Bryant To (bt2181@nyu.edu, https://github.com/bryantto08
+* Bryant To (bt2181@nyu.edu, https://github.com/bryantto08)
 * Andrew Bao (ab10171@nyu.edu, https://github.com/andrew-bao)
 * Marcus Chau (mc8786@nyu.edu, https://github.com/MarcusChau)
 
