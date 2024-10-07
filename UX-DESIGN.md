@@ -2,7 +2,7 @@
 - Below is the ordered wireframes for Network 
 
 ### Blog Home Not Logged In
-- What the blog home page looks like if no user is logged in.
+- What the blog home page looks like if no user is logged in. \
 ![](/ux-design/Wireframe/Blog%20Home%20Not%20Logged%20In.png)
 
 ### Register 
