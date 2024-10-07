@@ -1,4 +1,4 @@
-# Network Web App
+# Network Web App UX Design
 - Below are the app map and the wireframes for Network in order
 
 ## App Map
