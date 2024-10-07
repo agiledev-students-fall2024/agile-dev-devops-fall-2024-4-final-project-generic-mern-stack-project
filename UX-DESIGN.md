@@ -1,9 +1,10 @@
 # User Experience Design
 
+## Prototype
+![prototype](https://www.figma.com/design/v1YjoBHtWq0Mobwi91uYEH/Figma-basics?node-id=692-82&t=BHaIeXMJdUHCqGoS-1)
 ## App Map
 ![app-map](ux-design/app-map.png)
 ### Desceription
-**Description**:
 Here is the app map for our project task destroyer. We will have three main functions: tasks list, calendar view of tasks, and goal settings. And each of the page will have a following page for some detailed functions.
 
 ## Wireframes
