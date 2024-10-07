@@ -1,8 +1,9 @@
 # Network Web App
 - Below are the app map and the wireframes for Network in order
 
-### App Map
-- App map of Network. \
+## App Map
+### Network App Map
+- Shows the non-logged-in user view, as well as the logged-in user view. \
 ![](/ux-design/Network%20App%20Map.png)
 
 ## Wireframes
