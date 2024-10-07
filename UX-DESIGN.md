@@ -1,5 +1,9 @@
 # Network Web App
-- Below is the ordered wireframes for Network 
+- Below are the app map and the wireframes for Network in order
+
+### App Map
+- App map of Network. \
+![](/ux-design/Network%20App%20Map.png)
 
 ### Blog Home Not Logged In
 - What the blog home page looks like if no user is logged in. \
