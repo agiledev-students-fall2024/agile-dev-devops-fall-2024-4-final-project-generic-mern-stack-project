@@ -39,7 +39,7 @@ Meeting with Screen Share
 ![Alt text](ux-design/Meeting_with_Screen_Share.png?raw=true "Meeting with Screen Share")
 
 Meeting without Chat
-![Alt text](ux-design\Meeting_without_Chat.png?raw=true "Meeting without Chat")
+![Alt text](ux-design/Meeting_without_Chat.png?raw=true "Meeting without Chat")
 
 
 # Mobile
@@ -51,10 +51,10 @@ Sign in Mobile
 ![Alt text](ux-design/Sign-in%20Mobile.png?raw=true "Wireframe")
 
 Join/Host New Meeting Mobile
-![Alt text](ux-design/New%20Meeting%20Mobile.png?raw=true "Wireframe")
+![Alt text](ux-design/New_Meeting_Mobile.png?raw=true "Wireframe")
 
 Meeting Mobile
-![Alt text](ux-design/New_Meeting_Mobile.png?raw=true "Wireframe")
+![Alt text](ux-design/Call Mobile.png?raw=true "Wireframe")
 
 Meeting with Chat Mobile
 ![Alt text](ux-design/Call_with_Chat_Mobile.png?raw=true "Wireframe")
