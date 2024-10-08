@@ -44,13 +44,21 @@ Page shows a full list of activities,
   <img src="ux-design/activity_tracker_(activities).png" height ="300" alt="img"/>
 </p>
 
-### Challenges
+## Challenges
+### Challenge Home Page
 
 Challenges are what the app or other users set it to be. It can be a test of skill or simply a challenge to make a type of food. 
  - Challenges are what excite the community and incite a goal to work towards
  - Challenges can be split on dificulties and types of food. You can search for different challenges you want to do.
 <p align="center">
   <img src="ux-design/challenges.png" height ="300" alt="img"/>
+</p>
+
+### Individual Challenge page
+
+This page displays an example of a single challenge started by the user.
+<p align="center">
+  <img src="ux-design/individual_challenge.png" height ="300" alt="img"/>
 </p>
 
 
