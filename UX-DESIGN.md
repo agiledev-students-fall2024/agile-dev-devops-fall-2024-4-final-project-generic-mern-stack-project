@@ -7,7 +7,10 @@
 - This app map demonstrates the hierarchical structure.
 ![App Map](ux-design/app-map.png)
 
-## Wireframe Diagrams
+## Prototype: 
+- [Click here to view the Prototype](https://www.figma.com/proto/4pMIu0YwSFD9xZOImZQjlR/Untitled?t=3ifLQ3UMotNtJlay-1)
+
+## Wireframe Diagrams:
 
 ### 1. Start Page
 - Allows users to search for stores, apply various filters, and generate a shopping route based on preferences.
@@ -26,11 +29,13 @@
 ![Save Route Modal](ux-design/save-route-modal.png)
 
 ### 5. Help Page
-- Offers an FAQ section
+- Offers an FAQ section.
+
 ![Help Page](ux-design/help-page.png)
 
 ### 6. Filter Page - Trend
 - Allows users to filter the shopping route based on trends.
+
 ![Filter Page - Trend](ux-design/filter-page-trend.png)
 
 ### 7. Filter Page - Category
