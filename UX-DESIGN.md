@@ -10,7 +10,7 @@ User enters username, email address, and password needed to create a new account
 ### Profile Setup
 User enters information they would like to display on their account, such as name, age, location, and a picture.
 <p align="center">
-  <img src="ux-design/setup.png" height ="300" alt="img"/>
+  <img src="ux-design/profile_setup.png" height ="300" alt="img"/>
 </p>
 
 ### Login
@@ -21,47 +21,76 @@ User enters username, email address, and password needed to log in to an existin
 
 ## Menu Pages
 ### Hamburger Dropdown
-Users are able to access their challenge page, activities page, and recording screen for their current activity with a menu that has a larger capacity than the bottom bar.
+Users are able to access their challenge page, activities page, and record their screen for the current activity with a menu that has a larger capacity than the bottom bar.
 <p align="center">
   <img src="ux-design/hamburger_drop_down.png" height ="300" alt="img"/>
 </p>
 
-### Settings
-Gives users the ability to customize the app, though it is not configured yet the kinds of settings would pertain to what notifications are recieved and general privacy related things when it comes to community features
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/72e8bca5-0e16-4eb7-a3bd-68efa8b613c6" height ="600" alt="img"/>
-</p>
-
 ## Progression Pages
 
-### Activity Progress
+### Primary Homepage
+
+This page is the primary home page with navigations to different pages.
+
+<p align="center">
+  <img src="ux-design/homepage.png" height ="300" alt="img"/>
+</p>
+
+### Activity Tracker (Progress)
 
 Page shows user progression in a certain type of food category, giving user incentive to learn new foods and boast their profile to the community!
  - Progression is self approved with a picture of confirmation by user.
  - Progression is split by categorical descriptions of how difficult it is to make that food (i.e. novel vs expert difficulty recipes).
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/21c72c45-6448-46db-89d9-381899a94ee4" height ="600" alt="img"/>
+  <img src="ux-design/activity_tracker_(progress).png" height ="300" alt="img"/>
 </p>
 
-### Challenges
+### Activity Tracker (Activities)
+
+Page shows a full list of activities.
+<p align="center">
+  <img src="ux-design/activity_tracker_(activities).png" height ="300" alt="img"/>
+</p>
+
+### Record Activities
+
+Page allows users to record activities and view progress.
+<p align="center">
+  <img src="ux-design/record_activity.png" height ="300" alt="img"/>
+</p>
+
+## Recipes
+### Recipe Post
+This page allows user to view recipes with descriptions, photos, and cooking instructionss. A brief preview is displayed with a button to navigate to a more detailed step-by-step recipe.
+<p align="center">
+  <img src="ux-design/recipe_post.png" height ="300" alt="img"/>
+</p>
+
+## Detailed Recipe
+This page displays a detailed step-by-step recipe with detailed photos an descriptions.
+<p align="center">
+  <img src="ux-design/detailed_recipe_post.png" height ="300" alt="img"/>
+</p>
+
+## Challenges
+### Challenge Home Page
 
 Challenges are what the app or other users set it to be. It can be a test of skill or simply a challenge to make a type of food. 
  - Challenges are what excite the community and incite a goal to work towards
  - Challenges can be split on dificulties and types of food. You can search for different challenges you want to do.
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/592c1c8c-655e-4cd1-8cd4-ece9acc9909f" height ="600" alt="img"/>
+  <img src="ux-design/challenges.png" height ="300" alt="img"/>
 </p>
 
+### Individual Challenge page
 
-## Recipe Pages
-
-### Recipes
-
-Individual recipe pages for certain foods, user affirms by tapping the completed button on their own
-
+This page displays an example of a single challenge started by the user.
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/91080a4d-07f2-4892-aeb9-567fa4e36811" height ="600" alt="img"/>
+  <img src="ux-design/individual_challenge.png" height ="300" alt="img"/>
 </p>
+
+# Archived features (coming soon)
+All features below have not yet been incorporated into the product.
 
 ## Social Pages (Messaging and Communities)
 
@@ -71,7 +100,7 @@ Messaging where you can match with a partner to message and rate each other's fo
  - This can serve to boost the "scores" aside from challenges and recipe progression such that the user can progress to the next level quicker.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/8c3797a1-82af-42ed-8cdd-96d23b55dee6" height ="600" alt="img"/>
+  <img src="https://github.com/user-attachments/assets/8c3797a1-82af-42ed-8cdd-96d23b55dee6" height ="300" alt="img"/>
 </p>
 
 ### Notifications
@@ -80,7 +109,7 @@ Notifications let you know what is going on in the app and the community
  - This can serve to boost activity on the app by reminding users on challenges and let people know what others are up to
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/38ca1d8a-4ccc-46a9-a0f6-6f677c0dc602" height ="600" alt="img"/>
+  <img src="https://github.com/user-attachments/assets/38ca1d8a-4ccc-46a9-a0f6-6f677c0dc602" height ="300" alt="img"/>
 </p>
 
 ### Profile Page
@@ -89,7 +118,7 @@ Profiles Page is where people's posts can be seen
  - This can serve as a way to boost community and catelog what challenges they have complete and see the foods they have made previously.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/af62225a-39f5-4e01-9c61-6b8dff8e4e52" height ="600" alt="img"/>
+  <img src="https://github.com/user-attachments/assets/af62225a-39f5-4e01-9c61-6b8dff8e4e52" height ="300" alt="img"/>
 </p>
 
 
