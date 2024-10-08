@@ -39,7 +39,7 @@ Page shows user progression in a certain type of food category, giving user ince
 
 ### Activity Tracker (Activities)
 
-Page shows a full list of activities,
+Page shows a full list of activities.
 <p align="center">
   <img src="ux-design/activity_tracker_(activities).png" height ="300" alt="img"/>
 </p>
