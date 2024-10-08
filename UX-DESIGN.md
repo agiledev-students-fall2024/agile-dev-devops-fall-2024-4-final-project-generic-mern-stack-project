@@ -10,7 +10,7 @@ User enters username, email address, and password needed to create a new account
 ### Profile Setup
 User enters information they would like to display on their account, such as name, age, location, and a picture.
 <p align="center">
-  <img src="ux-design/setup.png" height ="300" alt="img"/>
+  <img src="ux-design/profile_setup.png" height ="300" alt="img"/>
 </p>
 
 ### Login
@@ -21,7 +21,7 @@ User enters username, email address, and password needed to log in to an existin
 
 ## Menu Pages
 ### Hamburger Dropdown
-Users are able to access their challenge page, activities page, and recording screen for their current activity with a menu that has a larger capacity than the bottom bar.
+Users are able to access their challenge page, activities page, and record their screen for the current activity with a menu that has a larger capacity than the bottom bar.
 <p align="center">
   <img src="ux-design/hamburger_drop_down.png" height ="300" alt="img"/>
 </p>
