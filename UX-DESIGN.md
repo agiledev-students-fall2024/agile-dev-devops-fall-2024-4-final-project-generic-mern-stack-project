@@ -1,16 +1,31 @@
 # User Experience Design
 
-This repository contains instructions and files for two assignments that together comprise the user experience design phase of a web app.
-
-Replace the contents of this file with the completed assignments, as described in:
-
-- [app map & wireframe instructions](instructions-0a-app-map-wireframes.md).
-- [prototype instructions](instructions-0b-prototyping.md)
-
 ## User Start Pages
+### Signup
+User enters username, email address, and password needed to create a new account.
+<p align="center">
+  <img src="ux-design/signup.png" height ="300" alt="img"/>
+</p>
 
+### Profile Setup
+User enters information they would like to display on their account, such as name, age, location, and a picture.
+<p align="center">
+  <img src="ux-design/setup.png" height ="300" alt="img"/>
+</p>
+
+### Login
+User enters username, email address, and password needed to log in to an existing account.
+<p align="center">
+  <img src="ux-design/login.png" height ="300" alt="img"/>
+</p>
 
 ## Menu Pages
+### Hamburger Dropdown
+Users are able to access their challenge page, activities page, and recording screen for their current activity with a menu that has a larger capacity than the bottom bar.
+<p align="center">
+  <img src="ux-design/hamburger_drop_down.png" height ="300" alt="img"/>
+</p>
+
 ### Settings
 Gives users the ability to customize the app, though it is not configured yet the kinds of settings would pertain to what notifications are recieved and general privacy related things when it comes to community features
 <p align="center">
