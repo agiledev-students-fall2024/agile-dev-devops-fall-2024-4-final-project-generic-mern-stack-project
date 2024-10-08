@@ -54,13 +54,13 @@ From the home page, users can view the current communities they've joined throug
 
 ### Replies Page
 
-This page shows all the replies to a blog post. You can also like the replies and reply the replier. 
+This page shows all the replies to a blog post. You can also like the replies and reply the replier. As well as directing to someone else personal blogs when you click on their post.
 
 ![Replies](https://github.com/agiledev-students-fall2024/4-final-project-seraphim/blob/claire/ux-design/wireframe/replies.png)
 
 ### Post Page
 
-Users can post blogs from this page. They have the option to attach images or GIFs, as well as write text.
+Users can post blogs from this page. They have the option to attach images or GIFs, as well as write text or cancel it.
 
 ![Post](https://github.com/agiledev-students-fall2024/4-final-project-seraphim/blob/claire/ux-design/wireframe/post.png)
 
