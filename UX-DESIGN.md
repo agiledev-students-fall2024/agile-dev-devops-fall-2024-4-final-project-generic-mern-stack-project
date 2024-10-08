@@ -14,7 +14,7 @@ Replace the contents of this file with the completed assignments, as described i
 ### Settings
 Gives users the ability to customize the app, though it is not configured yet the kinds of settings would pertain to what notifications are recieved and general privacy related things when it comes to community features
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/72e8bca5-0e16-4eb7-a3bd-68efa8b613c6" alt="img"/>
+  <img src="https://github.com/user-attachments/assets/72e8bca5-0e16-4eb7-a3bd-68efa8b613c6" height ="600" alt="img"/>
 </p>
 
 ## Progression Pages
@@ -25,8 +25,18 @@ Page shows user progression in a certain type of food category, giving user ince
  - Progression is self approved with a picture of confirmation by user.
  - Progression is split by categorical descriptions of how difficult it is to make that food (i.e. novel vs expert difficulty recipes).
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/21c72c45-6448-46db-89d9-381899a94ee4" alt="img"/>
+  <img src="https://github.com/user-attachments/assets/21c72c45-6448-46db-89d9-381899a94ee4" height ="600" alt="img"/>
 </p>
+
+### Challenges
+
+Challenges are what the app or other users set it to be. It can be a test of skill or simply a challenge to make a type of food. 
+ - Challenges are what excite the community and incite a goal to work towards
+ - Challenges can be split on dificulties and types of food. You can search for different challenges you want to do.
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/592c1c8c-655e-4cd1-8cd4-ece9acc9909f" height ="600" alt="img"/>
+</p>
+
 
 ## Recipe Pages
 
@@ -35,7 +45,7 @@ Page shows user progression in a certain type of food category, giving user ince
 Individual recipe pages for certain foods, user affirms by tapping the completed button on their own
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/91080a4d-07f2-4892-aeb9-567fa4e36811" alt="img"/>
+  <img src="https://github.com/user-attachments/assets/91080a4d-07f2-4892-aeb9-567fa4e36811" height ="600" alt="img"/>
 </p>
 
 ## Social Pages (Messaging and Communities)
@@ -46,7 +56,25 @@ Messaging where you can match with a partner to message and rate each other's fo
  - This can serve to boost the "scores" aside from challenges and recipe progression such that the user can progress to the next level quicker.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/8c3797a1-82af-42ed-8cdd-96d23b55dee6" alt="img"/>
+  <img src="https://github.com/user-attachments/assets/8c3797a1-82af-42ed-8cdd-96d23b55dee6" height ="600" alt="img"/>
+</p>
+
+### Notifications
+Notifications let you know what is going on in the app and the community
+ - Users cans see what their friends are up to, what challenges they are doing and comments on your posts.
+ - This can serve to boost activity on the app by reminding users on challenges and let people know what others are up to
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/38ca1d8a-4ccc-46a9-a0f6-6f677c0dc602" height ="600" alt="img"/>
+</p>
+
+### Profile Page
+Profiles Page is where people's posts can be seen
+ - Users can see their posts on their own profiles pages. They can also see posts on their friend's profile pages
+ - This can serve as a way to boost community and catelog what challenges they have complete and see the foods they have made previously.
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/af62225a-39f5-4e01-9c61-6b8dff8e4e52" height ="600" alt="img"/>
 </p>
 
 
