@@ -28,6 +28,14 @@ Users are able to access their challenge page, activities page, and record their
 
 ## Progression Pages
 
+### Primary Homepage
+
+This page is the primary home page with navigations to different pages.
+
+<p align="center">
+  <img src="ux-design/homepage.png" height ="300" alt="img"/>
+</p>
+
 ### Activity Tracker (Progress)
 
 Page shows user progression in a certain type of food category, giving user incentive to learn new foods and boast their profile to the community!
@@ -59,17 +67,6 @@ Challenges are what the app or other users set it to be. It can be a test of ski
 This page displays an example of a single challenge started by the user.
 <p align="center">
   <img src="ux-design/individual_challenge.png" height ="300" alt="img"/>
-</p>
-
-
-## Recipe Pages
-
-### Recipes
-
-Individual recipe pages for certain foods, user affirms by tapping the completed button on their own
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/91080a4d-07f2-4892-aeb9-567fa4e36811" height ="600" alt="img"/>
 </p>
 
 ## Social Pages (Messaging and Communities)
