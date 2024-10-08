@@ -20,6 +20,7 @@
 
 ## Coding Standards
 
+* **Editor**: We’ll use Visual Studio Code for our designated code editor.
 * **Write Minimum Viable Code**: Focus on getting the core functionality working first and iterate on improvements.
 * **Peer Reviews**: All code must be peer-reviewed before it is merged into the `main` branch.
 * **Push Working Code Only**: Always ensure the code you push works and passes tests. If the build breaks, prioritize fixing it.
