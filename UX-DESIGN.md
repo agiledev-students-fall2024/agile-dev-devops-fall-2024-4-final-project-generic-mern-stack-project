@@ -50,7 +50,7 @@ Challenges are what the app or other users set it to be. It can be a test of ski
  - Challenges are what excite the community and incite a goal to work towards
  - Challenges can be split on dificulties and types of food. You can search for different challenges you want to do.
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/592c1c8c-655e-4cd1-8cd4-ece9acc9909f" height ="600" alt="img"/>
+  <img src="ux-design/challenges.png" height ="300" alt="img"/>
 </p>
 
 
