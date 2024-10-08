@@ -1,19 +1,18 @@
-# Project Repository
+# Task Destroyer
 
-This repository will be used for team projects.
+## Project Description
 
-Several sets of instructions are included in this repository. They should each be treated as separate assignments with their own due dates and sets of requirements.
+Task Destroyer is a mobile application to help both high school and university students with poor task management to organize their academic tasks such as homework, exams, and quizzes. By providing intuitive task input along with due dates, prioritization, progress tracking and a straightforward calendar view about their tasks, Task Destroyer can help the students who are not comfortable to the new academic stage orderly manage their tasks and handle all of those with planning.
 
-1. See the [App Map & Wireframes](instructions-0a-app-map-wireframes.md) and [Prototyping](./instructions-0b-prototyping.md) instructions for the requirements of the initial user experience design of the app.
+## Product Vision Statement
 
-1. Delete the contents of this file and replace with the contents of a proper README.md, as described in the [project setup instructions](./instructions-0c-project-setup.md)
+The vision of Task Destroyer focus on the group of high school or unversity students. These students have relative heavy academic workload, while many of them are not comfortable and don't know how to deal with the workload. Thus, our Task Destroyer aims to simplify the organization of academic tasks, helping students manage their workload without feeling overwhelmed. For an early release version, we will focus core features such as task lists, goal setting, and calendar overview. Our long-term goal is to help students stay organized, reduce stress, and ultimately improve their academic performance.
 
-1. See the [Sprint Planning instructions](instructions-0d-sprint-planning.md) for the requirements of Sprint Planning for each Sprint.
+## Team Members
 
-1. See the [Front-End Development instructions](./instructions-1-front-end.md) for the requirements of the initial Front-End Development.
+* Xiaowei Ma [GitHub](https://github.com/WillliamMa)
+* Rishi Rana [GitHub](https://github.com/Rishi-Rana1)
+* Arnav Nayak [GitHub](https://github.com/ern-02)
+* Nathan [GitHub](https://github.com/WayyGood)
 
-1. See the [Back-End Development instructions](./instructions-2-back-end.md) for the requirements of the initial Back-End Development.
-
-1. See the [Database Integration instructions](./instructions-3-database.md) for the requirements of integrating a database into the back-end.
-
-1. See the [Deployment instructions](./instructions-4-deployment.md) for the requirements of deploying an app.
+## Project History
