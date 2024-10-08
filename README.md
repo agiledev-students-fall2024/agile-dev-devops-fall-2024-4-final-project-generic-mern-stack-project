@@ -18,13 +18,18 @@ Seraphim is a creative social platform designed to foster authentic self-express
 
 Instructions for building and testing go here.
 
-## Team members
+## Team Members
 
 * [Sahar Bueno-Abdala](https://github.com/saharbueno)
+
 * [Claire Kim](https://github.com/radishsoups)
+
 * [Yikai Ding](https://github.com/dyk2003)
+
 * [Wilson Xu](https://github.com/wilsonxu101)
+
 * [Jennifer Yu](https://github.com/jenniferyuuu)
 
 ## Contributing
+
 Information about contributing can be found [here](https://github.com/agiledev-students-fall2024/4-final-project-seraphim/blob/master/CONTRIBUTING.md).
