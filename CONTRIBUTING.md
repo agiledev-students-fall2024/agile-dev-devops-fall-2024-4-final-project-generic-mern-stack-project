@@ -2,72 +2,93 @@
 
 ## Team Norms and Values
 
-### Our Values
-* **Collaboration**: We prioritize working together to ensure everyone’s input and expertise are valued in the project.
-* **Transparency**: Open communication about decisions, progress, and challenges is essential.
-* **Commitment**: Every team member will fulfill their responsibilities and participate actively.
-* **Accountability**: If someone faces difficulties or delays, the team will work together to find solutions.
+### Team Values
+* **Collaboration**: We work together openly, respect each other's ideas, and maintain a positive environment.
+* **Communication**: Keep communication transparent, prompt, and respectful. All members are expected to respond to messages within 1 day.
+* **Accountability**: Team members should complete their tasks on time. If not, they must communicate the reasons ahead of time so that the work can be reallocated.
+* **SCRUM Methodology**: We follow Agile principles and run frequent sprints and daily standups to keep track of progress and address any blockers.
+* **Support**: Team members should ask for help when needed. If any challenges arise, reach out in team channels or during standups.
+* **Decision-Making**: Team-wide issues are resolved by a democratic vote.
 * **Respect**: All members’ opinions are respected, and any disagreements are resolved by discussion and consensus.
 
-### Team Norms
-* **Active Participation**: Every member is expected to contribute regularly. If you miss two consecutive standups without prior notice, we will notify the group.
-* **Daily Standups**:
-  * **Schedule**: Monday, Wednesday, Sunday from 12:00-12:15 PM (in-person, synchronous).
-  * **Purpose**: Share progress, discuss blockers, and review goals.
-* **Support**: If you’re struggling with a task, ask for help from the team during standups or in the group chat.
+### Daily Standups
+* **Schedule**: Monday, Wednesday, Sunday from 12:00-12:15 PM (synchronous, in-person).
+* **Expectations** All members should be present. Team members are expected to briefly share:
+   * What they did since the last standup.
+   * Any blockers they encountered.
+   * What they plan to do next.
+
+## Coding Standards
+
+* **Write Minimum Viable Code**: Focus on getting the core functionality working first and iterate on improvements.
+* **Peer Reviews**: All code must be peer-reviewed before it is merged into the `main` branch.
+* **Push Working Code Only**: Always ensure the code you push works and passes tests. If the build breaks, prioritize fixing it.
+* **Clear Commit Messages**: Use descriptive commit messages to explain what changes were made.
+* **Self-Documenting Code**: Write code that is easy to understand. Use meaningful variable, function, and class names.
+* **Clean Code**: Remove dead or commented-out code. Keep the codebase clean and readable.
+* **Functional Programming**: When possible, apply functional programming principles, especially in JavaScript.
+
+## Sprint Structure
+
+* **Sprint Length**: Our sprints will last approximately 2 weeks to ensure steady progress and timely deliverables.
+* **Backlog Management**: During each sprint, team members will collaborate to improve the product backlog, prioritize tasks, and create new tasks as needed.
+* **Integrated Meetings**:
+   * During the **Wednesday standup** in Week 1, we will conduct **Backlog Grooming** to refine the product backlog and ensure upcoming work is well-defined.
+   * During the **Wednesday standup** in Week 2, we will conduct **Backlog Refinement** to review completed work, address remaining tasks, and adjust priorities for the next sprint.
+
 
 ## Git Workflow
 
-### Our Git Workflow
-We follow a **feature branch workflow**:
-1. **Create a Feature Branch**: Each new feature or bug fix should have its own branch.
-2. **Sync Regularly**: Always sync with the `main` branch before starting work and before pushing your code.
+We use a **feature branch workflow** to manage our development process:
+1. **Branching**: Each new feature or bug fix should be done on its own branch.
+2. **Syncing**: Regularly sync your branch with `main` before pushing any code to avoid conflicts.
 3. **Pull Requests**:
-   * Open a pull request to merge your feature branch into the `main` branch when your feature is ready.
-   * Assign a team member to review your pull request.
-4. **Peer Reviews**: Every pull request will be reviewed by at least one other team member before merging.
+   * Once your feature is complete, open a pull request to merge it into `main`.
+   * Assign a reviewer to your pull request.
+4. **Code Reviews**: All pull requests must be reviewed by at least one team member before merging.
 
-### Branch Naming:
-* Name your branches descriptively. For example: `feature-add-voting-system` or `bugfix-fix-voting-bug`.
+### Branch Naming
+* Branch names should be descriptive. For example: `feature-add-trip-creation` or `bugfix-fix-join-trip`.
 
 ### Commits
-* Make small, frequent commits with descriptive messages (e.g., `git commit -m "Add voting functionality for activities"`).
-* Avoid large monolithic commits; break down your work into smaller pieces.
-* Ensure commits do not break the build.
+* Commit frequently, with clear, descriptive commit messages.
+* Avoid large, monolithic commits. Break down your changes into manageable chunks.
 
-## Rules for Contribution
+## Contribution Guidelines
 
 ### What to Contribute
-* **Features**: New features should align with the project goals. Before adding, confirm it doesn’t duplicate existing features.
-* **Bug Fixes**: If you encounter a bug, feel free to fix it. Ensure you link to the bug report in your pull request.
-* **Tests**: Write tests for new features and ensure the code coverage remains high.
+* **New Features**: Ensure any new feature aligns with the project goals. Always create a new branch for the feature.
+* **Bug Fixes**: If you find a bug, report it or fix it. Link the bug report to the pull request.
+* **Refactoring**: Improve code readability or performance, but avoid introducing new issues.
 
 ### How to Contribute
-1. **Fork the Repository**: If you’re an external contributor, fork the project repository and clone it to your local machine.
-2. **Create a Branch**: Create a new branch for your feature or fix:
-   * `git checkout -b <branch-name>`
-3. **Commit Regularly**: Make sure you commit your progress frequently with descriptive messages.
-   * `git commit -m "Descriptive message"`
-4. **Push Your Branch**: Push your changes to the remote repository.
-   * `git push origin <branch-name>`
-5. **Open a Pull Request**: When your feature is ready, open a pull request against the `main` branch and assign it to a reviewer.
-6. **Code Review**: Your pull request will be reviewed by at least one other member before merging into `main`.
+1. **Clone the Repository**:
+   * Clone repo to your local machine.
+   * `git clone https://github.com/agiledev-students-fall2024/4-final-project-trip-tease.git`
+2. **Create a Branch**:
+   * Create a new branch to work on a feature or bug fix: `git checkout -b <branch-name>`
+3. **Commit and Push**:
+   * Commit changes regularly with clear messages: `git commit -m "Clear and descriptive message"`
+   * Push to the remote branch: `git push origin <branch-name>`
+4. **Open a Pull Request**:
+   * Once your work is done, open a pull request for review.
+   * Ensure the pull request is clear and concise about what changes were made.
 
 ## Setting Up the Local Development Environment
 
-Follow these instructions to set up the project locally:
-
-1. **Clone the Repository**
+Follow these instructions to get the project running locally
+1. **Clone the Repository**:
    * `git clone https://github.com/agiledev-students-fall2024/4-final-project-trip-tease.git`
-2. **Navigate to the Project Directory**
+2. **Navigate to the Project Directory**:
    * `cd 4-final-project-trip-tease`
-3. **Install Dependencies**
-   * Run the command: `npm install`
-   * Ensure all necessary dependencies are installed.
-4. **Run the Development Server**
-   * Start the project locally with: `npm start`
+3. **Install Dependencies**:
+   * Run: `npm install` to install all necessary dependencies.
+4. **Run the Development Server**:
+   * Start the server locally: `npm start`
 
 ## Building & Testing
 
-* Will update this section later with more detailed instructions for building and testing our application.
+* We will provide detailed instructions for building and testing the project as it progresses.
+<!-- * Code must pass tests before being merged into the `main` branch. We will integrate continuous integration (CI) tools for automated testing.
+* Every new feature should include relevant tests to ensure coverage. -->
 
