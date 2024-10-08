@@ -26,12 +26,6 @@ Users are able to access their challenge page, activities page, and record their
   <img src="ux-design/hamburger_drop_down.png" height ="300" alt="img"/>
 </p>
 
-### Settings
-Gives users the ability to customize the app, though it is not configured yet the kinds of settings would pertain to what notifications are recieved and general privacy related things when it comes to community features
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/72e8bca5-0e16-4eb7-a3bd-68efa8b613c6" height ="600" alt="img"/>
-</p>
-
 ## Progression Pages
 
 ### Activity Progress
