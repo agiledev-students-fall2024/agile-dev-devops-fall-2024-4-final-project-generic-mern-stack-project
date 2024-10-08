@@ -39,6 +39,7 @@ Each sprint is **two weeks** long as planed.
 ## How to contribute(Non members)
 * **Report Bug**: If you find a bug in the project, please open an issue and contact any of the group member.
 * **New Features**: Since it is **Agile** development, if you come up any new ideas or proper features can be added, we can discuss and develop.
+* **Custom Version**: You are welcomed to clone the repo and do some test or add ideas. Make sure follow our **Workflow** and make a **Pull Request**.
 
 ## Developement Environment
   Environment should be initialized with MongoDB, Mongoose, React, and Node.js. Detailed instructions will be given as the project go further.
