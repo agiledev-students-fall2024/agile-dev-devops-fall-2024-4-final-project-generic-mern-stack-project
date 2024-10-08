@@ -8,7 +8,7 @@ The app map shows an overview of the number of unique design templates needed, t
 
 ![App Map](https://github.com/agiledev-students-fall2024/4-final-project-seraphim/blob/claire/ux-design/app-map.png)
 
-The app map source file can be found [here](https://www.figma.com/proto/tKBXZp2KXCpoDdT0GVJE84/App-Map?node-id=0-1&t=b9U7BLepxSKVm5SU-1)
+The App Map source file can be found [here](https://www.figma.com/proto/tKBXZp2KXCpoDdT0GVJE84/App-Map?node-id=0-1&t=b9U7BLepxSKVm5SU-1)
 
 ## Prototype
 
