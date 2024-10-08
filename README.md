@@ -23,7 +23,7 @@ We envision **TripTease** as the go-to platform for planning group trips, making
 
 The platform's journey began with this idea: to solve group decision-making challenges. Over time, **TripTease** evolved into a feature-rich platform, offering suggestions, real-time voting, and easy-to-use tools that bring joy back into trip planning.
 
-### How to Contribute?
+## How to Contribute?
 Visit the following link to see the requirements you must follow to contribute to the project.
 [CONTRIBUTING.md](./CONTRIBUTING.md)
 
