@@ -42,7 +42,7 @@ Once the user has entered the correct code sent to their email, they will be all
 
 ### Home Page
 
-This is the home page of the app. Users can view blogs, see the replies to a blog, their communities, and search for blogs as well.
+This is the home page of the app. Users can view blogs, like the blogs with the wing icon, see the replies to a blog, their communities, and search for blogs as well.
 
 ![Home](https://github.com/agiledev-students-fall2024/4-final-project-seraphim/blob/claire/ux-design/wireframe/home.png)
 
@@ -54,7 +54,7 @@ From the home page, users can view the current communities they've joined throug
 
 ### Replies Page
 
-This page shows all the replies to a blog post.
+This page shows all the replies to a blog post. You can also like the replies and reply the replier. 
 
 ![Replies](https://github.com/agiledev-students-fall2024/4-final-project-seraphim/blob/claire/ux-design/wireframe/replies.png)
 
