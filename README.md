@@ -13,7 +13,7 @@ The vision of Task Destroyer focus on the group of high school or unversity stud
 * Xiaowei Ma [GitHub](https://github.com/WillliamMa)
 * Rishi Rana [GitHub](https://github.com/Rishi-Rana1)
 * Arnav Nayak [GitHub](https://github.com/ern-02)
-* Nathan [GitHub](https://github.com/WayyGood)
+* Nathan Daniel [GitHub](https://github.com/WayyGood)
 
 ## Project History
 
