@@ -16,3 +16,14 @@ The vision of Task Destroyer focus on the group of high school or unversity stud
 * Nathan [GitHub](https://github.com/WayyGood)
 
 ## Project History
+
+The idea for the project of our team came from observing the academic environment around us. Many students are dealing with multiple kinds of tasks from different courses, researches or projects. However, lots of students are struggling to stay organized for all the tasks they have. As a result, some students have the problem such as missed due date or bad time arrangement for an important exam. Thus, we want to develop an application that can help students to solve this problem in an straghtforward way!
+
+## How to contribute
+
+We sincerely appreciate your contribution! To start contribute, please visit the following link for [CONTRIBUTING.md](./CONTRIBUTING.md) and follow the guidelines!
+
+## Build and Test
+
+Please follow the instructions to run our application!
+(Content will be added in corresponding stage later)
