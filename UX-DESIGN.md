@@ -10,7 +10,8 @@
 
 ## Prototype Link
 [Figma Link](https://www.figma.com/design/1YbOMtilqrs7cn05r9g2nZ/Wireframe?node-id=0-1&t=UoGChbqg2Y5lNGho-1)
-[Prototype Link](https://www.figma.com/proto/1YbOMtilqrs7cn05r9g2nZ/Wireframe?node-id=0-1&t=5T5vCJGueTOBIBBL-1)
+[Desktop Prototype Link](https://www.figma.com/proto/1YbOMtilqrs7cn05r9g2nZ/Wireframe?node-id=0-1&t=5T5vCJGueTOBIBBL-1)
+[Mobile Prototype Link](https://www.figma.com/proto/1YbOMtilqrs7cn05r9g2nZ/Wireframe?node-id=6-286&t=WNa4eXN4ScdqzDeW-1&starting-point-node-id=6%3A286&show-proto-sidebar=1)
 
 # Desktop
 
