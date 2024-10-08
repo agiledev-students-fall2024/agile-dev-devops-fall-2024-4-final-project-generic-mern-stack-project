@@ -8,9 +8,9 @@ The app map shows an overview of the number of unique design templates needed, t
 ![App Map](https://github.com/agiledev-students-fall2024/4-final-project-seraphim/blob/claire/ux-design/app-map.png)
 
 ## Prototype
-The prototype for our app can be found [here](https://www.figma.com/design/aGaCepqjZK6367ngUaQhHO/Seraphim-ux-design/wireframe?node-id=0-1&t=AmGmgiMJIXGDlAvT-1).
+The prototype for our app can be found [here](https://www.figma.com/proto/aGaCepqjZK6367ngUaQhHO/Seraphim-Wireframe?node-id=0-1&t=KBkJZPMHE9Rk0yy7-1).
 
-## ux-design/wireframes
+## Wireframes
 
 ### Signup Page
 The signup page allow users to register with their name, username, email and password.
