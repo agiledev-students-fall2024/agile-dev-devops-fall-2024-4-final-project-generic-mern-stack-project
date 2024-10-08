@@ -27,6 +27,8 @@ User enters username, email address, and password needed to log in to an existin
 ### Menu Pages
 #### Hamburger Dropdown
 Users are able to access their challenge page, activities page, and record their screen for the current activity with a menu that has a larger capacity than the bottom bar.
+
+Future features will be included in this menu.
 <p align="center">
   <img src="ux-design/hamburger_drop_down.png" height ="300" alt="img"/>
 </p>
@@ -35,7 +37,7 @@ Users are able to access their challenge page, activities page, and record their
 
 #### Primary Homepage
 
-This page is the primary home page with navigations to different pages.
+This page is the primary home page with navigations to different pages. The activity chart shows an abridged version of the week's recipes.
 
 <p align="center">
   <img src="ux-design/homepage.png" height ="300" alt="img"/>
@@ -52,14 +54,14 @@ Page shows user progression in a certain type of food category, giving user ince
 
 #### Activity Tracker (Activities)
 
-Page shows a full list of activities.
+Page shows a full list of past activities. For example, it would show if you baked a cake on Monday, made a steak on Tuesday, etc.
 <p align="center">
   <img src="ux-design/activity_tracker_(activities).png" height ="300" alt="img"/>
 </p>
 
 #### Record Activities
 
-Page allows users to record activities and view progress.
+Page allows users to record a cooking session in real time, follow a step-by-step recipe with tools such as a built-in timer, and view progress.
 <p align="center">
   <img src="ux-design/record_activity.png" height ="300" alt="img"/>
 </p>
@@ -71,8 +73,10 @@ This page allows user to view recipes with descriptions, photos, and cooking ins
   <img src="ux-design/recipe_post.png" height ="300" alt="img"/>
 </p>
 
-### Detailed Recipe
-This page displays a detailed step-by-step recipe with detailed photos an descriptions.
+## Detailed Recipe
+This page displays a detailed step-by-step recipe with detailed photos and descriptions.
+
+The plan for this page is to flesh out the community aspect and integrate posts, messaging, likes, etc. This key feature would give users another reason to track progress and compare with their friends.
 <p align="center">
   <img src="ux-design/detailed_recipe_post.png" height ="300" alt="img"/>
 </p>
@@ -81,7 +85,8 @@ This page displays a detailed step-by-step recipe with detailed photos an descri
 #### Challenge Home Page
 
 Challenges are what the app or other users set it to be. It can be a test of skill or simply a challenge to make a type of food. 
- - Challenges are what excite the community and incite a goal to work towards
+ - Challenges are what excite the community and incite a goal to work towards.
+ - Challenges incorporate a unique quirk or limit to a recipe (i.e. a chocolate cake recipe but you can't use a whisk to beat the eggs!)
  - Challenges can be split on dificulties and types of food. You can search for different challenges you want to do.
 <p align="center">
   <img src="ux-design/challenges.png" height ="300" alt="img"/>
