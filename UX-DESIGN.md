@@ -28,13 +28,13 @@ Users are able to access their challenge page, activities page, and record their
 
 ## Progression Pages
 
-### Activity Progress
+### Activity Tracker (Progress)
 
 Page shows user progression in a certain type of food category, giving user incentive to learn new foods and boast their profile to the community!
  - Progression is self approved with a picture of confirmation by user.
  - Progression is split by categorical descriptions of how difficult it is to make that food (i.e. novel vs expert difficulty recipes).
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/21c72c45-6448-46db-89d9-381899a94ee4" height ="600" alt="img"/>
+  <img src="ux-design/activity_tracker_(progress).png" height ="300" alt="img"/>
 </p>
 
 ### Challenges
