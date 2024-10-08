@@ -37,6 +37,13 @@ Page shows user progression in a certain type of food category, giving user ince
   <img src="ux-design/activity_tracker_(progress).png" height ="300" alt="img"/>
 </p>
 
+### Activity Tracker (Activities)
+
+Page shows a full list of activities,
+<p align="center">
+  <img src="ux-design/activity_tracker_(activities).png" height ="300" alt="img"/>
+</p>
+
 ### Challenges
 
 Challenges are what the app or other users set it to be. It can be a test of skill or simply a challenge to make a type of food. 
