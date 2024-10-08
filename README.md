@@ -1,19 +1,32 @@
-# Project Repository
+# TripTease
 
-This repository will be used for team projects.
+## Project Description
 
-Several sets of instructions are included in this repository. They should each be treated as separate assignments with their own due dates and sets of requirements.
+**TripTease** is a collaborative travel planning platform designed to streamline the group travel planning process. Organizing trips with friends, family, or colleagues can become chaotic and stressful with disagreements and indecision about where to go, what to do, or where to eat. TripTease solves this problem by offering a shared space where users can suggest trip ideas and vote on them in real-time. This ensures that decisions are made democratically, reducing friction and making trip planning more enjoyable.
 
-1. See the [App Map & Wireframes](instructions-0a-app-map-wireframes.md) and [Prototyping](./instructions-0b-prototyping.md) instructions for the requirements of the initial user experience design of the app.
+The platform addresses the frustration of planning group trips by centralizing suggestions, organizing activities by location, and enabling users to upvote or downvote activities. TripTease helps groups reach consensus smoothly, preventing endless discussions and confusion over plans.
 
-1. Delete the contents of this file and replace with the contents of a proper README.md, as described in the [project setup instructions](./instructions-0c-project-setup.md)
+## Product Vision
 
-1. See the [Sprint Planning instructions](instructions-0d-sprint-planning.md) for the requirements of Sprint Planning for each Sprint.
+We envision **TripTease** as the go-to platform for planning group trips, making collaboration simple, transparent, and stress-free. The platform ensures equal input from all members while focusing on enhancing the travel experience by streamlining decision-making. By giving users the ability to suggest activities, vote on them, and mark them as completed, TripTease will empower users to enjoy the trip planning process rather than dread it. Our MVP focuses on core features that enable trip creation, activity suggestion, and voting, with plans for post-trip summaries and rating systems.
 
-1. See the [Front-End Development instructions](./instructions-1-front-end.md) for the requirements of the initial Front-End Development.
+## Team Members
 
-1. See the [Back-End Development instructions](./instructions-2-back-end.md) for the requirements of the initial Back-End Development.
+* [Anthony Uriarte](https://github.com/anthonyuri)
+* [Aditi Kanaujia](https://github.com/akana3866)
+* [Frederick Rohn](https://github.com/frederickrohn)
+* [Harrison Wong](https://github.com/harrisonmangitwong)
 
-1. See the [Database Integration instructions](./instructions-3-database.md) for the requirements of integrating a database into the back-end.
+## Project History
 
-1. See the [Deployment instructions](./instructions-4-deployment.md) for the requirements of deploying an app.
+**TripTease** was conceived as a response to the difficulties many people face when organizing group trips. Whether planning vacations with friends, reunions with family, or corporate retreats, discussions often become frustrating, resulting in confusion and indecision. Our team sought to build a platform that centralizes the planning process, giving every participant a clear and structured way to contribute to the trip.
+
+The platform's journey began with this idea: to solve group decision-making challenges. Over time, **TripTease** evolved into a feature-rich platform, offering suggestions, real-time voting, and easy-to-use tools that bring joy back into trip planning.
+
+### How to Contribute?
+Visit the following link to see the requirements you must follow to contribute to the project.
+[CONTRIBUTING.md](./CONTRIBUTING.md)
+
+## Building & Testing
+
+Once the project reaches the appropriate stage, this section will be updated with detailed instructions for building and testing the application.
