@@ -16,11 +16,11 @@ Team members will commit to the following norms and values of the team:
 ## Sprint Cadence
 
 * A sprint will take approximately 1-4 weeks to complete. 
-* Members will improve the product backlog, prepare the sprint backload, and create new tasks for each sprint. 
+* Members will improve the product backlog, prepare the sprint backlog, and create new tasks for each sprint. 
 
 ## Daily Standups 
 
-* Mon-Fri at 7:00 PM. They will last about 10-15 minutes.
+* Mon-Fri at 7:00 PM. They will last about 5-10 minutes.
 * Members are expected to be present synchronously.
 * Members will not cover for other members who do not participate.
 * Members who do not make any progress on a task will be reported to the manager. 
@@ -37,8 +37,8 @@ Team members will commit to the following norms and values of the team:
 ## Git Workflow
 
 * We will follow the feature branch workflow where the working, complete code is found in the main branch and experiments for tasks will be performed in the branches.
-* Branches will be merged when done and reviewed. 
-* Backlogs will be updated under the project in GitHub. 
+* Branches will be merged when completed and reviewed. 
+* Backlogs will be updated under the project in `GitHub`. 
 
 ## Rules of Contributing
 
@@ -49,8 +49,8 @@ Team members will commit to the following norms and values of the team:
 
 ## Setting Up the Local Development Environment
 
-1. Clone the repository from GitHub. 
-2. Install all dependencies and other necessary files. 
+1. Clone the repository from `GitHub` to the local desktop. 
+2. Install all tools, dependencies, and other necessary files (e.g. `git`).
 
 ## Building and Testing the Project
 
