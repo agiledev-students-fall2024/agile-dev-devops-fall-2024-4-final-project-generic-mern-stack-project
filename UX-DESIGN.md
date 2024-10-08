@@ -24,7 +24,7 @@ Page shows user progression in a certain type of food category, giving user ince
  - Progression is self approved with a picture of confirmation by user.
  - Progression is split by categorical descriptions of how difficult it is to make that food (i.e. novel vs expert difficulty recipes).
 <p align="center">
-  <img src="[https://github.com/waldyr/Sublime-Installer/blob/master/sublime_text.png?raw=true](https://github.com/user-attachments/assets/21c72c45-6448-46db-89d9-381899a94ee4)" alt="img"/>
+  <img src="https://github.com/user-attachments/assets/21c72c45-6448-46db-89d9-381899a94ee4" alt="img"/>
 </p>
 ![image](https://github.com/user-attachments/assets/21c72c45-6448-46db-89d9-381899a94ee4)
 
