@@ -59,6 +59,19 @@ Page allows users to record activities and view progress.
   <img src="ux-design/record_activity.png" height ="300" alt="img"/>
 </p>
 
+## Recipes
+### Recipe Post
+This page allows user to view recipes with descriptions, photos, and cooking instructionss. A brief preview is displayed with a button to navigate to a more detailed step-by-step recipe.
+<p align="center">
+  <img src="ux-design/recipe_post.png" height ="300" alt="img"/>
+</p>
+
+## Detailed Recipe
+This page displays a detailed step-by-step recipe with detailed photos an descriptions.
+<p align="center">
+  <img src="ux-design/detailed_recipe_post.png" height ="300" alt="img"/>
+</p>
+
 ## Challenges
 ### Challenge Home Page
 
@@ -87,7 +100,7 @@ Messaging where you can match with a partner to message and rate each other's fo
  - This can serve to boost the "scores" aside from challenges and recipe progression such that the user can progress to the next level quicker.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/8c3797a1-82af-42ed-8cdd-96d23b55dee6" height ="600" alt="img"/>
+  <img src="https://github.com/user-attachments/assets/8c3797a1-82af-42ed-8cdd-96d23b55dee6" height ="300" alt="img"/>
 </p>
 
 ### Notifications
@@ -96,7 +109,7 @@ Notifications let you know what is going on in the app and the community
  - This can serve to boost activity on the app by reminding users on challenges and let people know what others are up to
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/38ca1d8a-4ccc-46a9-a0f6-6f677c0dc602" height ="600" alt="img"/>
+  <img src="https://github.com/user-attachments/assets/38ca1d8a-4ccc-46a9-a0f6-6f677c0dc602" height ="300" alt="img"/>
 </p>
 
 ### Profile Page
@@ -105,7 +118,7 @@ Profiles Page is where people's posts can be seen
  - This can serve as a way to boost community and catelog what challenges they have complete and see the foods they have made previously.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/af62225a-39f5-4e01-9c61-6b8dff8e4e52" height ="600" alt="img"/>
+  <img src="https://github.com/user-attachments/assets/af62225a-39f5-4e01-9c61-6b8dff8e4e52" height ="300" alt="img"/>
 </p>
 
 
