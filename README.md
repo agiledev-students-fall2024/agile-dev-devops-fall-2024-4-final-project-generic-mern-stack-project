@@ -1,24 +1,29 @@
 # Network
 
 ### Project Description
-- Network is an interactive blogging web app that allows users to share any and all inspirational ideas. Blogs can range anywhere from a short blurp to longer  Users can simply sign up for an account, follow their friends and other bloggers, to start using Network. 
 
-Project Repository
+Network is an interactive blogging web app that allows users to share any and all inspirational ideas. Blogs can range anywhere from a short blurb to longer stories that the users want to share. In addition, users can easily follow their friends and any other authors to stay up to date on what others want to share. 
 
-This repository will be used for team projects.
+### Product Vision Statement
 
-Several sets of instructions are included in this repository. They should each be treated as separate assignments with their own due dates and sets of requirements.
+Allowing users to freely share any and all inspirational ideas, including images and texts. In addition, users can follow authors and friends of their choice.
 
-1. See the [App Map & Wireframes](instructions-0a-app-map-wireframes.md) and [Prototyping](./instructions-0b-prototyping.md) instructions for the requirements of the initial user experience design of the app.
+### Core Team Members
 
-1. Delete the contents of this file and replace with the contents of a proper README.md, as described in the [project setup instructions](./instructions-0c-project-setup.md)
+- Andy Liu: [Github](https://github.com/andy-612)
+- Lindsey Hirano: [Github]()
+- Monserat Pavia-Bravo: [Github]()
+- Toby Wang: [Github](https://github.com/tobyywang)
 
-1. See the [Sprint Planning instructions](instructions-0d-sprint-planning.md) for the requirements of Sprint Planning for each Sprint.
+### Brief History
 
-1. See the [Front-End Development instructions](./instructions-1-front-end.md) for the requirements of the initial Front-End Development.
+One of our teammates has always loved playing volleyball. The first idea was to create a platform to better connect volleyball enthusiasts to share their achievements and talent. To this end, we decided on a social media site that allows users to share and view images and texts with their connections. As we moved forward with this idea, we realized that the site does not have to be limited to volleyball enthusiasts. We wanted to create a platform that allows people with any interests to share and connect with anyone they want. As a result, we modified our project vision to be as open as possible, recognizing that people with similar interests are more likely to connect with each other and form their own respective communities within the site./
 
-1. See the [Back-End Development instructions](./instructions-2-back-end.md) for the requirements of the initial Back-End Development.
+[Here](./CONTRIBUTING.md) are ways you can contribute to this project./
 
-1. See the [Database Integration instructions](./instructions-3-database.md) for the requirements of integrating a database into the back-end.
+### Building and Testing the Project
 
-1. See the [Deployment instructions](./instructions-4-deployment.md) for the requirements of deploying an app.
+Releasing beta products to test users, then refine the product.
+
+### Links to relevant documents
+A detailed breakdown of our app map and wireframes, as well as a Figma prototype: [UX Design](https://github.com/agiledev-students-fall2024/4-final-project-network/blob/master/UX-DESIGN.md)
