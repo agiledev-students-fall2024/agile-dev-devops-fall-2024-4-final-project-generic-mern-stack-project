@@ -14,7 +14,7 @@
 ### Daily standups
 - Daily Standups will take place on Mondays, Wednesdays, and Sundays from 5-6 pm. However, the team can change the time and date of the daily standups if the original schedule does not work for that week. 
 - All members are expected to meet over zoom during the Daily Standups. 
-- If a member does not attend a Daily Standup, then the Scrum Master will take note of it.
+- If a member doesn't attend a Daily Standup, then the Scrum Master will take note of it.
 - Members who do not make progress on a task for two standups or more will be reported to the Professor. 
 
 ### Coding standards
