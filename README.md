@@ -11,8 +11,8 @@ Allowing users to freely share any and all inspirational ideas, including images
 ### Core Team Members
 
 - Andy Liu: [Github](https://github.com/andy-612)
-- Lindsey Hirano: [Github](https://github.com/)
-- Monserat Pavia-Bravo: [Github](https://github.com/)
+- Lindsey Hirano: [Github](https://github.com/lsh7002)
+- Monserat Pavia-Bravo: [Github](https://github.com/mnsrt13)
 - Toby Wang: [Github](https://github.com/tobyywang)
 
 ### Brief History
