@@ -12,8 +12,7 @@
 ### App Map Diagram:
 
 
-![App Map](ux-design/Tracker_Web_Map.png
-)
+- [App Map](ux-design/Charts.png)
 
 
 
