@@ -1,6 +1,7 @@
 # User Experience Design
 
 ## App Map
-![App Map] (
+![App Map](ux-design/Tracker-Web-Map.png)
+
 - [app map & wireframe instructions](instructions-0a-app-map-wireframes.md).
 - [prototype instructions](instructions-0b-prototyping.md)
