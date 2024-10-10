@@ -9,27 +9,59 @@
 ![App Map](./ux-design/Marconnect_Site_Map.png)
 
 ## Prototype Link
-[Prototype Link](https://www.figma.com/design/1YbOMtilqrs7cn05r9g2nZ/Wireframe?node-id=0-1&t=UoGChbqg2Y5lNGho-1)
+[Figma Link](https://www.figma.com/design/1YbOMtilqrs7cn05r9g2nZ/Wireframe?node-id=0-1&t=UoGChbqg2Y5lNGho-1)
+[Desktop Prototype Link](https://www.figma.com/proto/1YbOMtilqrs7cn05r9g2nZ/Wireframe?node-id=0-1&t=5T5vCJGueTOBIBBL-1)
+[Mobile Prototype Link](https://www.figma.com/proto/1YbOMtilqrs7cn05r9g2nZ/Wireframe?node-id=6-286&t=WNa4eXN4ScdqzDeW-1&starting-point-node-id=6%3A286&show-proto-sidebar=1)
 
 # Desktop
 
-![Alt text](ux-design/Sign-in.png.png?raw=true "Login")
+Login
+![Alt text](ux-design/Sign-in.png?raw=true "Login")
+
+Sign Up
 ![Alt text](ux-design/Sign-Up.png?raw=true "Sign Up")
-![Alt text](ux-design/New%20Meeting.png?raw=true "Join/Host Meeting")
+
+Join/Host Meeting
+![Alt text](ux-design/New_Meeting.png?raw=true "Join/Host Meeting")
+
+Meeting
 ![Alt text](ux-design/Meeting.png?raw=true "Meeting")
+
+Meeting with Whiteboard
 ![Alt text](ux-design/Meeting_With_Whiteboard.png?raw=true "Meeting with Whiteboard")
-![Alt text](ux-design/Meeting%20with%20Code%20editor.png?raw=true "Meeting with Code Editor")
-![Alt text](ux-design/Meeting%20without%20Camera.png.png?raw=true "Meeting without Camera")
-![Alt text](ux-design/Meeting%20with%20Screen%20Share.png.png?raw=true "Meeting with Screen Share")
-![Alt text](ux-design/Meeting%20without%20Chat.png.png?raw=true "Meeting without Chat")
+
+Meeting with Code Editor
+![Alt text](ux-design/Meeting_with_Code_editor.png?raw=true "Meeting with Code Editor")
+
+Meeting without Camera
+![Alt text](ux-design/Meeting_without_Camera.png?raw=true "Meeting without Camera")
+
+Meeting with Screen Share
+![Alt text](ux-design/Meeting_with_Screen_Share.png?raw=true "Meeting with Screen Share")
+
+Meeting without Chat
+![Alt text](ux-design/Meeting_without_Chat.png?raw=true "Meeting without Chat")
 
 
 # Mobile
 
+Sign Up Mobile
 ![Alt text](ux-design/Sign-Up%20Mobile.png?raw=true "Wireframe")
+
+Sign in Mobile
 ![Alt text](ux-design/Sign-in%20Mobile.png?raw=true "Wireframe")
-![Alt text](ux-design/New%20Meeting%20Mobile.png?raw=true "Wireframe")
-![Alt text](ux-design/Call%20Mobile.png?raw=true "Wireframe")
-![Alt text](ux-design/Call%20with%20Chat%20Mobile.png?raw=true "Wireframe")
-![Alt text](ux-design/Call%20with%20Code%20Editor%20Mobile.png?raw=true "Wireframe")
-![Alt text](ux-design/Call%20with%20Whiteboard%20Mobile.png?raw=true "Wireframe")
+
+Join/Host New Meeting Mobile
+![Alt text](ux-design/New_Meeting_Mobile.png?raw=true "Wireframe")
+
+Meeting Mobile
+![Alt text](ux-design/Call_Mobile.png?raw=true "Wireframe")
+
+Meeting with Chat Mobile
+![Alt text](ux-design/Call_with_Chat_Mobile.png?raw=true "Wireframe")
+
+Meeting with Code Editor Mobile
+![Alt text](ux-design/Call_with_Code_Editor_Mobile.png?raw=true "Wireframe")
+
+Meeting with Whiteboard Mobile
+![Alt text](ux-design/Call_with_Whiteboard_Mobile.png?raw=true "Wireframe")
