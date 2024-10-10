@@ -10,15 +10,14 @@
 * Accountability: We trust each other to meet deadlines and deliver quality work. If someone struggles, the team will step in and provide support.
 * Inclusivity: Every member is encouraged to share their thoughts. Diverse opinions lead to better decisions and innovation.
 
-Team Rituals and Processes
 
-Sprint Cadence
+## Sprint Cadence
 
 * Sprint Duration: We follow a two-week sprint cycle, ensuring that we maintain a steady workflow while leaving room for iteration and improvement.
 * Planning & Review: At the start of each sprint, we align on key priorities. At the end, we reflect on progress, challenges, and areas of improvement.
 * Adaptive Workflow: Task priorities are fluid and can be adjusted based on feedback or evolving project needs.
 
-Standups
+## Standups
 
 * Frequency: Standups are held on Monday, Wednesday, and Friday to keep everyone informed and ensure that blockers are addressed quickly.
 * Standup Format:
@@ -27,7 +26,7 @@ Standups
 * Problems: Highlight any blockers or challenges so the team can provide help.
 Coding Standards
 
-Development Approach
+## Development Approach
 
 * Editor: We standardize on Visual Studio Code for consistency, but other editors are welcome as long as the team's workflow is not disrupted.
 * Code Quality: Push code that works and is well-tested. If a feature isn’t ready, use draft pull requests for feedback.
