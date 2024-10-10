@@ -1,3 +1,43 @@
+
+
+# Tracker
+##Mission Statement
+
+Our mission is to empower individuals to take control of their finances by providing a simple, intuitive platform that helps them track their spending, optimize savings, and achieve their financial goals with clarity and confidence.
+## Product Vision Statement
+
+Our vision is to revolutionize personal financial management by offering an all-in-one platform that empowers users to confidently take charge of their finances. Through intuitive tools like a dynamic Budget Page, users can track and categorize their spending in real-time, compare actual vs. projected expenses, and receive personalized recommendations for optimizing their budget. Our advanced Goals Page features a What-If Scenario Calculator that allows users to simulate various financial strategies, enabling them to make informed decisions about saving or spending to achieve their goals faster. We also offer shared budget goals, allowing users to collaborate on financial goals with family or friends, making it easier to work together on shared savings or spending objectives. With built-in smart suggestions, progress tracking, and interactive visualizations, our platform is designed to help users meet both short- and long-term financial goals, from debt repayment to vacation savings, in an engaging and user-friendly environment.
+
+
+## Core Team Members
+
+- **[Marvell Prime](https://github.com/mp3355)**
+- **[Tony Liu]https://github.com/tony102809)**
+- **[Olivia Yu](https://github.com/zitongyu756)**
+- **[Jessy Huang ](https://github.com/jh7305)**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Project Repository
 
 This repository will be used for team projects.
