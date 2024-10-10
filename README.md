@@ -1,3 +1,5 @@
+<!--
+
 # Project Repository
 
 This repository will be used for team projects.
@@ -17,3 +19,20 @@ Several sets of instructions are included in this repository. They should each b
 1. See the [Database Integration instructions](./instructions-3-database.md) for the requirements of integrating a database into the back-end.
 
 1. See the [Deployment instructions](./instructions-4-deployment.md) for the requirements of deploying an app.
+
+--->
+
+# Soho Route Generator
+
+## Project description
+
+The Soho Route Generator is an mobile web application that creates custom shopping routes around Soho, New York for users based on their fashion preferences and budgets. Users can select the products they would like to purchase, their cost ($ to $$$$) and what type of fashion trends they like. The app then generates the most efficient shopping route offering multiple stores that adhere to the filters.
+
+## Core team members
+
+1. Hannah Liang
+2. Vasily Belousov
+3. Ruoxuan Cao
+4. Ashley Liu
+5. Ricky Zhang
+
