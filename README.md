@@ -1,7 +1,7 @@
 
 
 # Tracker
-##Mission Statement
+## Mission Statement
 
 Our mission is to empower individuals to take control of their finances by providing a simple, intuitive platform that helps them track their spending, optimize savings, and achieve their financial goals with clarity and confidence.
 ## Product Vision Statement
@@ -12,7 +12,7 @@ Our vision is to revolutionize personal financial management by offering an all-
 ## Core Team Members
 
 - **[Marvell Prime](https://github.com/mp3355)**
-- **[Tony Liu]https://github.com/tony102809)**
+- **[Tony Liu](https://github.com/tony102809)**
 - **[Olivia Yu](https://github.com/zitongyu756)**
 - **[Jessy Huang ](https://github.com/jh7305)**
 
