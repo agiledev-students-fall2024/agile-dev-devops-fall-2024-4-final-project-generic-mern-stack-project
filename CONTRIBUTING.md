@@ -1,3 +1,17 @@
 # Guide to Contributing
 
-Delete the contents of this file and replace with the contents of a proper guide to contributing to this project, as described in the [instructions](./instructions-0c-project-setup#contributingmd)
+Thank you for your interest in contributing to our project! This guide will help you get started and outline the process for contributing code and other materials.
+
+## Table of Contents
+1. [Workflow](#workflow)
+
+### Workflow
+
+This project uses Feature Branch Version Control Workflow.
+
+### Prerequisites
+- [Node.js](https://nodejs.org/)
+- [MongoDB](https://www.mongodb.com/)
+- [Git](https://git-scm.com/)
+
+
