@@ -35,4 +35,3 @@ The Soho Route Generator is an mobile web application that creates custom shoppi
 3. Ruoxuan Cao
 4. Ashley Liu
 5. Ricky Zhang
-
