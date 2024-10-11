@@ -7,21 +7,18 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import App from "./App";
+import LoginForm from "./components/LoginForm";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-        <Route path="/" element={<App />} />
-        
+      <Route path="/" element={<LoginForm />} />
     </>,
   ),
 );
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-
-        <RouterProvider router={router} />
-
+    <RouterProvider router={router} />
   </StrictMode>,
 );
