@@ -1,8 +1,11 @@
 import { Navigate, Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
 
-export default function ProtectedRouteWrapper({ requiresAuth }: { requiresAuth: boolean }) {
-
+export default function ProtectedRouteWrapper({
+  requiresAuth,
+}: {
+  requiresAuth: boolean;
+}) {
   // unauthenticated user attempting to access protected route
   // if (requiresAuth && isAuthenticated) {
   //   return <Navigate to="/login" replace />;
@@ -22,5 +25,4 @@ export default function ProtectedRouteWrapper({ requiresAuth }: { requiresAuth: 
   }
 
   return <Outlet />;
-};
-
+}
