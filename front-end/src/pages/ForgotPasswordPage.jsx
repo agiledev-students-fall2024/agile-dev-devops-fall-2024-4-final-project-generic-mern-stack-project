@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../assets/styles.css'
 
 const ForgotPasswordPage = () => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ const ForgotPasswordPage = () => {
 
   return (
     <div>
-      <h1>Forgot Password Page</h1>
+      <h1>Forgot Password</h1>
       <form onSubmit={handlePasswordReset}>
         <label>
           Enter your email to reset password:

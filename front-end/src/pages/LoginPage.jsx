@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import '../assets/styles.css'
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ const LoginPage = () => {
 
   return (
     <div>
-      <h1>Login Page</h1>
+      <h1>Login</h1>
       <form onSubmit={handleLogin}>
         <label>
           Username:

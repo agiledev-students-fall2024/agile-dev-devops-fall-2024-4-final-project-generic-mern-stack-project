@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import '../assets/styles.css'
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ const RegisterPage = () => {
 
   return (
     <div>
-      <h1>Register Page</h1>
+      <h1>Register</h1>
       <form onSubmit={handleRegister}>
         <label>
           Username:
