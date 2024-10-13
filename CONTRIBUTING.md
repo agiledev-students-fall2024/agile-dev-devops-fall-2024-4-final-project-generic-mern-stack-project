@@ -3,7 +3,7 @@
 ## Norms
 
 * Any spikes or issues will be made known to the other group members before the daily standup
-* Standup meetings Tuesday's 13:45, Sunday's 18:00, and Friday's 13:30
+* Standup meetings Tuesday's 13:45, Friday's 13:30, and Sunday's 18:00
 
 ## Git workflow
 
@@ -26,4 +26,3 @@
 ## Building and Testing
 
 * TBD
-

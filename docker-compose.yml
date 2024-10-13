@@ -1,0 +1,13 @@
+services:
+  frontend:
+    image: restaswipe-frontend
+    build: ./front-end
+    env_file:
+      - ./front-end/.env
+  backend:
+    image: restaswipe-backend
+    build: ./back-end
+    env_file:
+      - ./back-end/.env
+    ports:
+      - "8080:8080"
