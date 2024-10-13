@@ -2,7 +2,7 @@ import type { Store } from "@/types";
 import { useState } from "react";
 import { CommandItem } from "./ui/command";
 import { Button } from "./ui/button";
-import { Plus } from "lucide-react";
+import { Plus, Check } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -14,6 +14,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import type { PriceRange } from "@/types";
+import { useMyStores } from "@/context/StoresContext";
 
 const priceRangeToDollarIcons: Record<PriceRange, number> = {
   Budget: 1,
@@ -23,8 +24,15 @@ const priceRangeToDollarIcons: Record<PriceRange, number> = {
 };
 
 export default function SearchStoreItem({ store }: { store: Store }) {
+  const { addStore, removeStore, hasStore } = useMyStores();
+  const [isAdding, setIsAdding] = useState(false);
+
   const handleAdd = () => {
-    console.log("adding store");
+    setIsAdding(true);
+    addStore(store);
+    setTimeout(() => {
+      setIsAdding(false);
+    }, 500);
   };
 
   return (
@@ -34,15 +42,29 @@ export default function SearchStoreItem({ store }: { store: Store }) {
           <CommandItem className="h-[100px] flex justify-between px-5">
             <div className="text-2xl font-extrabold">{store.name}</div>
 
-            <Button
-              variant="add"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleAdd();
-              }}
-            >
-              Add <Plus className="ml-1" />
-            </Button>
+            {isAdding ? (
+              <Check className="text-green-500 w-[86px] animate-ping" />
+            ) : hasStore(store._id) ? (
+              <Button
+                variant="destructive"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  removeStore(store._id);
+                }}
+              >
+                Remove
+              </Button>
+            ) : (
+              <Button
+                variant="add"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleAdd();
+                }}
+              >
+                Add <Plus className="ml-1" />
+              </Button>
+            )}
           </CommandItem>
         </div>
       </DialogTrigger>

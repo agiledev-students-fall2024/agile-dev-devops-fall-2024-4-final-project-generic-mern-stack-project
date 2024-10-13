@@ -16,7 +16,8 @@ const StoreContext = createContext<StoreContextType | undefined>(undefined);
 
 export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   const [stores, setStores] = useState<Store[]>([]); // list of stores user have selected
-  const [filters, setFilters] = useState<Filters>({ // list of filters user have selected
+  const [filters, setFilters] = useState<Filters>({
+    // list of filters user have selected
     category: [],
     priceRange: [],
     brand: [],

@@ -16,16 +16,22 @@ import { useMediaQuery } from "usehooks-ts";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Store } from "@/types";
+import { useMyStores } from "@/context/StoresContext";
 import { StoreIcon, Trash } from "lucide-react";
 
 function StatusList({ stores }: { stores: Store[] }) {
+  const { clearStores } = useMyStores();
   return (
     <Command>
       <CommandInput placeholder="Search stores..." />
       <CommandList>
         {/* TODO: add confirm button */}
         {stores.length > 0 && (
-          <Button variant={"destructive"} className="my-2 font-light">
+          <Button
+            variant={"destructive"}
+            className="my-2 font-light"
+            onClick={() => clearStores()}
+          >
             <Trash className="w-[15px] mr-1" />
             Clear
           </Button>
@@ -33,7 +39,9 @@ function StatusList({ stores }: { stores: Store[] }) {
         <CommandEmpty>You have not added any stores.</CommandEmpty>
         <CommandGroup>
           {stores.map((store) => (
-            <CommandList key={store._id}></CommandList>
+            <CommandList key={store._id}>
+              <div>{store.name}</div>
+            </CommandList>
           ))}
         </CommandGroup>
       </CommandList>
@@ -42,6 +50,7 @@ function StatusList({ stores }: { stores: Store[] }) {
 }
 
 export default function MyStoresButton() {
+  const { stores } = useMyStores();
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
@@ -57,18 +66,18 @@ export default function MyStoresButton() {
           >
             <StoreIcon />
             <span className="ml-2 text-lg py-[2px] font-extrabold">
-              no. of stores
+              {stores.length}
             </span>
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
           {isDesktop ? (
-            <StatusList stores={[]} />
+            <StatusList stores={stores} />
           ) : (
             <Drawer open={open} onOpenChange={setOpen}>
               <DrawerContent>
                 <div className="mt-4 border-t">
-                  <StatusList stores={[]} />
+                  <StatusList stores={stores} />
                 </div>
               </DrawerContent>
             </Drawer>
