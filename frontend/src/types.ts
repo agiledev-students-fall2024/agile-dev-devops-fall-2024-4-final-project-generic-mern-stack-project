@@ -7,3 +7,5 @@ export type Store = {
   image: string;
   brand: string;
 };
+
+export type PriceRange = "Budget" | "Mid-Range" | "Premium" | "Luxury";

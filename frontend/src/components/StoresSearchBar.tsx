@@ -17,7 +17,7 @@ import { useMediaQuery } from "usehooks-ts";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Store } from "@/types";
-import { CommandItem } from "@/components/ui/command";
+import SearchStoreItem from "./SearchStoreItem";
 
 function StatusList({ stores }: { stores: Store[] }) {
   return (
@@ -28,9 +28,7 @@ function StatusList({ stores }: { stores: Store[] }) {
         <CommandGroup>
           {stores.map((store) => (
             <CommandList key={store._id}>
-              <CommandItem className="h-[100px] flex justify-between px-5">
-                {store.name}
-              </CommandItem>
+              <SearchStoreItem store={store} />
             </CommandList>
           ))}
         </CommandGroup>
