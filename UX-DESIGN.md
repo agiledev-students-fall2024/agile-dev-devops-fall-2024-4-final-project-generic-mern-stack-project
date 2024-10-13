@@ -10,6 +10,7 @@ The app map outlines the primary navigation flow within the Easy Notes applicati
 
 ---
 
+## Home
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/a2cbddc1-432d-4dc4-b6c9-8c2cbe59fe45" alt="Home">
