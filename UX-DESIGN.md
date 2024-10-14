@@ -1,7 +1,7 @@
 # User Experience Design
 
 ## Prototype
-[Prototype Link](https://www.figma.com/design/v1YjoBHtWq0Mobwi91uYEH/Figma-basics?node-id=692-82&t=BHaIeXMJdUHCqGoS-1)
+[Prototype Link](https://www.figma.com/proto/v1YjoBHtWq0Mobwi91uYEH/Figma-basics?node-id=684-128&node-type=canvas&t=jVHEdIFdUSIcgEFu-1&scaling=scale-down&content-scaling=fixed&page-id=609%3A10&starting-point-node-id=684%3A128). PS: From **Calendar Page** to **Day Page**, currently we only connect the **Day 31** to the **Day Page** as example, otherwise we will have too many pages. 
 ## App Map
 ![app-map](ux-design/app-map.png)
 ### Desceription
