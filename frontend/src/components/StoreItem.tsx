@@ -194,6 +194,7 @@ const PaymentOption = ({ label, value }: { label: string; value: string }) => (
   </div>
 );
 
+// store item for the search bar
 function SearchItemDialogTrigger({ store }: { store: Store }) {
   const { addStore, removeStore, hasStore } = useMyStores();
   const [isAdding, setIsAdding] = useState(false);
@@ -235,6 +236,7 @@ function SearchItemDialogTrigger({ store }: { store: Store }) {
   );
 }
 
+// store item in your list of selected stores
 function MyStoresDialogTrigger({ store }: { store: Store }) {
   const { removeStore } = useMyStores();
 
