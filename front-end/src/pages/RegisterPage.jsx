@@ -6,7 +6,7 @@ const RegisterPage = () => {
 
   const handleRegister = (e) => {
     e.preventDefault();
-    navigate('/home');
+    navigate('/joincreatemeeting');
   };
 
   return (

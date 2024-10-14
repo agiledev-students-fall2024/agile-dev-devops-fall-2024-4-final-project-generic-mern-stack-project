@@ -6,7 +6,7 @@ const LoginPage = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    navigate('/home');
+    navigate('/joincreatemeeting');
   };
 
   return (
