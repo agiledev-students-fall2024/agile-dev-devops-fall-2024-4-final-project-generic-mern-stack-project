@@ -6,7 +6,7 @@ type PaymentOptions = {
 };
 
 export type Store = {
-  _id?: string;
+  _id: string;
   name: string;
   address: string;
   reviews: string[];
