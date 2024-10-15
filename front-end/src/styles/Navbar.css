@@ -1,0 +1,9 @@
+.nav-bar {
+    background-color: #3f51b5;
+  }
+  
+  .nav-title {
+    flex-grow: 1;
+    text-align: center;
+  }
+  
