@@ -1,24 +1,17 @@
-type Poi = { key: string; location: google.maps.LatLngLiteral };
 import { useEffect, useState, useRef } from "react";
 import {
   APIProvider,
   Map,
   AdvancedMarker,
-  MapCameraChangedEvent,
   useMap,
   Pin,
 } from "@vis.gl/react-google-maps";
+import { Dialog } from "./ui/dialog";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import type { Marker } from "@googlemaps/markerclusterer";
+import StoreDialog from "./StoreDialog";
+import type { Store } from "@/types";
 import sampleStores from "@/stores";
-
-const locations: Poi[] = sampleStores.map((store) => ({
-  key: store._id,
-  location: {
-    lat: store.lat,
-    lng: store.lng,
-  },
-}));
 
 export default function SoHoMap() {
   return (
@@ -30,26 +23,20 @@ export default function SoHoMap() {
         defaultZoom={16}
         defaultCenter={{ lat: 40.723115351278075, lng: -73.99867417832154 }}
         mapId="b9b9aae2738373ca"
-        onCameraChanged={(ev: MapCameraChangedEvent) =>
-          console.log(
-            "camera changed:",
-            ev.detail.center,
-            "zoom:",
-            ev.detail.zoom,
-          )
-        }
       >
-        <PoiMarkers pois={locations} />
+        <PoiMarkers stores={sampleStores} />
       </Map>
     </APIProvider>
   );
 }
 
-const PoiMarkers = (props: { pois: Poi[] }) => {
+const PoiMarkers = (props: { stores: Store[] }) => {
   const map = useMap();
+  const [selectedStore, setSelectedStore] = useState<Store | null>(null);
 
   const [markers, setMarkers] = useState<{ [key: string]: Marker }>({});
   const clusterer = useRef<MarkerClusterer | null>(null);
+
   useEffect(() => {
     if (!map) return;
     if (!clusterer.current) {
@@ -77,22 +64,21 @@ const PoiMarkers = (props: { pois: Poi[] }) => {
     });
   };
 
-  const handleClick = (ev: google.maps.MapMouseEvent) => {
+  const handleClick = (store: Store) => {
     if (!map) return;
-    if (!ev.latLng) return;
-    console.log("marker clicked:", ev.latLng.toString());
-    map.panTo(ev.latLng);
+    map.panTo({ lat: store.lat, lng: store.lng });
+    setSelectedStore(store);
   };
 
   return (
     <>
-      {props.pois.map((poi: Poi) => (
+      {props.stores.map((store: Store) => (
         <AdvancedMarker
-          key={poi.key}
-          position={poi.location}
-          ref={(marker) => setMarkerRef(marker, poi.key)}
+          key={store._id}
+          position={{ lat: store.lat, lng: store.lng }}
+          ref={(marker) => setMarkerRef(marker, store._id as string)}
           clickable={true}
-          onClick={handleClick}
+          onClick={() => handleClick(store)}
         >
           <Pin
             background={"#FBBC04"}
@@ -101,6 +87,12 @@ const PoiMarkers = (props: { pois: Poi[] }) => {
           />
         </AdvancedMarker>
       ))}
+      <Dialog
+        open={!!selectedStore}
+        onOpenChange={(open) => !open && setSelectedStore(null)}
+      >
+        {selectedStore && <StoreDialog store={selectedStore} />}
+      </Dialog>
     </>
   );
 };
