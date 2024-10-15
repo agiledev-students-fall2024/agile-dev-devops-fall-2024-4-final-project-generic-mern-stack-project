@@ -19,6 +19,7 @@ const App = () => {
       <Route path="/joincreatemeeting" element={<JoinCreateMeetingPage />} />
       <Route path="/chat" element={<ChatComponent />} />
       <Route path="/whiteboard" element={<Whiteboard />} />
+      <Route path="/meetings/:id" element={<MeetingPage />} />
     </Routes>
   );
 };
