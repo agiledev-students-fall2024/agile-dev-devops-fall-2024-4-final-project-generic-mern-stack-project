@@ -7,10 +7,10 @@ import EditProfileForm from '../components/EditProfileForm'
 
 const EditProfile = () => {
     const { username } = useParams()
-    const user = userData.find(user => user.username === username);
+    const user = userData.find(user => user.username === username)
 
     if (!user) {
-        return <h2>User not found</h2>;
+        return <h2>User not found</h2>
     }
 
     return (
@@ -35,7 +35,6 @@ const EditProfile = () => {
                     }
                 </div>
 
-                <p>Edit picture</p> {/* placeholder for now */}
                 <EditProfileForm />
             </Container>
         </div>
