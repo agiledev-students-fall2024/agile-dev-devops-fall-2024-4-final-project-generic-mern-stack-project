@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom"
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Button } from 'react-bootstrap';
@@ -30,7 +31,7 @@ const LoginForm = () => {
       onSubmit={onSubmit}
     >
       {({errors, isSubmitting, touched}) => (
-        <Form className='form'>
+        <Form>
             <div>
                 <label htmlFor='email' className='form-label'>Email</label>
                 <Field name='email' type='text' className={`form-control ${touched.email && errors.email ? 'is-invalid': ''}`} />
@@ -51,9 +52,9 @@ const LoginForm = () => {
                 </Button>
             </div>
             <div>
-                <a href="#">
+                <Link to='/'>
                     Forgot password?
-                </a>
+                </Link>
             </div>
         </Form>
       )}

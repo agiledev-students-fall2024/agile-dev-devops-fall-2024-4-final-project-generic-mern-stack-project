@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import { Button } from 'react-bootstrap';
 
 const RegisterForm = () => {
-    const initialValues = {
+  const initialValues = {
         name: '',
         username: '',
         email: '',
@@ -53,7 +53,7 @@ const RegisterForm = () => {
       onSubmit={onSubmit}
     >
       {({errors, isSubmitting, touched}) => (
-        <Form className='form'>
+        <Form>
             <div>
                 <label htmlFor='name' className='form-label'>Name</label>
                 <Field name='name' type='text' className={`form-control ${touched.name && errors.name ? 'is-invalid': ''}`} />
