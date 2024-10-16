@@ -1,19 +1,15 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
-import userData from '../fillerData/users.json'
+import { Navigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Button, Modal } from 'react-bootstrap';
+import userData from '../fillerData/users.json'
+import loggedInData from '../fillerData/loggedIn.json'
 
 const EditProfileForm = () => {
-    const { username } = useParams()
-    const user = userData.find(user => user.username === username);
+    const loggedInUser = loggedInData[0]
+    const user = userData.find(user => user.id === loggedInUser.id)
     const [show, setShow] = React.useState(false)
-    
-    if (!user) {
-        return <h2>User not found</h2>;
-    }
-    
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
 

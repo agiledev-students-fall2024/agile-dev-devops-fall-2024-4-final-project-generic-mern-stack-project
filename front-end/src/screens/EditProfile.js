@@ -1,23 +1,17 @@
-import React from 'react'
 import '../styles/profile.css'
-import { useParams, Link } from 'react-router-dom'
-import userData from '../fillerData/users.json'
-import loggedInData from '../fillerData/loggedIn.json'
+import React from 'react'
+import { Link } from 'react-router-dom'
 import { Container } from 'react-bootstrap'
 import EditProfileForm from '../components/EditProfileForm'
+import userData from '../fillerData/users.json'
+import loggedInData from '../fillerData/loggedIn.json'
 
 const EditProfile = () => {
-    const { username } = useParams()
-    const user = userData.find(user => user.username === username)
-    const loggedInUser = loggedInData[0].id
-
-    if (!user || user.id !== loggedInUser) {
-        return <code>Error 404: Not Found</code>
-    }
-
+    const loggedInUser = loggedInData[0]
+    const user = userData.find(user => user.id === loggedInUser.id)
 
     return (
-        <div>
+        <>
             <header>
                 <Link to={`/profile/${user.username}`} >
                     <svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='currentColor' className='bi bi-arrow-left-short' viewBox='0 0 16 16'>
@@ -40,7 +34,7 @@ const EditProfile = () => {
 
                 <EditProfileForm />
             </Container>
-        </div>
+        </>
     )
 }
 

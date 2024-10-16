@@ -1,16 +1,21 @@
-import React from 'react'
 import '../styles/profile.css'
+import React from 'react'
+import { Navigate } from 'react-router-dom';
 import { useParams, Link } from 'react-router-dom'
-import userData from '../fillerData/users.json'
 import { Container } from 'react-bootstrap'
+import userData from '../fillerData/users.json'
+import loggedInData from '../fillerData/loggedIn.json'
+
 
 const Profile = () => {
     const { username } = useParams()
     const user = userData.find(user => user.username === username);
 
     if (!user) {
-        return <h2>User not found</h2>;
+        return <Navigate to='/' />
     }
+
+    const isLoggedIn = loggedInData[0].id === user.id
 
     return (
         <div>
@@ -20,7 +25,7 @@ const Profile = () => {
                         <path fillRule='evenodd' d='M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5'/>
                     </svg>
                 </Link>
-                <Link to='/' className='btn btn-secondary rounded-pill'>New Post</Link>
+                {isLoggedIn && <Link to='/' className='btn btn-secondary rounded-pill'>New Post</Link>}
             </header>
             <Container className='content'>
                 <h1>{user.name}</h1>
@@ -38,8 +43,8 @@ const Profile = () => {
                 <p>{user.bio}</p>
 
                 <div className='profile-functions mb-4'>
-                    <Link to={`/profile/${user.username}/edit`} className='btn btn-secondary rounded-pill'>Edit profile</Link>
-                    <Link to='/' className='btn btn-secondary rounded-pill'>Friends</Link>
+                    {isLoggedIn && <Link to='/edit-profile' className='btn btn-secondary rounded-pill'>Edit profile</Link>}
+                    {isLoggedIn && <Link to='/' className='btn btn-secondary rounded-pill'>Friends</Link>}
                 </div>
 
                 <hr />
