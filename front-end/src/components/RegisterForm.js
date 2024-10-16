@@ -56,40 +56,63 @@ const RegisterForm = () => {
         <Form>
             <div>
                 <label htmlFor='name' className='form-label'>Name</label>
-                <Field name='name' type='text' className={`form-control ${touched.name && errors.name ? 'is-invalid': ''}`} />
+                <Field 
+                  name='name' 
+                  type='text' 
+                  className={`form-control ${touched.name && errors.name ? 'is-invalid': ''}`} 
+                />
                 <ErrorMessage name='name'>
                     {msg => <div className='text-danger'>{msg}</div>}
                 </ErrorMessage>
             </div>
             <div>
                 <label htmlFor='username' className='form-label'>Username</label>
-                <Field name='username' type='text' className={`form-control ${touched.username && errors.username ? 'is-invalid': ''}`} />
+                <Field 
+                  name='username' 
+                  type='text' 
+                  className={`form-control ${touched.username && errors.username ? 'is-invalid': ''}`} 
+                />
                 <ErrorMessage name='username'>
                     {msg => <div className='text-danger'>{msg}</div>}
                 </ErrorMessage>
             </div>
             <div>
                 <label htmlFor='email' className='form-label'>Email</label>
-                <Field name='email' type='email' className={`form-control ${touched.email && errors.email ? 'is-invalid': ''}`} />
+                <Field 
+                  name='email' 
+                  type='email'
+                  autoComplete="email" 
+                  className={`form-control ${touched.email && errors.email ? 'is-invalid': ''}`} 
+                />
                 <ErrorMessage name='email'>
                     {msg => <div className='text-danger'>{msg}</div>}
                 </ErrorMessage>
             </div>
             <div>
                 <label htmlFor='password' className='form-label'>Password</label>
-                <Field name='password' type='password' className={`form-control ${touched.password && errors.password ? 'is-invalid': ''}`} />
+                <Field 
+                  name='password' 
+                  type='password'
+                  autoComplete='new-password' 
+                  className={`form-control ${touched.password && errors.password ? 'is-invalid': ''}`} 
+                />
                 <ErrorMessage name='password'>
                     {msg => <div className='text-danger'>{msg}</div>}
                 </ErrorMessage>
             </div>
             <div>
                 <label htmlFor='confirm' className='form-label'>Confirm Password</label>
-                <Field name='confirm' type='password' className={`form-control ${touched.confirm && errors.confirm ? 'is-invalid': ''}`} />
+                <Field 
+                  name='confirm' 
+                  type='password' 
+                  autoComplete='new-password' 
+                  className={`form-control ${touched.confirm && errors.confirm ? 'is-invalid': ''}`} 
+                />
                 <ErrorMessage name='confirm'>
                     {msg => <div className='text-danger'>{msg}</div>}
                 </ErrorMessage>
             </div>
-            <div className="d-grid gap-2">
+            <div className='d-grid gap-2'>
                 <Button type='submit' variant='dark' disabled={isSubmitting} >
                     Sign Up
                 </Button>
