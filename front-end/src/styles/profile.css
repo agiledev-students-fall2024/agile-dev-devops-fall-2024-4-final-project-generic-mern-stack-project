@@ -1,5 +1,5 @@
 .bio {
-    height: 12.5rem; 
+    height: 13rem; 
 }
 
 .btn-file {
@@ -23,6 +23,11 @@
 .default-img > * {
     width: 4rem;
     height: 4rem;
+}
+
+.edit-picture {
+    display: grid;
+    justify-content: center;
 }
 
 #fileInput {

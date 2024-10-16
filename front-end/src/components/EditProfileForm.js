@@ -38,7 +38,7 @@ const EditProfileForm = () => {
             .test('fileSize', 'File size is too large', value => {
               return !value || value.size <= 1024 * 1024; // 1 MB size limit
             })
-            .test('fileType', 'Unsupported file type', value => {
+            .test('fileType', 'Only JPG and PNG formats are allowed.', value => {
               return !value || ['image/jpeg', 'image/png'].includes(value.type); // JPG and PNG only
             }),
     });
@@ -56,18 +56,18 @@ const EditProfileForm = () => {
             >
             {({errors, isSubmitting, setFieldValue, touched, values}) => (
                 <>
-                    <p onClick={handleShow}>Edit picture</p> {/* placeholder for now */}
+                    <p onClick={handleShow}>Edit picture</p>
                     <Form>
                         <div>
                             <label htmlFor='name' className='form-label'>Name</label>
-                            <Field name='name' type='text' className={`form-control ${touched.name && errors.name ? 'is-invalid': ''}`} />
+                            <Field name='name' type='text' className={`form-control custom-input ${touched.name && errors.name ? 'is-invalid': ''}`} />
                         </div>
                         <ErrorMessage name='name'>
                             {msg => <div className='text-danger'>{msg}</div>}
                         </ErrorMessage>
                         <div>
                             <label htmlFor='bio' className='form-label'>Bio</label>
-                            <Field name='bio' as='textarea' className={`form-control bio ${touched.bio && errors.bio ? 'is-invalid': ''}`} />
+                            <Field name='bio' as='textarea' className={`form-control custom-input bio ${touched.bio && errors.bio ? 'is-invalid': ''}`} />
                         </div>
                         <ErrorMessage name='bio'>
                             {msg => <div className='text-danger'>{msg}</div>}
@@ -85,27 +85,28 @@ const EditProfileForm = () => {
                         <Modal show={show} onHide={handleClose} centered>
                             <Modal.Body>
                                 <p onClick={handleClose}>Cancel</p>
-                                <input
-                                    type='file'
-                                    id='fileInput'
-                                    onChange={(event) => {
-                                        const file = event.currentTarget.files[0]
-                                        setFieldValue('file', file)
-                                        setShow(false)
-                                    }}
-                                    className={`form-control ${touched.file && errors.file ? 'is-invalid': ''}`}
-                                />
-                                <label htmlFor='fileInput' className='btn btn-light btn-file'>Choose File</label>
-                                {
-                                    values.file ?
-                                    <p className='mt-3'>
-                                        You have selected: <span className={touched.file && errors.file ? 'text-danger': 'text-success'}>{values.file.name}</span>
-                                    </p>:
-                                    <p className='mt-3'>
-                                        You haven't selected a file
-                                    </p>
-                                }
-                                
+                                <div className='edit-picture'>
+                                    <input
+                                        type='file'
+                                        id='fileInput'
+                                        onChange={(event) => {
+                                            const file = event.currentTarget.files[0]
+                                            setFieldValue('file', file)
+                                            setShow(false)
+                                        }}
+                                        className={`form-control ${touched.file && errors.file ? 'is-invalid': ''}`}
+                                    />
+                                    <label htmlFor='fileInput' className='btn btn-light btn-file'>Choose File</label>
+                                    {
+                                        values.file ?
+                                        <p className='mt-3'>
+                                            You have selected: <span className={touched.file && errors.file ? 'text-danger': 'text-success'}>{values.file.name}</span>
+                                        </p>:
+                                        <p className='mt-3'>
+                                            You haven't selected a file
+                                        </p>
+                                    }
+                                </div>
                             </Modal.Body>
                         </Modal>
                     </Form>
