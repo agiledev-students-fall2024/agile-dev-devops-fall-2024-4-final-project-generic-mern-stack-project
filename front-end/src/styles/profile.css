@@ -1,0 +1,28 @@
+.bio {
+    height: 12.5rem; 
+}
+
+.content {
+    margin: 2rem 0;
+    padding: 0 2rem;
+}
+
+.content > * {
+    margin: 1rem;
+}
+
+.content > *:not(form){
+    display: flex;
+    justify-content: center;
+}
+
+.default-img > * {
+    width: 4rem;
+    height: 4rem;
+}
+
+.profile-functions {
+    display: flex;
+    justify-content: space-around;
+    gap: 1rem;
+}
