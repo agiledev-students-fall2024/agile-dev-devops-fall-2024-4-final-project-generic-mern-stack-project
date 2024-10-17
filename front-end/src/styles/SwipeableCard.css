@@ -1,0 +1,7 @@
+.swipeable-card {
+  position: absolute;
+  width: 100%;
+  touch-action: none;
+  will-change: transform;
+  overflow: hidden;
+}
