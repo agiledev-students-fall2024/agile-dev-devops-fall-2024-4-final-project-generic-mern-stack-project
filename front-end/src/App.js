@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Home from './screens/Home'
 import CreateBlogPost from './screens/Createnewblogpost'
+import Blogpostloggedin from './screens/Blogpostloggedin'
 
 const App = () => {
   return (
@@ -8,6 +9,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/createnewblogpost" element={<CreateBlogPost />} />
+        <Route path="/blogpostloggedin" element={<Blogpostloggedin />} />
       </Routes>
     </Router>
   )
