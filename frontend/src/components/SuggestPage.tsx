@@ -10,21 +10,29 @@ const filterDescriptions: Record<FilterStringTypes, string> = {
   Brand: "brand desc",
   "Price Range": "price range desc",
   Category: "category desc",
+  Rating: "rating desc",
 };
 
 const filterToCamelCase: Record<FilterStringTypes, keyof FiltersType> = {
   Brand: "brand",
   "Price Range": "priceRange",
   Category: "category",
+  Rating: "rating",
 };
 
-const filterNames: FilterStringTypes[] = ["Brand", "Price Range", "Category"];
+const filterNames: FilterStringTypes[] = [
+  "Brand",
+  "Price Range",
+  "Category",
+  "Rating",
+];
 
-export default function FilterPage() {
+export default function SuggestPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentFilter, setCurrentFilter] =
     useState<FilterStringTypes>("Brand");
-  const { clearFilters, toggleFilter, filters } = useMyStores();
+  const { clearFilters, toggleFilter, setRatingFilter, filters } =
+    useMyStores();
 
   const navigate = useNavigate();
 
@@ -38,12 +46,20 @@ export default function FilterPage() {
     brandFilters.forEach((brand) => toggleFilter("brand", brand));
     const categoryFilters = getFilterValuesFromURL("category");
     categoryFilters.forEach((category) => toggleFilter("category", category));
+    const ratingFilterArr = getFilterValuesFromURL("rating");
+    if (ratingFilterArr.length > 0)
+      setRatingFilter("rating", +ratingFilterArr[0]);
+    const numRatingsFilterArr = getFilterValuesFromURL("numRatings");
+    if (numRatingsFilterArr.length > 0)
+      setRatingFilter("numRatings", +numRatingsFilterArr[0]);
 
     // reapply search params from the filter context
     if (
       priceRangeFilters.length === 0 &&
       brandFilters.length === 0 &&
-      categoryFilters.length === 0
+      categoryFilters.length === 0 &&
+      ratingFilterArr.length === 0 &&
+      numRatingsFilterArr.length === 0
     ) {
       const currentParams = new URLSearchParams(searchParams);
 
@@ -64,6 +80,11 @@ export default function FilterPage() {
           currentParams.append("priceRange", priceRange);
         }
       });
+
+      if (filters.rating)
+        currentParams.set("rating", filters.rating.toString());
+      if (filters.numRatings)
+        currentParams.set("numRatings", filters.numRatings.toString());
 
       setSearchParams(currentParams);
     }
@@ -95,11 +116,11 @@ export default function FilterPage() {
     return searchParams.getAll(filterType);
   };
 
-  // update search param
-  const handleSearchURL = (filter: string, searchValue: string) => {
+  // update search or rating param
+  const handleSearchOrRatingURL = (filter: string, value: string) => {
     const currentParams = new URLSearchParams(searchParams);
-    if (searchValue !== "") {
-      currentParams.set(filter, searchValue);
+    if (value !== "") {
+      currentParams.set(filter, value);
     } else {
       currentParams.delete(filter);
     }
@@ -111,6 +132,7 @@ export default function FilterPage() {
     // delete the search param
     const currentParams = new URLSearchParams(searchParams);
     currentParams.delete(filterToCamelCase[currentFilter]);
+    if (currentFilter === "Rating") currentParams.delete("numRatings"); // also delete numRatings param
     setSearchParams(currentParams);
   };
 
@@ -122,7 +144,7 @@ export default function FilterPage() {
             <li
               key={filter}
               onClick={() => setCurrentFilter(filter)}
-              className={`${filter === currentFilter ? "bg-green-600 font-extrabold text-2xl" : "hover:bg-blue-500 text-xl"} p-4 py-8 font-bold cursor-pointer`}
+              className={`${filter === currentFilter ? "bg-green-600 font-extrabold text-xl" : "hover:bg-blue-500 text-lg"} p-4 py-8 font-bold text-center cursor-pointer`}
             >
               {filter}
             </li>
@@ -144,7 +166,7 @@ export default function FilterPage() {
         <Filters
           getFilterValuesFromURL={getFilterValuesFromURL}
           toggleFilterURL={toggleFilterURL}
-          handleSearchURL={handleSearchURL}
+          handleSearchOrRatingURL={handleSearchOrRatingURL}
           currentFilter={currentFilter}
         />
         <div className="my-8">
