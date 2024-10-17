@@ -1,20 +1,39 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useMyStores } from "@/context/StoresContext";
+import { FiltersType } from "@/types";
+import { FilterStringTypes } from "@/types";
 
-type filterTypes = "Brand" | "Price Range" | "Category";
-
-const filterDescriptions: Record<filterTypes, string> = {
+const filterDescriptions: Record<FilterStringTypes, string> = {
   Brand: "brand desc",
   "Price Range": "price range desc",
   Category: "category desc",
 };
 
-const filterNames: filterTypes[] = ["Brand", "Price Range", "Category"];
+const filterToCamelCase: Record<FilterStringTypes, keyof FiltersType> = {
+  Brand: "brand",
+  "Price Range": "priceRange",
+  Category: "category",
+};
 
-export default function SuggestPage() {
-  const [currentFilter, setCurrentFilter] = useState<filterTypes>("Brand");
+const filterNames: FilterStringTypes[] = ["Brand", "Price Range", "Category"];
+
+export default function FilterPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [currentFilter, setCurrentFilter] =
+    useState<FilterStringTypes>("Brand");
+  const { clearFilters, toggleFilter, filters } = useMyStores();
+
   const navigate = useNavigate();
+
+  const handleClearFilters = () => {
+    clearFilters(currentFilter);
+    const currentParams = new URLSearchParams(searchParams);
+    // delete the filter in the URL
+    currentParams.delete(filterToCamelCase[currentFilter]);
+    setSearchParams(currentParams);
+  };
 
   return (
     <div className="flex">
@@ -36,7 +55,14 @@ export default function SuggestPage() {
         <p className="text-gray-600 mb-6">
           {filterDescriptions[currentFilter]}
         </p>
-        <div>{currentFilter}</div>
+        <Button
+          onClick={handleClearFilters}
+          className="mb-5"
+          variant={"destructive"}
+        >
+          Clear Filters
+        </Button>
+
         <div className="my-8">
           <Button variant={"secondary"} onClick={() => navigate("/")}>
             Go Back
