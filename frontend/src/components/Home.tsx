@@ -14,7 +14,7 @@ export default function Home() {
         <MyStoresButton />
       </div>
 
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-6">
         <div className="w-full h-[300px] border-2 border-black">
           <SoHoMap />
         </div>

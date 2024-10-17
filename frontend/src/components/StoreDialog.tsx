@@ -46,7 +46,9 @@ function ScrollableContent({ store }: { store: Store }) {
   return (
     <div className="flex-grow overflow-y-auto px-4">
       <StoreLinks store={store} />
-      <DialogDescription>{store.description}</DialogDescription>
+      <DialogDescription className="text-center">
+        {store.description}
+      </DialogDescription>
       <div className="flex flex-col gap-3 mt-4">
         <StorePhotos photos={store.photos} />
         <OpeningHours hours={store.openingHours} />
@@ -94,7 +96,7 @@ function StickyFooter({ store }: { store: Store }) {
 
 function StoreLinks({ store }: { store: Store }) {
   return (
-    <div className="flex flex-col gap-1 mb-4">
+    <div className="flex flex-col gap-1 mb-4 items-center">
       <a
         href={store.googleMapsURI}
         target="_blank"
