@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './CreateBlogPost.css';
+import '../styles/Createnewblogpost.css';
 
 const CreateBlogPost = () => {
   // State for form data
