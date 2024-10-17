@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import Filters from "./Filters";
 import { useMyStores } from "@/context/StoresContext";
 import { FiltersType } from "@/types";
 import { FilterStringTypes } from "@/types";
@@ -19,18 +20,55 @@ const filterToCamelCase: Record<FilterStringTypes, keyof FiltersType> = {
 
 const filterNames: FilterStringTypes[] = ["Brand", "Price Range", "Category"];
 
-export default function FilterPage() {
+export default function SuggestPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentFilter, setCurrentFilter] =
     useState<FilterStringTypes>("Brand");
-  const { clearFilters, toggleFilter, filters } = useMyStores();
+  const { clearFilters } = useMyStores();
 
   const navigate = useNavigate();
+
+  // toggle filter search param in the URL
+  const toggleFilterURL = (filterType: string, value: string) => {
+    const currentParams = new URLSearchParams(searchParams);
+    const currentValues = currentParams.getAll(filterType);
+
+    if (currentValues.includes(value)) {
+      // remove the search param if it exists
+      currentParams.delete(filterType);
+      currentValues
+        .filter((v) => v !== value)
+        .forEach((v) => {
+          // add all search params back after filtering
+          currentParams.append(filterType, v);
+        });
+    } else {
+      // add search param if it doesn't exist
+      currentParams.append(filterType, value);
+    }
+
+    setSearchParams(currentParams);
+  };
+
+  const getFilterValuesFromURL = (filterType: string): string[] => {
+    return searchParams.getAll(filterType);
+  };
+
+  // update search URL param
+  const handleSearchURL = (filter: string, searchValue: string) => {
+    const currentParams = new URLSearchParams(searchParams);
+    if (searchValue !== "") {
+      currentParams.set(filter, searchValue);
+    } else {
+      currentParams.delete(filter);
+    }
+    setSearchParams(currentParams);
+  };
 
   const handleClearFilters = () => {
     clearFilters(currentFilter);
     const currentParams = new URLSearchParams(searchParams);
-    // delete the filter in the URL
+    // delete the search param
     currentParams.delete(filterToCamelCase[currentFilter]);
     setSearchParams(currentParams);
   };
@@ -62,7 +100,12 @@ export default function FilterPage() {
         >
           Clear Filters
         </Button>
-
+        <Filters
+          getFilterValuesFromURL={getFilterValuesFromURL}
+          toggleFilterURL={toggleFilterURL}
+          handleSearchURL={handleSearchURL}
+          currentFilter={currentFilter}
+        />
         <div className="my-8">
           <Button variant={"secondary"} onClick={() => navigate("/")}>
             Go Back
