@@ -1,3 +1,4 @@
+import PriceRangeFilters from "./PriceRangeFilters";
 import { useMyStores } from "@/context/StoresContext";
 import type { FiltersType } from "@/types";
 
@@ -15,12 +16,12 @@ export default function Filters({ currentFilter, toggleFilterURL }: Props) {
     filter: keyof FiltersType,
     filterValue: string,
   ) => {
-    // toggle filter in react context and its query parameter
     toggleFilter(filter, filterValue);
     toggleFilterURL(filter, filterValue);
   };
 
-  if (currentFilter === "Price Range") return <div>price range filters</div>;
+  if (currentFilter === "Price Range")
+    return <PriceRangeFilters handleFilterClick={handleFilterClick} />;
   else if (currentFilter === "Brand") return <div>brand filters</div>;
   else if (currentFilter === "Category") return <div>category filters</div>;
 }
