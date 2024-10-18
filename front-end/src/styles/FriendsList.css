@@ -1,0 +1,80 @@
+/* FOR ARROW AND PAGE TITLE */
+.header-content {
+    display: flex;
+    align-items: center;
+}
+
+/* FOR PAGE TITLE */
+.custom-link {
+    text-decoration: none;
+    color: inherit;
+    margin-left: 5px;
+}
+
+/* FOR SEARCH, ADD FRIEND, REQUESTS SECTION */
+.friends-actions {
+    display: flex;
+    flex-direction: column;
+}
+
+/* FOR SEARCH, ADD FRIEND, REQUESTS BUTTONS */
+.action-btn {
+    margin: 3px 0px;
+    width: 100%;
+    padding: 6px 12px;
+    font-size: 12px; 
+    text-align: left;
+    color: black;
+    background-color: lightgrey;
+}
+
+/* FOR FRIENDS LIST SECTION */
+.friends-list {
+    padding-top: 5px;
+}
+
+/* FOR NAME INITIALS */
+.initials {
+    padding-left: 4px;
+    padding-top: 15px;
+}
+
+/* FOR INDIVIDUAL FRIEND */
+.friend-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 4px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border-top: 0.6px solid lightgrey;
+    border-bottom: 0.6px solid lightgrey;
+}
+
+/* FOR BLOCK AND REMOVE OF EACH FRIEND */
+.friend-actions button {
+    margin-left: 5px;
+    font-size: 10px;
+    color: black;
+    background-color: lightgrey;
+}
+
+/* FOR FRIEND COUNT AND BLOCKED SECTION */
+.footer {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 11px;
+}
+
+/* FOR BLOCKED BUTTON */
+.blocked-btn {
+    width: 100%;
+    padding: 6px 12px;
+    font-size: 12px; 
+    text-align: left;
+    color: black;
+    background-color: lightgrey;
+}

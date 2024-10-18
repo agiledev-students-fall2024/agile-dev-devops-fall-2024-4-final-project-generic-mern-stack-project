@@ -22,5 +22,65 @@
         "updatedAt": "2023-10-01T12:00:00Z",
         "isActive": true,
         "profilePicture": null
+    },
+    {
+        "id": "3",
+        "username": "jane_doe",
+        "password": "JaneDoe@1",
+        "email": "jane.doe@example.com",
+        "name": "Lebron James",
+        "bio": null,
+        "createdAt": "2023-01-01T12:00:00Z",
+        "updatedAt": "2023-10-01T12:00:00Z",
+        "isActive": true,
+        "profilePicture": null
+    },
+    {
+        "id": "4",
+        "username": "jane_doe",
+        "password": "JaneDoe@1",
+        "email": "jane.doe@example.com",
+        "name": "Steph Curry",
+        "bio": null,
+        "createdAt": "2023-01-01T12:00:00Z",
+        "updatedAt": "2023-10-01T12:00:00Z",
+        "isActive": true,
+        "profilePicture": null
+    },
+    {
+        "id": "5",
+        "username": "jane_doe",
+        "password": "JaneDoe@1",
+        "email": "jane.doe@example.com",
+        "name": "Steven King",
+        "bio": null,
+        "createdAt": "2023-01-01T12:00:00Z",
+        "updatedAt": "2023-10-01T12:00:00Z",
+        "isActive": true,
+        "profilePicture": null
+    },
+    {
+        "id": "6",
+        "username": "jane_doe",
+        "password": "JaneDoe@1",
+        "email": "jane.doe@example.com",
+        "name": "Alex Smiths",
+        "bio": null,
+        "createdAt": "2023-01-01T12:00:00Z",
+        "updatedAt": "2023-10-01T12:00:00Z",
+        "isActive": true,
+        "profilePicture": null
+    },
+    {
+        "id": "7",
+        "username": "jane_doe",
+        "password": "JaneDoe@1",
+        "email": "jane.doe@example.com",
+        "name": "Alexa Goldberg",
+        "bio": null,
+        "createdAt": "2023-01-01T12:00:00Z",
+        "updatedAt": "2023-10-01T12:00:00Z",
+        "isActive": true,
+        "profilePicture": null
     }
 ]
