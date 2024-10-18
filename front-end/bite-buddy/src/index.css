@@ -48,16 +48,17 @@ a:hover {
 }
 
 body {
-  margin: 0;
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(37, 36, 37);
+  
 }
 
 h1 {
-  font-size: 3.2em;
+  font-size: 2em;
   line-height: 1.1;
+  text-align: center;
 }
 
 button {
@@ -91,3 +92,66 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+
+.registerDiv{
+  font-family: 'Courier New', Courier, monospace;
+  width: 400px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5%;
+  opacity: 100%;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  
+}
+
+.registerDiv h2{
+  text-align: center;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.registerDiv form{
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+.registerDiv label {
+  margin-bottom: 10px;
+  display: flex; /* Align input and label horizontally */
+  align-items: center; /* Vertically center input and label */
+}
+.registerDiv label input {
+  flex: 1; /* Take up remaining space */
+  margin-left: 10px; /* Add some space between label and input */
+}
+
+.registerDiv input[type="text"],
+.registerDiv input[type="password"],
+.registerDiv input[type="email"] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.registerDiv button{
+  font-family: 'Courier New', Courier, monospace;
+  padding: 10px 20px;
+  color: #fff;
+  border: solid white 1px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.registerDiv button:hover{
+  background-color: white;
+  color: black;
+}
+.registerDiv button:last-child{
+  margin-top: 20px;
+}
+.registerDiv p{
+  color: red;
+  text-align: center;
+}
+
