@@ -17,7 +17,7 @@ const LoginForm = () => {
 
       password: Yup.string()
         .min(6, 'Password must be at least 6 characters long')
-        .required('Password is required'),
+        .required('Required'),
   });
 
   const onSubmit = (values) => {
@@ -34,14 +34,24 @@ const LoginForm = () => {
         <Form>
             <div>
                 <label htmlFor='email' className='form-label'>Email</label>
-                <Field name='email' type='text' className={`form-control ${touched.email && errors.email ? 'is-invalid': ''}`} />
+                <Field 
+                  name='email' 
+                  type='email'
+                  autoComplete="email" 
+                  className={`form-control ${touched.email && errors.email ? 'is-invalid': ''}`} 
+                />
                 <ErrorMessage name='email'>
                     {msg => <div className='text-danger'>{msg}</div>}
                 </ErrorMessage>
             </div>
             <div>
                 <label htmlFor='password' className='form-label'>Password</label>
-                <Field name='password' type='password' className={`form-control ${touched.password && errors.password ? 'is-invalid': ''}`} />
+                <Field 
+                  name='password' 
+                  type='password' 
+                  autoComplete='current-password'
+                  className={`form-control ${touched.password && errors.password ? 'is-invalid': ''}`} 
+                />
                 <ErrorMessage name='password'>
                     {msg => <div className='text-danger'>{msg}</div>}
                 </ErrorMessage>
