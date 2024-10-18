@@ -25,6 +25,11 @@
     height: 4rem;
 }
 
+.default-img > img {
+    border-radius: 25%;
+    background-color: gainsboro;
+}
+
 .edit-picture {
     display: grid;
     justify-content: center;
