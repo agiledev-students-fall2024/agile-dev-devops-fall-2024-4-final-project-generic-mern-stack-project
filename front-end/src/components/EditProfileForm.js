@@ -12,12 +12,19 @@ const EditProfileForm = () => {
     const [show, setShow] = React.useState(false)
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
+    const layoutChoices = [
+                            { val: 'list', label: 'List'},
+                            { val: 'list-title', label: 'List (title only)'},
+                            { val: 'grid', label: 'Grid (image only)'},
+                            { val: 'masonry', label: 'Masonry (image only)'},
+                            { val: 'masonry-title', label: 'Masonry'}]
 
     const initialValues = {
         name: user.name,
         bio: user.bio ? user.bio : '',
+        layout: user.layout,
         file: null
-    };
+    }
 
     const validationSchema = Yup.object({
         name: Yup.string()
@@ -32,16 +39,16 @@ const EditProfileForm = () => {
         file: Yup.mixed()
             .nullable()
             .test('fileSize', 'File size is too large', value => {
-              return !value || value.size <= 1024 * 1024; // 1 MB size limit
+              return !value || value.size <= 1024 * 1024 // 1 MB size limit
             })
             .test('fileType', 'Only JPG and PNG formats are allowed.', value => {
-              return !value || ['image/jpeg', 'image/png'].includes(value.type); // JPG and PNG only
+              return !value || ['image/jpeg', 'image/png'].includes(value.type) // JPG and PNG only
             }),
-    });
+    })
 
     const onSubmit = (values) => {
-        console.log(values);
-    };
+        console.log(values)
+    }
 
     return (
         <>
@@ -61,6 +68,24 @@ const EditProfileForm = () => {
                         <ErrorMessage name='name'>
                             {msg => <div className='text-danger'>{msg}</div>}
                         </ErrorMessage>
+                        <div>
+                            <label htmlFor='layout' className='form-label'>Layout</label>
+                            <Field
+                                as='select'
+                                name='layout'
+                                className='form-select'
+                                onChange={(event) => {
+                                    setFieldValue('layout', event.currentTarget.value)
+                                }}
+                            >
+                                {
+                                    layoutChoices.map( choice => (
+                                        <option key={`layout-choice-${choice.val}`} value={choice.val} label={choice.label} />
+                                    ))
+                                }
+                            </Field>
+                            <ErrorMessage name='layout' component='div' style={{ color: 'red' }} />
+                        </div>
                         <div>
                             <label htmlFor='bio' className='form-label'>Bio</label>
                             <Field name='bio' as='textarea' className={`form-control custom-input bio ${touched.bio && errors.bio ? 'is-invalid': ''}`} />

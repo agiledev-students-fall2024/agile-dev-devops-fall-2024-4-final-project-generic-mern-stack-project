@@ -6,6 +6,10 @@
     border: solid 1px #D9D9D9;
 }
 
+.container:not(#profile-blog-posts){
+    margin-bottom: 5rem;
+}
+
 .content {
     margin: 2rem 0;
     padding: 0 2rem;
@@ -15,7 +19,7 @@
     margin: 1rem;
 }
 
-.content > *:not(form){
+.content > *:not(form):not(.layout--grid):not(.layout--masonry) {
     display: flex;
     justify-content: center;
 }
@@ -43,4 +47,94 @@
     display: flex;
     justify-content: space-around;
     gap: 1rem;
+}
+
+.layout, .layout--list-title {
+    display: grid;
+    grid-template-columns: 1fr;
+    flex-wrap: wrap;
+    row-gap: 2rem;
+    margin-top: 3rem;
+}
+
+.layout--grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: .5rem;
+    row-gap: 1rem;
+    margin-top: 2rem;
+    place-items: center;
+}
+
+.layout--grid img {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+}
+
+.layout--grid img:not(.no-img), .profile-posts:not(.layout--masonry) img:not(.no-img) {
+    width: 100%;
+    height: auto;
+    border-radius: .5rem;
+}
+
+.layout--masonry {
+    column-count: 2;
+    column-gap: .625rem;
+}
+
+.layout--masonry div {
+    width: 100%;
+    height: auto;
+    margin-bottom: .625rem;
+    break-inside: avoid;
+    border-radius: .5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+}
+
+.layout--masonry div > * {
+    margin-bottom: 1rem;
+}
+
+.layout--masonry img {
+    width: 100%;
+    height: var(--masonry-img-height, 7rem);
+    object-fit: cover; 
+    border-radius: .5rem;
+    display: inline-block; 
+    vertical-align: top; 
+}
+
+.layout--masonry > img:nth-child(1) {
+    margin-top: 3rem !important;
+}
+
+.profile-posts:not(.layout--masonry) .no-img {
+    width: 60%; 
+    height: auto; 
+    border-radius: .5rem;
+    display: block;
+    margin-inline: auto;
+}
+
+.profile-posts div {
+    border: .5px solid gray;
+    padding: 1rem;
+    border-radius: .8rem;
+}
+
+.profile-posts h2 {
+    font-size: 1rem;
+    margin-top: .5rem;
+    font-weight: 400;
+    color: black;
+}
+
+#profile-blog-posts {
+    margin-bottom: 0;
+}
+
+#profile-blog-posts + div > div {
+    margin-top: 0;
+}
+#profile-blog-posts + div > div > * {
+    margin-top: 1rem;
 }
