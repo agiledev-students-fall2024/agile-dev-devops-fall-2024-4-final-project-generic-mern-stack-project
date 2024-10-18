@@ -1,19 +1,25 @@
-# Project Repository
+# Bite Buddy
+Bite Buddy is a cooking-focused app that allows users to track their culinary journeys, share their progress, and connect with a community of fellow food enthusiasts. Whether you're a beginner in the kitchen or a seasoned chef, Bite Buddy helps you create a visual and interactive timeline of your cooking journey.
 
-This repository will be used for team projects.
+__Product Vision Statement__: To create a vibrant community where cooks of all levels can track their culinary progress, share their experiences, and grow their skills, turning cooking into an interactive, enjoyable, and social journey.
 
-Several sets of instructions are included in this repository. They should each be treated as separate assignments with their own due dates and sets of requirements.
+## Key Features:
+- Track Your Cooking Progress: Log and track every dish you cook, from the initial prep stages to the finished plate.
+- Share with the Community: Post updates with photos, videos, and cooking notes to inspire others and exchange tips.
+- Cooking Achievements: Unlock badges and milestones as you improve your skills and explore new cuisines.
+- Recipe Journal: Keep a personal collection of recipes you’ve tried and loved, with notes and modifications for future reference.
+- Challenges: Join cooking challenges to stay motivated and experiment with new dishes.
 
-1. See the [App Map & Wireframes](instructions-0a-app-map-wireframes.md) and [Prototyping](./instructions-0b-prototyping.md) instructions for the requirements of the initial user experience design of the app.
+## Core Team Members
+* [Edison Chen](https://github.com/ebc5802)
+* [Harrison Du](https://github.com/HarrisonDu)
+* [Daniel Sun](https://github.com/dsun03)
+* [Phillip Wong](https://github.com/ohiwop)
+* [Stella Zhang](https://github.com/qq3173732005)
 
-1. Delete the contents of this file and replace with the contents of a proper README.md, as described in the [project setup instructions](./instructions-0c-project-setup.md)
+## Bite Buddy's History
+Bite Buddy started with a different vision in mind. Initially, we set out to create a social app where people could meet through cooking, forming connections based on their shared culinary interests. However, as we worked through the concept, we realized we faced a major challenge: designing the right criteria for matching users based on their cooking preferences and habits. Without a clear way to build those connections, the project stalled.
 
-1. See the [Sprint Planning instructions](instructions-0d-sprint-planning.md) for the requirements of Sprint Planning for each Sprint.
+Still passionate about the food theme, we began to explore other ideas. We noticed a gap in the market—while there are plenty of recipe apps, there aren’t many that help users actively learn and track their cooking progress in real life. We were inspired by how apps like Strava track fitness journeys and foster a sense of community, and realized that cooking needed something similar.
 
-1. See the [Front-End Development instructions](./instructions-1-front-end.md) for the requirements of the initial Front-End Development.
-
-1. See the [Back-End Development instructions](./instructions-2-back-end.md) for the requirements of the initial Back-End Development.
-
-1. See the [Database Integration instructions](./instructions-3-database.md) for the requirements of integrating a database into the back-end.
-
-1. See the [Deployment instructions](./instructions-4-deployment.md) for the requirements of deploying an app.
+That’s when Bite Buddy was born—a platform where users can log their cooking activities, track their progress, and share their culinary experiences with a community, all while improving their skills. It’s not just about the recipes; it’s about the journey of becoming a better cook, one meal at a time. If you'd like to contribute to the project please take a look at [Contributing](/CONTRIBUTING.md) for more information.
