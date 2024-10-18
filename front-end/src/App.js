@@ -21,11 +21,6 @@ const App = () => {
     <Router basename={process.env.PUBLIC_URL}>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/profile/:username" element={<Profile />} />
-        <Route path="/profile/:username/edit" element={<EditProfile />} />
-        <Route path="/friendslist" element={<FriendsList />} />
         <Route path="/createnewblogpost" element={<CreateBlogPost />} />
         <Route path="/blogpostloggedin" element={<Blogpostloggedin />} />
         <Route path="/blogpostnotloggedin" element={<Blogpostnotloggedin />} />
@@ -45,6 +40,10 @@ const App = () => {
           element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<EditProfile />} navigateTo='/login'/>}
         />
         <Route path='*' element={<Error404 />} />
+        <Route
+          path='/friendslist'
+          element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<FriendsList />} navigateTo='/login'/>}
+        />
       </Routes>
     </Router>
   )
