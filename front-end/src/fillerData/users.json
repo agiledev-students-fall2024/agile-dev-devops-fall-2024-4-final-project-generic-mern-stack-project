@@ -20,8 +20,8 @@
         "bio": "Living under a rock is pretty chill. I'm a professional at doing nothing and enjoy spending time with my best friend, SpongeBob. Whether it's eating Krabby Patties or stargazing, life’s a never-ending nap!",
         "createdAt": "2023-01-01T12:00:00Z",
         "updatedAt": "2023-10-01T12:00:00Z",
-        "profilePicture": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOJMAPpLoG3purUkMrqTk6JGL7boqMhDkcjw&s",
-        "layout": "list-title"
+        "isActive": true,
+        "profilePicture": null
     },
     {
         "id": 3,
