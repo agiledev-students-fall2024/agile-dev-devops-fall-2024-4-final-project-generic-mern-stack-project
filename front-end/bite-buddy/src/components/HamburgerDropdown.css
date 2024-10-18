@@ -1,0 +1,60 @@
+.hamburger-dropdown {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1001;
+}
+
+.hamburger {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 2000;
+    position: relative;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.dropdown-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 998;
+}
+
+.dropdown-menu ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+.dropdown-menu li {
+    padding: 20px;
+}
+
+.dropdown-menu li:hover {
+    background-color: #f0f0f0;
+}
+
+.dropdown-menu a {
+    text-decoration: none;
+    color: black;
+    font-size: 24px;
+}
