@@ -34,6 +34,9 @@ const Explore = () => {
   // blockedUsers calls the findBlocked function
   const blockedUsers = findBlocked()
 
+  // do not include the loggedin user's own posts
+  blockedUsers.push(user.id)
+
   // pulls data of users not blocked by the user
   const posts = postData.filter(post => !blockedUsers.includes(post.author_id)).sort((a, b) => new Date(b.date) - new Date(a.date))
   
