@@ -5,6 +5,7 @@ import postData from '../fillerData/posts.json'
 import friendsData from '../fillerData/friendships.json'
 import { Link } from 'react-router-dom'
 import { Container } from 'react-bootstrap'
+import { Card } from 'react-bootstrap';
 
 const Home = () => {
   
@@ -39,10 +40,26 @@ const Home = () => {
       </header>
       <Container className='content' >
         <h1>Network</h1>
-        
+        {posts.map( post => {
+            const dateObject = new Date(post.date)
+            return (
+              // Bootstrap react card 
+              <div>
+              <Card style={{ width: '18rem' }}>
+                <Card.Img variant="top" src={post.imageUrl} />
+                <Card.Body>
+                  <Card.Title>{post.title}</Card.Title>
+                  <Card.Text>
+                  {dateObject.toLocaleDateString('en-US')}
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+              </div>
+        )})}
       </Container>
     </div>
   )
 }
 
 export default Home
+

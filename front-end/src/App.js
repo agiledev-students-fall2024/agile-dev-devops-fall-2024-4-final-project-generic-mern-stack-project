@@ -14,6 +14,8 @@ import Profile from './screens/Profile';
 import EditProfile from './screens/EditProfile';
 import FriendsList from './screens/FriendsList';
 import Error404 from './screens/Error404';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const isAuthenticated = (loggedInData[0].id !== null)
 
