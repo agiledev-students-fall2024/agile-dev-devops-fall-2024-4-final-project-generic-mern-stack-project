@@ -8,10 +8,13 @@ import { Container } from 'react-bootstrap'
 import { Card } from 'react-bootstrap';
 
 const Home = () => {
-  
+  // get user  
   const user = userData.find(user => user.id === loggedInData[0].id)
 
+  // function to find friends of the user
   const findFriends = () =>{
+    
+    //friends of user are defined based on numbers, which get stored in friends
     const friends = []
     
     // finding friendship relationships
@@ -23,15 +26,17 @@ const Home = () => {
         friends.push(friendships.user_id_1)
       }
     }
-
+    
+    // function returns the friends array
     return friends
   }
 
+  // friends calls the findFriends function
   const friends = findFriends()
-  
+
   // pulls data of friends
   const posts = postData.filter(post => friends.includes(post.author_id)).sort((a, b) => new Date(b.date) - new Date(a.date))
-  
+
   return (
     <div>
       <header>
