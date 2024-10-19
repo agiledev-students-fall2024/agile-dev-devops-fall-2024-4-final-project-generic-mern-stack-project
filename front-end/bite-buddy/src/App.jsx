@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Footer from './components/Footer.jsx'
+import Hamburger from './components/Hamburger.jsx';
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Recipes from './pages/Recipes';
@@ -15,6 +16,8 @@ function App() {
         
         <>
         {location.pathname !== "/signup" && location.pathname !== "/login" && <Footer />}
+        {location.pathname !== "/signup" && location.pathname !== "/login" && <Hamburger />}
+        
 
         <Routes>
           <Route path="*" element={<Navigate to="/login" />} />
