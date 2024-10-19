@@ -57,7 +57,8 @@ const Explore = () => {
                 <Card.Body>
                   <Card.Title>{post.title}</Card.Title>
                   <Card.Text>
-                  {dateObject.toLocaleDateString('en-US')}
+                    {post.content.split(' ').slice(0, 10).join(' ') + (post.content.split(' ').length > 10 ? '...' : '')} <br />
+                    {dateObject.toLocaleDateString('en-US')}
                   </Card.Text>
                 </Card.Body>
               </Card>
