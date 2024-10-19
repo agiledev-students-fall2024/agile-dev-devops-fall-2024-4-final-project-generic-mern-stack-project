@@ -1,7 +1,22 @@
+import React from 'react';
+import './Homepage.css';
+import { Link } from 'react-router-dom';
 const Homepage = () => {
   return (
-    <div>
-      <h1>Welcome to the homepage!</h1>
+    <div className="container">
+      <h1>Task Destroyer</h1>
+
+      <div className="urgent-tasks">
+        <div className="task">Urgent Task1: due by XX/XX</div>
+        <div className="task">Urgent Task2: due by XX/XX</div>
+        <div className="task">Urgent Task3: due by XX/XX</div>
+      </div>
+
+      <div className="menu">
+        <Link to="/Tasks" className="menu-btn">Tasks</Link> 
+        <button className="menu-btn">Calendars</button>
+        <button className="menu-btn">Goal Setting</button>
+      </div>
     </div>
   );
 }
