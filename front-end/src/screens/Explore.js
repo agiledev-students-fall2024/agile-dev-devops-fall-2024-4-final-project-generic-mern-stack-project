@@ -5,7 +5,8 @@ import postData from '../fillerData/posts.json'
 import blockedData from '../fillerData/blocked.json'
 import { Link } from 'react-router-dom'
 import { Container } from 'react-bootstrap'
-import { Card } from 'react-bootstrap';
+import { Card } from 'react-bootstrap'
+import '../styles/Home.css'
 
 const Explore = () => {
   // get user id 
@@ -52,12 +53,14 @@ const Explore = () => {
             return (
               // Bootstrap react card 
               <div>
-              <Card style={{ width: '18rem' }}>
+              <Card className="card-display">
                 <Card.Img variant="top" src={post.imageUrl} />
                 <Card.Body>
                   <Card.Title>{post.title}</Card.Title>
                   <Card.Text>
+                    {/* Display 10 words on blog home page */}
                     {post.content.split(' ').slice(0, 10).join(' ') + (post.content.split(' ').length > 10 ? '...' : '')} <br />
+                    {/* Display dates of blog posts */}
                     {dateObject.toLocaleDateString('en-US')}
                   </Card.Text>
                 </Card.Body>
