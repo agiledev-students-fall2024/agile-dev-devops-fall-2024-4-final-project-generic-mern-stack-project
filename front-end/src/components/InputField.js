@@ -9,5 +9,6 @@ function InputField({ imgSrc = "", inputfieldName, inputType = "text" }) {
     </div>
   );
 }
+// remove "Component" directory
 
 export default InputField;
