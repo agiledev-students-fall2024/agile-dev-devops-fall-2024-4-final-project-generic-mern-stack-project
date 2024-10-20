@@ -7,6 +7,7 @@ import HomePage from './pages/HomePage';
 import ChatComponent from './components/Chat';
 import JoinCreateMeetingPage from './pages/JoinCreateMeetingPage';
 import Whiteboard from './components/Whiteboard';
+import MeetingPage from './pages/MeetingPage';
 
 const App = () => {
   return (
