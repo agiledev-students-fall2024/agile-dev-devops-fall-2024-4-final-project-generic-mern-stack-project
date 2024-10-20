@@ -12,6 +12,7 @@ import ProfilePage from "./components/Profile";
 import Login from "./Login";
 import { fetchRestaurants } from "./api/Restaurant";
 import { AuthContext } from "../src/contexts/AuthContext";
+import { AccountInfoProvider } from "./contexts/AccountInfoContext";
 import "./App.css";
 
 function App() {
@@ -28,44 +29,46 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <Navbar />
-      <div className="app-content">
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route
-            path="/"
-            element={
-              isAuthenticated ? (
-                <Navigate to="/feed" replace />
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            }
-          />
-          <Route
-            path="/feed"
-            element={
-              isAuthenticated ? (
-                <SwipableFeed restaurants={restaurants} />
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              isAuthenticated ? (
-                <ProfilePage />
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            }
-          />
-        </Routes>
-      </div>
-    </Router>
+    <AccountInfoProvider>
+      <Router>
+        <Navbar />
+        <div className="app-content">
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/"
+              element={
+                isAuthenticated ? (
+                  <Navigate to="/feed" replace />
+                ) : (
+                  <Navigate to="/login" replace />
+                )
+              }
+            />
+            <Route
+              path="/feed"
+              element={
+                isAuthenticated ? (
+                  <SwipableFeed restaurants={restaurants} />
+                ) : (
+                  <Navigate to="/login" replace />
+                )
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                isAuthenticated ? (
+                  <ProfilePage />
+                ) : (
+                  <Navigate to="/login" replace />
+                )
+              }
+            />
+          </Routes>
+        </div>
+      </Router>
+    </AccountInfoProvider>
   );
 }
 

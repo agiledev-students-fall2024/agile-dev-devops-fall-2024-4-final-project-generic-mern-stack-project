@@ -13,6 +13,7 @@ export class Restaurant {
 
 const fakeRestaurants = [
   {
+    id: 1,
     imgs: [
       "https://res.cloudinary.com/the-infatuation/image/upload/c_fill,w_1200,ar_4:3,g_center,f_auto/images/Tatiana_Everything_DavidALee_NYC_005_n1hhaf",
       "https://static01.nyt.com/images/2023/03/15/multimedia/15rest-tatiana-06-lkjc/15rest-tatiana-06-lkjc-articleLarge.jpg?quality=75&auto=webp&disable=upscale",
@@ -25,6 +26,7 @@ const fakeRestaurants = [
     pills: ["Upper West Side", "American", "Pan-American"],
   },
   {
+    id: 2,
     imgs: [
       "https://media.timeout.com/images/105782761/1536/864/image.webp",
       "https://res.cloudinary.com/the-infatuation/image/upload/c_fill,w_1200,ar_4:3,g_center,f_auto/cms/reviews/dhamaka/banners/1637348172.0021756",
@@ -37,6 +39,7 @@ const fakeRestaurants = [
     pills: ["Lower East Side", "Indian"],
   },
   {
+    id: 3,
     imgs: [
       "https://media.timeout.com/images/105815302/750/422/image.jpg",
       "https://images.ctfassets.net/1aemqu6a6t65/7raC7hacPOfbUFCl8gj29V/405e23a8b91f184ce4ac9635e503144f/gagetollner-manhattan-photo-courtesy-.jpg",
@@ -48,6 +51,7 @@ const fakeRestaurants = [
     pills: ["Downtown Brooklyn", "American"],
   },
   {
+    id: 4,
     imgs: [
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqQ98MuY-vFz8NS0Gh5xHwdu31AjYf48kEkg&s",
       "https://images.squarespace-cdn.com/content/v1/607d95468ee6257ceab9d30a/393d2748-2163-464f-96fb-38db1bc2dcdb/Rezdora+Interior.jpg",
@@ -59,6 +63,7 @@ const fakeRestaurants = [
     pills: ["Flatiron", "Italian"],
   },
   {
+    id: 5,
     imgs: [
       "https://media.timeout.com/images/105551218/1024/576/image.webp",
       "https://axwwgrkdco.cloudimg.io/v7/__gmpics3__/77e772bbe43e4b99ae60ed9d53c3f898.jpeg?width=1000",
@@ -70,6 +75,7 @@ const fakeRestaurants = [
     pills: ["Hell's Kitchen", "Korean"],
   },
   {
+    id: 6,
     imgs: [
       "https://media.timeout.com/images/106157946/1024/576/image.webp",
       "https://images.squarespace-cdn.com/content/v1/615bedc264a4c3392b97d4d8/53dcef30-3802-47cb-832f-863cb67017ac/Semma+Table.jpeg",
@@ -81,6 +87,7 @@ const fakeRestaurants = [
     pills: ["West Village", "Indian"],
   },
   {
+    id: 7,
     imgs: [
       "https://i.redd.it/h8k78ru2ltp81.jpg",
       "https://media.timeout.com/images/101435865/1024/576/image.webp",
@@ -92,6 +99,7 @@ const fakeRestaurants = [
     pills: ["West Village", "Japanese"],
   },
   {
+    id: 8,
     imgs: [
       "https://media.timeout.com/images/105538027/1024/576/image.webp",
       "https://dineseat.com/cdn/shop/files/Bretzel_20Carota_20CF032572.jpg?v=1707243463",
@@ -103,6 +111,7 @@ const fakeRestaurants = [
     pills: ["West Village", "Italian"],
   },
   {
+    id: 9,
     imgs: [
       "https://media.timeout.com/images/105905305/1024/576/image.webp",
       "https://pyxis.nymag.com/v1/imgs/a57/867/d34af20c204566594679cb076414e42d91-crown-shy-scott-heins-12.rhorizontal.w1100.jpg",
