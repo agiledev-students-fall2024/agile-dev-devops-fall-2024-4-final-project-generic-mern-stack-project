@@ -3,8 +3,10 @@ import "./LogoPageTitle.css";
 function LogoPageTitle({ logoSrc, title }) {
   return (
     <>
-      <img src={logoSrc} alt="logo" />
-      <h2>{title}</h2>
+      <div className="page-logo">
+        <img src={logoSrc} alt="logo" />
+      </div>
+      <h2 className="title">{title}</h2>
     </>
   );
 }

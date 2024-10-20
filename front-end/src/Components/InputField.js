@@ -5,7 +5,7 @@ function InputField({ imgSrc = "", inputfieldName, inputType = "text" }) {
     <div className="input">
       <img src={imgSrc} alt="" />
       <div>{inputfieldName}</div>
-      <input type={inputType} />
+      <input className="input-box" type={inputType} />
     </div>
   );
 }

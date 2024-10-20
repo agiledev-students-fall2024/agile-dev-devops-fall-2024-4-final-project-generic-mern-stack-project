@@ -1,0 +1,11 @@
+.input {
+  margin-left: 30%;
+  margin-right: 30%;
+  width: 70px;
+  height: 70px;
+}
+
+.input-box {
+  border: solid 2px black;
+  padding: 8px;
+}
