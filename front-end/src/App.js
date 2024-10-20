@@ -1,18 +1,21 @@
 // src/App.js
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
-import NavBar from "./components/Navbar";
+import Navbar from "./components/Navbar";
 import SwipableFeed from "./components/SwipableFeed";
 import ProfilePage from "./components/Profile";
+import Login from "./Login";
 import { fetchRestaurants } from "./api/Restaurant";
+import { AuthContext } from "../src/contexts/AuthContext";
 import "./App.css";
 
 function App() {
+  const { isAuthenticated } = useContext(AuthContext);
   const [restaurants, setRestaurants] = useState([]);
 
   useEffect(() => {
@@ -26,15 +29,40 @@ function App() {
 
   return (
     <Router>
-      <NavBar />
+      <Navbar />
       <div className="app-content">
         <Routes>
-          <Route path="/" element={<Navigate to="/feed" replace />} />
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/"
+            element={
+              isAuthenticated ? (
+                <Navigate to="/feed" replace />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
           <Route
             path="/feed"
-            element={<SwipableFeed restaurants={restaurants} />}
+            element={
+              isAuthenticated ? (
+                <SwipableFeed restaurants={restaurants} />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
           />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route
+            path="/profile"
+            element={
+              isAuthenticated ? (
+                <ProfilePage />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
         </Routes>
       </div>
     </Router>
