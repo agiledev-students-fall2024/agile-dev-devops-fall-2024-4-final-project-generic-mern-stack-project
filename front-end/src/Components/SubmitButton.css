@@ -1,0 +1,11 @@
+.submit-btn-div {
+  display: flex;
+  flex-direction: row;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+}
+.submit-btn {
+  background-color: white;
+  border: solid 2px black;
+}
