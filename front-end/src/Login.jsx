@@ -1,19 +1,21 @@
-// App.js
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useContext } from 'react';
+import { AuthContext } from '../src/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
-const App = () => {
+const Login = () => {
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
   const [showOtpInput, setShowOtpInput] = useState(false);
   const [message, setMessage] = useState('');
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   // Handle Email Submission
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
     try {
       // Simulate sending OTP
-      await axios.post('/api/send-otp', { email });
+      await new Promise((resolve) => setTimeout(resolve, 500));
       setShowOtpInput(true);
       setMessage('OTP has been sent to your email.');
     } catch (error) {
@@ -26,8 +28,12 @@ const App = () => {
     e.preventDefault();
     try {
       // Simulate OTP validation
-      await axios.post('/api/verify-otp', { email, otp });
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      // Accept any OTP as valid and log in the user
+      login({ email });
       setMessage('Login successful!');
+      // Redirect to feed page
+      navigate('/feed');
     } catch (error) {
       setMessage('Invalid OTP.');
     }
@@ -36,7 +42,7 @@ const App = () => {
   return (
     <div style={{ textAlign: 'center', paddingTop: '50px' }}>
       <h2>Login with OTP</h2>
-      
+
       {!showOtpInput ? (
         <form onSubmit={handleEmailSubmit}>
           <div>
@@ -70,4 +76,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Login;

@@ -1,5 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import '../styles/Profile.css';
+import { AccountInfoContext } from '../contexts/AccountInfoContext';
+import RestaurantListItem from './RestaurantListItem';
+import { Typography } from '@mui/material';
+
 
 const ProfilePage = () => {
   // eslint-disable-next-line no-unused-vars
@@ -13,7 +17,7 @@ const ProfilePage = () => {
   const [filterNeighborhood, setFilterNeighborhood] = useState("All");
   const [filterPrice, setFilterPrice] = useState("All");
   const [filterStatus, setFilterStatus] = useState("All");
-
+  const { accountInfo } = useContext(AccountInfoContext);
   useEffect(() => {
     const fetchRestaurants = async () => {
       const data = {}; // Placeholder for the backend data of the restaurants
@@ -133,6 +137,16 @@ const ProfilePage = () => {
           <p>No restaurants saved.</p>
         )}
       </div> {/* Closing the body div */}
+      <>
+      {accountInfo.likedRestaurants.length > 0 ? (
+          accountInfo.likedRestaurants.map((restaurant) => (
+            <RestaurantListItem key={restaurant.id} restaurant={restaurant} />
+          ))
+        ) : (
+          <Typography variant="body2">
+            You haven't liked any restaurants yet.
+          </Typography>)}
+      </>
     </div> /* Closing the profile-page div */
   );
 };

@@ -38,6 +38,8 @@ const RestaurantCard = ({ restaurant }) => {
             src={restaurant.imgs[currentImageIndex]}
             alt={`Image ${currentImageIndex + 1}`}
             className="restaurant-image"
+            draggable="false"
+            onDragStart={(e) => e.preventDefault()}
           />
         </div>
 

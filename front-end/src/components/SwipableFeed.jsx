@@ -1,20 +1,42 @@
-import React, { useState } from 'react';
-import SwipeableCard from './SwipeableCard';
-import RestaurantCard from './RestaurantCard';
-import '../styles/SwipeableFeed.css';
+import React, { useState, useContext, useEffect } from "react";
+import SwipeableCard from "./SwipeableCard";
+import RestaurantCard from "./RestaurantCard";
+import { AccountInfoContext } from "../contexts/AccountInfoContext";
+import "../styles/SwipeableFeed.css";
 
-const SwipableFeed = ({ restaurants }) => {
+const SwipableFeed = () => {
+  const { filteredRestaurants:restaurants } = useContext(AccountInfoContext);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { addLikedRestaurant } = useContext(AccountInfoContext);
 
-  const handleSwipeLeft = () => {
-    // TODO -- Handle dislike action
-    setCurrentIndex((prev) => prev + 1);
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [restaurants]);
+
+  const handleSwipeLeft = async () => {
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      console.log("Disliked restaurant:", restaurants[currentIndex]);
+    } catch (error) {
+      console.error("Error in mock API call:", error);
+    } finally {
+      setCurrentIndex((prev) => prev + 1);
+    }
   };
 
-  const handleSwipeRight = () => {
-    // TODO -- Handle like action
-    setCurrentIndex((prev) => prev + 1);
+  const handleSwipeRight = async () => {
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      console.log("Liked restaurant:", restaurants[currentIndex]);
+      addLikedRestaurant(restaurants[currentIndex]);
+    } catch (error) {
+      console.error("Error in mock API call:", error);
+    } finally {
+      setCurrentIndex((prev) => prev + 1);
+    }
   };
+
+
   if (currentIndex >= restaurants.length) {
     return <div>No more restaurants</div>;
   }
