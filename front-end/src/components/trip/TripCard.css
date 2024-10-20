@@ -1,0 +1,38 @@
+.trip-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Makes it responsive within the grid */
+    max-width: 300px; /* Maximum width for each card */
+    margin: 0 auto; /* Center align */
+  }
+  
+  .trip-card__image {
+    background: #eee;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  
+  .trip-card__status {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    background: #FF385C;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+  }
+  
+  .trip-card__title {
+    padding: 0.5rem;
+    font-size: 1rem;
+    color: #333;
+    border-top: 1px solid #ddd;
+  }
+  

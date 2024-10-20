@@ -1,0 +1,39 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .header__logo-link {
+    font-size: 1.8rem;
+    color: #FF385C; 
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .header__right {
+    display: flex;
+    align-items: center;
+    position: relative; 
+  }
+  
+  .header__profile {
+    cursor: pointer;
+    position: relative; 
+  }
+  
+  .header__profile-icon {
+    font-size: 2rem; 
+    color: #333;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+  }
+  
+  .header__profile-icon:hover {
+    background-color: #f0f0f0; 
+  }
+  
