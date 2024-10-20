@@ -1,12 +1,64 @@
 .profile-page {
-    padding: 20px;
-  }
-  
-  .user-info {
+    justify-content: left;
+    margin: 15px;
+}
+
+.profile-elements {
+    display: flex;
+}
+
+.profile-info {
+    display:block;
+}
+
+.filters {
+    display:flex;
+    justify-content: center;
     margin-bottom: 20px;
-  }
-  
-  .liked-restaurants-section {
-    margin-top: 20px;
-  }
-  
+}
+
+.restaurant-card {
+    display:flex;
+    margin:10px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    overflow:hidden;
+}
+
+.restaurant-photo {
+    height: 100%;
+    object-fit: cover;
+}
+
+.restaurant-info {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    padding:10px;
+    flex: 1;
+}
+
+.restaurant-name {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.restaurant-tags {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 5px;
+}
+
+.tag {
+    background-color: #e0e0e0e0;
+    border-radius: 4px;
+    padding: 5px;
+    margin-right: 5px;
+    font-size: 0.9rem;
+}
+
+button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
