@@ -1,0 +1,31 @@
+.Community-button{
+    margin-left: 65%;
+}
+
+.Join-button{
+    width: 70px;
+    height: 25px;
+}
+
+.Group-logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 50px;
+}
+
+.logo{
+    width: 150px;
+    height: 150px;
+}
+
+.name{
+    text-align: center;
+    margin-left: 30%;
+    margin-right: 30%;
+}
+
+.description{
+    margin-left: 30%;
+    margin-right: 30%;
+}
