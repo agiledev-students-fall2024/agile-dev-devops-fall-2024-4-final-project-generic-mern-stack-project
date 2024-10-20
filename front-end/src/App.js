@@ -10,23 +10,12 @@ import Navbar from "./components/Navbar";
 import SwipableFeed from "./components/SwipableFeed";
 import ProfilePage from "./components/Profile";
 import Login from "./Login";
-import { fetchRestaurants } from "./api/Restaurant";
 import { AuthContext } from "../src/contexts/AuthContext";
 import { AccountInfoProvider } from "./contexts/AccountInfoContext";
 import "./App.css";
 
 function App() {
   const { isAuthenticated } = useContext(AuthContext);
-  const [restaurants, setRestaurants] = useState([]);
-
-  useEffect(() => {
-    const getRestaurants = async () => {
-      const data = await fetchRestaurants();
-      setRestaurants(data);
-    };
-
-    getRestaurants();
-  }, []);
 
   return (
     <AccountInfoProvider>
@@ -49,7 +38,7 @@ function App() {
               path="/feed"
               element={
                 isAuthenticated ? (
-                  <SwipableFeed restaurants={restaurants} />
+                  <SwipableFeed />
                 ) : (
                   <Navigate to="/login" replace />
                 )
