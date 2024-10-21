@@ -1,6 +1,4 @@
-import { useState } from 'react'
-import Footer from './components/Footer.jsx'
-import Hamburger from './components/Hamburger.jsx';
+import Nav from './components/Footer.jsx'
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Recipes from './pages/Recipes';
@@ -9,14 +7,14 @@ import Challenges from './pages/Challenges';
 import Profile from './pages/Profile';
 import Signup from './pages/Signup'
 import Login from './pages/Login';
+import Signup_Profile from './pages/Signup_profile';
 
 function App() {
     const location = useLocation();
       return(
         
         <>
-        {location.pathname !== "/signup" && location.pathname !== "/login" && <Footer />}
-        {location.pathname !== "/signup" && location.pathname !== "/login" && <Hamburger />}
+        
         
 
         <Routes>
@@ -28,8 +26,11 @@ function App() {
           <Route path="/signup" element={<Signup />}/>
           <Route path="/login" element={<Login />} />
           <Route path="/home" element = {<Home/>}/>
-        </Routes>
+          <Route path="/signup-profile" element = {<Signup_Profile />}/>
 
+        </Routes>
+        {location.pathname !== "/signup" && location.pathname !== "/login" && location.pathname !=="/signup-profile" && <Nav />}
+        {/*{location.pathname !== "/signup" && location.pathname !== "/login" && location.pathname !=="/signup-profile" && <Hamburger />}*/}
           </>
       );
   }
