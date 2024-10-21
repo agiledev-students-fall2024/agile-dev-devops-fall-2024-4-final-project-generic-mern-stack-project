@@ -7,6 +7,7 @@ import HomePage from './pages/HomePage';
 import ChatComponent from './components/Chat';
 import JoinCreateMeetingPage from './pages/JoinCreateMeetingPage';
 import Whiteboard from './components/Whiteboard';
+import MeetingPage from './pages/MeetingPage';
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
       <Route path="/joincreatemeeting" element={<JoinCreateMeetingPage />} />
       <Route path="/chat" element={<ChatComponent />} />
       <Route path="/whiteboard" element={<Whiteboard />} />
+      <Route path="/meetings/:id" element={<MeetingPage />} />
     </Routes>
   );
 };
