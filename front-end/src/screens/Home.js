@@ -50,7 +50,7 @@ const Home = () => {
             const dateObject = new Date(post.date)
             return (
               // Bootstrap react card 
-              <div>
+              <div key={`home-${post.id}`}>
               <Card className="card-display">
                 <Card.Img variant="top" src={post.imageUrl} />
                 <Card.Body>
