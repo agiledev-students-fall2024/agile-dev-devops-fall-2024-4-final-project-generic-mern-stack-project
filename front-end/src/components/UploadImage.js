@@ -1,6 +1,6 @@
 import './UploadImage.css'
 import React, { useState, useEffect } from "react"
-import placeholder from './upload-image-placeholder.png'
+import placeholder from '../assets/upload-image-placeholder.png'
 
 const UploadImage = (props) => {
     const [image, setImage] = useState(placeholder);
