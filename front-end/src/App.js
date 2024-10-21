@@ -12,10 +12,10 @@ import InputField from "./components/InputField";
 import SubmitButton from "./components/SubmitButton";
 import LogoPageTitle from "./components/LogoPageTitle";
 import SearchBar from "./components/SearchBar";
-import Home from "./Home";
-import Community from "./Community";
-import Blog from "./Blog";
-import Profile from "./Profile";
+import Home from "./pages/Home";
+import Community from "./pages/Community";
+import Blog from "./pages/Blog";
+import Profile from "./pages/Profile";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
