@@ -7,7 +7,7 @@ import Challenges from './pages/Challenges';
 import Profile from './pages/Profile';
 import Signup from './pages/Signup'
 import Login from './pages/Login';
-import SignupProfile from './pages/Signup_profile';
+import Signup_Profile from './pages/Signup_profile';
 
 function App() {
     const location = useLocation();
@@ -26,7 +26,7 @@ function App() {
           <Route path="/signup" element={<Signup />}/>
           <Route path="/login" element={<Login />} />
           <Route path="/home" element = {<Home/>}/>
-          <Route path="/signup-profile" element = {<SignupProfile />}/>
+          <Route path="/signup-profile" element = {<Signup_Profile />}/>
 
         </Routes>
         {location.pathname !== "/signup" && location.pathname !== "/login" && location.pathname !=="/signup-profile" && <Nav />}
