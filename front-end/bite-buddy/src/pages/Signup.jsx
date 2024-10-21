@@ -9,7 +9,7 @@ function Signup(){
       }
     return (
         <>
-        <div className='signup-container'> 
+        
             <h1 className='title'>Bite Buddy</h1>
             <div className='registerDiv'>
             <h2>Sign Up Today!</h2>
@@ -20,10 +20,9 @@ function Signup(){
                 <label>Enter Password: <input type="password" placeholder="Password"/></label>
                 <button type="submit">Register</button>
             </form>
-            <a href='/login'>Log in</a>
+            <a className='alternative' href='/login'>Log in</a>
         
             </div>
-        </div>
         </>
       );
 

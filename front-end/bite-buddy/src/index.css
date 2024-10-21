@@ -11,32 +11,51 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
+}
+#root {
+  justify-content: center; /* Horizontally center content */
+  align-items: center; /* Vertically center content */
+  min-height: 100vh; /* Ensure the root takes up the full height of the viewport */
+  padding: 10px; /* Add some padding around the content */
+  min-width: 100vw;
 }
 
 .navbar {
-  position: fixed;           /* Fixes the navbar at the bottom */
-  bottom: 0;                 /* Aligns it to the bottom of the viewport */
+  position: fixed;               /* Fixes the navbar at the bottom */
+  bottom: 0;                     /* Aligns it to the bottom of the viewport */
   left: 0;
-  width: 100%;               /* Spans the full width */
-  display: flex;             /* Flexbox for centering items */
-  justify-content: center;   /* Centers items horizontally */
-  background-color: #333;    /* Background color */
-  padding: 10px 0;           /* Top and bottom padding */
+  width: 100%;                   /* Spans the full width */
+  display: flex;                 /* Flexbox for centering items */
+  justify-content: space-around; /* Space between items to make it more mobile-friendly */
+  flex-wrap: wrap;               /* Allows items to wrap onto the next line if needed */
+  background-color: #333;        /* Background color */
+  padding: 10px 0;               /* Top and bottom padding */
 }
 
 .navbar a {
-  color: white;              /* Text color */
-  padding: 10px 15px;        /* Space around each link */
-  text-decoration: none;     /* Removes underline */
-  font-size: 18px;           /* Font size */
+  color: white;                  /* Text color */
+  padding: 10px 15px;            /* Space around each link */
+  text-decoration: none;         /* Removes underline */
+  font-size: 16px;               /* Adjust font size for smaller screens */
+  flex: 1 1 auto;                /* Make links responsive by growing and shrinking */
+  text-align: center;            /* Center text */
+  box-sizing: border-box;        /* Ensure padding and borders are included in the width */
 }
 
 .navbar a:hover {
-  background-color: #555;    /* Hover effect */
+  background-color: #555;        /* Hover effect */
   color: #ddd;
-  border-radius: 5px;        /* Optional rounded corners */
+  border-radius: 5px;            /* Optional rounded corners */
 }
 
+/* Media Query for smaller screens */
+@media (max-width: 600px) {
+  .navbar a {
+    font-size: 14px;             /* Slightly reduce font size on smaller screens */
+    padding: 10px 10px;          /* Adjust padding to fit better on small screens */
+  }
+}
 
 a {
   font-weight: 500;
@@ -94,64 +113,94 @@ button:focus-visible {
 }
 
 
-.registerDiv{
-  font-family: 'Courier New', Courier, monospace;
-  width: 400px;
+/* Register Div Styling */
+
+
+.registerDiv {
+  background-color: white;
   padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5%;
-  opacity: 100%;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  
-}
-
-.registerDiv h2{
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 75%;
+  max-width: 600px; /* Limit width on larger screens */
+  box-sizing: border-box; /* Include padding and borders in the element's width */
   text-align: center;
-  margin-bottom: 20px;
-  color: white;
+  margin: 0 auto;
 }
 
-.registerDiv form{
+.registerDiv h2 {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Form Styling */
+.registerDiv form {
   display: flex;
   flex-direction: column;
-  color: white;
-}
-.registerDiv label {
-  margin-bottom: 10px;
-  display: flex; /* Align input and label horizontally */
-  align-items: center; /* Vertically center input and label */
-}
-.registerDiv label input {
-  flex: 1; /* Take up remaining space */
-  margin-left: 10px; /* Add some space between label and input */
+  gap: 15px; /* Space between inputs */
 }
 
-.registerDiv input[type="text"],
-.registerDiv input[type="password"],
-.registerDiv input[type="email"] {
-  padding: 8px;
+.registerDiv label {
+  display: flex;
+  flex-direction: column;
+  font-size: 1em;
+  color: #333;
+}
+
+.registerDiv input[type="email"],
+             input[type="text"],
+             input[type="password"] {
+  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-family: 'Courier New', Courier, monospace;
-}
-.registerDiv button{
-  font-family: 'Courier New', Courier, monospace;
-  padding: 10px 20px;
-  color: #fff;
-  border: solid white 1px;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 10px;
-}
-.registerDiv button:hover{
-  background-color: white;
-  color: black;
-}
-.registerDiv button:last-child{
-  margin-top: 20px;
-}
-.registerDiv p{
-  color: red;
-  text-align: center;
+  font-size: 1em;
+  width: 100%;
+  box-sizing: border-box; /* Ensures inputs don't exceed the container */
 }
 
+.registerDiv button {
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.registerDiv button:hover {
+  background-color: #555;
+}
+
+/* Alternative Link Styling */
+.registerDiv .alternative {
+  display: block;
+  margin-top: 15px;
+  text-decoration: none;
+  color: #333;
+}
+
+.registerDiv .alternative:hover {
+  color: #555;
+  text-decoration: underline;
+}
+
+/* Media Queries for Smaller Devices */
+@media (max-width: 600px) {
+  
+  .registerDiv {
+    padding: 15px;
+  }
+
+  .registerDiv input[type="email"],
+  input[type="text"],
+  input[type="password"] {
+    font-size: 0.9em;
+  }
+
+  .registerDiv button {
+    padding: 10px;
+    font-size: 0.9em;
+  }
+}
