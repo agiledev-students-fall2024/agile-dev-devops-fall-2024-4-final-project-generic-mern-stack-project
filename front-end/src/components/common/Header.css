@@ -1,39 +1,47 @@
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background-color: #ffffff;
-    border-bottom: 1px solid #e0e0e0;
-  }
-  
-  .header__logo-link {
-    font-size: 1.8rem;
-    color: #FF385C; 
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  .header__right {
-    display: flex;
-    align-items: center;
-    position: relative; 
-  }
-  
-  .header__profile {
-    cursor: pointer;
-    position: relative; 
-  }
-  
-  .header__profile-icon {
-    font-size: 2rem; 
-    color: #333;
-    padding: 0.5rem;
-    border-radius: 50%;
-    transition: background-color 0.3s ease;
-  }
-  
-  .header__profile-icon:hover {
-    background-color: #f0f0f0; 
-  }
-  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 3rem; 
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header__logo-link {
+  color: #FF385C;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+  margin-right: 1rem; 
+}
+
+.header__right {
+  display: flex;
+  align-items: center;
+  margin-left: 1rem; 
+}
+
+.header__profile-wrapper {
+  position: relative;
+  cursor: pointer;
+}
+
+.header__profile {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc; 
+  border-radius: 25px;
+  padding: 0.25rem 0.5rem;
+  gap: 0.4rem;
+  background-color: #fff; 
+  margin-right: 1rem; 
+}
+
+.header__profile-menu-icon {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.header__profile-icon {
+  font-size: 1.5rem;
+}

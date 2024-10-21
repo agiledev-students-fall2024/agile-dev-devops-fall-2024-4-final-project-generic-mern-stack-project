@@ -6,17 +6,12 @@ import './Header.css';
 const Header = ({ user, isLoggedIn }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const handleMouseEnter = () => {
-    setIsDropdownOpen(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsDropdownOpen(false);
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev);
   };
 
   const handleSignOut = () => {
     console.log('User signed out');
-    // We will add actual sign-out logic here
   };
 
   return (
@@ -28,11 +23,13 @@ const Header = ({ user, isLoggedIn }) => {
       <div className="header__right">
         {isLoggedIn ? (
           <div
-            className="header__profile"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            className="header__profile-wrapper"
+            onClick={toggleDropdown}
           >
-            <span className="header__profile-icon">🧑</span>
+            <div className="header__profile">
+              <span className="header__profile-menu-icon">☰</span>
+              <span className="header__profile-icon">🧑</span>
+            </div>
             {isDropdownOpen && <ProfileDropdown onSignOut={handleSignOut} />}
           </div>
         ) : (
