@@ -1,7 +1,7 @@
 .trip-tabs {
     display: flex;
     border-bottom: 2px solid #ddd;
-    margin-bottom: 1.5rem; /* Space between the tabs and the trip list */
+    margin-bottom: 1.5rem; 
   }
   
   .trip-tabs__button {
