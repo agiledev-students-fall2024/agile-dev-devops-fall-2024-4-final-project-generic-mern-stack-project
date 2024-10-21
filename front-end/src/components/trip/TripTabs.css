@@ -1,0 +1,26 @@
+.trip-tabs {
+    display: flex;
+    border-bottom: 2px solid #ddd;
+    margin-bottom: 1.5rem; 
+  }
+  
+  .trip-tabs__button {
+    background: none;
+    border: none;
+    padding: 1rem;
+    cursor: pointer;
+    transition: color 0.3s, border-bottom 0.3s;
+    flex: 1;
+    text-align: center;
+  }
+  
+  .trip-tabs__button.active {
+    border-bottom: 3px solid #FF385C; 
+    color: #FF385C;
+  }
+  
+  .trip-tabs__button:hover {
+    color: #FF385C;
+    background-color: #f0f0f0; 
+  }
+  
