@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import './CreateTask.css';
 
 
 function CreateTask() {
@@ -49,7 +50,7 @@ function CreateTask() {
     }
 
     return (
-        <div>
+        <div className="create-task-container">
             <div>
                 <h3>Title</h3>
                 <input type="text" value={title} onChange={handleTitle} placeholder={"Input Title Here"}/>
@@ -82,7 +83,8 @@ function CreateTask() {
                 </select>
             </div>
             <br></br>
-            <button>Create Task</button>
+            <Link to="/Tasks" className="cancel-btn">Cancel</Link>
+            <Link to="/Tasks" className="create-btn">Create Task</Link>
         </div>
     )
 
