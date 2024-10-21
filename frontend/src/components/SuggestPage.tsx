@@ -6,6 +6,13 @@ import { useMyStores } from "@/context/StoresContext";
 import { FiltersType } from "@/types";
 import { FilterStringTypes } from "@/types";
 
+// Placeholder suggested stores for now
+const hardcodedSuggestedStores = [
+  { _id: "1", name: "Suggested Store 1" },
+  { _id: "2", name: "Suggested Store 2" },
+  { _id: "3", name: "Suggested Store 3" },
+];
+
 const filterDescriptions: Record<FilterStringTypes, string> = {
   Brand: "brand desc",
   "Price Range": "price range desc",
@@ -28,6 +35,10 @@ const filterNames: FilterStringTypes[] = [
 ];
 
 export default function SuggestPage() {
+  // // *** Added state to hold suggested stores
+  // const [suggestedStores, setSuggestedStores] = useState<Store[]>([]);
+  // Keep hardcoded suggested stores in state
+  const [suggestedStores, setSuggestedStores] = useState(hardcodedSuggestedStores);
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentFilter, setCurrentFilter] =
     useState<FilterStringTypes>("Brand");
@@ -136,6 +147,16 @@ export default function SuggestPage() {
     setSearchParams(currentParams);
   };
 
+  // *** "View Results" navigates to the suggested stores in the home
+  const handleViewResult = () => {
+    navigate("/", {
+      state: {
+        suggestedStores: hardcodedSuggestedStores,
+        openSearchBar: true
+      },
+    });
+  };
+
   return (
     <div className="flex">
       <nav className="w-32 bg-blue-400 overflow-y-auto h-[calc(100vh-68px)]">
@@ -170,11 +191,20 @@ export default function SuggestPage() {
           currentFilter={currentFilter}
         />
         <div className="my-8">
-          <Button variant={"secondary"} onClick={() => navigate("/")}>
+          {/* <Button variant={"secondary"} onClick={() => navigate("/")}>
             Go Back
-          </Button>
+          </Button> */}
         </div>
       </main>
+      {/* Added View Results button */}
+      <div className="fixed bottom-4 left-0 right-0 flex justify-center">
+        <Button
+          onClick={handleViewResult}
+          className="rounded-full bg-black text-white py-2 px-8"
+        >
+          VIEW RESULTS
+        </Button>
+      </div>
     </div>
   );
 }
