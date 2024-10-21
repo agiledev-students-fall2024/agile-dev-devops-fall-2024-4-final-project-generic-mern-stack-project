@@ -5,14 +5,14 @@ function Footer(){
 
     return(
         <footer>
-            <nav class = 'navbar'>
+            <nav className = 'navbar'>
                 
                 <Link to ="/">Home</Link>
                 <Link to ="/recipes">Recipes</Link>
-                <a class = '' href='#'>Record</a>
-                <a class = '' href='#'>Challenges</a>
-                <a class = '' href='#'>Profile</a>
-            
+                <Link to ="/record">Record</Link>
+                <Link to = "/challenges">Challenges</Link>
+                <Link to="/profile">Profile</Link>
+                        
             </nav>
         </footer>
 

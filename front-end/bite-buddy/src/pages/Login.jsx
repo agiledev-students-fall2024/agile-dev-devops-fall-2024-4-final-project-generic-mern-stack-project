@@ -18,7 +18,7 @@ function Login(){
             <button type="submit">Login</button>
         </form>
        
-        <a href='/signup'>Sign Up</a>
+        <a className='alternative' href='/signup'>Sign Up</a>
         </div>
         </>
     );
