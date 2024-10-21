@@ -79,6 +79,7 @@ function Hamburger({activeTab, setActiveTab}){
                         <li><Link to="/challenges" onClick={() => {setActiveTab('challenges');setIsOpen(false)}}>Challenges</Link></li>
                         <li><Link to="/record" onClick={() => {setActiveTab('record');setIsOpen(false)}}>Record Activity</Link></li>
                         <li><Link to="/profile" onClick={() => {setActiveTab('profile');setIsOpen(false)}}>Profile</Link></li>
+                        <li><Link to="/login">Sign Out</Link></li>
                     </ul>
                 </div>
             )}

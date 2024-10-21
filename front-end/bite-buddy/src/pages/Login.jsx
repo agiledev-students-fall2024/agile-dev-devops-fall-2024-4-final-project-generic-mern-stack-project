@@ -4,15 +4,16 @@ import { useNavigate } from 'react-router-dom';
 function Login(){
 
     const navigate = useNavigate();
-    function goToSignUp(){
-        navigate('/signup')
-      }
+    
+    function goToHome(){
+        navigate('/home')
+    }
 
     return(<>
         <h1 className='title'>Bite Buddy</h1>
         <div className='registerDiv'>
         <h2>Login</h2>
-        <form >
+        <form onSubmit={goToHome}>
             <label>Enter Username:<input type="text" placeholder="Username" /></label>
             <label> Enter Password:<input type="password" placeholder="Password" /></label>
             <button type="submit">Login</button>

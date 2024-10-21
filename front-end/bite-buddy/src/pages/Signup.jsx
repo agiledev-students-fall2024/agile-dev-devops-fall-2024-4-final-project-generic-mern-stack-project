@@ -18,15 +18,15 @@ function Signup() {
                 <form onSubmit={goToSignUpProfile}>
                     <label>
                         Enter Email:
-                        <input type="email" placeholder="Email" required />
+                        <input type="email" placeholder="Email"  />
                     </label>
                     <label>
                         Enter Username:
-                        <input type="text" placeholder="Username" required />
+                        <input type="text" placeholder="Username"  />
                     </label>
                     <label>
                         Enter Password:
-                        <input type="password" placeholder="Password" required />
+                        <input type="password" placeholder="Password"  />
                     </label>
                     <button type="submit">Sign Up!</button>
                 </form>
