@@ -16,13 +16,11 @@ function Profile(){
             <h3>Bio</h3>
             
             
+            <label>Last Name<input type="text" placeholder="Alexander"  /></label>
+            <label>Last Name<input type="text" placeholder="Hamilton"  /></label>
             <label>Email<input type="email" placeholder="alexander@gmail.com"  /></label>
-            <label>Last Name<input type="text" placeholder="Username"  /></label>
-            <label>Last Name<input type="text" placeholder="Username"  /></label>
-            <label>Enter Password: <input type="password" placeholder="Password"/></label>
+            <label>Password<input type="password" placeholder="**************"/></label>
             <button type="submit">Edit Profile</button>
-            
-            <a className='alternative' href='/login'>Log in</a>
         
             </div>
         </>
