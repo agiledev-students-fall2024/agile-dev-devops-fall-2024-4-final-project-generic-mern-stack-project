@@ -40,8 +40,8 @@ const EditProfileForm = () => {
             .test('fileSize', 'File size is too large', value => {
               return !value || value.size <= 1024 * 1024 // 1 MB size limit
             })
-            .test('fileType', 'Only JPG and PNG formats are allowed.', value => {
-              return !value || ['image/jpeg', 'image/png'].includes(value.type) // JPG and PNG only
+            .test('fileType', 'Only image files are allowed.', value => {
+                return !value || value.type.startsWith('image/'); // Only allow images
             }),
     })
 
@@ -109,6 +109,7 @@ const EditProfileForm = () => {
                                     <input
                                         type='file'
                                         id='fileInput'
+                                        accept="image/*"
                                         onChange={(event) => {
                                             const file = event.currentTarget.files[0]
                                             setFieldValue('file', file)

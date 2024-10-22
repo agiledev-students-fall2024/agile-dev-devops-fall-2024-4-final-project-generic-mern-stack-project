@@ -27,8 +27,18 @@ const App = () => {
   return (
     <Router basename={process.env.PUBLIC_URL}>
       <Routes>
-      
+        {/* Routes for unauthenticated users */}
+        <Route
+          path='/login'
+          element={<ProtectedRoute isAuthenticated={!isAuthenticated} element={<Login />} navigateTo={'/'} />}
+        />
+        <Route
+          path='/register'
+          element={<ProtectedRoute isAuthenticated={!isAuthenticated} element={<Register />} navigateTo={'/'} />}
+        />
 
+
+        {/* Routes for authenticated users */}
         <Route
           path='/createnewblogpost/:username'
           element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<CreateBlogPost />} navigateTo='/login'/>}
@@ -41,14 +51,6 @@ const App = () => {
         <Route 
           path="/updateblogpost/:postId" 
           element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<Updateblogpost />} navigateTo='/login' />} 
-        />
-        <Route
-          path='/login'
-          element={<ProtectedRoute isAuthenticated={!isAuthenticated} element={<Login />} navigateTo={'/'} />}
-        />
-        <Route
-          path='/register'
-          element={<ProtectedRoute isAuthenticated={!isAuthenticated} element={<Register />} navigateTo={'/'} />}
         />
         <Route 
             path='/profile/:username'  
@@ -88,6 +90,7 @@ const App = () => {
         />
 
         
+        {/* Catch all route */}
         <Route path='*' element={<Error404 />} />
       </Routes>
     </Router>
