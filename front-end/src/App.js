@@ -23,10 +23,19 @@ const App = () => {
   return (
     <Router basename={process.env.PUBLIC_URL}>
       <Routes>
-        <Route path="/createnewblogpost" element={<CreateBlogPost />} />
-        <Route path="/blogpostloggedin" element={<Blogpostloggedin />} />
+      <Route 
+          path="/createnewblogpost" 
+          element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<CreateBlogPost />} navigateTo='/login' />} 
+        />
+        <Route 
+          path="/blogpostloggedin/:postId" 
+          element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<Blogpostloggedin />} navigateTo='/login' />} 
+        />
         <Route path="/blogpostnotloggedin" element={<Blogpostnotloggedin />} />
-        <Route path="/updateblogpost" element={<Updateblogpost />} />
+        <Route 
+          path="/updateblogpost/:postId" 
+          element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<Updateblogpost />} navigateTo='/login' />} 
+        />
         <Route
           path='/login'
           element={<ProtectedRoute isAuthenticated={!isAuthenticated} element={<Login />} navigateTo={'/'} />}
