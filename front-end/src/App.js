@@ -16,6 +16,9 @@ import Home from "./pages/Home";
 import Community from "./pages/Community";
 import Blog from "./pages/Blog";
 import Profile from "./pages/Profile";
+import BlogPost from "./components/BlogPost";
+import About from "./components/About";
+import ProfileHeader from "./components/ProfileHeader";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -86,6 +89,39 @@ function App() {
             <CommunityPopup />
 
             <h1></h1>
+
+            <BlogPost
+              User={{
+                profilePic: "/logo192.png", 
+                name: "Mona Lisa",
+                userName: "@monalisa",
+                text: "This is a sample blog post text for testing purposes. Just saw myself at the Louvre. #Dope",
+                images: [
+                    "/logo192.png", 
+                    "/logo192.png", 
+                ]
+              }}
+            />
+
+            <About
+              User={{
+                name: "Mona Lisa",
+                aboutMe: "This is a sample about me."
+              }}
+            />
+
+            <ProfileHeader
+                User={{
+                  profilePic: "/logo192.png", 
+                  name: "Mona Lisa",
+                  userName: "@monalisa",
+                  about: ['She/Her', '12/01/2003', 'Louvre Museum, Paris'],
+                  aboutPage: '/about/monalisa',
+                  communitiesPage: '/communities/monalisa',
+                  blogsPage: '/blogs/monalisa'
+                }}
+                LoggedIn={true}
+            />
 
             <NavigationBar />
 
