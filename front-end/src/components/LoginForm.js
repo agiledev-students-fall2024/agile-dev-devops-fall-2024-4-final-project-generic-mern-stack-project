@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from "react-router-dom"
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Button } from 'react-bootstrap';
@@ -60,11 +59,6 @@ const LoginForm = () => {
                 <Button type='submit' variant='dark' disabled={isSubmitting} >
                     Sign In
                 </Button>
-            </div>
-            <div>
-                <Link to='/'>
-                    Forgot password?
-                </Link>
             </div>
         </Form>
       )}

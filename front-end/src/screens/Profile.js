@@ -54,7 +54,6 @@ const Profile = () => {
         fetchUser()
     }, [username])
 
-    
     if (redirect) {
         return <Navigate to='/' /> 
     }
@@ -70,10 +69,16 @@ const Profile = () => {
                     { posts.map( post => {
                         const dateObject = new Date(post.date)
                         return (
-                            <div key={`profile-${user.username}-${post.id}`}>
-                                <h2>{post.title}</h2>
-                                <p className='mt-3 mb-0 text-end'>{dateObject.toLocaleDateString('en-US')}</p>
-                            </div>
+                            <Link 
+                                key={`profile-${user.username}-${post.id}`} 
+                                to={`/blogpostloggedin/${post.id}`} 
+                                className=' text-reset text-decoration-none'
+                            >                                
+                                <div>
+                                    <h2>{post.title}</h2>
+                                    <p className='mt-3 mb-0 text-end'>{dateObject.toLocaleDateString('en-US')}</p>
+                                </div>
+                            </Link>
                         )
                     })}
                 </div>
@@ -83,16 +88,21 @@ const Profile = () => {
                 <div className={`profile-posts layout--${user.layout}`}>
                     { posts.map( post => {
                         return (
-                            post.imageUrl ? 
-                            <img 
-                                src={post.imageUrl} 
-                                alt='User-submitted' 
-                                key={`profile-${user.username}-${post.id}`} />: 
-                            <img 
-                                src={noImgSrc}
-                                alt='Not provided by user'
+                            <Link 
                                 key={`profile-${user.username}-${post.id}`} 
-                                className='no-img' />
+                                to={`/blogpostloggedin/${post.id}`} 
+                                className=' text-reset text-decoration-none'
+                            >
+                                { post.imageUrl ? 
+                                    <img 
+                                        src={post.imageUrl} 
+                                        alt='User-submitted' />: 
+                                    <img 
+                                        src={noImgSrc}
+                                        alt='Not provided by user'
+                                        className='no-img' />
+                                }
+                            </Link>
                         )
                     })}
                 </div>
@@ -103,21 +113,27 @@ const Profile = () => {
                     { posts.map( (post, index) => {
                         const dateObject = new Date(post.date)
                         return (
-                            <div key={`profile-${user.username}-${post.id}`} >
-                                { post.imageUrl ? 
-                                    <img 
-                                        src={post.imageUrl} 
-                                        alt='User-submitted' 
-                                        style={{'--masonry-img-height': `${randomNumbers[index]}rem`}} />: 
-                                    <img 
-                                        src={noImgSrc}
-                                        alt='Not provided by user'
-                                        className='no-img' 
-                                        style={{'--masonry-img-height': `${randomNumbers[index]}rem`}} />
-                                }
-                                <h2>{post.title}</h2>
-                                <p className='mt-3 mb-0 text-end'>{dateObject.toLocaleDateString('en-US')}</p>
-                            </div>
+                            <Link 
+                                key={`profile-${user.username}-${post.id}`} 
+                                to={`/blogpostloggedin/${post.id}`} 
+                                className=' text-reset text-decoration-none'
+                            >   
+                                <div>
+                                    { post.imageUrl ? 
+                                        <img 
+                                            src={post.imageUrl} 
+                                            alt='User-submitted' 
+                                            style={{'--masonry-img-height': `${randomNumbers[index]}rem`}} />: 
+                                        <img 
+                                            src={noImgSrc}
+                                            alt='Not provided by user'
+                                            className='no-img' 
+                                            style={{'--masonry-img-height': `${randomNumbers[index]}rem`}} />
+                                    }
+                                    <h2>{post.title}</h2>
+                                    <p className='mt-3 mb-0 text-end'>{dateObject.toLocaleDateString('en-US')}</p>
+                                </div>
+                            </Link>
                         )
                     })}
                 </div>
@@ -126,19 +142,23 @@ const Profile = () => {
             return (
                 <div className={`profile-posts layout--masonry masonry-img`}>
                     { posts.map( (post, index) => (
-                        post.imageUrl ? 
-                        <img 
-                            key={`profile-${user.username}-${post.id}`}
-                            src={post.imageUrl} 
-                            alt='User-submitted' 
-                            style={{'--masonry-img-height': `${randomNumbers[index]}rem`}} />: 
-                        <img 
-                            key={`profile-${user.username}-${post.id}`}
-                            src={noImgSrc}
-                            alt='Not provided by user' 
-                            className='no-img' 
-                            style={{'--masonry-img-height': `${randomNumbers[index]}rem`}} />
-
+                        <Link 
+                            key={`profile-${user.username}-${post.id}`} 
+                            to={`/blogpostloggedin/${post.id}`} 
+                            className=' text-reset text-decoration-none'
+                        >
+                            { post.imageUrl ? 
+                                <img 
+                                    src={post.imageUrl} 
+                                    alt='User-submitted' 
+                                    style={{'--masonry-img-height': `${randomNumbers[index]}rem`}} />: 
+                                <img 
+                                    src={noImgSrc}
+                                    alt='Not provided by user' 
+                                    className='no-img' 
+                                    style={{'--masonry-img-height': `${randomNumbers[index]}rem`}} />
+                            }
+                        </Link>
                     ))}
                 </div>
             )
@@ -148,14 +168,20 @@ const Profile = () => {
                     {posts.map( post => {
                         const dateObject = new Date(post.date)
                         return (
-                            <div key={`profile-${user.username}-${post.id}`}>
-                                { post.imageUrl ? 
-                                    <img src={post.imageUrl} alt='User-submitted' />: 
-                                    <img src={noImgSrc} alt='Not provided by user' className='no-img' />
-                                }
-                                <h2>{post.title}</h2>
-                                <p className='mt-3 mb-0 text-end'>{dateObject.toLocaleDateString('en-US')}</p>
-                            </div>
+                            <Link 
+                                key={`profile-${user.username}-${post.id}`} 
+                                to={`/blogpostloggedin/${post.id}`} 
+                                className=' text-reset text-decoration-none'
+                            >
+                                <div>
+                                    { post.imageUrl ? 
+                                        <img src={post.imageUrl} alt='User-submitted' />: 
+                                        <img src={noImgSrc} alt='Not provided by user' className='no-img' />
+                                    }
+                                    <h2>{post.title}</h2>
+                                    <p className='mt-3 mb-0 text-end'>{dateObject.toLocaleDateString('en-US')}</p>
+                                </div>
+                            </Link>
                     )})}
                 </div>
             )
@@ -165,12 +191,12 @@ const Profile = () => {
     return (
         <div>
             <header>
-                <Link to='/'>
+                <Link to='/' >
                     <svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='currentColor' className='bi bi-arrow-left-short' viewBox='0 0 16 16'>
                         <path fillRule='evenodd' d='M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5'/>
                     </svg>
                 </Link>
-                { belongsToLoggedIn && <Link to='/createnewblogpost' className='btn btn-secondary rounded-pill'>New Post</Link> }
+                { belongsToLoggedIn && <Link to={`/createnewblogpost/${user.username}`} className='btn btn-secondary rounded-pill'>New Post</Link> }
             </header>
 
             { user && <>

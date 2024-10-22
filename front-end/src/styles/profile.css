@@ -103,8 +103,8 @@
     vertical-align: top; 
 }
 
-.layout--masonry > img:nth-child(1) {
-    margin-top: 3rem !important;
+.layout--masonry > a > img:nth-child(1) {
+    margin-top: 2rem !important;
 }
 
 .profile-posts:not(.layout--masonry) .no-img {
