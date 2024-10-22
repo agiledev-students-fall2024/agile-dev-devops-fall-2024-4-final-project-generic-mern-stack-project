@@ -1,0 +1,45 @@
+/* FOR THE USER INPUT BAR */
+.input-bar-add {
+    width: 100%;
+    font-size: 12px; 
+    text-align: left;
+    background-color: lightgrey;
+    border-radius: 7px;
+    border: 0.5px solid black;
+    margin-top: 19px;
+}
+
+/* FOR THE TEXT INPUT INSIDE INPUT BAR */
+.search-input-add {
+    width: 100%;
+    padding: 3px;
+    border: none;
+    border-radius: 7px;
+    outline: none;
+    font-size: 16px;
+    background-color: lightgrey;
+}
+
+/* FOR THE SEARCH RESULT SECTION */
+.search-results-add {
+    margin-top: 20px;
+}
+
+/* THE FORMATTING AROUND EACH FRIEND */
+.friend-search-item-add {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    font-size: 15px;
+}
+
+/* THE FORMATTING OF EACH FRIEND'S NAME */
+.friend-search-info-add h5 {
+    margin: 0px;
+    font-size: 15px;
+}

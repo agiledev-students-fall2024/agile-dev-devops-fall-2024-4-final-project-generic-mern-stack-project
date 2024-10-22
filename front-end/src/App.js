@@ -15,6 +15,10 @@ import EditProfile from './screens/EditProfile';
 import FriendsList from './screens/FriendsList';
 import Error404 from './screens/Error404';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import FriendsSearch from './screens/FriendsSearch';
+import FriendsAdd from './screens/FriendsAdd';
+import FriendsRequests from './screens/FriendsRequests';
+import FriendsBlocked from './screens/FriendsBlocked';
 
 
 const isAuthenticated = (loggedInData[0].id !== null)
@@ -46,6 +50,22 @@ const App = () => {
         <Route
           path='/friendslist'
           element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<FriendsList />} navigateTo='/login'/>}
+        />
+        <Route
+          path='/friendssearch'
+          element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<FriendsSearch />} navigateTo='/login'/>}
+        />
+        <Route
+          path='/friendsadd'
+          element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<FriendsAdd />} navigateTo='/login'/>}
+        />
+        <Route
+          path='/friendsrequests'
+          element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<FriendsRequests />} navigateTo='/login'/>}
+        />
+        <Route
+          path='/friendsblocked'
+          element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<FriendsBlocked />} navigateTo='/login'/>}
         />
         <Route
           path='/'
