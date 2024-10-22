@@ -46,7 +46,12 @@ const FriendsSearch = () => {
                     {filteredFriends.map(friend => (
                         <div key={friend.id} className="friend-search-item">
                             <div className="friend-search-info">
-                                <h5>{friend.name} <span style={{ color: 'grey', fontSize: 'small', fontStyle: 'italic' }}>({friend.username})</span></h5>
+                                <span>
+                                    {friend.name}
+                                    <span style={{ color: 'grey', fontSize: 'smaller', fontStyle: 'italic' }}>
+                                        &nbsp;({friend.username})
+                                    </span>
+                                </span>
                             </div>
                             <div className="friend-actions">
                                 <Button variant="outline-dark" size="sm">Block</Button>
