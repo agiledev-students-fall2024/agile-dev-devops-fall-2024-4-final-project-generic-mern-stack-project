@@ -18,7 +18,7 @@ function Activity_Tracker(){
     ]
 
     return(
-        <>
+        <div className='activity-tracker-container'>
         
             <div className='activity-tracker-header'>
                 <h1 className='activity-tracker-title'>Activities Tracker</h1>
@@ -55,7 +55,7 @@ function Activity_Tracker(){
 
         </div>
             
-        </>
+        </div>
     )
     
 }

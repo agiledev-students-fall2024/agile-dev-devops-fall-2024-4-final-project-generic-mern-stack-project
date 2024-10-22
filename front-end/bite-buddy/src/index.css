@@ -264,6 +264,14 @@ button:focus-visible {
   margin: 8px;
 }
 
+.activity-tracker-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
 .activity-tracker-header{
   display: flex;
   justify-content: center;
@@ -305,7 +313,13 @@ button:focus-visible {
 
 .tab-content {
   padding: 20px;
-  margin-top: 32%; /* Adjust this value based on the combined height of the title and nav */
+  margin-top: 60px; /* Default for smaller screens like mobile */
+}
+
+@media (max-width: 600px) {
+  .tab-content {
+    margin-top: 35%;
+  }
 }
 
 /* Optional styling to prevent content from going off-screen */
