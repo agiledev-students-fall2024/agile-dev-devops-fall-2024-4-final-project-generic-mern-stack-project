@@ -14,7 +14,7 @@ function Profile(){
             <div className='registerDiv'>
                 <h2>Alexander Hamilton</h2>
                 <img src="https://picsum.photos/100" alt="profile-pic"></img>
-                <h2>Bio</h2>
+                <h3>Bio</h3>
                 <p>
                     Alexander Hamilton is an American statesman who loves freedom and caviar.
                 </p>

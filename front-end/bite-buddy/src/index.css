@@ -133,6 +133,12 @@ button:focus-visible {
   color: #333;
 }
 
+.registerDiv h3 {
+  font-size: 1.2em;
+  margin-bottom: 15px;
+  color: #555;
+}
+
 /* Form Styling */
 .registerDiv form {
   display: flex;
