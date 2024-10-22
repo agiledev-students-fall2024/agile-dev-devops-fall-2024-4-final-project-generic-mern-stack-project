@@ -23,9 +23,14 @@ const App = () => {
   return (
     <Router basename={process.env.PUBLIC_URL}>
       <Routes>
-      <Route 
+      {/* <Route 
           path="/createnewblogpost" 
           element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<CreateBlogPost />} navigateTo='/login' />} 
+        /> */}
+
+        <Route
+          path='/createnewblogpost/:username'
+          element={<ProtectedRoute isAuthenticated={isAuthenticated} element={<CreateBlogPost />} navigateTo='/login'/>}
         />
         <Route 
           path="/blogpostloggedin/:postId" 
