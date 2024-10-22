@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 
 // blog post component
-const BlogPost = props => {
+const BlogPost = ({User}) => {
+
     const [user, setUser] = useState({})
 
-    // need use effect that immediately populates user for us
-    // we also need reply button and wings button
+    // set the user as soon as this is loaded
+    useEffect(() => {
+        setUser(User)
+    }, [])
 
     return
     (<div>
