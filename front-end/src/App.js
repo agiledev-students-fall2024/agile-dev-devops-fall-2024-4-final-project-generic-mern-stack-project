@@ -17,6 +17,8 @@ import Community from "./Community";
 import Blog from "./Blog";
 import Profile from "./Profile";
 import Blocked from "./Blocked"
+import Settings from "./Settings"
+import Privacy from "./Privacy"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -37,6 +39,12 @@ function App() {
             {/* a route for profile page */}
             <Route path="/profile" element={<Profile />} />
 
+            {/* a route for settings page */}
+            <Route path="/settings" element={<Settings />} />
+
+            {/* a route for privacy page */}
+            <Route path="/privacy" element={<Privacy />} />
+
             {/* a route to blocked users page */}
             <Route path="/blocked-users" element={<Blocked type={'blocked_users'} text={'Blocked Users'} />} />
 
@@ -48,7 +56,7 @@ function App() {
           </Routes>
 
           {/* test components */}
-          <TitleAndDescription
+          {/* <TitleAndDescription
             title={"Account Settings"}
             description={
               "See information about your account and learn about your deactivation settings."
@@ -106,7 +114,8 @@ function App() {
           <InputField inputfieldName="Email" inputType="email" />
           <InputField inputfieldName="Password" inputType="password" />
           <SubmitButton placeholder="Submit" />
-          <SearchBar />
+          <SearchBar /> */}
+
         </main>
       </Router>
     </div>
