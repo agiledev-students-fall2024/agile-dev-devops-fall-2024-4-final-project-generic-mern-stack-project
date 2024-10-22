@@ -263,3 +263,67 @@ button:focus-visible {
   color: white;
   margin: 8px;
 }
+
+.activity-tracker-header{
+  display: flex;
+  justify-content: center;
+  height: 17%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  background-color: #242424;
+}
+
+.activity-nav button {
+  flex: 1; /* Makes each button take equal space */
+  padding: 10px 0;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+}
+
+.activity-tracker-title{
+  position: fixed;
+  top: 5%;
+  font-size: 1.5em;
+}
+
+.activity-nav{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  position: fixed;
+  top: 12%;
+  font-size: 12px;
+}
+
+.activity-nav .active {
+  background-color: #555; /* Background color for active tab */
+  color: white;           /* Text color for active tab */
+  border-radius: 5px;  
+}
+
+.tab-content {
+  padding: 20px;
+  margin-top: 32%; /* Adjust this value based on the combined height of the title and nav */
+}
+
+/* Optional styling to prevent content from going off-screen */
+.activity-card {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #878787;
+  border-radius: 10px;
+}
+
+.activity-card h2,
+.activity-card h3,
+.activity-card p{
+  margin: 4px;
+}
+
+.activity-card h2{
+  font-size: 10px;
+}
+
+

@@ -8,15 +8,13 @@ import Profile from './pages/Profile';
 import Signup from './pages/Signup'
 import Login from './pages/Login';
 import Signup_Profile from './pages/Signup_profile';
+import Activity_Tracker from './pages/Activity_Tracker';
 
 function App() {
     const location = useLocation();
       return(
         
         <>
-        
-        
-
         <Routes>
           <Route path="*" element={<Navigate to="/login" />} />
           <Route path="/recipes" element={<Recipes />} />
@@ -27,6 +25,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/home" element = {<Home/>}/>
           <Route path="/signup-profile" element = {<Signup_Profile />}/>
+          <Route path="/activity-tracker" element = {<Activity_Tracker/>}/>
 
         </Routes>
         {location.pathname !== "/signup" && location.pathname !== "/login" && location.pathname !=="/signup-profile" && <Nav />}
