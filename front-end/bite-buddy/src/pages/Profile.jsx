@@ -18,6 +18,12 @@ function Profile(){
                 <p>
                     Alexander Hamilton is an American statesman who loves freedom and caviar.
                 </p>
+                <p>
+                    Age: 35
+                </p>
+                <p>
+                    Location: United States
+                </p>
                 <button type="button" onClick={goToSignupProfile}>Edit Profile</button>
             </div>
         </>

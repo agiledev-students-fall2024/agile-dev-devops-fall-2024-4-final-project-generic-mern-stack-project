@@ -135,8 +135,17 @@ button:focus-visible {
 
 .registerDiv h3 {
   font-size: 1.2em;
-  margin-bottom: 15px;
+  margin-top: 5px;
+  margin-bottom: 5px;
   color: #555;
+}
+
+.registerDiv p {
+  font-size: 1em;
+  color: #333;
+  margin-bottom: 5px;
+  line-height: 1.5;
+  text-align: left;
 }
 
 /* Form Styling */
