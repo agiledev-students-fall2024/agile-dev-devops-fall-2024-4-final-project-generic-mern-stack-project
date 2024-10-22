@@ -2,6 +2,13 @@ import '../index.css'
 import './HamburgerDropdown.css';
 import {Link} from 'react-router-dom';
 import {useState } from 'react';
+import { IoHomeOutline } from "react-icons/io5";
+import { BsRecord2 } from "react-icons/bs";
+import { PiCookingPot } from "react-icons/pi";
+import { CgProfile } from "react-icons/cg";
+import { CiMedal } from "react-icons/ci";
+
+
 
 function Nav(){
     const [activeTab, setActiveTab] = useState('home')
@@ -25,35 +32,56 @@ function Footer({activeTab, setActiveTab}){
                 className={activeTab === 'home' ? 'active' : ''}
                 onClick={() => setActiveTab('home')}
             >
-                Home
+                <div className='nav-item'>
+                    <IoHomeOutline />
+                    <span>Home</span>
+                </div>
+                
             </Link>
             <Link
                 to="/recipes"
                 className={activeTab === 'recipes' ? 'active' : ''}
                 onClick={() => setActiveTab('recipes')}
             >
-                Recipes
+                <div className='nav-item'>
+
+                    <PiCookingPot />
+                    <span>Recipes</span>
+                    </div>
             </Link>
             <Link
                 to="/record"
                 className={activeTab === 'record' ? 'active' : ''}
                 onClick={() => setActiveTab('record')}
             >
-                Record
+                <div className='nav-item'>
+
+                    <BsRecord2 />
+                    <span>Record</span>
+                    </div>
             </Link>
             <Link
                 to="/challenges"
                 className={activeTab === 'challenges' ? 'active' : ''}
                 onClick={() => setActiveTab('challenges')}
             >
-                Challenges
+                <div className='nav-item'>
+
+                    <CiMedal />
+                    <span>Challenges</span>
+                    
+                    </div>
             </Link>
             <Link
                 to="/profile"
                 className={activeTab === 'profile' ? 'active' : ''}
                 onClick={() => setActiveTab('profile')}
             >
-                Profile
+                <div className='nav-item'>
+
+                    <CgProfile />
+                    <span>Profile</span>
+                </div>
             </Link>                        
             </nav>
         </footer>
