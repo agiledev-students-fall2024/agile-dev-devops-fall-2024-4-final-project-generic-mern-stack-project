@@ -4,27 +4,23 @@ import { useNavigate } from 'react-router-dom';
 function Profile(){
 
     const navigate = useNavigate();
-    function goToProfileSetup(){
-        navigate('/profileSetup')
+    function goToSignupProfile(){
+        navigate('/signup-profile')
       }
 
     return(
         <>
             <h1 className='title'>Bite Buddy</h1>
             <div className='registerDiv'>
-            <h2>Alexander Hamilton</h2>
-            <h3>Bio</h3>
-            
-            
-            <label>Last Name<input type="text" placeholder="Alexander"  /></label>
-            <label>Last Name<input type="text" placeholder="Hamilton"  /></label>
-            <label>Email<input type="email" placeholder="alexander@gmail.com"  /></label>
-            <label>Password<input type="password" placeholder="**************"/></label>
-            <button type="submit">Edit Profile</button>
-        
+                <h2>Alexander Hamilton</h2>
+                <img src="https://picsum.photos/100" alt="profile-pic"></img>
+                <h2>Bio</h2>
+                <p>
+                    Alexander Hamilton is an American statesman who loves freedom and caviar.
+                </p>
+                <button type="button" onClick={goToSignupProfile}>Edit Profile</button>
             </div>
         </>
-
     );
 }
 
