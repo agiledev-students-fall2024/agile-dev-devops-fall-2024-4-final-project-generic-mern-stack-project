@@ -36,6 +36,16 @@
     border-radius: 5px;
     background-color: #f9f9f9;
     font-size: 15px;
+    flex-wrap: nowrap; 
+}
+
+/* TO ENSURE THE NAME AND BUTTONS FIT IN ONE LINE */
+.friend-search-item > div:first-child {
+    flex-grow: 1;
+    overflow-x: auto; /* ENABLES HORIZONTAL SCROLLING */
+    white-space: nowrap;
+    margin-right: 10px;
+    max-width: 100%;
 }
 
 /* THE FORMATTING OF EACH FRIEND'S NAME */
