@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
 import React from 'react'
-import SearchBar from './assets/SearchBar'
-import NavigationBar from './assets/NavigationBar'
-import TitleAndDescriptionBox from './assets/TitleAndDescriptionBox'
+import SearchBar from './components/SearchBar'
+import NavigationBar from './components/NavigationBar'
+import TitleAndDescriptionBox from './components/TitleAndDescriptionBox'
 import './Settings.css'
 
 const Settings = () => {

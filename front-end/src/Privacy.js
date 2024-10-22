@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import TitleAndDescription from './assets/TitleAndDescription'
-import NavigationBar from './assets/NavigationBar'
-import TitleAndDescriptionBox from './assets/TitleAndDescriptionBox'
+import TitleAndDescription from './components/TitleAndDescription'
+import NavigationBar from './components/NavigationBar'
+import TitleAndDescriptionBox from './components/TitleAndDescriptionBox'
 import './Privacy.css'
 
 const Privacy = () => {

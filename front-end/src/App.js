@@ -16,92 +16,100 @@ import Home from "./Home";
 import Community from "./Community";
 import Blog from "./Blog";
 import Profile from "./Profile";
+import Blocked from "./Blocked"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <>
-      <div className="App">
-        <Router>
-          <main className="App-main">
-            <Routes>
-              {/* a route for the home page */}
-              <Route path="/" element={<Home />} />
+    <div className="App">
+      <Router>
+        <main className="App-main">
+          <Routes>
+            {/* a route for the home page */}
+            <Route path="/" element={<Home />} />
 
-              {/* a route to the community page */}
-              <Route path="/community" element={<Community />} />
+            {/* a route to the community page */}
+            <Route path="/community" element={<Community />} />
 
-              {/* a route for blog page */}
-              <Route path="/blog" element={<Blog />} />
+            {/* a route for blog page */}
+            <Route path="/blog" element={<Blog />} />
 
-              {/* a route for profile page */}
-              <Route path="/profile" element={<Profile />} />
-            </Routes>
+            {/* a route for profile page */}
+            <Route path="/profile" element={<Profile />} />
 
-            {/* test components */}
-            <TitleAndDescription
-              title={"Account Settings"}
-              description={
-                "See information about your account and learn about your deactivation settings."
-              }
-            />
+            {/* a route to blocked users page */}
+            <Route path="/blocked-users" element={<Blocked type={'blocked_users'} text={'Blocked Users'} />} />
 
-            <h1></h1>
+            {/* a route to blocked communities page */}
+            <Route path="/blocked-communities" element={<Blocked type={'blocked_communities'} text={'Blocked Communities'} />} />
 
-            <TextAndButton text={"blocked_account"} button={"Unblock"} />
+            {/* a route to muted words page */}
+            <Route path="/muted-words" element={<Blocked type={'muted_words'} text={'Muted Words'} />} />
+          </Routes>
 
-            <h1></h1>
+          {/* test components */}
+          <TitleAndDescription
+            title={"Account Settings"}
+            description={
+              "See information about your account and learn about your deactivation settings."
+            }
+          />
 
-            <UploadImage image={"Profile icon"} />
+          <h1></h1>
 
-            <h1></h1>
+          <TextAndButton text={"blocked_account"} button={"Unblock"} />
 
-            <DropdownMenu
-              name={"color-mode"}
-              label={"Color Mode"}
-              options={["Light", "Dark"]}
-            />
+          <h1></h1>
 
-            <h1></h1>
+          <UploadImage image={"Profile icon"} />
 
-            <TitleAndDescriptionBox
-              title={"Privacy"}
-              description={
-                "Limit access to your account and information from others in communities."
-              }
-            />
+          <h1></h1>
 
-            <h1></h1>
+          <DropdownMenu
+            name={"color-mode"}
+            label={"Color Mode"}
+            options={["Light", "Dark"]}
+          />
 
-            <SubCommunity
-              image={"/logo192.png"}
-              name={"React"}
-              description={
-                "React.js is a front-end Javascript library that creates HTML, CSS, and browser-based Javascript, going from intepreting non-compatible Javascript from JSX syntax to browser-compatible Javascript."
-              }
-            />
+          <h1></h1>
 
-            <h1></h1>
+          <TitleAndDescriptionBox
+            title={"Privacy"}
+            description={
+              "Limit access to your account and information from others in communities."
+            }
+          />
 
-            <CommunityPopup />
+          <h1></h1>
 
-            <h1></h1>
+          <SubCommunity
+            image={"/logo192.png"}
+            name={"React"}
+            description={
+              "React.js is a front-end Javascript library that creates HTML, CSS, and browser-based Javascript, going from intepreting non-compatible Javascript from JSX syntax to browser-compatible Javascript."
+            }
+          />
 
-            <NavigationBar />
+          <h1></h1>
 
-            <LogoPageTitle
-              logoSrc="logo192.png"
-              title="example logo and page title"
-            />
-            <InputField inputfieldName="Name" />
-            <InputField inputfieldName="Email" inputType="email" />
-            <InputField inputfieldName="Password" inputType="password" />
-            <SubmitButton placeholder="Submit" />
-            <SearchBar />
-          </main>
-        </Router>
-      </div>
-    </>
+          <CommunityPopup />
+
+          <h1></h1>
+
+          <NavigationBar />
+
+          <LogoPageTitle
+            logoSrc="logo192.png"
+            title="example logo and page title"
+          />
+          <InputField inputfieldName="Name" />
+          <InputField inputfieldName="Email" inputType="email" />
+          <InputField inputfieldName="Password" inputType="password" />
+          <SubmitButton placeholder="Submit" />
+          <SearchBar />
+        </main>
+      </Router>
+    </div>
   );
 }
 

@@ -1,7 +1,7 @@
 .text-and-button {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
 }
 
@@ -11,3 +11,11 @@
     height: 80%;
 }
 
+.button:hover {
+    cursor: pointer;
+}
+
+.text {
+    text-align: right;
+    margin-left: 5em;
+}
