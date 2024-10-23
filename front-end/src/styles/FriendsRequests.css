@@ -1,0 +1,35 @@
+/* FOR EACH ROW WITHIN INCOMING AND OUTGOING REQUESTS */
+.request-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    font-size: 15px;
+    flex-wrap: nowrap; 
+}
+
+/* STYLING THE USERNAME OF EACH USER */
+.request-item .username {
+    flex-grow: 1;
+    margin-right: 10px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+/* FOR THE SECTION SURROUNDING THE BUTTONS IN EACH ROW */
+.request-actions {
+    display: flex;
+    gap: 5px;
+    white-space: nowrap;
+}
+
+/* FOR THE ACTION BUTTONS IN EACH ROW */
+.request-actions button {
+    font-size: 10px;
+    color: black;
+    background-color: lightgrey;
+}

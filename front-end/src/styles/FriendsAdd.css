@@ -38,8 +38,24 @@
     font-size: 15px;
 }
 
-/* THE FORMATTING OF EACH FRIEND'S NAME */
+/* THE SECTION FORMATTING OF EACH FRIEND'S NAME */
+.friend-search-info-add {
+    overflow-x: auto;
+    white-space: nowrap;
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+/* THE TEXT FORMATTING OF EACH FRIEND'S NAME */
 .friend-search-info-add h5 {
     margin: 0px;
     font-size: 15px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+/* STYLING THE BUTTON ADD FRIEND */
+.friend-actions button {
+    font-size: 10px;
+    background-color: lightgrey;
 }
