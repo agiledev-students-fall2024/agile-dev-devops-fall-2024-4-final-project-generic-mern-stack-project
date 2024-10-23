@@ -1,6 +1,6 @@
 import React from 'react';
 import './Calendar_monthly.css';
-import './index.css'
+//import './index.css'
 import { Link } from 'react-router-dom';
 
 

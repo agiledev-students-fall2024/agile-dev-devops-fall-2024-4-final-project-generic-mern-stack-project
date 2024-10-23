@@ -1,17 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './CreateTask.css';
 
 
 function CreateTask() {
-    const [task, setTask] = useState({
+
+    const task = useRef({
         title: "",
         description: "",
         subject: "",
-        due_date: "",
+        due_date: "", //turn this into a date object before sending to the backend so the date can work with time tracking libraries
         priority: "",
-        recurring: ""
+        recurring: "",
+        status: "not_started"
     })
+
+    const nav = useNavigate()
 
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
@@ -19,7 +23,6 @@ function CreateTask() {
     const [due_date, setDue_date] = useState("")
     const [priority, setPriority] = useState("Low")
     const [recurring, setRecurring] = useState("No")
-    const [error, setError] = useState("")
 
     const handleTitle = (e) => {
         setTitle(e.target.value)
@@ -47,6 +50,14 @@ function CreateTask() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        task.current.title = title
+        task.current.description = description
+        task.current.subject = subject
+        task.current.due_date = due_date
+        task.current.priority = priority
+        task.current.recurring = recurring
+        //send task to backend
+        nav("/Tasks")
     }
 
     return (
@@ -65,7 +76,7 @@ function CreateTask() {
             </div>
             <div>
                 <h3>Due Date</h3>
-                <input type="text" value={due_date} onChange={handleDue_date} placeholder={"Input Due Date Here"}/>
+                <input type="date" onChange={handleDue_date}/>
             </div>
             <div>
                 <h3>Priority</h3>
@@ -84,7 +95,7 @@ function CreateTask() {
             </div>
             <br></br>
             <Link to="/Tasks" className="cancel-btn">Cancel</Link>
-            <Link to="/Tasks" className="create-btn">Create Task</Link>
+            <button onClick={handleSubmit} className="create-btn">Create Task</button>
         </div>
     )
 
