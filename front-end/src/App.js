@@ -67,7 +67,7 @@ function App() {
           </Routes>
 
           {/* test components */}
-          {/* <TitleAndDescription
+          <TitleAndDescription
             title={"Account Settings"}
             description={
               "See information about your account and learn about your deactivation settings."
@@ -191,7 +191,7 @@ function App() {
           <InputField inputfieldName="Email" inputType="email" />
           <InputField inputfieldName="Password" inputType="password" />
           <SubmitButton placeholder="Submit" />
-          <SearchBar />*/}
+          <SearchBar />
 
         </main>
       </Router>
