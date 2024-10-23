@@ -20,8 +20,10 @@ import BlogPost from "./components/BlogPost";
 import About from "./components/About";
 import ProfileHeader from "./components/ProfileHeader";
 import Settings from "./pages/Settings"
+import AccountSettings from "./pages/AccountSettings"
 import Privacy from "./pages/Privacy"
 import Blocked from "./pages/Blocked"
+import Accessibility from "./pages/Accessibility"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -45,6 +47,12 @@ function App() {
             {/* a route for settings page */}
             <Route path="/settings" element={<Settings />} />
 
+            {/* a route to account settings page */}
+            <Route path="/account-settings" element={<AccountSettings text={"Account Settings"} />} />
+
+            {/* a route to accessibility page */}
+            <Route path="/accessibility" element={<Accessibility text={"Accessibility"} />} />
+
             {/* a route for privacy page */}
             <Route path="/privacy" element={<Privacy />} />
 
@@ -59,7 +67,7 @@ function App() {
           </Routes>
 
           {/* test components */}
-          <TitleAndDescription
+          {/* <TitleAndDescription
             title={"Account Settings"}
             description={
               "See information about your account and learn about your deactivation settings."
@@ -105,73 +113,73 @@ function App() {
 
           <CommunityPopup />
 
-            <h1></h1>
+          <h1></h1>
 
-            <BlogPost
-              User={{
-                profilePic: "/seraphim-logo.png", 
-                name: "Mona Lisa",
-                userName: "@monalisa",
-                text: "This is a sample blog post text for testing purposes. Just saw myself at the Louvre. #Dope",
-                images: [
-                    "/logo192.png", 
-                    "/logo192.png", 
-                ]
-              }}
-            />
+          <BlogPost
+            User={{
+              profilePic: "/seraphim-logo.png",
+              name: "Mona Lisa",
+              userName: "@monalisa",
+              text: "This is a sample blog post text for testing purposes. Just saw myself at the Louvre. #Dope",
+              images: [
+                "/logo192.png",
+                "/logo192.png",
+              ]
+            }}
+          />
 
-            <About
-              User={{
-                name: "Mona Lisa",
-                aboutMe: "This is a sample about me."
-              }}
-            />
+          <About
+            User={{
+              name: "Mona Lisa",
+              aboutMe: "This is a sample about me."
+            }}
+          />
 
-            <ProfileHeader
-                User={{
-                  profilePic: "/seraphim-logo.png", 
-                  name: "Mona Lisa",
-                  userName: "@monalisa",
-                  about: ['She/Her', '12/01/2003', 'Louvre Museum, Paris'],
-                  aboutPage: '/about/monalisa',
-                  communitiesPage: '/communities/monalisa',
-                  blogsPage: '/blogs/monalisa'
-                }}
-                LoggedIn={true}
-            />
+          <ProfileHeader
+            User={{
+              profilePic: "/seraphim-logo.png",
+              name: "Mona Lisa",
+              userName: "@monalisa",
+              about: ['She/Her', '12/01/2003', 'Louvre Museum, Paris'],
+              aboutPage: '/about/monalisa',
+              communitiesPage: '/communities/monalisa',
+              blogsPage: '/blogs/monalisa'
+            }}
+            LoggedIn={true}
+          />
 
-            <BlogPost
-              User={{
-                profilePic: "/logo192.png", 
-                name: "Mona Lisa",
-                userName: "@monalisa",
-                text: "This is a sample blog post text for testing purposes. Just saw myself at the Louvre. #Dope",
-                images: [
-                    "/logo192.png", 
-                    "/logo192.png", 
-                ]
-              }}
-            />
+          <BlogPost
+            User={{
+              profilePic: "/logo192.png",
+              name: "Mona Lisa",
+              userName: "@monalisa",
+              text: "This is a sample blog post text for testing purposes. Just saw myself at the Louvre. #Dope",
+              images: [
+                "/logo192.png",
+                "/logo192.png",
+              ]
+            }}
+          />
 
-            <About
-              User={{
-                name: "Mona Lisa",
-                aboutMe: "This is a sample about me."
-              }}
-            />
+          <About
+            User={{
+              name: "Mona Lisa",
+              aboutMe: "This is a sample about me."
+            }}
+          />
 
-            <ProfileHeader
-                User={{
-                  profilePic: "/logo192.png", 
-                  name: "Mona Lisa",
-                  userName: "@monalisa",
-                  about: ['She/Her', '12/01/2003', 'Louvre Museum, Paris'],
-                  aboutPage: '/about/monalisa',
-                  communitiesPage: '/communities/monalisa',
-                  blogsPage: '/blogs/monalisa'
-                }}
-                LoggedIn={true}
-            />
+          <ProfileHeader
+            User={{
+              profilePic: "/logo192.png",
+              name: "Mona Lisa",
+              userName: "@monalisa",
+              about: ['She/Her', '12/01/2003', 'Louvre Museum, Paris'],
+              aboutPage: '/about/monalisa',
+              communitiesPage: '/communities/monalisa',
+              blogsPage: '/blogs/monalisa'
+            }}
+            LoggedIn={true}
+          />
 
           <NavigationBar />
 
@@ -183,7 +191,7 @@ function App() {
           <InputField inputfieldName="Email" inputType="email" />
           <InputField inputfieldName="Password" inputType="password" />
           <SubmitButton placeholder="Submit" />
-          <SearchBar /> 
+          <SearchBar />*/}
 
         </main>
       </Router>

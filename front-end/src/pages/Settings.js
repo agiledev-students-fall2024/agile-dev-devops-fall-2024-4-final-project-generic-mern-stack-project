@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react"
 import SearchBar from '../components/SearchBar'
 import NavigationBar from '../components/NavigationBar'
 import TitleAndDescriptionBox from '../components/TitleAndDescriptionBox'
@@ -8,7 +8,7 @@ const Settings = () => {
     return (
         <>
             <h1>Settings</h1>
-            
+
             <SearchBar />
 
             <TitleAndDescriptionBox
