@@ -1,0 +1,75 @@
+/* Basic reset */
+body, html, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.App-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #4B0082; /* Purple color */
+  padding: 10px;
+  height: 70px;
+}
+
+.logo {
+  height: 50px;
+}
+
+.hamburger-menu {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+/* Map Section */
+.map-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.map-settings {
+  padding: 10px;
+}
+
+.map {
+  flex-grow: 1;
+  position: relative;
+}
+
+.zoomable-map {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-width: 100vw; /* Prevent overflow */
+  max-height: 100vh; /* Prevent overflow */
+  transform-origin: center center;
+}
+
+
+/* Zoom behavior */
+.zoomable-map:hover {
+  cursor: zoom-in;
+}
+
+/* Add zooming when mouse scrolls */
+.map {
+  overflow: hidden;
+}
+
+.map img {
+  transition: transform 0.3s ease;
+}
+
+

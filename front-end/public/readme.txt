@@ -1,0 +1,1 @@
+this folder will contain the base HTML file (index.html) and public static assets like the favicon
