@@ -13,6 +13,7 @@ import ProtectedRouteWrapper from "./components/ProtectedRouteWrapper";
 import Home from "./components/Home";
 import SuggestPage from "./components/SuggestPage";
 import { StoreProvider } from "./context/StoresContext";
+import HelpPage from "./components/HelpPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,6 +25,7 @@ const router = createBrowserRouter(
       <Route element={<ProtectedRouteWrapper requiresAuth={true} />}>
         <Route index path="/" element={<Home />} />
         <Route index path="/suggest" element={<SuggestPage />} />
+        <Route path="/help" element={<HelpPage />} />
       </Route>
     </>,
   ),
