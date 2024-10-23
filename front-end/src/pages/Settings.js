@@ -1,7 +1,7 @@
 import React from 'react'
-import SearchBar from './components/SearchBar'
-import NavigationBar from './components/NavigationBar'
-import TitleAndDescriptionBox from './components/TitleAndDescriptionBox'
+import SearchBar from '../components/SearchBar'
+import NavigationBar from '../components/NavigationBar'
+import TitleAndDescriptionBox from '../components/TitleAndDescriptionBox'
 import './Settings.css'
 
 const Settings = () => {

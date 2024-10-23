@@ -12,13 +12,13 @@ import InputField from "./components/InputField";
 import SubmitButton from "./components/SubmitButton";
 import LogoPageTitle from "./components/LogoPageTitle";
 import SearchBar from "./components/SearchBar";
-import Home from "./Home";
-import Community from "./Community";
-import Blog from "./Blog";
-import Profile from "./Profile";
-import Blocked from "./Blocked"
-import Settings from "./Settings"
-import Privacy from "./Privacy"
+import Home from "./pages/Home";
+import Community from "./pages/Community";
+import Blog from "./pages/Blog";
+import Profile from "./pages/Profile";
+import Settings from "./pages/Settings"
+import Privacy from "./pages/Privacy"
+import Blocked from "./pages/Blocked"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -102,7 +102,7 @@ function App() {
 
           <CommunityPopup />
 
-          <h1></h1>
+            <h1></h1>
 
           <NavigationBar />
 
