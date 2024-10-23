@@ -109,7 +109,7 @@ function App() {
 
             <BlogPost
               User={{
-                profilePic: "/logo192.png", 
+                profilePic: "/seraphim-logo.png", 
                 name: "Mona Lisa",
                 userName: "@monalisa",
                 text: "This is a sample blog post text for testing purposes. Just saw myself at the Louvre. #Dope",
@@ -129,7 +129,7 @@ function App() {
 
             <ProfileHeader
                 User={{
-                  profilePic: "/logo192.png", 
+                  profilePic: "/seraphim-logo.png", 
                   name: "Mona Lisa",
                   userName: "@monalisa",
                   about: ['She/Her', '12/01/2003', 'Louvre Museum, Paris'],

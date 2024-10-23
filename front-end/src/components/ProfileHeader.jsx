@@ -11,15 +11,15 @@ const ProfileHeader = ({ User, LoggedIn }) => {
     }, [])
 
     return (
-        <div>
-            <img src={user.profilePic}></img>
-            {LoggedIn && 
-                <div>
-                    <button>Edit Profile</button>
-                    <button>Settings</button>
-                </div>
-            }
+        <div className="flex flex-column justify-evenly items-center border-2 rounded-xl p-4 w-[70%] h-max">
+            <img className="w-[200px]" src={user.profilePic}></img>
             <div>
+                {LoggedIn && 
+                    <div>
+                        <button>Edit Profile</button>
+                        <button>Settings</button>
+                    </div>
+                }
                 {user.about && 
                     user.about.map((info, index) => (
                         <p key={index}>{info}</p>
