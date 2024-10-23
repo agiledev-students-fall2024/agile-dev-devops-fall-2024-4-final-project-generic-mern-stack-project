@@ -2,13 +2,20 @@ import React from "react";
 import "./InputField.css";
 function InputField({ imgSrc = "", inputfieldName, inputType = "text" }) {
   return (
-    <div className="input">
-      <img src={imgSrc} alt="" />
-      <div>{inputfieldName}</div>
-      <input className="input-box" type={inputType} />
-    </div>
+    <>
+      <div className="container">
+        <div className="input">
+          <img src={imgSrc} alt="" />
+
+          <input
+            className="input-box"
+            type={inputType}
+            placeholder={inputfieldName}
+          />
+        </div>
+      </div>
+    </>
   );
 }
-// remove "Component" directory
 
 export default InputField;

@@ -17,6 +17,10 @@ import Community from "./pages/Community";
 import Blog from "./pages/Blog";
 import Profile from "./pages/Profile";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   return (
@@ -98,6 +102,11 @@ function App() {
             <InputField inputfieldName="Password" inputType="password" />
             <SubmitButton placeholder="Submit" />
             <SearchBar />
+
+            <Login />
+            <Signup />
+            <ForgotPassword />
+            <ResetPassword />
           </main>
         </Router>
       </div>
