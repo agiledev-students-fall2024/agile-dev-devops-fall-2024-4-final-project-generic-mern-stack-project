@@ -4,7 +4,6 @@ import loggedInData from '../fillerData/loggedIn.json'
 import postData from '../fillerData/posts.json'
 import blockedData from '../fillerData/blocked.json'
 import { Link } from 'react-router-dom'
-import { Container } from 'react-bootstrap'
 import { Card } from 'react-bootstrap'
 import '../styles/Home.css'
 
@@ -50,7 +49,7 @@ const Explore = () => {
           </svg>
       </Link>
       </header>
-      <Container className='content' >
+      <div className='content' >
         <h1>Explore</h1>
         {posts.map( post => {
             const dateObject = new Date(post.date)
@@ -71,7 +70,7 @@ const Explore = () => {
               </Card>
               </div>
         )})}
-      </Container>
+      </div>
     </div>
   )
 }

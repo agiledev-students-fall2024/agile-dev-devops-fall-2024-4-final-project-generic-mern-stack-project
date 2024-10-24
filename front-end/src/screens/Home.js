@@ -4,7 +4,6 @@ import loggedInData from '../fillerData/loggedIn.json'
 import postData from '../fillerData/posts.json'
 import friendsData from '../fillerData/friendships.json'
 import { Link } from 'react-router-dom'
-import { Container } from 'react-bootstrap'
 import { Card } from 'react-bootstrap'
 import '../styles/Home.css'
 
@@ -41,10 +40,10 @@ const Home = () => {
   return (
     <div>
       <header>
-        <Link to='/explore' className='btn btn-secondary rounded-pill'>Explore</Link>
-        <Link to= {`/profile/${user.username}`} className='btn btn-secondary rounded-pill'>Profile</Link>
+        <Link to='/explore' className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>Explore</Link>
+        <Link to= {`/profile/${user.username}`} className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>Profile</Link>
       </header>
-      <Container className='content' >
+      <div className='container content' >
         <h1>Network</h1>
         {posts.map( post => {
             const dateObject = new Date(post.date)
@@ -65,7 +64,7 @@ const Home = () => {
               </Card>
               </div>
         )})}
-      </Container>
+      </div>
     </div>
   )
 }

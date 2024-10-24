@@ -33,3 +33,11 @@
     color: black;
     background-color: lightgrey;
 }
+
+.border-red-600 {
+    border-color: rgb(220 38 38) !important;
+}
+
+.border-green-700 {
+    border-color: rgb(21 128 61) !important;
+}

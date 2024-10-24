@@ -1,7 +1,6 @@
 import React from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { Button, Modal } from 'react-bootstrap';
 import userData from '../fillerData/users.json'
 import loggedInData from '../fillerData/loggedIn.json'
 
@@ -58,7 +57,18 @@ const EditProfileForm = () => {
             >
             {({errors, isSubmitting, setFieldValue, touched, values}) => (
                 <>
-                    <p onClick={handleShow}>Edit picture</p>
+                    <label htmlFor='fileInput'>Edit picture</label>
+                    <input
+                        type='file'
+                        id='fileInput'
+                        accept="image/*"
+                        onChange={(event) => {
+                            const file = event.currentTarget.files[0]
+                            setFieldValue('file', file)
+                            setShow(false)
+                        }}
+                        className={`form-control ${touched.file && errors.file ? 'is-invalid': ''}`}
+                    />
                     <Form>
                         <div>
                             <label htmlFor='name' className='form-label'>Name</label>
@@ -92,44 +102,18 @@ const EditProfileForm = () => {
                         <ErrorMessage name='bio'>
                             {msg => <div className='text-danger'>{msg}</div>}
                         </ErrorMessage>
-                        <div className='d-grid gap-2'>
-                            <Button type='submit' variant='dark' disabled={isSubmitting} >
+                        <div className='grid gap-2'>
+                            <button 
+                                type='submit'
+                                className='bg-gray-900 text-white py-2 px-2 rounded hover:bg-gray-500'
+                                disabled={isSubmitting}
+                            >
                                 Update
-                            </Button>
+                            </button>
                         </div>
                         {errors.file && touched.file ? (
                             <div className='text-danger'>{errors.file}</div>
                         ) : null}
-
-
-                        <Modal show={show} onHide={handleClose} centered>
-                            <Modal.Body>
-                                <p onClick={handleClose}>Cancel</p>
-                                <div className='edit-picture'>
-                                    <input
-                                        type='file'
-                                        id='fileInput'
-                                        accept="image/*"
-                                        onChange={(event) => {
-                                            const file = event.currentTarget.files[0]
-                                            setFieldValue('file', file)
-                                            setShow(false)
-                                        }}
-                                        className={`form-control ${touched.file && errors.file ? 'is-invalid': ''}`}
-                                    />
-                                    <label htmlFor='fileInput' className='btn btn-light btn-file'>Choose File</label>
-                                    {
-                                        values.file ?
-                                        <p className='mt-3'>
-                                            You have selected: <span className={touched.file && errors.file ? 'text-danger': 'text-success'}>{values.file.name}</span>
-                                        </p>:
-                                        <p className='mt-3'>
-                                            You haven't selected a file
-                                        </p>
-                                    }
-                                </div>
-                            </Modal.Body>
-                        </Modal>
                     </Form>
                 </>
             )}
