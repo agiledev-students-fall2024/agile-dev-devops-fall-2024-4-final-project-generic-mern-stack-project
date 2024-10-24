@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
 import '../styles/FriendsBlocked.css';
+import userData from '../fillerData/users.json';
 
 const FriendsBlocked = () => {
+    const [blockedUsers, setBlockedUsers] = useState([]);
+  
+    useEffect(() => {
+      const sortedUsers = [...userData].sort((a, b) => a.username.localeCompare(b.username));
+      setBlockedUsers(sortedUsers);
+    }, []);
+
     return (
         <div>
             <header>
@@ -18,7 +27,19 @@ const FriendsBlocked = () => {
             </header>
 
             <Container>
-
+                <h6>Users you have blocked</h6>
+                <div className="friends-list">
+                    {blockedUsers.map(user => (
+                        <div key={user.id} className="blocked-item">
+                            <div className="username">
+                                <span>{user.username}</span>
+                            </div>
+                            <div className="blocked-actions">
+                                <Button variant="outline-dark" size="sm">Unblock</Button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </Container>
         </div>
     );
