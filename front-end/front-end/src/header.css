@@ -1,0 +1,27 @@
+.header {
+display: flex;
+justify-content: center;
+align-items: center;
+position: relative;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+border-radius: 5px; /* Add a subtle rounded corner to match page sections */
+margin: 20px auto;
+width: auto; 
+}
+
+.header a {
+margin: 0 10px;
+padding: 10px 20px;
+text-decoration: none;
+color: #6200ea; /* Match the purple button color */
+font-weight: bold;
+font-family: 'Arial', sans-serif; /* Use the same font as other parts */
+border: 2px solid #6200ea; /* Border to make it look like your buttons */
+border-radius: 5px;
+}
+
+.header a:hover {
+background-color: #6200ea; /* Same hover effect as your buttons */
+color: #fff; /* White text on hover */
+transition: background-color 0.3s ease;
+}

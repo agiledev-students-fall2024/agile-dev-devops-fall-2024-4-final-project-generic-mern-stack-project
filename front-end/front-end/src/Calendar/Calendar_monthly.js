@@ -62,7 +62,7 @@ const Calendar_monthly = () => {
                                 {day || '  '}
                                  {/* Conditionally render Tasks */} 
 
-                                <div className='task' >
+                                <div className='task_calendar' >
                                     {day !== null ? <p>Tasks:</p> : null} 
 
                                     {/* if the database is implemented */}

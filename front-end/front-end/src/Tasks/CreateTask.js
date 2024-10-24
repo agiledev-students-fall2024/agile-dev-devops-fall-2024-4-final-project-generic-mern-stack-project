@@ -93,9 +93,10 @@ function CreateTask() {
                     <option value="No">No</option>
                 </select>
             </div>
-            <br></br>
-            <Link to="/Tasks" className="cancel-btn">Cancel</Link>
-            <button onClick={handleSubmit} className="create-btn">Create Task</button>
+            <div className="create-task-buttons">
+                <Link to="/Tasks" className="cancel-btn">Cancel</Link>
+                <button onClick={handleSubmit} className="create-btn">Create Task</button>
+            </div>
         </div>
     )
 
