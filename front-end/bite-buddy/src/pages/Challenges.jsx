@@ -1,13 +1,14 @@
 import '../index.css';
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './Challenges.css';
 
 const Challenges = () => {
     const [challengesData, setChallengesData] = useState([]);
     const [selectedChallenge, setSelectedChallenge] = useState(null);
-
+    const navigate = useNavigate()
 
 
     useEffect(() => {
@@ -21,6 +22,7 @@ const Challenges = () => {
 
         fetchChallengesData();
     }, []); 
+
     const handleStartClick = (challenge) => {
         setSelectedChallenge(challenge);
     };
@@ -31,6 +33,7 @@ const Challenges = () => {
 
     const handleStartButton = (event) => {
         event.stopPropagation();
+        navigate('/record');
     };
 
     return (
@@ -44,7 +47,7 @@ const Challenges = () => {
                     <div className="challenge-image">
                         <img src={challenge.image} alt={`Challenge ${index + 1}`} />
                     </div>
-                    <Link to="/record"><button className="start-button" onClick={handleStartButton}>START CHALLENGE</button></Link>
+                    <button className="start-button" onClick={handleStartButton}>START CHALLENGE</button>
                 </div>
             ))}
 
@@ -56,7 +59,7 @@ const Challenges = () => {
                     <div className="challenge-image-popup">
                         <img src={selectedChallenge.image} alt={`Challenge image`} />
                     </div>
-                    <Link to="/record"><button className="start-button different-color" onClick={handleStartButton}>START CHALLENGE</button></Link>
+                    <button className="start-button different-color" onClick={handleStartButton}>START CHALLENGE</button>
                 </div>
             )}
         </div>
