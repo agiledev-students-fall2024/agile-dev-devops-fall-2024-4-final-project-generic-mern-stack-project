@@ -44,28 +44,30 @@ const Home = () => {
         <Link to='/explore' className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>Explore</Link>
         <Link to= {`/profile/${user.username}`} className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>Profile</Link>
       </header>
-      <Container className='content' >
+      <div className='content container' >
         <h1>Network</h1>
-        {posts.map( post => {
-            const dateObject = new Date(post.date)
-            return (
-              // Bootstrap react card 
-              <div key={`home-${post.id}`}>
-              <Card className="card-display">
-                <Card.Img variant="top" src={post.imageUrl} />
-                <Card.Body>
-                  <Card.Title>{post.title}</Card.Title>
-                  <Card.Text>
-                    {/* Display 10 words on blog home page */}
-                    {post.content.split(' ').slice(0, 10).join(' ') + (post.content.split(' ').length > 10 ? '...' : '')} <br />
-                    {/* Display dates of blog posts */}
-                    {dateObject.toLocaleDateString('en-US')}
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-              </div>
-        )})}
-      </Container>
+      </div>
+      <div className={`home-posts layout`} >
+              {posts.map( post => {
+                  const dateObject = new Date(post.date)
+                  return (
+                      <Link 
+                          key={`home-${user.username}-${post.id}`} 
+                          to={`/blogpostloggedin/${post.id}`} 
+                          className=' text-reset text-decoration-none'
+                      >
+                          <div>
+                              { post.imageUrl ? 
+                                  <img src={post.imageUrl} alt='User-submitted' />: 
+                                  <img src={noImgSrc} alt='Not provided by user' className='no-img' />
+                              }
+                              <h2>{post.title}</h2>
+                              <p className='post-content'>{post.content.split(' ').slice(0, 10).join(' ') + (post.content.split(' ').length > 10 ? '...' : '')}</p>
+                              <p className='mt-3 mb-0 text-end'>{dateObject.toLocaleDateString('en-US')}</p>
+                          </div>
+                      </Link>
+              )})}
+        </div>
     </div>
   )
 }

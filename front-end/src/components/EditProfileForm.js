@@ -7,9 +7,6 @@ import loggedInData from '../fillerData/loggedIn.json'
 const EditProfileForm = () => {
     const loggedInUser = loggedInData[0]
     const user = userData.find(user => user.id === loggedInUser.id)
-    const [show, setShow] = React.useState(false)
-    const handleClose = () => setShow(false)
-    const handleShow = () => setShow(true)
     const layoutChoices = [
                             { val: 'list', label: 'List'},
                             { val: 'list-title', label: 'List (title only)'},
@@ -65,7 +62,6 @@ const EditProfileForm = () => {
                         onChange={(event) => {
                             const file = event.currentTarget.files[0]
                             setFieldValue('file', file)
-                            setShow(false)
                         }}
                         className={`form-control ${touched.file && errors.file ? 'is-invalid': ''}`}
                     />
