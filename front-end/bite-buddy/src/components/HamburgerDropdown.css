@@ -12,37 +12,40 @@
     cursor: pointer;
     z-index: 2000;
     position: relative;
-}
-
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 999;
+    text-decoration: none;
 }
 
 .dropdown-menu {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
+    width: 67vw;
     height: 100vh;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 0.95);
     display: flex;
-    justify-content: center;
-    align-items: center;
+    padding-top: 90px;
     flex-direction: column;
     z-index: 998;
+}
+
+.navigation-icon svg{
+    font-size: 30px;
+}
+
+.home-link {
+    font-size: 30px; 
+    font-weight: bold; 
+    padding-bottom: 50px;
+    text-align: center; 
+
 }
 
 .dropdown-menu ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
-    text-align: center;
+    text-align: left;
+    font-size: 24px;
 }
 
 .dropdown-menu li {
@@ -55,6 +58,5 @@
 
 .dropdown-menu a {
     text-decoration: none;
-    color: black;
-    font-size: 24px;
+    color: black
 }

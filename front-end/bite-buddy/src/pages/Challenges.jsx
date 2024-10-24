@@ -1,20 +1,26 @@
-import '../index.css'
-import React, { useState } from "react";
+import '../index.css';
+import React, { useState, useEffect } from "react";
+import axios from 'axios';
 import { Link } from 'react-router-dom';
-import './Challenges.css'
+import './Challenges.css';
 
 const Challenges = () => {
+    const [challengesData, setChallengesData] = useState([]);
     const [selectedChallenge, setSelectedChallenge] = useState(null);
 
-    const challengesData = [
-        { title: "Challenge Title", description: "text text text text text text text text text text text text text text text text ", image: "Challenge Image" },
-        { title: "Challenge Title", description: "text text text text text text text text text text text text text text text text ", image: "Challenge Image" },
-        { title: "Challenge Title", description: "text text text text text text text text text text text text text text text text ", image: "Challenge Image" },
-        { title: "Challenge Title", description: "text text text text text text text text text text text text text text text text ", image: "Challenge Image" },
-        { title: "Challenge Title", description: "text text text text text text text text text text text text text text text text ", image: "Challenge Image" }
-    ]
 
 
+    useEffect(() => {
+        const fetchChallengesData = async () => {
+            const response = await axios.get('https://my.api.mockaroo.com/challenges.json?key=d1ce50e0');
+            const fetchedData = response.data || [];
+            console.log(fetchedData)
+
+            setChallengesData([...fetchedData]);
+        };
+
+        fetchChallengesData();
+    }, []); 
     const handleStartClick = (challenge) => {
         setSelectedChallenge(challenge);
     };
@@ -35,8 +41,10 @@ const Challenges = () => {
                     <h2>CHALLENGE #{index + 1}</h2>
                     <h3>{challenge.title}</h3>
                     <p>{challenge.description}</p>
-                    <div className="challenge-image">{challenge.image}</div>
-                    <button className="start-button" onClick={handleStartButton}>START CHALLENGE</button>
+                    <div className="challenge-image">
+                        <img src={challenge.image} alt={`Challenge ${index + 1}`} />
+                    </div>
+                    <Link to="/record"><button className="start-button" onClick={handleStartButton}>START CHALLENGE</button></Link>
                 </div>
             ))}
 
@@ -45,7 +53,10 @@ const Challenges = () => {
                     <button className="close-button" onClick={closeFullCard}>X</button>
                     <h2>{selectedChallenge.title}</h2>
                     <p>{selectedChallenge.description}</p>
-                    <div className="challenge-image">{selectedChallenge.image}</div>
+                    <div className="challenge-image-popup">
+                        <img src={selectedChallenge.image} alt={`Challenge image`} />
+                    </div>
+                    <Link to="/record"><button className="start-button different-color" onClick={handleStartButton}>START CHALLENGE</button></Link>
                 </div>
             )}
         </div>
