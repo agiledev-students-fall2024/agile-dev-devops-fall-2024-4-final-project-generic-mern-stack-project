@@ -1,15 +1,17 @@
 // src/pages/LoginPage.js
 import React, { useState } from 'react';
+import { useAuth } from '../context/AuthContext'; // Import useAuth
 import './LoginPage.css'; 
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { login } = useAuth(); // Get login function from context
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle login logic (e.g., authenticate user)
     console.log('Logging in:', { email, password });
+    login(); // Call login on successful login
   };
 
   return (

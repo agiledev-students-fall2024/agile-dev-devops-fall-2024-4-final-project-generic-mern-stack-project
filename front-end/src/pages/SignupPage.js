@@ -1,24 +1,20 @@
-// src/pages/SignupPage.js
+// src/pages/SignUpPage.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './SignupPage.css';
+import { useAuth } from '../context/AuthContext'; // Import useAuth
+import './SignUpPage.css';
 
-const SignupPage = ({ onSignup }) => {
+const SignUpPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const { login } = useAuth(); // Get login function from context
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Capture and log the username and password
     console.log('Username:', username);
     console.log('Password:', password);
-
-    // Call the signup function passed down from App.js
-    onSignup({ username, password });
-
-    // Redirect to the home page or another page after signing up
+    login(); // Call login on successful signup
     navigate('/');
   };
 
@@ -50,4 +46,4 @@ const SignupPage = ({ onSignup }) => {
   );
 };
 
-export default SignupPage;
+export default SignUpPage;

@@ -1,9 +1,12 @@
 // src/components/profile/ProfileDropdown.js
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext'; // Import useAuth
 import './ProfileDropdown.css';
 
-const ProfileDropdown = ({ onSignOut, isLoggedIn }) => {
+const ProfileDropdown = () => {
+  const { isLoggedIn, signOut } = useAuth(); // Access login state and sign out function
+
   return (
     <div className="profile-dropdown">
       {isLoggedIn ? (
@@ -12,7 +15,7 @@ const ProfileDropdown = ({ onSignOut, isLoggedIn }) => {
             <span className="profile-dropdown-item-icon">🧑</span>
             Profile
           </Link>
-          <button className="profile-dropdown-item" onClick={onSignOut}>
+          <button className="profile-dropdown-item" onClick={signOut}>
             <span className="profile-dropdown-item-icon">🚪</span>
             Sign Out
           </button>
