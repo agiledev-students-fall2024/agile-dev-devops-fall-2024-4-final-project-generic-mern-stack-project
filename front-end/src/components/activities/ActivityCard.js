@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './ActivityCard.css'; // Make sure the CSS file is imported
 
-const ActivityCard = ({ id, title, votes, description, price, comments }) => {
+const ActivityCard = ({ id, title, votes, description, price, comments, imageUrl }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [newComment, setNewComment] = useState('');
   const [commentList, setCommentList] = useState(comments || []);
@@ -15,8 +15,6 @@ const ActivityCard = ({ id, title, votes, description, price, comments }) => {
       setNewComment('');
     }
   };
-
-  const imageUrl = `https://picsum.photos/id/${id}/150/100`; // Adjusted image size
 
   return (
     <div className="activity-card">

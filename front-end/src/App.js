@@ -15,6 +15,8 @@ const App = () => {
       <main className="App-main">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/past-trip/:id" element={<PastTrip />} />
+          <Route path="/a" element={<ActivitiesPage />} />
         </Routes>
       </main>
     </Router>

@@ -1,35 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import GroupTripPictureCard from '../components/activities/GroupTripPictureCard';
 import ActivityCard from '../components/activities/ActivityCard';
 import './ActivitiesPage.css';
 
 const ActivitiesPage = () => {
-  const [activities] = useState([
-    {
-      id: 1,
-      title: 'Hiking',
-      votes: 10,
-      description: 'Explore scenic trails and enjoy nature.',
-      price: '$$',
-      comments: ['Looks fun!', 'Can’t wait to join!'],
-    },
-    {
-      id: 2,
-      title: 'Museum Visit',
-      votes: 8,
-      description: 'A tour of the local art and history museum.',
-      price: '$$$',
-      comments: ['This sounds interesting.', 'See you there!'],
-    },
-    {
-      id: 3,
-      title: 'Beach Day',
-      votes: 12,
-      description: 'Relax at the beach with sun and surf.',
-      price: '$$',
-      comments: ['Perfect weather for the beach!', 'I’ll bring snacks!'],
-    },
-  ]);
+  const [activities, setActivities] = useState([]); 
+  const [error, setError] = useState(null); 
+
+  useEffect(() => {
+    
+    axios
+      .get('https://mock-api-misty-fog-1131.fly.dev/api/locations/location_001/activities')
+      .then((response) => {
+        console.log('API Response:', response.data); 
+        setActivities(response.data); 
+      })
+      .catch((error) => {
+        console.error('Error fetching activities:', error); // Log error
+        setError('Failed to fetch activities'); // Set error message
+      });
+  }, []); // Empty dependency array to run only once on mount
 
   return (
     <div className="activities-page">
@@ -39,14 +30,26 @@ const ActivitiesPage = () => {
         <button>Food</button>
         <button>Activities</button>
         <button>Stay</button>
-        <button className="new-activity-button">Create a new activity</button>
+        <button className="new-activity-button">Create Activity</button>
       </div>
 
-      <div className="activity-list">
-        {activities.map((activity) => (
-          <ActivityCard key={activity.id} {...activity} />
-        ))}
-      </div>
+      {error ? ( // Show error if present
+        <p>{error}</p>
+      ) : (
+        <div className="activity-list">
+          {activities.map((activity) => (
+            <ActivityCard
+              key={activity.id}
+              title={activity.name}
+              description={activity.description}
+              votes={activity.votes}
+              price={activity.price ? `$${activity.price}` : 'Free'}
+              comments={activity.comments.map((c) => c.commentString)}
+              imageUrl={activity.image}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
