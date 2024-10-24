@@ -1,6 +1,11 @@
 import React from "react";
 import "./InputField.css";
-function InputField({ imgSrc = "", inputfieldName, inputType = "text" }) {
+function InputField({
+  imgSrc = "",
+  inputfieldName,
+  inputType = "text",
+  handleChange,
+}) {
   return (
     <>
       <div className="container">
@@ -11,6 +16,7 @@ function InputField({ imgSrc = "", inputfieldName, inputType = "text" }) {
             className="input-box"
             type={inputType}
             placeholder={inputfieldName}
+            onChange={handleChange}
           />
         </div>
       </div>
