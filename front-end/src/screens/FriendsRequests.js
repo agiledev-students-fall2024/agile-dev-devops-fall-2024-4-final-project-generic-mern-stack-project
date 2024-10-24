@@ -26,7 +26,7 @@ const FriendRequests = () => {
         </div>
       </header>
 
-      <div className='container'>
+      <div className='container-friends'>
         <h6>Incoming Requests</h6>
         <div className="friends-list">
           {incomingRequests.map(user => (

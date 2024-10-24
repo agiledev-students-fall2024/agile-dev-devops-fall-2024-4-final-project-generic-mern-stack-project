@@ -30,7 +30,7 @@ const FriendsList = () => {
         </div>
       </header>
 
-      <div className='container'>
+      <div className='container-friends'>
         <div className="friends-actions">
           <Link to='/friendssearch'>
             <button className="action-btn border border-black rounded">Search</button>
