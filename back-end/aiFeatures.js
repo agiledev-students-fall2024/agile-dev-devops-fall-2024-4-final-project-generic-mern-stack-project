@@ -19,7 +19,7 @@ async function summarizeText(text) {
                 { role: 'user', content: `Summarize the following text:\n\n${text} Your output will be given to user directly so don't output any extra information.` },
             ],
         });
-        return response.choices[0].message.content; // Return the summary as a string
+        return response.choices[0].message.content;
     } catch (error) {
         console.error('Error generating summary:', error);
     }
