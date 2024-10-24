@@ -1,13 +1,16 @@
 import React from "react";
 import "./ResetPassword.css";
 import LogoPageTitle from "../components/LogoPageTitle";
-import Logo from "../assets/upload-image-placeholder.png";
+// import Logo from "../assets/upload-image-placeholder.png";
 import { Link } from "react-router-dom";
 
 export default function ResetPassword() {
   return (
     <>
-      <LogoPageTitle logoSrc={Logo} title="Set New Password"></LogoPageTitle>
+      <LogoPageTitle
+        logoSrc="./seraphim-logo.PNG"
+        title="Set New Password"
+      ></LogoPageTitle>
       <div className="passwords">
         <div className="input-container">
           <label>password</label>

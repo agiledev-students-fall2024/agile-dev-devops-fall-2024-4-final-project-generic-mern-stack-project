@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import "./InputField.css";
 function InputField({
   imgSrc = "",
   inputfieldName,
   inputType = "text",
   handleChange,
+  inputValue,
 }) {
+  // const [value, setValue] = useState("");
+  // const handleChange = (event) => {
+  //   setValue(event.target.value);
+  //   // if (props.onChange) {
+  //   //   props.onChange(event);
+  //   // }
+  // };
   return (
     <>
       <div className="container">
@@ -15,8 +23,10 @@ function InputField({
           <input
             className="input-box"
             type={inputType}
+            id={inputfieldName}
             placeholder={inputfieldName}
             onChange={handleChange}
+            value={inputValue}
           />
         </div>
       </div>

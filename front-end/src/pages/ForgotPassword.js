@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import LogoPageTitle from "../components/LogoPageTitle";
-import Logo from "../assets/upload-image-placeholder.png";
+// import Logo from "../assets/upload-image-placeholder.png";
 import InputField from "../components/InputField";
 import "./ForgotPassword.css";
 import { Link } from "react-router-dom";
@@ -18,7 +18,7 @@ export default function ForgotPassword() {
   };
   return (
     <>
-      <LogoPageTitle logoSrc={Logo} title="Forgot Password?" />
+      <LogoPageTitle logoSrc="seraphim-logo.PNG" title="Forgot Password?" />
       <div className="input-btn-container">
         <InputField
           inputfieldName="Email"
