@@ -162,7 +162,7 @@ const UpdateBlogPost = () => {
           />
         </div>
 
-        <button type="submit" className="btn btn-primary">Save Changes</button>
+        <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">Save Changes</button>
       </form>
     </div>
   );

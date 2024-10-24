@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
 import '../styles/FriendsBlocked.css';
 import userData from '../fillerData/users.json';
 
@@ -26,7 +24,7 @@ const FriendsBlocked = () => {
                 </div>
             </header>
 
-            <Container>
+            <div className='container'>
                 <h6>Users you have blocked</h6>
                 <div className="friends-list">
                     {blockedUsers.map(user => (
@@ -35,12 +33,12 @@ const FriendsBlocked = () => {
                                 <span>{user.username}</span>
                             </div>
                             <div className="blocked-actions">
-                                <Button variant="outline-dark" size="sm">Unblock</Button>
+                                <button className='border border-black py-1 px-2 rounded text-sm hover:bg-black hover:text-white'>Unblock</button>
                             </div>
                         </div>
                     ))}
                 </div>
-            </Container>
+            </div>
         </div>
     );
 };

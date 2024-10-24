@@ -1,7 +1,6 @@
 import '../styles/main.css'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Container from 'react-bootstrap/Container';
 import LoginForm from '../components/LoginForm';
 
 const Login = () => {
@@ -12,10 +11,10 @@ const Login = () => {
         <Link to='/register'>Register</Link>
       </header>
 
-      <Container>
+      <div className='container'>
         <h1>LOG IN</h1>
         <LoginForm />
-      </Container>
+      </div>
     </div>
   )
 }

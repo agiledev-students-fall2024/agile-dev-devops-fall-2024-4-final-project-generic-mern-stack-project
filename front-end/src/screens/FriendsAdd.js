@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
 import '../styles/FriendsAdd.css';
 import userData from '../fillerData/users.json';
 
@@ -35,7 +33,7 @@ const FriendsAdd = () => {
                 </div>
             </header>
             
-            <Container>
+            <div className='container'>
                 <div className="input-bar-add">
                     <input 
                         type="text" 
@@ -54,7 +52,7 @@ const FriendsAdd = () => {
                                     <h5>{friend.name}</h5>
                                 </div>
                                 <div className="friend-actions">
-                                    <Button variant="outline-dark" size="sm">Add Friend</Button>
+                                    <button className='border border-black py-1 px-2 rounded text-sm hover:bg-black hover:text-white'>Add Friend</button>
                                 </div>
                             </div>
                         ))
@@ -62,7 +60,7 @@ const FriendsAdd = () => {
                         searchTerm && <p>No matching friends found.</p>
                     )}
                 </div>
-            </Container>
+            </div>
         </div>
     );
 };

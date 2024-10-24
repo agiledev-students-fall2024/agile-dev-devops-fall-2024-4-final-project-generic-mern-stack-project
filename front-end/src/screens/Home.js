@@ -41,8 +41,8 @@ const Home = () => {
   return (
     <div>
       <header>
-        <Link to='/explore' className='btn btn-secondary rounded-pill'>Explore</Link>
-        <Link to= {`/profile/${user.username}`} className='btn btn-secondary rounded-pill'>Profile</Link>
+        <Link to='/explore' className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>Explore</Link>
+        <Link to= {`/profile/${user.username}`} className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>Profile</Link>
       </header>
       <div className='content container' >
         <h1>Network</h1>

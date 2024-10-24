@@ -1,7 +1,6 @@
 import '../styles/profile.css'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Container } from 'react-bootstrap'
 import EditProfileForm from '../components/EditProfileForm'
 import userData from '../fillerData/users.json'
 import loggedInData from '../fillerData/loggedIn.json'
@@ -19,7 +18,7 @@ const EditProfile = () => {
                     </svg>
                 </Link>
             </header>
-            <Container className='content'>
+            <div className='content'>
                 <h1>Edit Profile</h1>
                 <div className='default-img'>
                     {
@@ -33,7 +32,7 @@ const EditProfile = () => {
                 </div>
 
                 <EditProfileForm />
-            </Container>
+            </div>
         </>
     )
 }
