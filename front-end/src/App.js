@@ -24,7 +24,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 function App() {
   return (
     <>
-      <div className="App">
+      <div className="App m-[auto] font-sera">
         <Router>
           <main className="App-main">
             <Routes>
