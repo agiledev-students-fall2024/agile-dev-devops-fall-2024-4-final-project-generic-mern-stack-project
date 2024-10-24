@@ -4,9 +4,8 @@ import loggedInData from '../fillerData/loggedIn.json'
 import postData from '../fillerData/posts.json'
 import friendsData from '../fillerData/friendships.json'
 import { Link } from 'react-router-dom'
-import { Container } from 'react-bootstrap'
-import { Card } from 'react-bootstrap'
 import '../styles/Home.css'
+import '../styles/profile.css'
 
 const Home = () => {
   // get user  
@@ -37,6 +36,7 @@ const Home = () => {
 
   // pulls data of friends
   const posts = postData.filter(post => friends.includes(post.author_id)).sort((a, b) => new Date(b.date) - new Date(a.date))
+  const noImgSrc = 'https://cdn.vectorstock.com/i/500p/50/20/no-photography-sign-image-vector-23665020.jpg'
 
   return (
     <div>
@@ -44,28 +44,30 @@ const Home = () => {
         <Link to='/explore' className='btn btn-secondary rounded-pill'>Explore</Link>
         <Link to= {`/profile/${user.username}`} className='btn btn-secondary rounded-pill'>Profile</Link>
       </header>
-      <Container className='content' >
+      <div className='content container' >
         <h1>Network</h1>
-        {posts.map( post => {
-            const dateObject = new Date(post.date)
-            return (
-              // Bootstrap react card 
-              <div key={`home-${post.id}`}>
-              <Card className="card-display">
-                <Card.Img variant="top" src={post.imageUrl} />
-                <Card.Body>
-                  <Card.Title>{post.title}</Card.Title>
-                  <Card.Text>
-                    {/* Display 10 words on blog home page */}
-                    {post.content.split(' ').slice(0, 10).join(' ') + (post.content.split(' ').length > 10 ? '...' : '')} <br />
-                    {/* Display dates of blog posts */}
-                    {dateObject.toLocaleDateString('en-US')}
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-              </div>
-        )})}
-      </Container>
+      </div>
+      <div className={`home-posts layout`} >
+              {posts.map( post => {
+                  const dateObject = new Date(post.date)
+                  return (
+                      <Link 
+                          key={`home-${user.username}-${post.id}`} 
+                          to={`/blogpostloggedin/${post.id}`} 
+                          className=' text-reset text-decoration-none'
+                      >
+                          <div>
+                              { post.imageUrl ? 
+                                  <img src={post.imageUrl} alt='User-submitted' />: 
+                                  <img src={noImgSrc} alt='Not provided by user' className='no-img' />
+                              }
+                              <h2>{post.title}</h2>
+                              <p className='post-content'>{post.content.split(' ').slice(0, 10).join(' ') + (post.content.split(' ').length > 10 ? '...' : '')}</p>
+                              <p className='mt-3 mb-0 text-end'>{dateObject.toLocaleDateString('en-US')}</p>
+                          </div>
+                      </Link>
+              )})}
+        </div>
     </div>
   )
 }
