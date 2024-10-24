@@ -11,7 +11,7 @@ const ProfileHeader = ({ User, LoggedIn }) => {
     }, [])
 
     return (
-        <div className="flex flex-column justify-evenly items-center border-2 rounded-xl p-4 w-[70%] h-max">
+        <div className="flex flex-column justify-evenly items-center border-2 rounded-xl p-4 w-[70%] h-max m-[auto] font-sera">
             <img className="w-[200px]" src={user.profilePic}></img>
             <div>
                 {LoggedIn && 
