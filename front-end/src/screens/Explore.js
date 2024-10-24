@@ -51,8 +51,9 @@ const Explore = () => {
       </Link>
       </header>
       <div className='content container' >
-        <h1>Network</h1>
-        <div className={`home-posts layout`} >
+        <h1>Explore</h1>
+      </div>
+      <div className={`home-posts layout`} >
               {posts.map( post => {
                   const dateObject = new Date(post.date)
                   return (
@@ -72,7 +73,6 @@ const Explore = () => {
                           </div>
                       </Link>
               )})}
-        </div>
       </div>
     </div>
   )
