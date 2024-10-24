@@ -1,129 +1,89 @@
 import React from 'react'
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
 
 const RegisterForm = () => {
-  const initialValues = {
+  const [formData, setFormData] = React.useState({
         name: '',
         username: '',
         email: '',
         password: '',
         confirm: '',
-  };
+  })
 
-  const validationSchema = Yup.object({
-      name: Yup.string()
-        .min(2, 'Name must be at least 2 characters')
-        .max(50, 'Name cannot exceed 50 characters')
-        .required('Required'),
+const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+    }))
+}
 
-      username: Yup.string()
-        .min(3, 'Username must be at least 3 characters long')
-        .max(30, 'Username cannot exceed 30 characters')
-        .matches(/^[a-zA-Z0-9_.-]*$/, 'Username can only contain letters, numbers, underscores, hyphens, and periods.')
-        .required('Required'),
+const handleSubmit = (e) => {
+  e.preventDefault()
+  console.log('Form submitted:', formData)
+}
 
-      email: Yup.string()
-        .email('Invalid email format')
-        .required('Required'),
+return (
+  <form className='m-5' onSubmit={handleSubmit}>
+      <div className='grid'>
+        <label htmlFor='name' className='text-base mb-2 font-medium'>Name</label>
+        <input 
+            name='name' 
+            type='text' 
+            onChange={handleChange}
+            required
+            className='border border-gray-300 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-gray-400 text-base' />
+      </div>
+      <div className='grid'>
+        <label htmlFor='username' className='text-base mb-2 font-medium'>Username</label>
+        <input 
+            name='username' 
+            type='text' 
+            onChange={handleChange}
+            autoComplete='username'
+            required
+            className='border border-gray-300 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-gray-400 text-base' />
+      </div>
+      <div className='grid'>
+        <label htmlFor='email' className='text-base mb-2 font-medium'>Email</label>
+        <input 
+            name='email' 
+            type='email' 
+            onChange={handleChange}
+            autoComplete='username'
+            required
+            className='border border-gray-300 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-gray-400 text-base' />
+      </div>
+      <div className='grid'>
+        <label htmlFor='password' className='text-base mb-2 font-medium'>Password</label>
+        <input 
+            name='password' 
+            type='password' 
+            onChange={handleChange}
+            autoComplete='new-password'
+            required
+            className='border border-gray-300 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-gray-400 text-base' />
+      </div>
+      <div className='grid'>
+        <label htmlFor='confirm' className='text-base mb-2 font-medium'>Confirm Password</label>
+        <input 
+            name='confirm' 
+            type='password' 
+            onChange={handleChange}
+            autoComplete='new-password'
+            required
+            className='border border-gray-300 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-gray-400 text-base' />
+      </div>
 
-      password: Yup.string()
-        .min(8, 'Password must be at least 8 characters')
-        .max(20, 'Password cannot exceed 20 characters')
-        .required('Required')
-        .matches(/[A-Z]/, 'Must contain at least one uppercase letter')
-        .matches(/[a-z]/, 'Must contain at least one lowercase letter')
-        .matches(/[0-9]/, 'Must contain at least one number')
-        .matches(/[!@#$%^&*]/, 'Must contain at least one special character'),
-
-      confirm: Yup.string()
-        .oneOf([Yup.ref('password'), null], 'Passwords must match')
-        .required('Required'),
-  });
-
-  const onSubmit = (values) => {
-    console.log(values);
-  };
-
-  return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      onSubmit={onSubmit}
-    >
-      {({errors, isSubmitting, touched}) => (
-        <Form>
-            <div>
-                <label htmlFor='name' className='form-label'>Name</label>
-                <Field 
-                  name='name' 
-                  type='text' 
-                  className={`form-control ${touched.name && errors.name ? 'is-invalid': ''}`} 
-                />
-                <ErrorMessage name='name'>
-                    {msg => <div className='text-danger'>{msg}</div>}
-                </ErrorMessage>
-            </div>
-            <div>
-                <label htmlFor='username' className='form-label'>Username</label>
-                <Field 
-                  name='username' 
-                  type='text' 
-                  className={`form-control ${touched.username && errors.username ? 'is-invalid': ''}`} 
-                />
-                <ErrorMessage name='username'>
-                    {msg => <div className='text-danger'>{msg}</div>}
-                </ErrorMessage>
-            </div>
-            <div>
-                <label htmlFor='email' className='form-label'>Email</label>
-                <Field 
-                  name='email' 
-                  type='email'
-                  autoComplete="email" 
-                  className={`form-control ${touched.email && errors.email ? 'is-invalid': ''}`} 
-                />
-                <ErrorMessage name='email'>
-                    {msg => <div className='text-danger'>{msg}</div>}
-                </ErrorMessage>
-            </div>
-            <div>
-                <label htmlFor='password' className='form-label'>Password</label>
-                <Field 
-                  name='password' 
-                  type='password'
-                  autoComplete='new-password' 
-                  className={`form-control ${touched.password && errors.password ? 'is-invalid': ''}`} 
-                />
-                <ErrorMessage name='password'>
-                    {msg => <div className='text-danger'>{msg}</div>}
-                </ErrorMessage>
-            </div>
-            <div>
-                <label htmlFor='confirm' className='form-label'>Confirm Password</label>
-                <Field 
-                  name='confirm' 
-                  type='password' 
-                  autoComplete='new-password' 
-                  className={`form-control ${touched.confirm && errors.confirm ? 'is-invalid': ''}`} 
-                />
-                <ErrorMessage name='confirm'>
-                    {msg => <div className='text-danger'>{msg}</div>}
-                </ErrorMessage>
-            </div>
-            <div className='grid gap-2'>
-                <button 
-                    type='submit'
-                    className='bg-gray-900 text-white py-2 px-2 rounded hover:bg-gray-500'
-                    disabled={isSubmitting}
-                >
-                    Sign Up
-                </button>
-            </div>
-        </Form>
-      )}
-    </Formik>
-  );
+      <div className='grid gap-2'>
+        <button 
+            type='submit'
+            className='bg-gray-900 text-white py-2 px-2 rounded hover:bg-gray-500'
+          >
+            Register
+        </button>
+      </div>
+  </form>
+  )
 }
 
 export default RegisterForm

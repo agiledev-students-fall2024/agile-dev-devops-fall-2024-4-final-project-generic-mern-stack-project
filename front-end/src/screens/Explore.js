@@ -5,7 +5,7 @@ import postData from '../fillerData/posts.json'
 import blockedData from '../fillerData/blocked.json'
 import { Link } from 'react-router-dom'
 import '../styles/Home.css'
-import '../styles/profile.css'
+import '../styles/Profile.css'
 
 const Explore = () => {
   // get user id 
