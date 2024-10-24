@@ -44,7 +44,7 @@ const Challenges = () => {
                     <div className="challenge-image">
                         <img src={challenge.image} alt={`Challenge ${index + 1}`} />
                     </div>
-                    <button className="start-button" onClick={handleStartButton}>START CHALLENGE</button>
+                    <Link to="/record"><button className="start-button" onClick={handleStartButton}>START CHALLENGE</button></Link>
                 </div>
             ))}
 
@@ -56,6 +56,7 @@ const Challenges = () => {
                     <div className="challenge-image-popup">
                         <img src={selectedChallenge.image} alt={`Challenge image`} />
                     </div>
+                    <Link to="/record"><button className="start-button different-color" onClick={handleStartButton}>START CHALLENGE</button></Link>
                 </div>
             )}
         </div>
