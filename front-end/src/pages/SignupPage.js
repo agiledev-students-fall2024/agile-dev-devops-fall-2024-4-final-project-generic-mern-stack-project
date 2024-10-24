@@ -10,8 +10,14 @@ const SignupPage = ({ onSignup }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Capture and log the username and password
+    console.log('Username:', username);
+    console.log('Password:', password);
+
     // Call the signup function passed down from App.js
     onSignup({ username, password });
+
     // Redirect to the home page or another page after signing up
     navigate('/');
   };
@@ -22,12 +28,12 @@ const SignupPage = ({ onSignup }) => {
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Username:</label>
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
         </div>
         <div>
           <label htmlFor="password">Password:</label>
@@ -37,7 +43,7 @@ const SignupPage = ({ onSignup }) => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          </div>
+        </div>
         <button type="submit">Sign Up</button>
       </form>
     </div>
