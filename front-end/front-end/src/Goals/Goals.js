@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
+import "./Goals.css"
 const Goals = () => {
     const [goals, setGoals] = useState([
         {
@@ -26,26 +26,27 @@ const Goals = () => {
         }
     ])
     return (
-        <div>
-            <h1>Goals</h1>
-            <Link to="/CreateGoal">New</Link>
-            {/* Consider adding a maximum goal count*/}
-            <ul>
+        <div className="container">
+            <h1 className="page-title">Goals</h1>
+            <Link to="/CreateGoal" className="new-goal-btn">New</Link>
+            <div className="goals-list">
                 {
                     goals.map((goal) => {
                         return (
-                            <li>
+                            <div className="goal-item" key={goal.title}>
                                 <h3>{goal.title}</h3>
                                 <p>Due Date: {goal.due_date}</p>
-                                <h3>{`${goal.completed_tasks.length} / ${goal.tasks.length}`}</h3>
-                                <progress value={`${(goal.completed_tasks.length / goal.tasks.length) * 100}`} max="100"></progress>
-                            </li>
+                                <div className="progress-container">
+                                    <p>{`${goal.completed_tasks.length} / ${goal.tasks.length}`}</p>
+                                    <progress value={`${(goal.completed_tasks.length / goal.tasks.length) * 100}`} max="100"></progress>
+                                </div>
+                            </div>
                         )
                     })
                 }
-            </ul>
+            </div>
+            <Link to="/" className="home-btn">Home</Link>
         </div>
     )
 }
-
 export default Goals;
