@@ -33,7 +33,7 @@ const FriendsAdd = () => {
                 </div>
             </header>
             
-            <div className='container'>
+            <div className='container-friends'>
                 <div className="input-bar-add">
                     <input 
                         type="text" 

@@ -1,3 +1,10 @@
+/* REPLICATING CONTAINER FROM BOOTSTRAP */
+.container-friends {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
 /* FOR EACH ROW WITHIN INCOMING AND OUTGOING REQUESTS */
 .request-item {
     display: flex;

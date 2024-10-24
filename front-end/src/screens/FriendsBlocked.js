@@ -24,7 +24,7 @@ const FriendsBlocked = () => {
                 </div>
             </header>
 
-            <div className='container'>
+            <div className='container-friends'>
                 <h6>Users you have blocked</h6>
                 <div className="friends-list">
                     {blockedUsers.map(user => (
