@@ -1,97 +1,170 @@
 import React, { useEffect, useRef } from "react";
-import { FaMicrophone, FaMicrophoneSlash, FaVideo, FaVideoSlash, FaCommentDots, FaUser, FaPen, FaCode, FaDoorClosed, FaDoorOpen } from 'react-icons/fa';
+import { FaMicrophone, FaMicrophoneSlash, FaVideo, FaVideoSlash, FaCommentDots, FaUser, FaPen, FaCode, FaDoorClosed, FaDoorOpen, FaMeetup } from 'react-icons/fa';
+import { MdScreenShare } from 'react-icons/md';
 import VideoBox from "../components/VideoBox";
 import { useNavigate } from 'react-router-dom';
 import '../assets/meeting.css';
+
+import Chat from "../components/Chat";
+import CodeEditor from "../components/CodeEditor";
+import Whiteboard from "../components/Whiteboard";
 
 function MeetingPage() {
     const navgiate = useNavigate();
 
     const [isMuted, setIsMuted] = React.useState(false);
-    const [isCameraOff, setIsCameraOff] = React.useState(false);
+    const [isCameraOff, setIsCameraOff] = React.useState(true);
 
     const [userStream, setUserStream] = React.useState(null);
+
+    const [chatVisible, setChatVisible] = React.useState(true);
+
+    const [editorVisible, setEditorVisible] = React.useState(false);
+    const [whiteboardVisible, setWhiteboardVisible] = React.useState(false);
+    const [screenshareVisible, setScreenshareVisible] = React.useState(false);
+    const [videoVisible, setVideoVisible] = React.useState(true);
 
     const toggleAudio = () => {
         setIsMuted(!isMuted);
     };
 
     const toggleVideo = () => {
+        if (userStream) {
+            const videoTracks = userStream.getVideoTracks();
+            console.log('Video tracks:', videoTracks);
+            console.log('camera off previously:', isCameraOff);
+            videoTracks.forEach(track => {
+                track.enabled = isCameraOff;
+                console.log(`Track ${track.label} enabled: ${track.enabled}`);
+            });
+        }
         setIsCameraOff(!isCameraOff);
     };
 
     const toggleChat = () => {
+        setChatVisible(!chatVisible);
+    };
 
+    const toggleMeeting = () => {
+        setVideoVisible(true);
+        setWhiteboardVisible(false);
+        setEditorVisible(false);
+        setScreenshareVisible(false);
     };
 
     const toggleWhiteboard = () => {
+        setWhiteboardVisible(true);
+        setEditorVisible(false);
+        setScreenshareVisible(false);
+        setVideoVisible(false);
+    };
 
+    const toggleScreenshare = () => {
+        setScreenshareVisible(true);
+        setWhiteboardVisible(false);
+        setEditorVisible(false);
+        setVideoVisible(false);
     };
 
     const toggleEditor = () => {
-
+        setEditorVisible(true);
+        setWhiteboardVisible(false);
+        setScreenshareVisible(false);
+        setVideoVisible(false);
     };
 
     const handleLeave = () => {
         navgiate('/home');
     };
 
-    // useEffect(() => {
-    //     const initConnection = async () => {
-    //         const stream = await navigator.mediaDevices.getUserMedia({
-    //             video: true,
-    //             audio: false
-    //         });
-    //         setUserStream(stream);
-    //     }
-    //     initConnection();
-    // }, []);
-
+    const setSelfVideoAudioConnection = async () => {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: false,
+        });
+        stream.getTracks().forEach(track => {
+            track.enabled = !isCameraOff
+            console.log(`Track ${track.label} enabled: ${track.enabled}`);
+        });
+        setUserStream(stream);
+    }
     useEffect(() => {
-        if (userStream) {
-            const videoTracks = userStream.getVideoTracks();
-            console.log('Video tracks:', videoTracks);
-            videoTracks.forEach(track => {
-                track.enabled = !isCameraOff;
-                console.log(`Track ${track.label} enabled: ${track.enabled}`);
-            });
-        }
-    }, [isCameraOff, userStream]);
+        setSelfVideoAudioConnection();
+    }, []);
+
+
 
 
 
 
 
     return (
-        <div className="meeting-container">
-            {/* <div className="h-full w-full bg-grey-900">
-                <div className="fixed right-0 top-0">
-                    <VideoBox mediaSource={userStream} />
-                </div>
+        <div className="flex meeting-container">
 
-            </div> */}
-            <div className="bg-gray-700 rounded-xl p-4 flex justify-between items-center fixed left-0 bottom-0 w-full shadow-md">
-                <div className="flex">
-                    <NavBarButton
-                        icon={isMuted ? FaMicrophoneSlash : FaMicrophone}
-                        text={"Audio"}
-                        onClick={toggleAudio}
-                    />
-                    <NavBarButton
-                        icon={isCameraOff ? FaVideoSlash : FaVideo}
-                        text={"Video"}
-                        onClick={toggleVideo}
-                    />
-                </div>
-                <div className="flex">
-                    <NavBarButton icon={FaCommentDots} text="Chat" onClick={toggleChat} />
-                    <NavBarButton icon={FaPen} text="Whiteboard" onClick={toggleWhiteboard} />
-                    <NavBarButton icon={FaCode} text="Code" onClick={toggleEditor} />
-                </div>
-                <div className="flex">
-                    <NavBarButton icon={FaDoorOpen} text="Leave" onClick={handleLeave} color={'red-500'} />
-                </div>
+            <div className={`flex flex-col w-full bg-grey-900`}>
+                <div className="flex bg-grey-900">
+                    {/* Video Box for "other guy" at the top */}
+                    <div className="h-[90vh] w-full">
+                        {
+                            videoVisible &&
+                            <VideoBox
+                                mediaSource={userStream}
+                                displayName={"You"}
+                                videoOn={!isCameraOff}
+                                audioOn={!isMuted}
+                                flipHorizontal={true}
+                            />
+                        }
+                        {
+                            editorVisible &&
+                            <CodeEditor />
+                        }
+                        {
+                            whiteboardVisible &&
+                            <Whiteboard />
+                        }
+                    </div>
+                    <div className="absolute top-20 right-4 w-64 h-48">
+                        <VideoBox
+                            mediaSource={userStream}
+                            displayName={"other guy"}
+                            videoOn={!isCameraOff}
+                            audioOn={false}
+                            flipHorizontal={true}
+                            collapsible={true}
+                        />
+                    </div>
 
+                </div>
+                {/* nav bar */}
+                <div className="bg-gray-700 rounded-xl px-4 flex self-end justify-between items-center w-full shadow-md">
+                    <div className="flex">
+                        <NavBarButton
+                            icon={isMuted ? FaMicrophoneSlash : FaMicrophone}
+                            text={"Audio"}
+                            onClick={toggleAudio}
+                        />
+                        <NavBarButton
+                            icon={isCameraOff ? FaVideoSlash : FaVideo}
+                            text={"Video"}
+                            onClick={toggleVideo}
+                        />
+                    </div>
+                    <div className="flex">
+                        <NavBarButton icon={FaCommentDots} text="Chat" onClick={toggleChat} />
+                        <NavBarButton icon={FaUser} text="Meeting" onClick={toggleMeeting} />
+                        <NavBarButton icon={FaPen} text="Whiteboard" onClick={toggleWhiteboard} />
+                        <NavBarButton icon={FaCode} text="Code" onClick={toggleEditor} />
+                        <NavBarButton icon={MdScreenShare} text="Screenshare" onClick={toggleScreenshare} />
+                    </div>
+                    <div className="flex">
+                        <NavBarButton icon={FaDoorOpen} text="Leave" onClick={handleLeave} color={'red-500'} />
+                    </div>
+
+                </div>
+            </div>
+            <div className={`transition-all duration-300 ${chatVisible ? 'w-3/10' : 'w-0'} h-full bg-gray-900 overflow-y-auto`}>
+                {chatVisible && <Chat />}
             </div>
         </div>
     );
@@ -99,7 +172,7 @@ function MeetingPage() {
 
 const NavBarButton = ({ icon: Icon, text, onClick, color }) => {
     return (
-        <div className="flex flex-col text-white mx-4">
+        <div className="flex flex-col text-white mx-2">
             <button
                 className="bg-gray-700 hover:bg-gray-600 rounded-3xl px-3 py-2 mb-1 active:bg-gray-500 focus:outline-none"
                 onClick={onClick}>
