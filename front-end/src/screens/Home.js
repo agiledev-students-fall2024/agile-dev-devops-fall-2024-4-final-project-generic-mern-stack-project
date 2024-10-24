@@ -4,8 +4,8 @@ import loggedInData from '../fillerData/loggedIn.json'
 import postData from '../fillerData/posts.json'
 import friendsData from '../fillerData/friendships.json'
 import { Link } from 'react-router-dom'
-import { Card } from 'react-bootstrap'
 import '../styles/Home.css'
+import '../styles/profile.css'
 
 const Home = () => {
   // get user  
@@ -36,6 +36,7 @@ const Home = () => {
 
   // pulls data of friends
   const posts = postData.filter(post => friends.includes(post.author_id)).sort((a, b) => new Date(b.date) - new Date(a.date))
+  const noImgSrc = 'https://cdn.vectorstock.com/i/500p/50/20/no-photography-sign-image-vector-23665020.jpg'
 
   return (
     <div>
@@ -43,7 +44,7 @@ const Home = () => {
         <Link to='/explore' className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>Explore</Link>
         <Link to= {`/profile/${user.username}`} className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>Profile</Link>
       </header>
-      <div className='container content' >
+      <Container className='content' >
         <h1>Network</h1>
         {posts.map( post => {
             const dateObject = new Date(post.date)
@@ -64,7 +65,7 @@ const Home = () => {
               </Card>
               </div>
         )})}
-      </div>
+      </Container>
     </div>
   )
 }
