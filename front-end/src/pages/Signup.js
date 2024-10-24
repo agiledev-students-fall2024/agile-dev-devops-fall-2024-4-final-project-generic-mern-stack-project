@@ -7,6 +7,9 @@ import SubmitButton from "../components/SubmitButton";
 import { Link } from "react-router-dom";
 
 export default function Signup() {
+  function handleClick() {
+    console.log("click");
+  }
   return (
     <>
       <LogoPageTitle logoSrc={Logo} title="Create an account" />
@@ -14,7 +17,12 @@ export default function Signup() {
       <InputField inputfieldName="Username" />
       <InputField inputfieldName="Email" inputType="email" />
       <InputField inputfieldName="Password" inputType="password" />
-      <SubmitButton placeholder="Submit" link="/" />
+      {/* <SubmitButton placeholder="Signup" link="/" /> */}
+      <div className="btn-container">
+        <button className="signup-btn" onClick={handleClick}>
+          Signup
+        </button>
+      </div>
       <div className="have-account">
         Already have an account?{" "}
         <Link className="underlined" to="/login">

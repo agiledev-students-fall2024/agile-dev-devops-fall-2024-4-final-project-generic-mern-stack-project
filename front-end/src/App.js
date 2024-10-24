@@ -28,7 +28,7 @@ import ResetPassword from "./pages/ResetPassword";
 function App() {
   return (
     <>
-      <div className="App">
+      <div className="App m-[auto] font-sera">
         <Router>
           <main className="App-main">
             <Routes>
@@ -96,35 +96,32 @@ function App() {
 
             <BlogPost
               User={{
-                profilePic: "/seraphim-logo.png", 
+                profilePic: "/seraphim-logo.png",
                 name: "Mona Lisa",
                 userName: "@monalisa",
                 text: "This is a sample blog post text for testing purposes. Just saw myself at the Louvre. #Dope",
-                images: [
-                    "/logo192.png", 
-                    "/logo192.png", 
-                ]
+                images: ["/logo192.png", "/logo192.png"],
               }}
             />
 
             <About
               User={{
                 name: "Mona Lisa",
-                aboutMe: "This is a sample about me."
+                aboutMe: "This is a sample about me.",
               }}
             />
 
             <ProfileHeader
-                User={{
-                  profilePic: "/seraphim-logo.png", 
-                  name: "Mona Lisa",
-                  userName: "@monalisa",
-                  about: ['She/Her', '12/01/2003', 'Louvre Museum, Paris'],
-                  aboutPage: '/about/monalisa',
-                  communitiesPage: '/communities/monalisa',
-                  blogsPage: '/blogs/monalisa'
-                }}
-                LoggedIn={true}
+              User={{
+                profilePic: "/seraphim-logo.png",
+                name: "Mona Lisa",
+                userName: "@monalisa",
+                about: ["She/Her", "12/01/2003", "Louvre Museum, Paris"],
+                aboutPage: "/about/monalisa",
+                communitiesPage: "/communities/monalisa",
+                blogsPage: "/blogs/monalisa",
+              }}
+              LoggedIn={true}
             />
 
             <NavigationBar />

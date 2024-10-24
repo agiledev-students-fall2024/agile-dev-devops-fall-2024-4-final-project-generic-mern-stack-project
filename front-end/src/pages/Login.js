@@ -17,9 +17,9 @@ export default function Login() {
         I forgot my password
       </Link>
       <div className="dont-have-account">
-        Don't have a account?{" "}
+        Don't have an account?{" "}
         <Link className="underlined" to="signup">
-          Create account
+          Create an account
         </Link>
       </div>
     </>
