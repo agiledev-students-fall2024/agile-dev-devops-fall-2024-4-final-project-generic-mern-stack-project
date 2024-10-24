@@ -1,6 +1,5 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Container } from 'react-bootstrap'
 
 const Error404 = () => {
   return (
@@ -12,10 +11,10 @@ const Error404 = () => {
                 </svg>
             </Link>
         </header>
-        <Container className='content'>
+        <div className='content'>
             <h1>404 - Page Not Found</h1>
             <p>Sorry, the page you are looking for does not exist.</p>
-        </Container>
+        </div>
     </div>
   )
 }

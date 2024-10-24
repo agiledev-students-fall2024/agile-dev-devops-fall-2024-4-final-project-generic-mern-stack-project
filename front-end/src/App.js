@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import loggedInData from './fillerData/loggedIn.json'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -14,12 +13,11 @@ import Profile from './screens/Profile';
 import EditProfile from './screens/EditProfile';
 import FriendsList from './screens/FriendsList';
 import Error404 from './screens/Error404';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import FriendsSearch from './screens/FriendsSearch';
 import FriendsAdd from './screens/FriendsAdd';
 import FriendsRequests from './screens/FriendsRequests';
 import FriendsBlocked from './screens/FriendsBlocked';
-
+import './styles/index.css';
 
 const isAuthenticated = (loggedInData[0].id !== null)
 

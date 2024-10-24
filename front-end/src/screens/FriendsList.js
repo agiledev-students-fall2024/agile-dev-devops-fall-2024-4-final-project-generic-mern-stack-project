@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
 import '../styles/FriendsList.css';
 import userData from '../fillerData/users.json';
 
@@ -32,18 +30,18 @@ const FriendsList = () => {
         </div>
       </header>
 
-      <Container>
+      <div className='container'>
         <div className="friends-actions">
           <Link to='/friendssearch'>
-            <Button variant="secondary" className="action-btn">Search</Button>
+            <button className="action-btn border border-black rounded">Search</button>
           </Link>
 
           <Link to='/friendsadd'>
-            <Button variant="secondary" className="action-btn">Add Friend</Button>
+            <button className="action-btn border border-black rounded">Add Friend</button>
           </Link>
           
           <Link to='/friendsrequests'>
-            <Button variant="secondary" className="action-btn">All Requests</Button>
+            <button className="action-btn border border-black rounded">All Request</button>
           </Link>
         </div>
 
@@ -65,8 +63,8 @@ const FriendsList = () => {
                       </span>
                     </div>
                     <div className="friend-actions">
-                      <Button variant="outline-dark" size="sm">Block</Button>
-                      <Button variant="outline-dark" size="sm">Remove</Button>
+                      <button className='border border-black py-1 px-2 rounded text-sm hover:bg-black hover:text-white'>Block</button>
+                      <button className='border border-black py-1 px-2 rounded text-sm hover:bg-black hover:text-white'>Remove</button>
                     </div>
                   </div>
                 ))}
@@ -79,9 +77,9 @@ const FriendsList = () => {
         </footer>
         
         <Link to='/friendsblocked'>
-            <Button variant="secondary" className="blocked-btn">Blocked</Button>
+            <button className="action-btn border border-black rounded">Blocked</button>
         </Link>
-      </Container>   
+      </div>   
     </div>
   );
 };

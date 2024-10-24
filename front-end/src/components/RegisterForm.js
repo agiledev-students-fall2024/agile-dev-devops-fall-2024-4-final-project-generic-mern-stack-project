@@ -1,7 +1,6 @@
 import React from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { Button } from 'react-bootstrap';
 
 const RegisterForm = () => {
   const initialValues = {
@@ -112,10 +111,14 @@ const RegisterForm = () => {
                     {msg => <div className='text-danger'>{msg}</div>}
                 </ErrorMessage>
             </div>
-            <div className='d-grid gap-2'>
-                <Button type='submit' variant='dark' disabled={isSubmitting} >
+            <div className='grid gap-2'>
+                <button 
+                    type='submit'
+                    className='bg-gray-900 text-white py-2 px-2 rounded hover:bg-gray-500'
+                    disabled={isSubmitting}
+                >
                     Sign Up
-                </Button>
+                </button>
             </div>
         </Form>
       )}

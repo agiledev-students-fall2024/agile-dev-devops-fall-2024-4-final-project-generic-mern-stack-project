@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
 import '../styles/FriendsRequests.css';
 import userData from '../fillerData/users.json';
 
@@ -28,7 +26,7 @@ const FriendRequests = () => {
         </div>
       </header>
 
-      <Container>
+      <div className='container'>
         <h6>Incoming Requests</h6>
         <div className="friends-list">
           {incomingRequests.map(user => (
@@ -37,8 +35,8 @@ const FriendRequests = () => {
                 <span>{user.username}</span>
               </div>
               <div className="request-actions">
-                <Button variant="outline-success" size="sm">✔</Button>
-                <Button variant="outline-danger" size="sm">✖</Button>
+                <button className='border border-green-700 py-1 px-2 rounded text-sm hover:bg-green-700 focus:outline-none'>✔</button>
+                <button className='border border-red-600 py-1 px-2 rounded text-sm hover:bg-red-600 focus:outline-none'>✖</button>
               </div>
             </div>
           ))}
@@ -52,12 +50,12 @@ const FriendRequests = () => {
                 <span>{user.username}</span>
               </div>
               <div className="request-actions">
-                <Button variant="outline-dark" size="sm">Cancel</Button>
+                <button className='border border-black py-1 px-2 rounded text-sm hover:bg-black hover:text-white'>Cancel</button>
               </div>
             </div>
           ))}
         </div>
-      </Container>
+      </div>
     </div>
   );
 };

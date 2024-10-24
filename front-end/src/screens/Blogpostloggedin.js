@@ -31,7 +31,7 @@ const BlogPostLoggedIn = () => {
         {/* Show edit button only if logged-in user is the author of the post */}
         {author && loggedInUser && author.id === loggedInUser.id && (
           <Link to={`/updateblogpost/${postId}`}>
-            <button className="btn btn-secondary rounded-pill">Edit</button>
+            <button className="bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline">Edit</button>
           </Link>
         )}
       </header>
