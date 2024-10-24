@@ -1,14 +1,12 @@
 // src/pages/ActivitiesPage/ActivitesPage.js
 import React from 'react';
-import Header from '../../components/common/Header'; // Adjusted path for Header
-import ActivityItem from '../../components/trip/ActivityItem'; // Adjusted path for ActivityItem
+import ActivityItem from '../../components/trip/ActivityItem'; 
 
 const ActivitiesPage = () => {
   const activities = ['Hiking', 'Museum Visit', 'Beach Day'];
 
   return (
     <div className="activities-page">
-      <Header />
 
       <div className="trip-image">
         <h2>TripName</h2>
