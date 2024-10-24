@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/common/Header';
 import Home from './pages/Home';
+import PastTrip from './pages/PastTrip';
 import './App.css';
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
       <main className="App-main">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/past-trip/:id" element={<PastTrip />} /> 
         </Routes>
       </main>
     </Router>
