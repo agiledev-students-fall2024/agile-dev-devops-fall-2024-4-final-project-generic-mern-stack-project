@@ -1,6 +1,6 @@
 import '../index.css'
 import './HamburgerDropdown.css';
-import {Link} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 
 import React, { useState, useRef, useEffect } from 'react';
 import { IoHomeOutline } from "react-icons/io5";
@@ -12,86 +12,73 @@ import { CiMedal } from "react-icons/ci";
 
 
 
-function Nav(){
-    const [activeTab, setActiveTab] = useState('home')
-    console.log(activeTab)
+function Nav() {
+    const location = useLocation();
+    const currentPath = location.pathname;
+
     return (
         <div className='nav'>
-            <Hamburger activeTab={activeTab} setActiveTab={setActiveTab} />
-            <Footer activeTab={activeTab} setActiveTab={setActiveTab} />
-            {/* Other components */}
+            <Hamburger activeTab={currentPath} />
+            <Footer activeTab={currentPath} />
         </div>
     );
 }
 
-function Footer({activeTab, setActiveTab}){
-    return(
+function Footer({ activeTab }) {
+    return (
         <footer>
-            <nav className = 'navbar'>
-                
-            <Link
-                to="/home"
-                className={activeTab === 'home' ? 'active' : ''}
-                onClick={() => setActiveTab('home')}
-            >
-                <div className='nav-item'>
-                    <IoHomeOutline />
-                    <span>Home</span>
-                </div>
-                
-            </Link>
-            <Link
-                to="/recipes"
-                className={activeTab === 'recipes' ? 'active' : ''}
-                onClick={() => setActiveTab('recipes')}
-            >
-                <div className='nav-item'>
-
-                    <PiCookingPot />
-                    <span>Recipes</span>
+            <nav className='navbar'>
+                <Link
+                    to="/home"
+                    className={activeTab === '/home' ? 'active' : ''}
+                >
+                    <div className='nav-item'>
+                        <IoHomeOutline />
+                        <span>Home</span>
                     </div>
-            </Link>
-            <Link
-                to="/record"
-                className={activeTab === 'record' ? 'active' : ''}
-                onClick={() => setActiveTab('record')}
-            >
-                <div className='nav-item'>
-
-                    <BsRecord2 />
-                    <span>Record</span>
+                </Link>
+                <Link
+                    to="/recipes"
+                    className={activeTab === '/recipes' ? 'active' : ''}
+                >
+                    <div className='nav-item'>
+                        <PiCookingPot />
+                        <span>Recipes</span>
                     </div>
-            </Link>
-            <Link
-                to="/challenges"
-                className={activeTab === 'challenges' ? 'active' : ''}
-                onClick={() => setActiveTab('challenges')}
-            >
-                <div className='nav-item'>
-
-                    <CiMedal />
-                    <span>Challenges</span>
-                    
+                </Link>
+                <Link
+                    to="/record"
+                    className={activeTab === '/record' ? 'active' : ''}
+                >
+                    <div className='nav-item'>
+                        <BsRecord2 />
+                        <span>Record</span>
                     </div>
-            </Link>
-            <Link
-                to="/profile"
-                className={activeTab === 'profile' ? 'active' : ''}
-                onClick={() => setActiveTab('profile')}
-            >
-                <div className='nav-item'>
-
-                    <CgProfile />
-                    <span>Profile</span>
-                </div>
-            </Link>                        
+                </Link>
+                <Link
+                    to="/challenges"
+                    className={activeTab === '/challenges' ? 'active' : ''}
+                >
+                    <div className='nav-item'>
+                        <CiMedal />
+                        <span>Challenges</span>
+                    </div>
+                </Link>
+                <Link
+                    to="/profile"
+                    className={activeTab === '/profile' ? 'active' : ''}
+                >
+                    <div className='nav-item'>
+                        <CgProfile />
+                        <span>Profile</span>
+                    </div>
+                </Link>
             </nav>
         </footer>
-
     );
 }
 
-function Hamburger({ activeTab, setActiveTab }) {
+function Hamburger({ activeTab }) {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
 
@@ -124,20 +111,20 @@ function Hamburger({ activeTab, setActiveTab }) {
 
                     <Link to="/home" 
                     className="home-link" 
-                    onClick={() => { setActiveTab('home'); setIsOpen(false); }}>
+                    onClick={() => { setIsOpen(false); }}>
                     BITEBUDDY
                     </Link>
 
 
                     <ul>
                         <li>
-                            <Link to="/challenges" onClick={() => { setActiveTab('challenges'); setIsOpen(false); }}><div className="navigation-icon"><CiMedal />Challenges</div></Link>
+                            <Link to="/challenges" onClick={() => { setIsOpen(false); }}><div className="navigation-icon"><CiMedal />Challenges</div></Link>
                         </li>
                         <li>
-                            <Link to="/record" onClick={() => { setActiveTab('record'); setIsOpen(false); }}><div className="navigation-icon"><BsRecord2 /> Record Activity</div></Link>
+                            <Link to="/record" onClick={() => { setIsOpen(false); }}><div className="navigation-icon"><BsRecord2 /> Record Activity</div></Link>
                         </li>
                         <li>
-                            <Link to="/profile" onClick={() => { setActiveTab('profile'); setIsOpen(false); }}><div className="navigation-icon"><CgProfile /> Profile</div></Link>
+                            <Link to="/profile" onClick={() => { setIsOpen(false); }}><div className="navigation-icon"><CgProfile /> Profile</div></Link>
                         </li>
                         <li>
                             <Link to="/login">Sign Out</Link>
