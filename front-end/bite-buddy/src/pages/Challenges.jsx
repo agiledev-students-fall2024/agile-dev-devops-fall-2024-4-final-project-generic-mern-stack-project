@@ -13,7 +13,7 @@ const Challenges = () => {
 
     useEffect(() => {
         const fetchChallengesData = async () => {
-            const response = await axios.get('https://my.api.mockaroo.com/challenges.json?key=d1ce50e0');
+            const response = await axios.get('https://my.api.mockaroo.com/challenges?key=594b4990');
             const fetchedData = response.data || [];
             console.log(fetchedData)
 
@@ -31,10 +31,11 @@ const Challenges = () => {
         setSelectedChallenge(null);
     };
 
-    const handleStartButton = (event) => {
-        event.stopPropagation();
-        navigate('/record');
-    };
+    const handleStartChallenge = (recipeId) => {
+        // Navigate to the record activity page, passing the recipe data
+        console.log('going to recipe id:' +recipeId)
+        navigate('/record', { state: { recipeId } });
+      };
 
     return (
         <div className="challenges-container">
@@ -42,24 +43,24 @@ const Challenges = () => {
             {challengesData.map((challenge, index) => (
                 <div className="challenge-card" onClick={() => handleStartClick(challenge)} key={index}>
                     <h2>CHALLENGE #{index + 1}</h2>
-                    <h3>{challenge.title}</h3>
-                    <p>{challenge.description}</p>
+                    <h3>{challenge.challenge_name}</h3>
+                    <p>{challenge.challenge_brief}</p>
                     <div className="challenge-image">
                         <img src={challenge.image} alt={`Challenge ${index + 1}`} />
                     </div>
-                    <button className="start-button" onClick={handleStartButton}>START CHALLENGE</button>
+                    <button className="start-button" onClick={() => handleStartChallenge(challenge.recipe_id)}>START CHALLENGE</button>
                 </div>
             ))}
 
             {selectedChallenge && (
                 <div className="full-page-card">
                     <button className="close-button" onClick={closeFullCard}>X</button>
-                    <h2>{selectedChallenge.title}</h2>
-                    <p>{selectedChallenge.description}</p>
+                    <h2>{selectedChallenge.challenge_name}</h2>
+                    <p>{selectedChallenge.challenge_long}</p>
                     <div className="challenge-image-popup">
                         <img src={selectedChallenge.image} alt={`Challenge image`} />
                     </div>
-                    <button className="start-button different-color" onClick={handleStartButton}>START CHALLENGE</button>
+                    <button className="start-button different-color" onClick={() => handleStartChallenge(selectedChallenge.recipe_id)}>START CHALLENGE</button>
                 </div>
             )}
         </div>
