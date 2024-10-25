@@ -8,22 +8,21 @@ function Record() {
   const [currRecipe, setCurrRecipe] = useState({});
   const navigate = useNavigate();
   const location = useLocation();
-  const [redirecting, setRedirecting] = useState(false);
   const { recipeId } = location.state || {};
 
   const [completedSteps, setCompletedSteps] = useState([]);
   const handleStepComplete = (index) => {
-    setCompletedSteps((prev) => [...prev, index]);
+    setCompletedSteps((prev) =>
+      prev.includes(index) 
+        ? prev.filter((stepIndex) => stepIndex !== index) // Remove index if it exists
+        : [...prev, index] // Add index if it doesn't exist
+    );
   };
-  
-  /*const handleIngredientCheck = (index) => {
-   
-  };*/
 
   useEffect(() => {
     const fetchAllRecipes = async () => {
       try {
-        const response = await axios.get('https://my.api.mockaroo.com/recipe_steps?key=594b4990');
+        const response = await axios.get('https://my.api.mockaroo.com/recipe_steps?key=d6450400');
         const fetchedData = response.data || [];
         console.log('Fetched all data:', fetchedData);
         setAllRecipes([...fetchedData]);
@@ -35,14 +34,7 @@ function Record() {
   }, []);
 
   useEffect(() => {
-    if (!recipeId) {
-      setRedirecting(true);
-      const timer = setTimeout(() => {
-        navigate('/challenges');
-      }, 3000); // Redirect after 3 seconds
-
-      return () => clearTimeout(timer);
-    } else {
+    if (recipeId){
       console.log('Recipe ID is', recipeId);
       const currentRecipe = allRecipes.filter((ele) => ele.id === recipeId); // [{recipe}]
       
@@ -57,29 +49,44 @@ function Record() {
 
   if (!recipeId) {
     return (
-      <div>
-        <h2>Challenge Not Started</h2>
-        <p>Please start a challenge from the Challenges Page to continue.</p>
-        {redirecting && <p>Redirecting to Challenges Page in 3 seconds...</p>}
+      <div className="no-recipe-container">
+        <h2>No Recipe Selected!</h2>
+        <p>Please start a recipe from the Recipes or Challenges page to see details here.</p>
+  
+        {/* Navigation buttons */}
+        <div className="navigation-buttons">
+          <button onClick={() => navigate('/recipes')} className="nav-button">
+            Go to Recipes
+          </button>
+          <button onClick={() => navigate('/challenges')} className="nav-button">
+            Go to Challenges
+          </button>
+          
+        </div>
+  
+        {/* Tooltip or help text */}
+        <p className="help-text">
+          <em>Once you start a recipe, it will appear here with steps and ingredients.</em>
+        </p>
       </div>
     );
   }
 
   return (
-    <div>
-      <h1>Current Activity: {currRecipe.recipe_name || 'N/A'} {currRecipe.id}</h1>
+    <div className='record-container'>
+      <h1>Current Activity: {currRecipe.recipe_name || 'N/A'}</h1>
       <h2>Description of Activity: {currRecipe.recipe_description || 'N/A'}</h2>
 
       <h3>Ingredients:</h3>
-      <ul>
+      <ul className='ingredients-list'>
         {currRecipe.ingredients?.item?.map((ingredient, index) => (
           <li key={index}>
             <label>
               <input
                 type="checkbox"
-                //onChange={() => handleIngredientCheck(index)}
+                className="strikethrough"
               />{' '}
-              {ingredient}
+              <span>{ingredient}</span>
             </label>
           </li>
         ))}
@@ -87,13 +94,13 @@ function Record() {
 
       <h3>Steps:</h3>
       <div className="steps-container">
-        {currRecipe.recipe_steps?.step?.map((step, index) => (
+        {currRecipe.recipe_steps?.steps?.map((step, index) => (
           <div key={index} className="step-card">
             <h4>Step {index + 1}</h4>
             <p>{step}</p>
             <button
+              className={`steps-button ${completedSteps.includes(index) ? 'completed' : 'default'}`}
               onClick={() => handleStepComplete(index)}
-              disabled={completedSteps.includes(index)} 
             >
               {completedSteps.includes(index) ? 'Completed' : 'Mark as Completed'}
             </button>
