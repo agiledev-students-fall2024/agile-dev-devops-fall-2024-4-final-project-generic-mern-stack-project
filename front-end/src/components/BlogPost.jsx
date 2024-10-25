@@ -11,19 +11,20 @@ const BlogPost = ({User}) => {
         setUser(User)
     }, [])
 
-    return
-    (<div>
-        <img src={user.profilePic}></img>  
-        <div>
-            <p><span>{user.name}</span>{user.userName}</p>
-            <div>{user.text}</div>
-            {user.images &&
-                user.images.map(images => (
-                    <img src={images}></img>
-                ))
-            }
-        </div>  
-    </div>)
+    return (
+        <div className="">
+            <img src={user.profilePic}></img>  
+            <div>
+                <p><span>{user.name}</span>{user.userName}</p>
+                <div>{user.text}</div>
+                {user.images &&
+                    user.images.map(images => (
+                        <img src={images}></img>
+                    ))
+                }
+            </div>  
+        </div>
+    )
 }
 
 // export blog post
