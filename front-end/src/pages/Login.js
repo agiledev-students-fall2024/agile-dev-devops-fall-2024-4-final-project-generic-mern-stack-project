@@ -30,17 +30,20 @@ export default function Login() {
   return (
     <>
       <LogoPageTitle logoSrc="seraphim-logo.PNG" title="Welcome Back" />
-      <InputField
-        inputfieldName="Username"
-        inputValue={username}
-        handleChange={handleUsernameChange}
-      />
-      <InputField
-        inputfieldName="Password"
-        inputType="password"
-        inputValue={password}
-        handleChange={handlePasswordChange}
-      />
+      <div className="inputs">
+        <InputField
+          className="input"
+          inputfieldName="Username"
+          inputValue={username}
+          handleChange={handleUsernameChange}
+        />
+        <InputField
+          inputfieldName="Password"
+          inputType="password"
+          inputValue={password}
+          handleChange={handlePasswordChange}
+        />
+      </div>
       <SubmitButton placeholder="Login" link="/" handleClick={handleBtnClick} />
       <Link className="forgot-password underlined" to="/forgotpassword">
         I forgot my password

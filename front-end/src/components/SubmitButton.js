@@ -7,11 +7,11 @@ function SubmitButton({ placeholder, link, handleClick }) {
   // }
   return (
     <div className="submit-btn-div">
-      <Link to={link}>
-        <button className="submit-btn" onClick={handleClick}>
-          {placeholder}
-        </button>
-      </Link>
+      {/* <Link to={link}> */}
+      <button className="submit-btn" onClick={handleClick}>
+        {placeholder}
+      </button>
+      {/* </Link> */}
     </div>
   );
 }

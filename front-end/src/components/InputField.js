@@ -16,19 +16,20 @@ function InputField({
   // };
   return (
     <>
-      <div className="container">
-        <div className="input">
-          <img src={imgSrc} alt="" />
-
-          <input
-            className="input-box"
-            type={inputType}
-            id={inputfieldName}
-            placeholder={inputfieldName}
-            onChange={handleChange}
-            value={inputValue}
-          />
-        </div>
+      <div className="input-container">
+        {/* <div className="input"> */}
+        {/* <img src={imgSrc} alt="" /> */}
+        <label>{inputfieldName}</label>
+        <input
+          className="input"
+          // className="input-box"
+          type={inputType}
+          id={inputfieldName}
+          // placeholder={inputfieldName}
+          onChange={handleChange}
+          value={inputValue}
+        />
+        {/* </div> */}
       </div>
     </>
   );
