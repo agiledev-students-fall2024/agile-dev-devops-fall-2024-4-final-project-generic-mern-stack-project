@@ -45,7 +45,7 @@ export default function ForgotPassword() {
         {submittedEmail && (
           <>
             <div>We sent a code to {submittedEmail}</div>
-            <div className="inputs">
+            <div className="code-inputs">
               <input className="code-input" type="text" maxLength="1" />
               <input className="code-input" type="text" maxLength="1" />
               <input className="code-input" type="text" maxLength="1" />
