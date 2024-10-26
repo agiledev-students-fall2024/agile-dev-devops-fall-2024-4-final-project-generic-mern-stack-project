@@ -3,12 +3,19 @@ import axios from "axios"
 import TitleAndDescription from '../components/TitleAndDescription'
 import NavigationBar from '../components/NavigationBar'
 import AccountInfo from '../components/AccountInfo'
+import './AccountSettings.css'
+import { Link } from 'react-router-dom';
 
 const AccountSettings = (props) => {
     const [data, setData] = useState([])
+    const [popup, setPopup] = useState(false)
 
-    const deactivatePopup = () => {
-        // toggle deactivation popup here
+    const closePopup = () => {
+        setPopup(false)
+    }
+
+    const openPopup = () => {
+        setPopup(true)
     }
 
     useEffect(() => {
@@ -23,25 +30,58 @@ const AccountSettings = (props) => {
             })
     }, [])
 
-    return (
-        <>
-            <TitleAndDescription
-                title={props.text}
-                description={"See your account information like your email and password."}
-            />
+    if (!popup) {
+        return (
+            <>
+                <TitleAndDescription
+                    title={props.text}
+                    description={"See your account information like your email and password."}
+                />
 
-            <h2>Account Information</h2>
+                <h2>Account Information</h2>
 
-            <AccountInfo title={"Username"} text={data.username}/>
-            <AccountInfo title={"Name"} text={data.name}/>
-            <AccountInfo title={"Email"} text={data.email}/>
-            <AccountInfo title={"Password"} text={data.password}/>
+                <AccountInfo title={"Username"} text={data.username} />
+                <AccountInfo title={"Name"} text={data.name} />
+                <AccountInfo title={"Email"} text={data.email} />
+                <AccountInfo title={"Password"} text={data.password} />
 
-            <h2>Deactivate Account</h2>
-            <p onClick={deactivatePopup()}>Delete your data and account</p>
-            <NavigationBar />
-        </>
-    )
+                <h2>Deactivate Account</h2>
+                <p onClick={openPopup}>Delete your data and account</p>
+
+                <NavigationBar />
+            </>
+        )
+    }
+    else {
+        return (
+            <>
+                <TitleAndDescription
+                    title={props.text}
+                    description={"See your account information like your email and password."}
+                />
+
+                <h2>Account Information</h2>
+
+                <AccountInfo title={"Username"} text={data.username} />
+                <AccountInfo title={"Name"} text={data.name} />
+                <AccountInfo title={"Email"} text={data.email} />
+                <AccountInfo title={"Password"} text={data.password} />
+
+                <h2>Deactivate Account</h2>
+                <p onClick={openPopup}>Delete your data and account</p>
+                <div className="Popup-box">
+                    <div className="content">
+                        <p className="Popup-text">Deactivate</p>
+                        <div className="buttons">
+                            <Link to={'/signup'}><p className="Deactivate-yes">Deactivate my account</p></Link>
+                            <p className="Close-button" onClick={closePopup}>Cancel</p>
+                        </div>
+                    </div>
+                </div>
+                <NavigationBar />
+            </>
+        )
+    }
 }
 
 export default AccountSettings

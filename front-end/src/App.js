@@ -192,7 +192,6 @@ function App() {
           <InputField inputfieldName="Password" inputType="password" />
           <SubmitButton placeholder="Submit" />
           <SearchBar />
-
         </main>
       </Router>
     </div>

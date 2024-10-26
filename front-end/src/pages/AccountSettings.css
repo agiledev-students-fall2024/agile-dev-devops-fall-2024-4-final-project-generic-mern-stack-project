@@ -1,0 +1,39 @@
+.Popup-box {
+    border: solid 1px black;
+    margin-left: 30%;
+    margin-right: 30%;
+    width: 300px;
+    height: 200px;
+    position: relative;
+}
+
+.Content-button {
+    text-align: right;
+    padding: 15px;
+}
+
+.Popup-text {
+    text-align: center;
+    padding-top: 25px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+}
+
+.Deactivate-yes {
+    border: solid 1px black;
+}
+
+.Close-button {
+    border: solid 1px black;
+    position: absolute;
+    right: 0;
+}
