@@ -30,7 +30,7 @@ export default function Login() {
   return (
     <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-6 p-8">
       <LogoPageTitle logoSrc="seraphim-logo.PNG" title="Login" />
-      <div className=" w-[80%] flex flex-col gap-4">
+      <div className="w-[80%] flex flex-col gap-4">
         <InputField
           className="input"
           inputfieldName="Username"
@@ -45,12 +45,12 @@ export default function Login() {
         />
       </div>
       <SubmitButton placeholder="Login" link="/" handleClick={handleBtnClick} />
-      <Link className="text-rose underlined font-bold" to="/forgotpassword">
+      <Link className="text-rose underline font-bold hover:text-ebony" to="/forgotpassword">
         I forgot my password
       </Link>
       <div className="text-ebony-700 font-bold text-center">
         Don't have an account?{" "}
-        <Link className="text-rose underlined" to="/signup">
+        <Link className="text-rose underline hover:text-ebony" to="/signup">
           Create an account
         </Link>
       </div>
