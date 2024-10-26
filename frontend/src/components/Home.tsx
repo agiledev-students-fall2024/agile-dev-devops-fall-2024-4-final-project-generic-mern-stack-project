@@ -19,7 +19,7 @@ export default function Home() {
           <SoHoMap />
         </div>
         <Button
-          className="rounded-3xl bg-blue-400 hover:bg-blue-600 border-blue-500 h-12 font-extrabold text-lg text-white"
+          className="rounded-3xl h-12 font-extrabold text-lg"
           onClick={() => navigate("/suggest")}
         >
           Suggest Stores For Me

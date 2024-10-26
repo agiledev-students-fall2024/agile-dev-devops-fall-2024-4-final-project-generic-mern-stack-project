@@ -19,12 +19,27 @@ import { Button } from "@/components/ui/button";
 import { Store } from "@/types";
 import StoreItem from "./StoreItem";
 
-function StatusList({ stores }: { stores: Store[] }) {
+function StoreList({
+  stores,
+  highlightedStores = [],
+  heading = undefined,
+}: {
+  stores: Store[];
+  highlightedStores?: Store[];
+  heading?: string | undefined;
+}) {
   return (
     <Command>
       <CommandInput placeholder="Search stores..." />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
+        {highlightedStores.length > 0 && (
+          <CommandGroup heading={heading}>
+            {highlightedStores.map((store) => (
+              <StoreItem key={store._id} type="myStore" store={store} />
+            ))}
+          </CommandGroup>
+        )}
         <CommandGroup>
           {stores.map((store) => (
             <CommandList key={store._id}>
@@ -55,14 +70,13 @@ export default function StoreSearchBar({ stores }: { stores: Store[] }) {
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
-          {/* different views for desktop and mobile */}
           {isDesktop ? (
-            <StatusList stores={stores} />
+            <StoreList stores={stores} />
           ) : (
             <Drawer open={open} onOpenChange={setOpen}>
               <DrawerContent>
                 <div className="mt-4 border-t">
-                  <StatusList stores={stores} />
+                  <StoreList stores={stores} />
                 </div>
               </DrawerContent>
             </Drawer>
