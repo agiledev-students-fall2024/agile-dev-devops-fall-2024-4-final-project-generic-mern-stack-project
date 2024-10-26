@@ -19,6 +19,11 @@ import Profile from "./pages/Profile";
 import BlogPost from "./components/BlogPost";
 import About from "./components/About";
 import ProfileHeader from "./components/ProfileHeader";
+import Settings from "./pages/Settings"
+import AccountSettings from "./pages/AccountSettings"
+import Privacy from "./pages/Privacy"
+import Blocked from "./pages/Blocked"
+import Accessibility from "./pages/Accessibility"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -37,6 +42,15 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/resetpassword" element={<ResetPassword />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/account-settings" element={<AccountSettings text={"Account Settings"} />} />
+        <Route path="/accessibility" element={<Accessibility text={"Accessibility"} />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/blocked-users" element={<Blocked type={'blocked_users'} text={'Blocked Users'} />} />
+        <Route path="/blocked-communities" element={<Blocked type={'blocked_communities'} text={'Blocked Communities'} />} />
+        <Route path="/muted-words" element={<Blocked type={'muted_words'} text={'Muted Words'} />} />
+
+
       </Routes>
     </Router>
     // <>
