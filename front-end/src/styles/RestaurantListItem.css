@@ -17,9 +17,20 @@
     margin-bottom: 4px;
   }
   
+
   .pills-container {
+    margin-top: 8px;
     display: flex;
     flex-wrap: wrap;
-    gap: 4px;
+    gap: 8px;
+  }
+  
+  .pill {
+    display: inline-block;
+    background-color: #1976d2;
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 0.875em;
   }
   

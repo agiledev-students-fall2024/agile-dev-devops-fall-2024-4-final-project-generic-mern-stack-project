@@ -68,4 +68,19 @@
   .description {
     margin-top: 8px;
   }
+
+  .pill {
+    background-color: #1976d2;
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 0.875em;
+  }
+  
+  .description {
+    margin-top: 8px;
+    color: #fff;
+  }
+  
+
   

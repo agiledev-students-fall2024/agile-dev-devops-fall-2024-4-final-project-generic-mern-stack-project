@@ -1,6 +1,4 @@
 import React, { useContext, useState } from "react";
-import { AppBar, Toolbar, IconButton, Typography } from "@mui/material";
-import { AccountCircle, FilterList, ArrowBack } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/Navbar.css";
 import { AuthContext } from "../contexts/AuthContext";
@@ -29,32 +27,30 @@ const NavBar = () => {
   const isFeedPage = location.pathname === "/feed";
 
   return (
-    <AppBar position="fixed" className="nav-bar">
-      <Toolbar>
+    <nav className="nav-bar">
+      <div className="toolbar">
         {isAuthenticated &&
           (isFeedPage ? (
-            <IconButton edge="start" color="inherit" onClick={handleFilterClick}>
-              <FilterList />
-            </IconButton>
+            <button className="icon-button" onClick={handleFilterClick}>
+              {/* Replace with an icon or text */}
+              <span className="icon">🔍</span> {/* Or use a filter icon */}
+            </button>
           ) : (
-            <IconButton edge="start" color="inherit" onClick={handleBackClick}>
-              <ArrowBack />
-            </IconButton>
+            <button className="icon-button" onClick={handleBackClick}>
+              {/* Replace with an icon or text */}
+              <span className="icon">←</span> {/* Or use a back arrow */}
+            </button>
           ))}
-        <Typography variant="h6" className="nav-title">
-          Restaswipe
-        </Typography>
+        <h1 className="nav-title">Restaswipe</h1>
         {isAuthenticated && (
-          <IconButton edge="end" color="inherit" onClick={handleProfileClick}>
-            <AccountCircle />
-          </IconButton>
+          <button className="icon-button" onClick={handleProfileClick}>
+            {/* Replace with an icon or text */}
+            <span className="icon">👤</span> {/* Or use a profile icon */}
+          </button>
         )}
-      </Toolbar>
-      <FilterPopup
-        open={filterOpen}
-        close={() => setFilterOpen(false)}
-      />
-    </AppBar>
+      </div>
+      <FilterPopup open={filterOpen} close={() => setFilterOpen(false)} />
+    </nav>
   );
 };
 
