@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./SearchBar.css";
 import SubmitButton from "./SubmitButton";
+
 function SearchBar({ SearchBarName }) {
   const [searchInput, setsearchInput] = useState("");
   function handleChange(e) {
