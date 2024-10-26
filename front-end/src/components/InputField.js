@@ -21,7 +21,7 @@ function InputField({
         {/* <img src={imgSrc} alt="" /> */}
         <label className="text-sm text-ebony-700 font-bold">{inputfieldName}</label>
         <input
-          className="bg-lavender_blush-900 rounded-md px-2 py-1 "
+          className="bg-lavender_blush-900 rounded-md px-2 py-1 text-md font-bold text-ebony"
           // className="input-box"
           type={inputType}
           id={inputfieldName}

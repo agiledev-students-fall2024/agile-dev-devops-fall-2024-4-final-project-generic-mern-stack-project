@@ -57,7 +57,7 @@ export default function Signup() {
       </div> */}
       <div className="text-ebony-700 font-bold text-center">
         Already have an account?{" "}
-        <Link className="text-rose underlined" to="/login">
+        <Link className="text-rose underline hover:text-ebony" to="/login">
           Login
         </Link>
       </div>

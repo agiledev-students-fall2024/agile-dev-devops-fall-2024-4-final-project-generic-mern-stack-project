@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import LogoPageTitle from "../components/LogoPageTitle";
 // import Logo from "../assets/upload-image-placeholder.png";
 import InputField from "../components/InputField";
-import "./ForgotPassword.css";
+//import "./ForgotPassword.css";
 import { Link, useNavigate } from "react-router-dom";
 import SubmitButton from "../components/SubmitButton";
 
@@ -26,9 +26,9 @@ export default function ForgotPassword() {
     navigate("/resetpassword");
   };
   return (
-    <>
+    <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-6 p-8">
       <LogoPageTitle logoSrc="seraphim-logo.PNG" title="Forgot Password?" />
-      <div className="input-btn-container">
+      <div className="w-[80%] flex flex-col gap-4">
         <InputField
           inputfieldName="Email"
           inputType="email"
@@ -39,28 +39,26 @@ export default function ForgotPassword() {
         {/* <button className="submit-eamil-btn" onClick={handleClick}>
           Submit
         </button> */}
-        <SubmitButton placeholder="Send" handleClick={handleSendClick} />
       </div>
-      <div className="code-container">
-        {submittedEmail && (
-          <>
-            <div>We sent a code to {submittedEmail}</div>
-            <div className="code-inputs">
-              <input className="code-input" type="text" maxLength="1" />
-              <input className="code-input" type="text" maxLength="1" />
-              <input className="code-input" type="text" maxLength="1" />
-              <input className="code-input" type="text" maxLength="1" />
-            </div>
-            <SubmitButton
-              placeholder="Continue"
-              handleClick={handleContinueClick}
-            />
-          </>
-        )}
-        <Link className="underlined" to="/login">
-          Back to Login
-        </Link>
-      </div>
-    </>
+      <SubmitButton placeholder="Send" handleClick={handleSendClick} />
+      {submittedEmail && (
+        <div className="flex flex-col gap-4 justify-center items-center">
+          <div className="text-ebony-700 font-bold">We sent a code to {submittedEmail}</div>
+          <div className="w-[80%] flex flex-row gap-4 justify-evenly items-center">
+            <input className="w-[25%] h-16 rounded-md text-center text-2xl font-bold text-rose" type="text" maxLength="1" />
+            <input className="w-[25%] h-16 rounded-md text-center text-2xl font-bold text-rose" type="text" maxLength="1" />
+            <input className="w-[25%] h-16 rounded-md text-center text-2xl font-bold text-rose" type="text" maxLength="1" />
+            <input className="w-[25%] h-16 rounded-md text-center text-2xl font-bold text-rose" type="text" maxLength="1" />
+          </div>
+          <SubmitButton
+            placeholder="Continue"
+            handleClick={handleContinueClick}
+          />
+        </div>
+      )}
+      <Link className="text-rose underline font-bold hover:text-ebony" to="/login">
+        Back to Login
+      </Link>
+    </div>
   );
 }

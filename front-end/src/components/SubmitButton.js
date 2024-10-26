@@ -8,7 +8,7 @@ function SubmitButton({ placeholder, link, handleClick }) {
   return (
     <div className="w-[80%] my-2">
       {/* <Link to={link}> */}
-      <button className="w-[100%] bg-ebony border-ebony rounded-lg text-rose font-semibold hover:bg-rose hover:text-ebony hover:border-rose" onClick={handleClick}>
+      <button className="w-[100%] p-2 bg-ebony border-ebony rounded-lg text-rose font-semibold hover:bg-rose hover:text-ebony hover:border-rose" onClick={handleClick}>
         {placeholder}
       </button>
       {/* </Link> */}
