@@ -15,6 +15,7 @@ import SearchBar from "./components/SearchBar";
 import PostBlogTextField from "./components/PostBlogTextField"; // C17
 import ChangeAccountInfoButton from "./components/ChangeAccountInfoButton" // C19
 import ChangeProflieTextBox from "./components/ChangeProfileTextBox" //C20
+import BackButton from "./components/BackButton" //C14
 import Home from "./pages/Home";
 import Community from "./pages/Community";
 import Blog from "./pages/Blog";
