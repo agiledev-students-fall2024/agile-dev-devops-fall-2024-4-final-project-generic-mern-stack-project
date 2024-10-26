@@ -12,6 +12,9 @@ import InputField from "./components/InputField";
 import SubmitButton from "./components/SubmitButton";
 import LogoPageTitle from "./components/LogoPageTitle";
 import SearchBar from "./components/SearchBar";
+import PostBlogTextField from "./components/PostBlogTextField"; // C17
+import ChangeAccountInfoButton from "./components/ChangeAccountInfoButton" // C19
+import ChangeProflieTextBox from "./components/ChangeProfileTextBox" //C20
 import Home from "./pages/Home";
 import Community from "./pages/Community";
 import Blog from "./pages/Blog";
