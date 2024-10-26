@@ -3,7 +3,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 // Comment out or remove the problematic import
 // import { useMediaQuery } from "@/hooks/use-media-query";
 import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { cn } from "@/lib/utils";
 import { Search } from "lucide-react";
@@ -15,24 +19,34 @@ import {
   CommandInput,
   CommandList,
 } from "@/components/ui/command";
-import SearchStoreItem from "./SearchStoreItem";
+import StoreItem from "./StoreItem";
 
-function StoreList({ suggestedStores = [], stores = [] }: { suggestedStores: Store[]; stores: Store[] }) {
+function StoreList({
+  stores,
+  highlightedStores = [],
+  heading = undefined,
+}: {
+  stores: Store[];
+  highlightedStores?: Store[];
+  heading?: string | undefined;
+}) {
   return (
     <Command>
       <CommandInput placeholder="Search stores..." />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
-        {suggestedStores.length > 0 && (
-          <CommandGroup heading="Suggested Stores">
-            {suggestedStores.map((store) => (
-              <SearchStoreItem key={store._id} store={store} />
+        {highlightedStores.length > 0 && (
+          <CommandGroup heading={heading}>
+            {highlightedStores.map((store) => (
+              <StoreItem key={store._id} type="myStore" store={store} />
             ))}
           </CommandGroup>
         )}
         <CommandGroup heading="All Stores">
           {stores.map((store) => (
-            <SearchStoreItem key={store._id} store={store} />
+            <CommandList key={store._id}>
+              <StoreItem type="search" store={store} />
+            </CommandList>
           ))}
         </CommandGroup>
       </CommandList>
@@ -43,7 +57,8 @@ function StoreList({ suggestedStores = [], stores = [] }: { suggestedStores: Sto
 export default function StoreSearchBar({ stores = [] }: { stores: Store[] }) {
   const [open, setOpen] = useState(false);
   const [suggestedStores, setSuggestedStores] = useState<Store[]>([]);
-  const isDesktop = typeof window !== 'undefined' ? window.innerWidth >= 768 : true;
+  const isDesktop =
+    typeof window !== "undefined" ? window.innerWidth >= 768 : true;
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -72,14 +87,22 @@ export default function StoreSearchBar({ stores = [] }: { stores: Store[] }) {
             <Search className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[300px] p-0">
+        <PopoverContent className="w-[200px] p-0">
           {isDesktop ? (
-            <StoreList stores={stores} suggestedStores={suggestedStores} />
+            <StoreList
+              stores={stores}
+              highlightedStores={suggestedStores}
+              heading="Suggested Stores"
+            />
           ) : (
             <Drawer open={open} onOpenChange={setOpen}>
               <DrawerContent>
                 <div className="mt-4 border-t">
-                  <StoreList stores={stores} suggestedStores={suggestedStores} />
+                  <StoreList
+                    stores={stores}
+                    highlightedStores={suggestedStores}
+                    heading="Suggested Stores"
+                  />
                 </div>
               </DrawerContent>
             </Drawer>

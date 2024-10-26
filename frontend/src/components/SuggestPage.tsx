@@ -38,7 +38,9 @@ export default function SuggestPage() {
   // // *** Added state to hold suggested stores
   // const [suggestedStores, setSuggestedStores] = useState<Store[]>([]);
   // Keep hardcoded suggested stores in state
-  const [suggestedStores, setSuggestedStores] = useState(hardcodedSuggestedStores);
+  const [suggestedStores, setSuggestedStores] = useState(
+    hardcodedSuggestedStores,
+  );
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentFilter, setCurrentFilter] =
     useState<FilterStringTypes>("Brand");
@@ -149,10 +151,11 @@ export default function SuggestPage() {
 
   // *** "View Results" navigates to the suggested stores in the home
   const handleViewResult = () => {
+    // TODO: add suggest stores logic
     navigate("/", {
       state: {
-        suggestedStores: hardcodedSuggestedStores,
-        openSearchBar: true
+        suggestedStores: suggestedStores,
+        openSearchBar: true,
       },
     });
   };
