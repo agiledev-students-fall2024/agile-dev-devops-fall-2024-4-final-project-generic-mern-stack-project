@@ -3,16 +3,16 @@
 .past-activities-page {
     padding: 40px;
     background-color: #fafafa;
-  }
-  
-  .past-tabs {
+}
+
+.past-tabs {
     display: flex;
     justify-content: center;
     gap: 20px;
     margin-bottom: 20px;
-  }
-  
-  .past-tabs button {
+}
+
+.past-tabs button {
     background: none;
     border: none;
     font-size: 18px;
@@ -20,95 +20,95 @@
     color: #e91e63;
     cursor: pointer;
     transition: color 0.3s;
-  }
-  
-  .past-tabs button:hover {
+}
+
+.past-tabs button:hover {
     color: #ff4081;
-  }
-  
-  .new-past-activity-button {
+}
+
+.new-past-activity-button {
     margin-left: auto;
     font-weight: bold;
     color: #e91e63;
     cursor: pointer;
-  }
-  
-  .past-activity-list {
+}
+
+.past-activity-list {
     display: grid;
     grid-template-columns: 1fr;
     gap: 20px;
-    margin-top: 20px;
-  }
-  
-  .past-activity-card {
+    margin-top: 10px;
+}
+
+.past-activity-card {
     background: white;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
     transition: box-shadow 0.3s;
-  }
-  
-  .past-activity-card:hover {
+}
+
+.past-activity-card:hover {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  }
-  
-  .past-activity-header {
+}
+
+.past-activity-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
     margin-bottom: 10px;
-  }
-  
-  .past-vote-section {
+}
+
+.past-vote-section {
     display: flex;
     align-items: center;
     gap: 8px;
-  }
-  
-  .past-details-content {
+}
+
+.past-details-content {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     margin-top: 10px;
     gap: 16px;
-  }
-  
-  .past-description-section {
+}
+
+.past-description-section {
     flex: 2;
     font-size: 16px;
     color: #333;
-  }
-  
-  .past-image-section {
+}
+
+.past-image-section {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  
-  .past-activity-image {
-    width: 100%; 
-    max-width: 430px; /* Limits the width of the image */
-    max-height: 250px; /* Restricts the height to keep the image smaller */
-    height: auto; /* Maintains aspect ratio */
+}
+
+.past-activity-image {
+    width: 100%;
+    max-width: 430px;
+    max-height: 250px;
+    height: auto;
     border-radius: 8px;
-    object-fit: cover; /* Crops the image if it's taller than the max-height */
-  }
-  
-  .past-comments-section {
+    object-fit: cover;
+}
+
+.past-comments-section {
     margin-top: 20px;
-  }
-  
-  .past-comments-section input {
+}
+
+.past-comments-section input {
     width: 88.5%;
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #ddd;
     margin-right: 10px;
-  }
-  
-  .past-comments-section button {
+}
+
+.past-comments-section button {
     padding: 10px 16px;
     background-color: #e91e63;
     color: white;
@@ -116,16 +116,15 @@
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s;
-  }
-  
-  .past-comments-section button:hover {
+}
+
+.past-comments-section button:hover {
     background-color: #ff4081;
-  }
-  
-  .past-comments-list p {
+}
+
+.past-comments-list p {
     background-color: #f0f0f0;
     padding: 10px;
     border-radius: 8px;
     margin-top: 8px;
-  }
-  
+}

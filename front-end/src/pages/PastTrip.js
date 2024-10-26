@@ -6,29 +6,29 @@ import './PastTrip.css';
 
 const PastTrip = () => {
   const [activities, setActivities] = useState([]);
-  const [tripName, setTripName] = useState("Past Trip Details"); // Default title
+  const [tripName, setTripName] = useState("Past Trip Details");
   const [error, setError] = useState(null);
-  const tripId = "trip_456"; // Replace with dynamic ID if needed
+  const tripId = "trip_456"; 
 
   useEffect(() => {
-    // Step 1: Fetch trip details to get location IDs
+   
     axios
       .get(`https://mock-api-misty-fog-1131.fly.dev/api/trips/${tripId}`)
       .then((tripResponse) => {
-        const locationId = tripResponse.data.locations[0]; // Get the first location ID
-        setTripName(tripResponse.data.name); // Set trip name
+        const locationId = tripResponse.data.locations[0]; 
+        setTripName(tripResponse.data.name); 
 
-        // Step 2: Fetch location details to get the name
+        
         return axios.get(`https://mock-api-misty-fog-1131.fly.dev/api/locations/${locationId}`);
       })
       .then((locationResponse) => {
-        setTripName(locationResponse.data.name); // Update title with location name
+        setTripName(locationResponse.data.name); 
 
-        // Step 3: Fetch activities for this location
+        
         return axios.get(`https://mock-api-misty-fog-1131.fly.dev/api/locations/${locationResponse.data.id}/activities`);
       })
       .then((activitiesResponse) => {
-        setActivities(activitiesResponse.data); // Set activities data
+        setActivities(activitiesResponse.data); 
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -37,10 +37,10 @@ const PastTrip = () => {
   }, []);
 
   return (
-    <div className="activities-page">
-      <GroupTripPictureCard tripName={tripName} tripId={101} /> {/* Dynamically set trip name */}
+    <div className="past-activities-page">
+      <GroupTripPictureCard tripName={tripName} tripId={101} /> 
 
-      <div className="tabs">
+      <div className="past-tabs">
         <button>Food</button>
         <button>Activities</button>
         <button>Stay</button>
@@ -49,7 +49,7 @@ const PastTrip = () => {
       {error ? (
         <p>{error}</p>
       ) : (
-        <div className="activity-list">
+        <div className="past-activity-list">
           {activities.map((activity) => (
             <PastActivityCard
               key={activity.id}
