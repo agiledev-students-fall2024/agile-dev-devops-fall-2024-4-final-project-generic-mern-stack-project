@@ -1,0 +1,54 @@
+.Goal h1 {
+    text-align: center; /* Center the text horizontally */
+    margin-bottom: 20px; /* Add some space below the heading */
+  }
+  
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    gap: 20px; /* Space between grid items */
+  }
+  
+  .grid-item1, .grid-item2, .grid-item3 {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Make grid-item3 occupy the whole row */
+  .grid-item3 {
+    grid-column: span 2; /* Span across both columns */
+  }
+  
+  /* Additional styling for the form inside grid-item3 */
+  .grid-item3 form {
+    display: flex;
+    flex-direction: column; /* Align form elements vertically */
+    align-items: flex-start; /* Start items from the left */
+  }
+  
+  .grid-item3 form label {
+    margin-bottom: 10px; /* Add spacing between form elements */
+  }
+
+  .button {
+      background-color: rgb(40, 125, 222);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  
+  /* Responsive adjustments */
+  @media screen and (max-width: 768px) {
+    .grid-container {
+      grid-template-columns: 1fr; /* Single column layout on smaller screens */
+    }
+  
+    .grid-item3 {
+      grid-column: span 1; /* Reset to single column on small screens */
+    }
+  }
+  

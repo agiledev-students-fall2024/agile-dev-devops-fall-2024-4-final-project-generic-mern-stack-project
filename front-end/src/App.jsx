@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/home';
+import Goal from './pages/Goal';
 import { Link } from 'react-router-dom';
 
 {/*
@@ -16,6 +17,7 @@ function App() {
     <Router>
       <nav>
         <Link to="/">Home</Link> | 
+        <Link to="/goal">Goal</Link> | 
         {/*
         <Link to="/charts">Charts</Link> | 
         <Link to="/goals">Goals</Link> | 
@@ -27,6 +29,8 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/goal" element={<Goal />} />
+        
        {/* 
         <Route path="/charts" element={<Charts />} />
         <Route path="/goals" element={<Goals />} />
