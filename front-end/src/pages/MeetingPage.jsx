@@ -74,7 +74,7 @@ function MeetingPage() {
     };
 
     const handleLeave = () => {
-        navgiate('/home');
+        navgiate('/joincreatemeeting');
     };
 
     const setSelfVideoAudioConnection = async () => {
