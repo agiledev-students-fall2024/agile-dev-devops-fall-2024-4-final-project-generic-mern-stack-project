@@ -17,6 +17,7 @@ import { useMediaQuery } from "usehooks-ts";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Store } from "@/types";
+import RouteStoreItem from "./RouteStoreItem";
 import sampleStores from "@/stores";
 
 type StoreListProps = {
@@ -30,6 +31,9 @@ type StoreListProps = {
 
 function StoreList({
   allStores,
+  addStore,
+  removeStore,
+  isSavedStore,
   highlightedStores = [],
   heading = undefined,
 }: StoreListProps) {
@@ -42,14 +46,24 @@ function StoreList({
         {highlightedStores.length > 0 && (
           <CommandGroup heading={heading}>
             {highlightedStores.map((store) => (
-              <span>{store.name}</span>
+              <RouteStoreItem
+                store={store}
+                addStore={addStore}
+                removeStore={removeStore}
+                isSavedStore={isSavedStore}
+              />
             ))}
           </CommandGroup>
         )}
         <CommandGroup heading="All Stores">
           {allStores.map((store) => (
             <CommandList key={store._id}>
-              <span>{store.name}</span>
+              <RouteStoreItem
+                store={store}
+                addStore={addStore}
+                removeStore={removeStore}
+                isSavedStore={isSavedStore}
+              />
             </CommandList>
           ))}
         </CommandGroup>
