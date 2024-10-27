@@ -11,7 +11,7 @@ import CreateTask from './Tasks/CreateTask';
 import Calendar_monthly from './Calendar/Calendar_monthly';
 import Header from './header';
 import Goals from './Goals/Goals';
-
+import NewGoal from './Goals/NewGoal';
 function App() {
   return (
     <div className='App'>
@@ -23,7 +23,7 @@ function App() {
             <Route path="/Tasks" element={<Tasks />} />  {/* Task page route */}
             <Route path="/CreateTask" element={<CreateTask />} />
             <Route path="/Goals" element={<Goals />} />
-            
+            <Route path="/NewGoal" element={<NewGoal />} />
             {/* Rena's part : monthly Calendar */}
             <Route path="/Monthly_calendar" element={<Calendar_monthly/>} />
           </Routes>

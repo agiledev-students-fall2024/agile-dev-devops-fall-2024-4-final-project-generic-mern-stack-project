@@ -137,7 +137,7 @@ function Tasks() {
           </button>
         </div>
 
-        <Link to="/CreateTask" className="add-task-btn">Add New Task</Link>
+        <Link to="/CreateTask"> <button className="add-task-btn">Add New Task</button></Link>
         <Link to="/" className="home-btn">Home</Link>
       </div>
     </div>

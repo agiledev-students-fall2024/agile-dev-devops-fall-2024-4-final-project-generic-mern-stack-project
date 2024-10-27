@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './NewGoal.css';
-
+import { Link } from 'react-router-dom';
 const NewGoal = () => {
     const [title, setTitle] = useState('');
     const [tasks, setTasks] = useState(['']);
@@ -85,7 +85,7 @@ const NewGoal = () => {
                             />
                         </div>
                     ))}
-                    <button type="button" onClick={handleAddTask} className="add-task-btn">
+                    <button type="button" onClick={handleAddTask} className="add-btn">
                         Add Task
                     </button>
                 </div>

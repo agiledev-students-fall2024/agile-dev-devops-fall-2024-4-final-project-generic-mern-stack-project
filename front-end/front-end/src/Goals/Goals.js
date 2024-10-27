@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import "./Goals.css"
+import "./Goals.css";
+import TaskModal from './TaskModal';
 const Goals = () => {
     const [goals, setGoals] = useState([
         {
@@ -25,15 +26,16 @@ const Goals = () => {
             due_date: "XX/XX/XXXX",
         }
     ])
+    const [selectedGoal, setSelectedGoal] = useState(null);
     return (
         <div className="container">
             <h1 className="page-title">Goals</h1>
-            <Link to="/CreateGoal" className="new-goal-btn">New</Link>
+            <Link to="/NewGoal" className="new-goal-btn">New</Link>
             <div className="goals-list">
                 {
                     goals.map((goal) => {
                         return (
-                            <div className="goal-item" key={goal.title}>
+                            <div className="goal-item" key={goal.title} onClick={() => setSelectedGoal(goal)}>
                                 <h3>{goal.title}</h3>
                                 <p>Due Date: {goal.due_date}</p>
                                 <div className="progress-container">
@@ -46,6 +48,9 @@ const Goals = () => {
                 }
             </div>
             <Link to="/" className="home-btn">Home</Link>
+            {selectedGoal && (
+                <TaskModal goal={selectedGoal} onClose={() => setSelectedGoal(null)} />
+            )}
         </div>
     )
 }
