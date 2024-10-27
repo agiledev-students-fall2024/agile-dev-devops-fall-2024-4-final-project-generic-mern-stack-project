@@ -6,7 +6,7 @@ type PaymentOptions = {
 };
 
 export type Store = {
-  _id: string;
+  _id?: string;
   name: string;
   address: string;
   reviews: string[];
@@ -25,10 +25,14 @@ export type Store = {
   lat: number;
   lng: number;
 };
-export type Filters = {
+export type FiltersType = {
   category: string[];
   priceRange: string[];
   brand: string[];
+  rating: number | null;
+  numRatings: number | null;
 };
+
+export type FilterStringTypes = "Brand" | "Price Range" | "Category" | "Rating";
 
 export type PriceRange = "Budget" | "Mid-Range" | "Premium" | "Luxury";
