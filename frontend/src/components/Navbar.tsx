@@ -23,7 +23,12 @@ export default function Navbar() {
         </div>
 
         <div className="absolute left-1/2 transform -translate-x-1/2">
-          <div className="text-white text-2xl font-bold">LOGO</div>
+          <div
+            className="text-white text-2xl font-bold"
+            onClick={() => navigate("/")}
+          >
+            LOGO
+          </div>
         </div>
 
         <div className="w-1/3 flex justify-end">

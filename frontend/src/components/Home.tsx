@@ -11,7 +11,6 @@ export default function Home() {
     <main className="flex flex-col gap-10 px-5">
       <div className="flex flex-col gap-5">
         <StoreSearchBar stores={sampleStores} />
-        <StoreSearchBar stores={sampleStores} />
         <MyStoresButton />
       </div>
 
