@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import SubCommunity from '../components/SubCommunity'
-import './SubCommunityPage.css'
+//import './SubCommunityPage.css'
 
 const SubCommunityPage = (props) => {
     //stores the fake data into data 
@@ -38,7 +38,7 @@ const SubCommunityPage = (props) => {
     const image = `https://picsum.photos/200?id=${props.communityId}`
 
     return (
-        <div className="community-info">
+        <div className="w-[95%] m-[auto] flex flex-col justify-center items-center gap-6 p-8">
             <SubCommunity 
                 image={image}
                 name={data.name}
