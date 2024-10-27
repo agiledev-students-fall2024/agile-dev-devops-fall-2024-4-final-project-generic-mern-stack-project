@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Signup.css";
+// import "./Signup.css";
 import LogoPageTitle from "../components/LogoPageTitle";
 // import Logo from "../assets/upload-image-placeholder.png";
 import InputField from "../components/InputField";
@@ -30,9 +30,9 @@ export default function Signup() {
     setPassword(e.target.value);
   }
   return (
-    <>
+    <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-6 p-8">
       <LogoPageTitle logoSrc="seraphim-logo.PNG" title="Create an account" />
-      <div className="inputs">
+      <div className=" w-[80%] flex flex-col gap-4">
         <InputField inputfieldName="Name" handleChange={handleNameChange} />
         <InputField
           inputfieldName="Username"
@@ -55,12 +55,12 @@ export default function Signup() {
           Signup
         </button>
       </div> */}
-      <div className="have-account">
+      <div className="text-ebony-700 font-bold text-center">
         Already have an account?{" "}
-        <Link className="underlined" to="/login">
+        <Link className="text-rose underline hover:text-ebony" to="/login">
           Login
         </Link>
       </div>
-    </>
+    </div>
   );
 }

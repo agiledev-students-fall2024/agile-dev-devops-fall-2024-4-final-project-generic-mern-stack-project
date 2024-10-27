@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./ResetPassword.css";
+//import "./ResetPassword.css";
 import LogoPageTitle from "../components/LogoPageTitle";
 import InputField from "../components/InputField";
 // import Logo from "../assets/upload-image-placeholder.png";
@@ -23,12 +23,12 @@ export default function ResetPassword() {
   }
 
   return (
-    <>
+    <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-6 p-8">
       <LogoPageTitle
         logoSrc="./seraphim-logo.PNG"
         title="Set New Password"
-      ></LogoPageTitle>
-      <div className="passwords">
+      />
+      <div className="w-[80%] flex flex-col gap-4">
         {/* <div className="input-container">
           <label>Password</label>
           <input className="password" type="password"></input>
@@ -50,18 +50,16 @@ export default function ResetPassword() {
           handleChange={handleConfirmpasswordChange}
         />
       </div>
-      <div className="btn-link-container">
         {/* <Link to="/">
           <button>Reset Password</button>
         </Link> */}
-        <SubmitButton
-          placeholder="Reset Password"
-          handleClick={handleBtnClick}
-        />
-        <Link to="/login" className="underlined login-link">
-          Back to Login
-        </Link>
-      </div>
-    </>
+      <SubmitButton
+        placeholder="Reset Password"
+        handleClick={handleBtnClick}
+      />
+      <Link className="text-rose underline font-bold hover:text-ebony" to="/login" >
+        Back to Login
+      </Link>
+    </div>
   );
 }

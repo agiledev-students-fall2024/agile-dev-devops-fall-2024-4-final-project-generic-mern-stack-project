@@ -573,6 +573,14 @@ video {
   align-items: center;
 }
 
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
 .justify-evenly {
   justify-content: space-evenly;
 }
@@ -600,9 +608,10 @@ video {
 }
 
 @font-face {
-  font-family: 'sera';
+  font-family: "sera";
 
-  src: url('../public/fonts/Twitter_Chirp_Medium-Twitter_Chirp_Heavy.otf') format('opentype');
+  src: url("../public/fonts/Twitter_Chirp_Medium-Twitter_Chirp_Heavy.otf")
+    format("opentype");
 
   font-weight: 500;
 
@@ -610,9 +619,9 @@ video {
 }
 
 @font-face {
-  font-family: 'sera';
+  font-family: "sera";
 
-  src: url('../public/fonts/Twitter-Chirp_Bold.otf') format('opentype');
+  src: url("../public/fonts/Twitter-Chirp_Bold.otf") format("opentype");
 
   font-weight: 700;
 

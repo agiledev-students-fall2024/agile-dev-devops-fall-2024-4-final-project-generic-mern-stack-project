@@ -1,12 +1,12 @@
 import React from "react";
-import "./LogoPageTitle.css";
+//import "./LogoPageTitle.css";
 function LogoPageTitle({ logoSrc, title }) {
   return (
     <>
-      <div className="page-logo">
-        <img src={logoSrc} alt="logo" />
+      <div className="w-[100%] flex flex-col justify-center items-center">
+        <img className="w-[60%]" src={logoSrc} alt="logo" />
+        <h2 className="text-2xl font-bold text-rose mt-[-20px]">{title}</h2>
       </div>
-      <h2 className="title">{title}</h2>
     </>
   );
 }

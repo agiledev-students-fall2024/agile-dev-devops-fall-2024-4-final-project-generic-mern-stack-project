@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Login.css";
+//import "./Login.css";
 import InputField from "../components/InputField";
 import LogoPageTitle from "../components/LogoPageTitle";
 import SubmitButton from "../components/SubmitButton";
@@ -28,9 +28,9 @@ export default function Login() {
   }
 
   return (
-    <>
-      <LogoPageTitle logoSrc="seraphim-logo.PNG" title="Welcome Back" />
-      <div className="inputs">
+    <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-6 p-8">
+      <LogoPageTitle logoSrc="seraphim-logo.PNG" title="Login" />
+      <div className="w-[80%] flex flex-col gap-4">
         <InputField
           className="input"
           inputfieldName="Username"
@@ -45,15 +45,15 @@ export default function Login() {
         />
       </div>
       <SubmitButton placeholder="Login" link="/" handleClick={handleBtnClick} />
-      <Link className="forgot-password underlined" to="/forgotpassword">
+      <Link className="text-rose underline font-bold hover:text-ebony" to="/forgotpassword">
         I forgot my password
       </Link>
-      <div className="dont-have-account">
+      <div className="text-ebony-700 font-bold text-center">
         Don't have an account?{" "}
-        <Link className="underlined" to="/signup">
+        <Link className="text-rose underline hover:text-ebony" to="/signup">
           Create an account
         </Link>
       </div>
-    </>
+    </div>
   );
 }
