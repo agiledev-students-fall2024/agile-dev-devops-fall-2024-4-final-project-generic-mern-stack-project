@@ -1,17 +1,11 @@
-.group-trip-picture-card {
-    border: 2px solid #ddd;
-    border-radius: 10px;
-    padding: 16px;
-    margin: 20px 0;
-    text-align: center;
-    background-color: #f9f9f9;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .trip-image-container img {
+.trip-image-container img {
     width: 100%;
     height: auto;
     border-radius: 8px;
     margin-top: 10px;
+  }
+
+  h1 {
+    color: #000000;
   }
   

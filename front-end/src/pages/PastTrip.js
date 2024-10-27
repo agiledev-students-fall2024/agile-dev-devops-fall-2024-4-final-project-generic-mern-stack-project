@@ -1,57 +1,68 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import PastActivities from '../components/past/PastActivities'; // Import PastActivities
-import TripDetails from '../components/past/TripDetails'; // Import TripDetails
+import axios from 'axios';
+import GroupTripPictureCard from '../components/activities/GroupTripPictureCard';
+import PastActivityCard from '../components/activities/PastActivityCard';
 import './PastTrip.css';
 
 const PastTrip = () => {
-  const { id } = useParams();
-  const [trip, setTrip] = useState(null);
-  const [groupImage, setGroupImage] = useState('');
+  const [activities, setActivities] = useState([]);
+  const [tripName, setTripName] = useState("Past Trip Details");
+  const [error, setError] = useState(null);
+  const tripId = "trip_456"; 
 
   useEffect(() => {
-    const fetchedTrip = {
-      id,
-      title: `Trip to Destination ${id}`,
-      description: `This is a detailed description of trip ${id}.`,
-      days: [
-        {
-          day: 1,
-          activities: ['Visited a famous landmark', 'Tried local cuisine', 'Explored the city'],
-        },
-        {
-          day: 2,
-          activities: ['Visited a museum', 'Explored a popular neighborhood', 'Visited a historic site'],
-        },
-        {
-          day: 3,
-          activities: ['Relaxed at a local cafe', 'Took a scenic tour', 'Shopped at local stores'],
-        },
-      ],
-    };
-    setTrip(fetchedTrip);
+   
+    axios
+      .get(`https://mock-api-misty-fog-1131.fly.dev/api/trips/${tripId}`)
+      .then((tripResponse) => {
+        const locationId = tripResponse.data.locations[0]; 
+        setTripName(tripResponse.data.name); 
 
-    const imageUrl = `https://picsum.photos/1200/400?random=${id}`;
-    setGroupImage(imageUrl);
-  }, [id]);
+        
+        return axios.get(`https://mock-api-misty-fog-1131.fly.dev/api/locations/${locationId}`);
+      })
+      .then((locationResponse) => {
+        setTripName(locationResponse.data.name); 
 
-  if (!trip) {
-    return <div>Loading...</div>;
-  }
+        
+        return axios.get(`https://mock-api-misty-fog-1131.fly.dev/api/locations/${locationResponse.data.id}/activities`);
+      })
+      .then((activitiesResponse) => {
+        setActivities(activitiesResponse.data); 
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+        setError('Failed to fetch data');
+      });
+  }, []);
 
   return (
-    <div className="past-trip">
-      <div className="past-trip__image-wrapper">
-        <img src={groupImage} alt={trip.title} className="past-trip__image" />
+    <div className="past-activities-page">
+      <GroupTripPictureCard tripName={tripName} tripId={101} /> 
+
+      <div className="past-tabs">
+        <button>Food</button>
+        <button>Activities</button>
+        <button>Stay</button>
       </div>
 
-      {/* Use TripDetails component for title and description */}
-      <TripDetails title={trip.title} description={trip.description} />
-
-      {/* Use PastActivities component for day-wise activities */}
-      {trip.days.map((dayData, index) => (
-        <PastActivities key={index} day={dayData.day} activities={dayData.activities} />
-      ))}
+      {error ? (
+        <p>{error}</p>
+      ) : (
+        <div className="past-activity-list">
+          {activities.map((activity) => (
+            <PastActivityCard
+              key={activity.id}
+              id={activity.id}
+              title={activity.name}
+              description={activity.description}
+              price={activity.price ? `$${activity.price}` : 'Free'}
+              comments={activity.comments.map((c) => c.commentString)}
+              imageUrl={activity.image}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

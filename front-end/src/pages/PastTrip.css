@@ -1,21 +1,107 @@
-.past-trip {
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
+.past-activities-page {
     padding: 2rem;
+    font-family: Arial, sans-serif;
     color: #333;
-    font-family: 'Arial', sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: 1rem;
+    box-sizing: border-box;
+    background-color: #ffffff; 
 }
 
-.past-trip__image-wrapper {
-    width: 80%;
-    max-width: 800px; 
-    margin-bottom: 2rem;
+.past-tabs {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: left;
+    gap: 0.5rem; 
+    margin-bottom: 0.5rem; 
 }
 
-.past-trip__image {
+.past-tabs button {
+    padding: 0.5rem 1rem; 
+    background-color: #fff;
+    border: 1px solid #FF385C; 
+    border-radius: 20px; 
+    font-weight: bold;
+    font-size: 0.85rem; 
+    color: #FF385C;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.past-tabs button.active {
+    background-color: #FF385C; 
+    color: #fff; 
+}
+
+.past-tabs button:hover {
+    background-color: #ffe5e9; 
+    color: #FF385C;
+}
+
+
+.past-activity-card {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 12px;
+    margin: 10px 0;
+    background-color: #fff;
+    transition: box-shadow 0.3s, background-color 0.3s;
+    font-size: 0.9rem;
+}
+
+.past-activity-card:hover {
+    background-color: #f0f0f0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.past-activity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.past-vote-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.past-details-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.past-description-section {
+    flex: 2;
+}
+
+.past-image-section {
+    flex: 1;
+}
+
+.past-activity-image {
     width: 100%;
     height: auto;
-    object-fit: cover;
-    border-radius: 12px;
+    border-radius: 8px;
+}
+
+.past-comments-section {
+    margin-top: 12px;
+}
+
+.past-comments-section input {
+    width: 80%;
+    padding: 8px;
+    margin-right: 5px;
+}
+
+.past-comments-section button {
+    padding: 8px 12px;
+}
+
+.past-comments-list {
+    margin-top: 8px;
 }
