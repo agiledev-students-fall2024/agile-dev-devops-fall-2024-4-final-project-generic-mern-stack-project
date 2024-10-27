@@ -570,6 +570,10 @@ video {
   display: flex;
 }
 
+.h-16 {
+  height: 4rem;
+}
+
 .h-\[100\%\] {
   height: 100%;
 }
@@ -582,24 +586,12 @@ video {
   height: max-content;
 }
 
-.h-\[50\%\] {
-  height: 50%;
-}
-
-.h-8 {
-  height: 2rem;
-}
-
-.h-12 {
-  height: 3rem;
-}
-
-.h-16 {
-  height: 4rem;
-}
-
 .w-\[100\%\] {
   width: 100%;
+}
+
+.w-\[25\%\] {
+  width: 25%;
 }
 
 .w-\[45\%\] {
@@ -620,14 +612,6 @@ video {
 
 .w-\[90\%\] {
   width: 90%;
-}
-
-.w-max {
-  width: max-content;
-}
-
-.w-\[25\%\] {
-  width: 25%;
 }
 
 .flex-row {
@@ -666,10 +650,6 @@ video {
   gap: 1.5rem;
 }
 
-.gap-2 {
-  gap: 0.5rem;
-}
-
 .rounded-full {
   border-radius: 9999px;
 }
@@ -697,46 +677,6 @@ video {
 .border-ebony {
   --tw-border-opacity: 1;
   border-color: rgb(106 64 64 / var(--tw-border-opacity));
-}
-
-.border-rose {
-  --tw-border-opacity: 1;
-  border-color: rgb(255 175 204 / var(--tw-border-opacity));
-}
-
-.border-lavender_blush-900 {
-  --tw-border-opacity: 1;
-  border-color: rgb(254 252 253 / var(--tw-border-opacity));
-}
-
-.border-lavender_blush-100 {
-  --tw-border-opacity: 1;
-  border-color: rgb(73 24 39 / var(--tw-border-opacity));
-}
-
-.border-lavender_blush-500 {
-  --tw-border-opacity: 1;
-  border-color: rgb(250 240 243 / var(--tw-border-opacity));
-}
-
-.border-lavender_blush-400 {
-  --tw-border-opacity: 1;
-  border-color: rgb(225 166 184 / var(--tw-border-opacity));
-}
-
-.border-lavender_blush-300 {
-  --tw-border-opacity: 1;
-  border-color: rgb(201 93 125 / var(--tw-border-opacity));
-}
-
-.border-lavender_blush-600 {
-  --tw-border-opacity: 1;
-  border-color: rgb(251 243 245 / var(--tw-border-opacity));
-}
-
-.bg-\[\#FEDAE7\] {
-  --tw-bg-opacity: 1;
-  background-color: rgb(254 218 231 / var(--tw-bg-opacity));
 }
 
 .bg-ebony {
@@ -790,11 +730,6 @@ video {
   line-height: 1rem;
 }
 
-.text-xl {
-  font-size: 1.25rem;
-  line-height: 1.75rem;
-}
-
 .font-bold {
   font-weight: 700;
 }
@@ -803,22 +738,24 @@ video {
   font-weight: 600;
 }
 
+.text-ebony {
+  --tw-text-opacity: 1;
+  color: rgb(106 64 64 / var(--tw-text-opacity));
+}
+
 .text-ebony-700 {
   --tw-text-opacity: 1;
   color: rgb(178 127 127 / var(--tw-text-opacity));
+}
 
 .text-rose {
   --tw-text-opacity: 1;
   color: rgb(255 175 204 / var(--tw-text-opacity));
 }
 
-.text-ebony {
-  --tw-text-opacity: 1;
-  color: rgb(106 64 64 / var(--tw-text-opacity));
-}
-
 .underline {
   text-decoration-line: underline;
+}
 
 .shadow-md {
   --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
@@ -904,4 +841,3 @@ code {
   --tw-text-opacity: 1;
   color: rgb(106 64 64 / var(--tw-text-opacity));
 }
-
