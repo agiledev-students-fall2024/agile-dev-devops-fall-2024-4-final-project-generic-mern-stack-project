@@ -25,7 +25,9 @@ function Progress_Tracker(){
             const incompleteChallengeNames = incompleteChallenges.map(challenge => challenge.name)
             console.log(incompleteChallengeNames)
 
-            setProgressData({'complete': completedChallengeNames, 'incomplete': incompleteChallengeNames});
+            const progressPercent = (((completedChallengeNames.length * 100 / (completedChallengeNames.length + incompleteChallengeNames.length))) || 0).toFixed(2)
+
+            setProgressData({'complete': completedChallengeNames, 'incomplete': incompleteChallengeNames, 'percent': progressPercent});
         };
 
         fetchProgressData();
@@ -33,7 +35,7 @@ function Progress_Tracker(){
 
     return(
         <div className='progress-tracker'>
-            <h1 className='progress-tracker-title'>Progress Tracker</h1>
+            <h1 className='progress-tracker-title'>Progress Tracker {progressData['percent']}%</h1>
             {progressData['complete'].map((challenge, subIndex) => (
                 <div className="progress-card" key={subIndex} complete="true">
                     <h3>{challenge}</h3>
