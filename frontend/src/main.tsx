@@ -7,6 +7,7 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+import { Toaster } from "@/components/ui/toaster";
 import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
 import ProtectedRouteWrapper from "./components/ProtectedRouteWrapper";
@@ -36,6 +37,7 @@ const router = createBrowserRouter(
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <StoreProvider>
+      <Toaster />
       <RouterProvider router={router} />
     </StoreProvider>
   </StrictMode>,

@@ -1,5 +1,6 @@
 import sampleStores from "@/stores";
 import { SavedRoute } from "@/types";
+import UpdateSavedRouteButton from "./UpdateSavedRouteButton";
 
 const sampleSavedRoutes: SavedRoute[] = [
   {
@@ -34,7 +35,7 @@ export default function SavedRoutesPage() {
       </div>
       <div className="flex gap-2 my-auto">
         <span>link</span>
-        <span>update</span>
+        <UpdateSavedRouteButton route={route} />
         <span>delete</span>
       </div>
     </div>
