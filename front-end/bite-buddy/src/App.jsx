@@ -9,6 +9,7 @@ import Signup from './pages/Signup'
 import Login from './pages/Login';
 import Signup_Profile from './pages/Signup_profile';
 import Activity_Tracker from './pages/Activity_Tracker';
+import Progress_Tracker from './pages/Progress_Tracker';
 
 function App() {
     const location = useLocation();
@@ -25,6 +26,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/home" element = {<Home/>}/>
           <Route path="/signup-profile" element = {<Signup_Profile />}/>
+          <Route path="/progress-tracker" element = {<Progress_Tracker />}/>
           <Route path="/activity-tracker" element = {<Activity_Tracker/>}/>
 
         </Routes>
