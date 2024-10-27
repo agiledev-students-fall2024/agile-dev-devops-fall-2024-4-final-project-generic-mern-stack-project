@@ -1,7 +1,8 @@
 // C14
 import React from 'react';
 import './BackButton.css';
-import backButtonImage from '../assets/BackButton.png'; 
+import backButtonImage from '../assets/BackButton.png'; // Adjust the path based on your folder structure
+
 
 const BackButton = ({ onClick }) => {
     return (
