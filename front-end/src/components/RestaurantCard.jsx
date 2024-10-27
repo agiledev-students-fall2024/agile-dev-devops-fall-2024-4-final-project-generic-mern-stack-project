@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Box, Typography, Chip } from '@mui/material';
 import '../styles/RestaurantCard.css';
 
 const RestaurantCard = ({ restaurant }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  if(!restaurant) return <div>No Restaurant Found</div>;
+
+  if (!restaurant) return <div>No Restaurant Found</div>;
+
   const totalImages = restaurant.imgs.length;
 
   const handleImageClick = (event) => {
@@ -27,13 +28,11 @@ const RestaurantCard = ({ restaurant }) => {
   const handleDotClick = (index) => {
     setCurrentImageIndex(index);
   };
+
   return (
-    <Box className="restaurant-card">
-      <Box className="image-container">
-        <div
-          onClick={handleImageClick}
-          className="clickable-image"
-        >
+    <div className="restaurant-card">
+      <div className="image-container">
+        <div onClick={handleImageClick} className="clickable-image">
           <img
             src={restaurant.imgs[currentImageIndex]}
             alt={`Image ${currentImageIndex + 1}`}
@@ -43,9 +42,9 @@ const RestaurantCard = ({ restaurant }) => {
           />
         </div>
 
-        <Box className="pagination-dots">
+        <div className="pagination-dots">
           {restaurant.imgs.map((_, index) => (
-            <Box
+            <div
               key={index}
               className={`dot ${index === currentImageIndex ? 'active' : ''}`}
               onClick={(e) => {
@@ -54,26 +53,28 @@ const RestaurantCard = ({ restaurant }) => {
               }}
             />
           ))}
-        </Box>
-      </Box>
+        </div>
+      </div>
 
-      <Box className="overlay-content">
-        <Typography
-          variant="h5"
+      <div className="overlay-content">
+        <h5
+          className="restaurant-name"
           onClick={() => (window.location.href = restaurant.link)}
         >
           {restaurant.name}
-        </Typography>
-        <Box className="pills-container">
+        </h5>
+        <div className="pills-container">
           {restaurant.pills.map((pill, index) => (
-            <Chip key={index} label={pill} color="primary" />
+            <span key={index} className="pill">
+              {pill}
+            </span>
           ))}
-        </Box>
-        <Typography variant="body2" className="description">
+        </div>
+        <p className="description">
           {restaurant.description}
-        </Typography>
-      </Box>
-    </Box>
+        </p>
+      </div>
+    </div>
   );
 };
 

@@ -1,18 +1,15 @@
 import React, { useState, useContext } from "react";
-import {
-  Checkbox,
-  Button,
-  FormControlLabel,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  MenuItem,
-} from "@mui/material";
+import "../styles/FilterPopup.css"; // Create this CSS file for styling
 import { AccountInfoContext } from "../contexts/AccountInfoContext";
+
 const FilterPopup = ({ open, close }) => {
-  const { setFilteredRestaurants, allrestaurants, accountInfo, setFilters, filteredRestaurants } = useContext(AccountInfoContext);
+  const {
+    setFilteredRestaurants,
+    allrestaurants,
+    accountInfo,
+    setFilters,
+    filteredRestaurants,
+  } = useContext(AccountInfoContext);
   const { filters } = accountInfo;
   const [search, setSearch] = useState("");
   const pills = [...new Set(allrestaurants.flatMap((r) => r.pills))];
@@ -21,13 +18,11 @@ const FilterPopup = ({ open, close }) => {
   const handleCheckboxChange = (pill) => {
     let updatedFilters;
     if (filters.includes(pill)) {
-      // If pill is already selected, remove it
       updatedFilters = filters.filter((p) => p !== pill);
     } else {
-      // Otherwise, add it to the filters
       updatedFilters = [...filters, pill];
     }
-    
+
     setFilters(updatedFilters);
     filterRestaurants(updatedFilters, search);
   };
@@ -43,11 +38,13 @@ const FilterPopup = ({ open, close }) => {
 
   const handleSearchSelect = (restaurant) => {
     setFilteredRestaurants((prevFiltered) => {
-      const otherRestaurants = allrestaurants.filter(r => r.id !== restaurant.id);
+      const otherRestaurants = allrestaurants.filter(
+        (r) => r.id !== restaurant.id
+      );
       return [restaurant, ...otherRestaurants];
     });
-    
-    setSearch("");  
+
+    setSearch("");
     setSearchResults([]);
     setFilters([]); // Reset filters after selection
     close(); // Close the dialog
@@ -55,46 +52,64 @@ const FilterPopup = ({ open, close }) => {
 
   const filterRestaurants = (pills, searchQuery) => {
     const filtered = allrestaurants.filter((restaurant) => {
-      const matchesPills = pills.length === 0 || pills.every((pill) => restaurant.pills.includes(pill));
-      const matchesSearch = !searchQuery || restaurant.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesPills =
+        pills.length === 0 ||
+        pills.every((pill) => restaurant.pills.includes(pill));
+      const matchesSearch =
+        !searchQuery ||
+        restaurant.name.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesPills && matchesSearch;
     });
     setFilteredRestaurants(filtered);
   };
 
+  if (!open) return null;
+
   return (
-    <Dialog open={open}>
-      <DialogTitle>Filter Restaurants</DialogTitle>
-      <DialogContent>
-        <TextField
-          label="Search"
-          value={search}
-          onChange={handleSearchChange}
-          fullWidth
-        />
-        {searchResults.length > 0 &&
-          searchResults.map((restaurant, index) => (
-            <MenuItem key={index} onClick={() => handleSearchSelect(restaurant)}>
-              {restaurant.name}
-            </MenuItem>
-          ))}
-        {pills.map((pill, index) => (
-          <FormControlLabel
-            key={index}
-            control={
-              <Checkbox
-                checked={filters.includes(pill)}
-                onChange={() => handleCheckboxChange(pill)}
-              />
-            }
-            label={pill}
+    <div className="modal-overlay" onClick={close}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <h2>Filter Restaurants</h2>
+        <div className="dialog-content">
+          <input
+            type="text"
+            placeholder="Search"
+            value={search}
+            onChange={handleSearchChange}
+            className="search-input"
           />
-        ))}
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={close}>Close</Button>
-      </DialogActions>
-    </Dialog>
+          {searchResults.length > 0 && (
+            <ul className="search-results">
+              {searchResults.map((restaurant, index) => (
+                <li
+                  key={index}
+                  onClick={() => handleSearchSelect(restaurant)}
+                  className="search-result-item"
+                >
+                  {restaurant.name}
+                </li>
+              ))}
+            </ul>
+          )}
+          <div className="checkbox-group">
+            {pills.map((pill, index) => (
+              <label key={index} className="checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={filters.includes(pill)}
+                  onChange={() => handleCheckboxChange(pill)}
+                />
+                {pill}
+              </label>
+            ))}
+          </div>
+        </div>
+        <div className="dialog-actions">
+          <button onClick={close} className="close-button">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 
