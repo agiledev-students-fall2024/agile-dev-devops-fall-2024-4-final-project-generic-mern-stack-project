@@ -14,6 +14,7 @@ import LogoPageTitle from "./components/LogoPageTitle";
 import SearchBar from "./components/SearchBar";
 import Home from "./pages/Home";
 import Community from "./pages/Community";
+import SubCommunityPage from "./pages/SubCommunityPage";
 import Blog from "./pages/Blog";
 import Profile from "./pages/Profile";
 import BlogPost from "./components/BlogPost";
@@ -36,6 +37,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/community" element={<Community />} />
+        <Route path="/community/:communityId" element={<SubCommunityPage />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
