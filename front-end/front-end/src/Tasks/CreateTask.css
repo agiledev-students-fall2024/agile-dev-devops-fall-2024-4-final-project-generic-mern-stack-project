@@ -1,12 +1,12 @@
 
 .create-task-container {
-width: 100%;
-max-width: 600px;
+width: 400px;
 margin: 0 auto;
 padding: 20px;
 background-color: #f8f9fa;
 border-radius: 10px;
 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+margin: 50px auto;
 }
 
 .create-task-container h3 {
@@ -58,7 +58,7 @@ justify-content: space-between;
 margin-top: 20px;
 }
 .cancel-btn {
-margin-right: 100px;
+margin-right: 50px;
 flex: 1;
 padding: 10px 20px;
 background-color: #007BFF;
@@ -75,7 +75,7 @@ color: white;
 border: none;
 border-radius: 5px;
 cursor: pointer;
-margin-right: 0;
+margin-left: 30px;
 }
 
 .cancel-btn:hover,
