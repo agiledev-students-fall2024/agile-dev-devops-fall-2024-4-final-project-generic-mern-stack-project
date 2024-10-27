@@ -12,7 +12,11 @@ export default function Navbar() {
       <div className="container mx-auto flex justify-between items-center">
         <div className="w-1/3">
           {(isSuggestPage || isHelpPage) && (
-            <Button variant={"secondary"} onClick={() => navigate("/")}>
+            <Button
+              variant={"secondary"}
+              className="border-slate-300"
+              onClick={() => navigate("/")}
+            >
               Cancel
             </Button>
           )}

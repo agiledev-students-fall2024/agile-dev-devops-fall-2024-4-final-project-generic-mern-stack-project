@@ -38,7 +38,9 @@ function StoreList({
         {highlightedStores.length > 0 && (
           <CommandGroup heading={heading}>
             {highlightedStores.map((store) => (
-              <StoreItem key={store._id} type="myStore" store={store} />
+              <CommandList key={store._id}>
+                <StoreItem type="search" store={store} />
+              </CommandList>
             ))}
           </CommandGroup>
         )}

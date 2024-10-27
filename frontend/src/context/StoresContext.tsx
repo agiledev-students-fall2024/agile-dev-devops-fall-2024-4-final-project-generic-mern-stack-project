@@ -1,4 +1,4 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useMemo } from "react";
 import type { Store, FiltersType, FilterStringTypes } from "@/types";
 
 type StoreContextType = {
@@ -12,6 +12,7 @@ type StoreContextType = {
   filterIsApplied: (filter: keyof FiltersType, value: string) => boolean;
   clearFilters: (filterToReset: FilterStringTypes) => void;
   setRatingFilter: (filterType: "rating" | "numRatings", value: number) => void;
+  isAnyFilterApplied: boolean;
 };
 
 const defaultFilters: FiltersType = {
@@ -105,6 +106,16 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const isAnyFilterApplied = useMemo(() => {
+    return (
+      filters.category.length > 0 ||
+      filters.priceRange.length > 0 ||
+      filters.brand.length > 0 ||
+      filters.rating !== null ||
+      filters.numRatings !== null
+    );
+  }, [filters]);
+
   const toggleFilter = (filter: keyof FiltersType, value: string) => {
     if (filterIsApplied(filter, value)) {
       removeFilter(filter, value);
@@ -153,6 +164,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
         filterIsApplied,
         clearFilters,
         setRatingFilter,
+        isAnyFilterApplied,
       }}
     >
       {children}

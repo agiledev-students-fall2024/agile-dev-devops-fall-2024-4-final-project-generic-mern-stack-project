@@ -45,7 +45,7 @@ export default function FiltersWithSearch({
       </Button>
     ));
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-3">
       <div className="relative">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
         <Input

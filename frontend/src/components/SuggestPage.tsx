@@ -5,19 +5,15 @@ import Filters from "./Filters";
 import { useMyStores } from "@/context/StoresContext";
 import { FiltersType } from "@/types";
 import { FilterStringTypes } from "@/types";
-
-// Placeholder suggested stores for now
-const hardcodedSuggestedStores = [
-  { _id: "1", name: "Suggested Store 1" },
-  { _id: "2", name: "Suggested Store 2" },
-  { _id: "3", name: "Suggested Store 3" },
-];
+import { suggestStores } from "@/lib/utils";
+import sampleStores from "@/stores";
 
 const filterDescriptions: Record<FilterStringTypes, string> = {
-  Brand: "brand desc",
-  "Price Range": "price range desc",
-  Category: "category desc",
-  Rating: "rating desc",
+  Brand: "Select specific retailers and boutiques",
+  "Price Range": "Filter stores by typical price points from budget to luxury",
+  Category: "Browse by store type like clothing, accessories, beauty and more",
+  Rating:
+    "Sort by Google review ratings from 1 to 5 stars and number of ratings",
 };
 
 const filterToCamelCase: Record<FilterStringTypes, keyof FiltersType> = {
@@ -35,19 +31,29 @@ const filterNames: FilterStringTypes[] = [
 ];
 
 export default function SuggestPage() {
-  // // *** Added state to hold suggested stores
-  // const [suggestedStores, setSuggestedStores] = useState<Store[]>([]);
-  // Keep hardcoded suggested stores in state
-  const [suggestedStores, setSuggestedStores] = useState(
-    hardcodedSuggestedStores,
-  );
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentFilter, setCurrentFilter] =
     useState<FilterStringTypes>("Brand");
-  const { clearFilters, toggleFilter, setRatingFilter, filters } =
-    useMyStores();
+  const {
+    clearFilters,
+    toggleFilter,
+    setRatingFilter,
+    isAnyFilterApplied,
+    filters,
+  } = useMyStores();
 
   const navigate = useNavigate();
+
+  const handleGenerateStores = () => {
+    // replace sampleStores with stores from database
+    const suggestedStores = suggestStores(sampleStores, filters);
+    navigate("/", {
+      state: {
+        suggestedStores: suggestedStores,
+        openSearchBar: true,
+      },
+    });
+  };
 
   useEffect(() => {
     // reapply any filters to the filter context using search params
@@ -149,17 +155,6 @@ export default function SuggestPage() {
     setSearchParams(currentParams);
   };
 
-  // *** "View Results" navigates to the suggested stores in the home
-  const handleViewResult = () => {
-    // TODO: add suggest stores logic
-    navigate("/", {
-      state: {
-        suggestedStores: suggestedStores,
-        openSearchBar: true,
-      },
-    });
-  };
-
   return (
     <div className="flex">
       <nav className="w-32 bg-blue-400 overflow-y-auto h-[calc(100vh-68px)]">
@@ -177,7 +172,7 @@ export default function SuggestPage() {
       </nav>
       <main className="flex-1 p-6 overflow-y-auto h-fit max-h-[calc(100vh-68px)]">
         <h1 className="text-3xl font-bold mb-4">{currentFilter}</h1>
-        <p className="text-gray-600 mb-6">
+        <p className="text-gray-600 mb-6 leading-5 text-sm font-light">
           {filterDescriptions[currentFilter]}
         </p>
         <Button
@@ -193,21 +188,16 @@ export default function SuggestPage() {
           handleSearchOrRatingURL={handleSearchOrRatingURL}
           currentFilter={currentFilter}
         />
-        <div className="my-8">
-          {/* <Button variant={"secondary"} onClick={() => navigate("/")}>
-            Go Back
-          </Button> */}
+        <div className="mt-6">
+          <Button
+            className="bg-green-600 border-green-700"
+            onClick={handleGenerateStores}
+            disabled={!isAnyFilterApplied}
+          >
+            Generate Stores
+          </Button>
         </div>
       </main>
-      {/* Added View Results button */}
-      <div className="fixed bottom-4 left-0 right-0 flex justify-center">
-        <Button
-          onClick={handleViewResult}
-          className="rounded-full bg-black text-white py-2 px-8"
-        >
-          VIEW RESULTS
-        </Button>
-      </div>
     </div>
   );
 }
