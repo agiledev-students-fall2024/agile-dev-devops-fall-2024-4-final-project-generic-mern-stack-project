@@ -1,7 +1,8 @@
-.Page-title {
+.Page-title,
+.Page-description {
     text-align: center;
 }
 
-.Page-description {
-    text-align: center;
+.Header-header {
+    margin-bottom: 2em;
 }

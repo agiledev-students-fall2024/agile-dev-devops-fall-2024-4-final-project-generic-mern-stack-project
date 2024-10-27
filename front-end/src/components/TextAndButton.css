@@ -1,14 +1,16 @@
 .text-and-button {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    margin: 1em;
 }
 
 .button {
-    background-color: white;
     width: auto;
     height: 80%;
+    border: 1px solid black;
+    margin-left: 5em;
 }
 
 .button:hover {
@@ -16,6 +18,6 @@
 }
 
 .text {
-    text-align: right;
-    margin-left: 5em;
+    text-align: left;
+    margin-right: 20em;
 }
