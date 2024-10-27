@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { summarizeText } = require('./aiFeatures');
 
+
 router.post('/summarize', async (req, res) => {
     const { text } = req.body;
     try {
