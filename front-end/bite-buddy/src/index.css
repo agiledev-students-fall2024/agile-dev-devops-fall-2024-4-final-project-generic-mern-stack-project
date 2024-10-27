@@ -391,12 +391,12 @@ button:focus-visible {
   padding: 10px;
   border: 1px solid #878787;
   border-radius: 10px;
-  background-color: rgb(213, 213, 58);
+  background-color: silver;
 }
 
 
 .progress-card[complete="true"] {
-  background-color: rgb(90, 227, 83);
+  background-color: rgba(228, 200, 42, 0.625);
 }
 
 .progress-card h2,
