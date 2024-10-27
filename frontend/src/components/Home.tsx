@@ -25,6 +25,12 @@ export default function Home() {
           Suggest Stores For Me
         </Button>
         <Button
+          className="rounded-3xl h-12 font-extrabold text-lg"
+          onClick={() => navigate("/saved-routes")}
+        >
+          Saved Routes
+        </Button>
+        <Button
           className="rounded-3xl bg-red-400 hover:bg-red-600 border-red-500 h-12 font-extrabold text-lg text-white"
           onClick={() => navigate("/help")}
         >
