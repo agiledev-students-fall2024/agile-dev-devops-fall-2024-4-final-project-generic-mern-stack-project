@@ -4,6 +4,7 @@ const {transcribe} = require('./transcriberAI')
 const multer = require('multer');
 const uploadMulter = multer({ dest: 'uploads/' });
 const bodyParser = require('body-parser');
+const { summarizeText } = require('./aiFeatures');
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -29,6 +30,15 @@ router.post('/transcribe', uploadMulter.single('audio'), async (req, res) => {
     } catch (error) {
         console.error("Transcription Error", error);
         res.status(500).json({ error: 'Failed to transcribe' });
+
+
+router.post('/summarize', async (req, res) => {
+    const { text } = req.body;
+    try {
+        const summary = await summarizeText(text);
+        res.json({ summary });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to summarize text' });
     }
 });
 
