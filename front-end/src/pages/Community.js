@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import NavigationBar from '../components/NavigationBar'
 import SearchBar from '../components/SearchBar'
 import TitleAndDescriptionBox from '../components/TitleAndDescriptionBox'
-import './Community.css'
+//import './Community.css'
 
 const Community = () => {
     //stores the fake data into data 
@@ -56,15 +56,11 @@ const Community = () => {
 
     return (
         <>
-        <div className="communities">
-            <h1 className="bold">Communities</h1>
-            <div className="search-community">
-                <h3 className="align">Search Communities</h3>
-                <SearchBar/>
-            </div>
+        <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-6 p-8">
+            <h1 className="text-2xl text-ebony-700 text-center font-bold">Communities</h1>
+            <SearchBar/>
 
-            <section className="communities-list">
-                <hr className='color-black'></hr>
+            <section className="flex flex-col justify-center w-[100%] gap-0">
                 {data.map(item => (
                     <div key={item.id} className="groups">
                         <TitleAndDescriptionBox
@@ -72,8 +68,6 @@ const Community = () => {
                             title={item.name}
                             description={item.description}
                         />
-                        <div className="padding"></div>
-                        <hr className="color-black"/>
                     </div>
                 
                 ))}
