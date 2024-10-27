@@ -1,9 +1,7 @@
 // C14 Wilson
 import React, { useState } from 'react';
 import './PostBlogTextField.css';
-import DropdownMenu from './DropdownMenu'; 
-import InputField from './InputField';
-import SubmitButton from './SubmitButton'; 
+import DropdownMenu from './DropdownMenu';
 
 const PostBlogTextField = ({ onCancel, onPost }) => {
     const [postContent, setPostContent] = useState('');
@@ -32,24 +30,23 @@ const PostBlogTextField = ({ onCancel, onPost }) => {
     return (
         <div className="post-blog-container">
             <div className="header">
-                <SubmitButton placeholder="Cancel" handleClick={handleCancelClick} />
-                <SubmitButton placeholder="Post" handleClick={handlePostClick} />
+                <button onClick={handleCancelClick}>Cancel</button>
+                <button onClick={handlePostClick}>Post</button>
             </div>
             <DropdownMenu 
-                name="category" 
-                label="Select Category" 
-                options={['Tech', 'Health', 'Lifestyle', 'Education']} 
+                name="your-communities" 
+                label="Your Communities" 
+                options={['Community 1', 'Community 2', 'Community 3']} 
                 onChange={handleDropdownChange} 
             />
-            <InputField
-                inputfieldName="Post Content"
-                inputType="textarea"
-                handleChange={(e) => setPostContent(e.target.value)}
-                inputValue={postContent}
+            <textarea
+                placeholder="Write your post here..."
+                value={postContent}
+                onChange={(e) => setPostContent(e.target.value)}
             />
             <div className="footer">
-                <SubmitButton placeholder="Attach Image" />
-                <SubmitButton placeholder="Attach GIF" />
+                <button>Attach Image</button>
+                <button>Attach GIF</button>
             </div>
         </div>
     );
