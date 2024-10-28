@@ -14,15 +14,15 @@ const SearchBar = ({ searchItems }) => {
   }
 
   return (
-    <div className="flex flex-row justify-center w-[85%] grow">
+    <div className="flex flex-row justify-center w-[85%]">
       <input
-        className="px-3 py-2 grow-0 w-[90%] bg-lavender_blush-900 text-ebony font-bold rounded-md placeholder-rose-600 rounded-r-none"
+        className="h-10 px-3 py-2 grow-0 w-[90%] bg-lavender_blush-900 text-ebony font-bold rounded-md placeholder-rose-600 rounded-r-none"
         type="text"
-        placeholder="Search Communities..."
+        placeholder="Search..."
         onChange={handleChange}
         value={searchInput}
       />
-      <button className="rounded-md bg-ebony-700 text-rose-700 hover:text-ebony-700 hover:bg-rose-700 font-bold px-2 w-[8%] flex flex-col justify-center items-center rounded-l-none">
+      <button className="h-10 rounded-md bg-ebony-700 text-rose-700 hover:text-ebony-700 hover:bg-rose-700 font-bold px-2 w-[8%] flex flex-col justify-center items-center rounded-l-none">
         <BsSearchHeart size={24}/>
       </button>
       <SearchResults input={searchInput} items={searchItems}/>

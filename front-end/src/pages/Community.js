@@ -56,8 +56,21 @@ const Community = () => {
     return (
         <>
         <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-6 p-8">
-            <h1 className="text-2xl text-ebony-700 text-center font-bold">Communities</h1>
-            <SearchBar searchItems={data}/>
+            <h1 className="text-xl text-ebony-700 text-center font-bold">Communities</h1>
+            <SearchBar/>
+
+            <section className="flex flex-col justify-center w-[100%] gap-0">
+                {data.map(item => (
+                    <div key={item.id} className="groups">
+                        <TitleAndDescriptionBox
+                            link={`/community/${item.id}`}
+                            title={item.name}
+                            description={item.description}
+                        />
+                    </div>
+                
+                ))}
+            </section>
             
             <div className="padding"></div>
             <NavigationBar/>

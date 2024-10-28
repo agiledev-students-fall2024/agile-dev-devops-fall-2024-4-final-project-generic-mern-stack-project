@@ -1,11 +1,11 @@
-import './TitleAndDescription.css'
+//import './TitleAndDescription.css'
 
 const TitleAndDescription = (props) => {
     return (
-        <header className="Header-header">
-            <h1 className="Page-title">{props.title}</h1>
-            <p className="Page-description">{props.description}</p>
-        </header>
+        <div className="flex flex-col justify-center items-center">
+            <p className="text-ebony text-2xl mb-2">{props.title}</p>
+            <p className="text-center text-sm text-ebony font-light">{props.description}</p>
+        </div>
     )
 }
 

@@ -15,13 +15,14 @@ function InputField({
   //   // }
   // };
   return (
-    <>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1 w-full">
         {/* <div className="input"> */}
         {/* <img src={imgSrc} alt="" /> */}
-        <label className="text-sm text-ebony-700 font-bold">{inputfieldName}</label>
+        <label className="text-sm text-ebony-700 font-bold">
+          {inputfieldName}
+        </label>
         <input
-          className="bg-lavender_blush-900 rounded-md px-2 py-1 text-md font-bold text-ebony"
+          className="bg-lavender_blush-900 rounded-md px-2 py-1 text-md text-ebony w-full"
           // className="input-box"
           type={inputType}
           id={inputfieldName}
@@ -31,7 +32,6 @@ function InputField({
         />
         {/* </div> */}
       </div>
-    </>
   );
 }
 

@@ -28,7 +28,7 @@ export default function Login() {
   }
 
   return (
-    <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-6 p-8">
+    <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-4 p-8">
       <LogoPageTitle logoSrc="seraphim-logo.PNG" title="Login" />
       <div className="w-[80%] flex flex-col gap-4">
         <InputField
