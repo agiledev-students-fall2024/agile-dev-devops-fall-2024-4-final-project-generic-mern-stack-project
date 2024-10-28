@@ -71,7 +71,7 @@ function Profile() {
                 <img className='profile-pic' src="https://picsum.photos/100" alt="profile-pic" />
 
                 <div className='bioSection'>
-                    <h3>Bio</h3>
+                    <h3>About {profileData.first_name}</h3>
                     <p>{profileData.bio}</p>
                 </div>
 
