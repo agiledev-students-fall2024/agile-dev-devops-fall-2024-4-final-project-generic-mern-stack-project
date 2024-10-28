@@ -24,7 +24,7 @@ const Main = () => {
   const { isLoggedIn, logout } = useAuth(); // Consume the context
   const user = isLoggedIn ? { name: "John Doe", profilePicture: "https://via.placeholder.com/100" } : null;
 
-  const handleSignup = () => {
+  const handleSignUp = () => {
     console.log('User signed up');
     // Login logic if needed
   };
@@ -37,7 +37,7 @@ const Main = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignUpPage onSignup={handleSignup} />} />
+          <Route path="/signup" element={<SignUpPage onSignup={handleSignUp} />} />
         </Routes>
       </main>
     </>
