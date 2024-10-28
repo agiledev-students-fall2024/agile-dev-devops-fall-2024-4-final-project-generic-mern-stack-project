@@ -32,7 +32,7 @@ const Profile = () => {
             <h2 className="text-lg font-medium">{userInfo.username}</h2>
             <button 
               onClick={() => navigate('/edit-profile')}
-              className="mt-2 px-4 py-2 text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+              className="mt-2 px-4 py-2 text-sm bg-emerald-800 text-white rounded-lg hover:bg-blue-600 transition-colors"
             >
               Edit Profile
             </button>
