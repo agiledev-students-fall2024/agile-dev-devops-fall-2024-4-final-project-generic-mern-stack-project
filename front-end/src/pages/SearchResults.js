@@ -15,6 +15,7 @@ const SearchResults = (props) => {
                         description={item.description}
                     />
                 </div>
+            
             ))}
         </section>
     )
