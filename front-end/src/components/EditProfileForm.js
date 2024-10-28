@@ -57,7 +57,7 @@ const EditProfileForm = () => {
                 </div>
 
                 <div className='grid'>
-                    <label htmlFor='layout' className='text-base mb-2 font-medium'>Choose an option</label>
+                    <label htmlFor='layout' className='text-base mb-2 font-medium'>Layout</label>
                     <select
                         id='layout'
                         name='layout'
