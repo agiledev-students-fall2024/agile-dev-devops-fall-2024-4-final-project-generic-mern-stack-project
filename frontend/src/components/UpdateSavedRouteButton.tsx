@@ -83,7 +83,7 @@ export default function UpdateSavedRouteButton({ route }: Props) {
         <Pen
           width={30}
           height={30}
-          className="rounded-sm border-green-300 p-1"
+          className="rounded-sm border-green-300 p-1 cursor-pointer"
         />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
