@@ -38,7 +38,7 @@ function Map() {
         }}
         marker
       />
-      <div id="map-container" className="w-full" ref={mapContainerRef} />
+      <div id="map-container" className="h-94 w-full" ref={mapContainerRef} />
     </>
   );
 }
