@@ -19,9 +19,8 @@ const App = () => {
   );
 };
 
-// Separate Main component for better organization
 const Main = () => {
-  const { isLoggedIn, logout } = useAuth(); // Consume the context
+  const { isLoggedIn, logout } = useAuth(); 
   const user = isLoggedIn ? { name: "J Doe", profilePicture: "https://via.placeholder.com/100" } : null;
 
   const handleSignUp = () => {

@@ -17,6 +17,9 @@ const Header = () => {
     console.log('User signed out');
   };
 
+  // Display name when username is not provided
+  const displayName = username || "J Doe"; // Default name
+
   return (
     <header className="header">
       <div className="header__logo">
@@ -31,7 +34,7 @@ const Header = () => {
           >
             <div className="header__profile">
               <span className="header__profile-menu-icon">☰</span>
-              <span className="header__profile-icon">{username}</span> {/* Display username here */}
+              <span className="header__profile-icon">{displayName}</span> {/* Display username here */}
             </div>
             {isDropdownOpen && <ProfileDropdown onSignOut={handleSignOut} />}
           </div>
