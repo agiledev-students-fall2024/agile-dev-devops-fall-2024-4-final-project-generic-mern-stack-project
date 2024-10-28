@@ -1,9 +1,12 @@
+// src/components/Header.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProfileDropdown from '../profile/ProfileDropdown';
+import { useAuth } from '../../context/AuthContext'; // Import useAuth
 import './Header.css';
 
-const Header = ({ user, isLoggedIn }) => {
+const Header = () => {
+  const { isLoggedIn, username } = useAuth(); // Access isLoggedIn and username from context
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -13,6 +16,9 @@ const Header = ({ user, isLoggedIn }) => {
   const handleSignOut = () => {
     console.log('User signed out');
   };
+
+  // Display name when username is not provided
+  const displayName = username || "J Doe"; // Default name
 
   return (
     <header className="header">
@@ -28,7 +34,7 @@ const Header = ({ user, isLoggedIn }) => {
           >
             <div className="header__profile">
               <span className="header__profile-menu-icon">☰</span>
-              <span className="header__profile-icon">🧑</span>
+              <span className="header__profile-icon">{displayName}</span> {/* Display username here */}
             </div>
             {isDropdownOpen && <ProfileDropdown onSignOut={handleSignOut} />}
           </div>
