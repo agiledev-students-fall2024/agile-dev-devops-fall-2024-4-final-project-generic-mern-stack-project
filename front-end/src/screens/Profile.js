@@ -1,4 +1,4 @@
-import '../styles/Profile.css'
+import '../styles/profile.css'
 import '../styles/main.css'
 import React from 'react'
 import { Navigate } from 'react-router-dom'
