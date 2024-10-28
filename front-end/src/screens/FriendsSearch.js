@@ -29,7 +29,7 @@ const FriendsSearch = () => {
                 </div>
             </header>
 
-            <div className='container'>
+            <div className='container-friends'>
                 <div className="input-bar">
                     <input 
                         type="text" 

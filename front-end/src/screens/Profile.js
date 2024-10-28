@@ -1,4 +1,5 @@
-import '../styles/profile.css'
+import '../styles/Profile.css'
+import '../styles/main.css'
 import React from 'react'
 import { Navigate } from 'react-router-dom'
 import { useParams, Link } from 'react-router-dom'
@@ -90,7 +91,7 @@ const Profile = () => {
                             <Link 
                                 key={`profile-${user.username}-${post.id}`} 
                                 to={`/blogpostloggedin/${post.id}`} 
-                                className=' text-reset text-decoration-none'
+                                className='text-reset text-decoration-none'
                             >
                                 { post.imageUrl ? 
                                     <img 
