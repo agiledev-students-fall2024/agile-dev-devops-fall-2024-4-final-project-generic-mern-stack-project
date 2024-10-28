@@ -22,7 +22,7 @@ const App = () => {
 // Separate Main component for better organization
 const Main = () => {
   const { isLoggedIn, logout } = useAuth(); // Consume the context
-  const user = isLoggedIn ? { name: "John Doe", profilePicture: "https://via.placeholder.com/100" } : null;
+  const user = isLoggedIn ? { name: "J Doe", profilePicture: "https://via.placeholder.com/100" } : null;
 
   const handleSignUp = () => {
     console.log('User signed up');
@@ -37,7 +37,7 @@ const Main = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignUpPage onSignup={handleSignUp} />} />
+          <Route path="/signUp" element={<SignUpPage onSignUp={handleSignUp} />} />
         </Routes>
       </main>
     </>
