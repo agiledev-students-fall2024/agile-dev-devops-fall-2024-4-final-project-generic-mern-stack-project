@@ -1,4 +1,4 @@
-import '../styles/Profile.css'
+import '../styles/profile.css'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import EditProfileForm from '../components/EditProfileForm'

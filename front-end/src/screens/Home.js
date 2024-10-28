@@ -5,7 +5,6 @@ import postData from '../fillerData/posts.json'
 import friendsData from '../fillerData/friendships.json'
 import { Link } from 'react-router-dom'
 import '../styles/Home.css'
-import '../styles/Profile.css'
 
 const Home = () => {
   // get user  
@@ -39,35 +38,35 @@ const Home = () => {
   const noImgSrc = 'https://cdn.vectorstock.com/i/500p/50/20/no-photography-sign-image-vector-23665020.jpg'
 
   return (
-    <div>
+    <div className='homeScreen'>
       <header>
         <Link to='/explore' className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>Explore</Link>
         <Link to= {`/profile/${user.username}`} className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>Profile</Link>
       </header>
-      <div className='content container' >
+      <div>
         <h1>Network</h1>
       </div>
       <div className={`home-posts layout`} >
-              {posts.map( post => {
-                  const dateObject = new Date(post.date)
-                  return (
-                      <Link 
-                          key={`home-${user.username}-${post.id}`} 
-                          to={`/blogpostloggedin/${post.id}`} 
-                          className=' text-reset text-decoration-none'
-                      >
-                          <div>
-                              { post.imageUrl ? 
-                                  <img src={post.imageUrl} alt='User-submitted' />: 
-                                  <img src={noImgSrc} alt='Not provided by user' className='no-img' />
-                              }
-                              <h2>{post.title}</h2>
-                              <p className='post-content'>{post.content.split(' ').slice(0, 10).join(' ') + (post.content.split(' ').length > 10 ? '...' : '')}</p>
-                              <p className='mt-3 mb-0 text-end'>{dateObject.toLocaleDateString('en-US')}</p>
-                          </div>
-                      </Link>
-              )})}
-        </div>
+        {posts.map( post => {
+          const dateObject = new Date(post.date)
+          return (
+            <Link 
+                key={`home-${user.username}-${post.id}`} 
+                to={`/blogpostloggedin/${post.id}`} 
+                className=' text-reset text-decoration-none'
+            >
+              <div>
+                { post.imageUrl ? 
+                    <img src={post.imageUrl} alt='User-submitted' />: 
+                    <img src={noImgSrc} alt='Not provided by user' className='no-img' />
+                }
+                <h2>{post.title}</h2>
+                <p className='post-content'>{post.content.split(' ').slice(0, 10).join(' ') + (post.content.split(' ').length > 10 ? '...' : '')}</p>
+                <p className='mt-3 mb-0 text-end'>{dateObject.toLocaleDateString('en-US')}</p>
+              </div>
+            </Link>
+        )})}
+      </div>
     </div>
   )
 }

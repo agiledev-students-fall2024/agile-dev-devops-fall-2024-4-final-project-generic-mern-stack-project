@@ -4,8 +4,7 @@ import loggedInData from '../fillerData/loggedIn.json'
 import postData from '../fillerData/posts.json'
 import blockedData from '../fillerData/blocked.json'
 import { Link } from 'react-router-dom'
-import '../styles/Home.css'
-import '../styles/Profile.css'
+import '../styles/Explore.css'
 
 const Explore = () => {
   // get user id 
@@ -50,29 +49,29 @@ const Explore = () => {
           </svg>
       </Link>
       </header>
-      <div className='content container' >
-        <h1>Network</h1>
-        <div className={`home-posts layout`} >
-              {posts.map( post => {
-                  const dateObject = new Date(post.date)
-                  return (
-                      <Link 
-                          key={`home-${user.username}-${post.id}`} 
-                          to={`/blogpostloggedin/${post.id}`} 
-                          className=' text-reset text-decoration-none'
-                      >
-                          <div>
-                              { post.imageUrl ? 
-                                  <img src={post.imageUrl} alt='User-submitted' />: 
-                                  <img src={noImgSrc} alt='Not provided by user' className='no-img' />
-                              }
-                              <h2>{post.title}</h2>
-                              <p className='post-content'>{post.content.split(' ').slice(0, 10).join(' ') + (post.content.split(' ').length > 10 ? '...' : '')}</p>
-                              <p className='mt-3 mb-0 text-end'>{dateObject.toLocaleDateString('en-US')}</p>
-                          </div>
-                      </Link>
-              )})}
-        </div>
+      <div>
+        <h1>Explore</h1>
+      </div>
+      <div className={`explore-posts layout`} >
+        {posts.map( post => {
+          const dateObject = new Date(post.date)
+          return (
+            <Link 
+              key={`home-${user.username}-${post.id}`} 
+              to={`/blogpostloggedin/${post.id}`} 
+              className=' text-reset text-decoration-none'
+          >
+              <div>
+                { post.imageUrl ? 
+                    <img src={post.imageUrl} alt='User-submitted' />: 
+                    <img src={noImgSrc} alt='Not provided by user' className='no-img' />
+                }
+                <h2>{post.title}</h2>
+                <p className='post-content'>{post.content.split(' ').slice(0, 10).join(' ') + (post.content.split(' ').length > 10 ? '...' : '')}</p>
+                <p className='mt-3 mb-0 text-end'>{dateObject.toLocaleDateString('en-US')}</p>
+              </div>
+            </Link>
+        )})}
       </div>
     </div>
   )
