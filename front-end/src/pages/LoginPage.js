@@ -1,17 +1,20 @@
 // src/pages/LoginPage.js
 import React, { useState } from 'react';
-import { useAuth } from '../context/AuthContext'; // Import useAuth
+import { useAuth } from '../context/AuthContext'; 
+import { useNavigate } from 'react-router-dom'; 
 import './LoginPage.css'; 
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login } = useAuth(); // Get login function from context
+  const { login } = useAuth(); 
+  const navigate = useNavigate(); 
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Logging in:', { email, password });
-    login(); // Call login on successful login
+    login(); 
+    navigate('/'); 
   };
 
   return (
