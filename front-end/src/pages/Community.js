@@ -2,11 +2,27 @@ import axios from 'axios'
 import { useState, useEffect } from 'react'
 import NavigationBar from '../components/NavigationBar'
 import SearchBar from '../components/SearchBar'
+import TitleAndDescriptionBox from '../components/TitleAndDescriptionBox'
 //import './Community.css'
 
 const Community = () => {
     //stores the fake data into data 
     const [data, setData] = useState([])
+    const [input, setInput] = useState("")
+    const [filteredData, setFilteredData] = useState([])
+
+    const handleSearch = (e) => {
+        console.log(e.target.value)
+        setInput(e.target.value)
+
+        if (input.trim() === '') return
+
+        const newData = data.filter(item => {
+            return item.name.toLowerCase().includes(input.toLowerCase())
+        })
+
+        setFilteredData(newData);
+    }
 
     useEffect(() => {
         console.log("Currently getting community groups' data...")
@@ -53,11 +69,26 @@ const Community = () => {
 
     }, [])
 
+    console.log(data)
+
     return (
         <>
         <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-6 p-8">
             <h1 className="text-xl text-ebony-700 text-center font-bold">Communities</h1>
-            <SearchBar searchItems={data}/>
+            <SearchBar searchInput={input} setSearchInput={setInput} handleSearch={handleSearch}/>
+
+            <section className="flex flex-col justify-center w-[100%] gap-0">
+                {filteredData.map(item => (
+                    <div key={item.id} className="groups">
+                        <TitleAndDescriptionBox
+                            link={`/community/${item.id}`}
+                            title={item.name}
+                            description={item.description}
+                        />
+                    </div>
+                
+                ))}
+            </section>
             
             <div className="padding"></div>
             <NavigationBar/>

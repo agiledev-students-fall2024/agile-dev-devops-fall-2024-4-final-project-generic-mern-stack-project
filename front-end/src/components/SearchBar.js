@@ -1,16 +1,12 @@
 import React, { useState } from "react";
 //import "./SearchBar.css";
-import SubmitButton from "./SubmitButton";
 import { BsSearchHeart } from "react-icons/bs";
-import SearchResults from "../pages/SearchResults";
 
-//searchItems is the data provided by mockaroo (for community)
-const SearchBar = ({ searchItems }) => {
-  const [searchInput, setsearchInput] = useState("");
+const SearchBar = ({ searchInput, setSearchInput, handleSearch }) => {
 
   const handleChange = (e) => {
-    e.preventDefault();
-    setsearchInput(e.target.value);
+    setSearchInput(e.target.value);
+    console.log(`Searching: ${e.target.value}`)
   }
 
   return (
@@ -22,10 +18,10 @@ const SearchBar = ({ searchItems }) => {
         onChange={handleChange}
         value={searchInput}
       />
-      <button className="h-10 rounded-md bg-ebony-700 text-rose-700 hover:text-ebony-700 hover:bg-rose-700 font-bold px-2 w-[8%] flex flex-col justify-center items-center rounded-l-none">
+      <button onClick={handleSearch} className="h-10 rounded-md bg-ebony-700 text-rose-700 hover:text-ebony-700 hover:bg-rose-700 font-bold px-2 w-[8%] flex flex-col justify-center items-center rounded-l-none">
         <BsSearchHeart size={24}/>
       </button>
-      <SearchResults input={searchInput} items={searchItems}/>
+
     </div>
   )
 }
