@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-ro
 import Home from './pages/home';
 import Goal from './pages/Goal';
 import LoginPage from './pages/loginPage';
+import Registration from './pages/registration';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -25,6 +26,7 @@ function App() {
         {!isLoggedIn ? (
           <>
             <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
+            <Route path="/register" element={<Registration />} />
             <Route path="*" element={<Navigate to="/login" />} />
           </>
         ) : (
@@ -33,7 +35,7 @@ function App() {
             <Route path="/goal" element={<Goal />} />
             <Route path="*" element={<Navigate to="/" />} />
           </>
-        )}
+        )} 
       </Routes>
     </Router>
   );
