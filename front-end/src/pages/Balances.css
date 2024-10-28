@@ -7,10 +7,10 @@
   
   .container {
     display: flex;
-    justify-content: space-around;
-    align-items: flex-start; 
-    width: 80%; 
-    margin-top: 50px; 
+    flex-direction: column; 
+    align-items: center; 
+    width: 80%;
+    margin-top: 50px;
   }
   
   .accounts-section, .debt-section {
@@ -19,6 +19,7 @@
     border: 1px solid #ddd;
     border-radius: 10px;
     background-color: #f9f9f9;
+    margin-bottom: 20px;
   }
   
   h1 {
