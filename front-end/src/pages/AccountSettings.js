@@ -32,7 +32,6 @@ const AccountSettings = (props) => {
 
     // if user did not click the link to the popup: render normally
     if (popup) {
-        console.log(popup)
         return (
             <div className="w-[90%] flex flex-col justify-center items-center gap-8 p-8 m-[auto]">
                 <TitleAndDescription
@@ -48,13 +47,13 @@ const AccountSettings = (props) => {
                     <AccountInfo title={"Password"} text={data.password} />
                 </div>
 
-                <div className="Popup-box">
-                    <div className="content">
-                        <p className="Popup-title">Are you sure you want to deactivate?</p>
-                        <p className="Popup-text">Lorem ipsum odor amet, consectetuer adipiscing elit.</p>
-                        <div className="buttons">
-                            <Link to={'/signup'}><p className="Deactivate-yes">Deactivate my account</p></Link>
-                            <p className="Close-button" onClick={closePopup}>Cancel</p>
+                <div className="bg-lavender_blush-900">
+                    <div className="m-10">
+                        <p className="text-ebony-600 text-center font-bold mb-5">Are you sure you want to deactivate?</p>
+                        <p className="mb-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit, <br></br>sed do eiusmod tempor incididunt ut labore et dolore <br></br>magna aliqua. Ut enim ad minim veniam, quis nostrud <br></br>exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p>
+                        <div className="flex flex-row justify-evenly">
+                            <Link to={'/signup'}><p className="text-ebony-600 font-bold">Deactivate my account</p></Link>
+                            <p className="text-ebony-600 cursor-pointer" onClick={closePopup}>Cancel</p>
                         </div>
                     </div>
                 </div>

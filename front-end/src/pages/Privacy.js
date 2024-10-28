@@ -2,14 +2,13 @@ import React from 'react'
 import SearchBar from '../components/SearchBar'
 import NavigationBar from '../components/NavigationBar'
 import TitleAndDescriptionBox from '../components/TitleAndDescriptionBox'
-import './Privacy.css'
 
 const Privacy = () => {
     return (
-        <>
-            <h1>Privacy</h1>
+        <div className="w-[90%] m-[auto] flex flex-col justify-center items-center p-8">
+            <h1 className="text-xl text-ebony-700 text-center font-bold mb-5">Privacy</h1>
 
-            <SearchBar />
+            <SearchBar className="my-6"/>
 
             <TitleAndDescriptionBox
                 link={"/blocked-users"}
@@ -26,9 +25,9 @@ const Privacy = () => {
                 title={"Muted Words"}
                 description={"When you mute words, you won't see posts with those words in your Home page."}
             />
-            
+
             <NavigationBar />
-        </>
+        </div>
     )
 }
 

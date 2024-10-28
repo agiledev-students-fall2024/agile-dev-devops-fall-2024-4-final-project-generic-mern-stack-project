@@ -78,7 +78,7 @@ const Community = () => {
         <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-6 p-8">
             <h1 className="text-xl text-ebony-700 text-center font-bold">Communities</h1>
             <SearchBar searchInput={input} setSearchInput={setInput} handleSearch={handleSearch}/>
-
+            
             <section className="flex flex-col justify-center w-[100%] gap-0">
                 {filteredData.map(item => (
                     <div key={item.id} className="groups">

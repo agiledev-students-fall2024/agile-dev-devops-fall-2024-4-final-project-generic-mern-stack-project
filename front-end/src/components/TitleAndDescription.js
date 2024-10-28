@@ -1,9 +1,7 @@
-//import './TitleAndDescription.css'
-
 const TitleAndDescription = (props) => {
     return (
         <div className="flex flex-col justify-center items-center">
-            <p className="text-ebony text-2xl mb-2">{props.title}</p>
+            <h1 className="text-xl text-ebony-700 text-center font-bold mb-5">{props.title}</h1>
             <p className="text-center text-sm text-ebony font-light">{props.description}</p>
         </div>
     )

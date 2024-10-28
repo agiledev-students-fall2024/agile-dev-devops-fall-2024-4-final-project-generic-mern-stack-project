@@ -3,7 +3,6 @@ import axios from "axios"
 import SearchBar from '../components/SearchBar'
 import NavigationBar from '../components/NavigationBar'
 import TextAndButton from '../components/TextAndButton'
-import './Blocked.css'
 
 const Blocked = (props) => {
     const [data, setData] = useState([])
@@ -36,27 +35,25 @@ const Blocked = (props) => {
     // blocked users page
     if (props.type === "blocked_users") {
         return (
-            <>
-                <div className="blocked_content">
-                    <h1>{props.text}</h1>
-                    <SearchBar SearchBarName={"Search blocked accounts"} />
-                    <hr></hr>
-                    <div className="blocked_list">
-                        {data.map(item => (
-                            <TextAndButton key={item.id} text={item.username} button={"Unblock"} />
-                        ))}
-                    </div>
-                    <NavigationBar />
+            <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-6 p-8">
+                <h1 className="text-xl text-ebony-700 text-center font-bold">{props.text}</h1>
+                <SearchBar SearchBarName={"Search blocked accounts"} />
+                <hr></hr>
+                <div>
+                    {data.map(item => (
+                        <TextAndButton key={item.id} text={item.username} button={"Unblock"} />
+                    ))}
                 </div>
-            </>
+                <NavigationBar />
+            </div>
         )
     }
     // blocked communities page
     else if (props.type === "blocked_communities") {
         return (
             <>
-                <div className="blocked_content">
-                    <h1>{props.text}</h1>
+                <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-6 p-8">
+                    <h1 className="text-xl text-ebony-700 text-center font-bold">{props.text}</h1>
                     <SearchBar SearchBarName={"Search blocked communities"} />
                     <hr></hr>
                     <div className="blocked_list">
@@ -73,8 +70,8 @@ const Blocked = (props) => {
     else if (props.type === "muted_words") {
         return (
             <>
-                <div className="blocked_content">
-                    <h1>{props.text}</h1>
+                <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-6 p-8">
+                    <h1 className="text-xl text-ebony-700 text-center font-bold">{props.text}</h1>
                     <SearchBar SearchBarName={"Search muted words"} />
                     <hr></hr>
                     <div className="blocked_list">
