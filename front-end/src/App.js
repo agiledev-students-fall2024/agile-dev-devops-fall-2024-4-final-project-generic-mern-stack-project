@@ -34,12 +34,14 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import Post from "./pages/Post";
+import Reply from "./pages/Reply"
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/community" element={<Community />} />
         <Route path="/community/:communityId" element={<SubCommunityPage />} />
         <Route path="/blog" element={<Blog />} />
@@ -55,6 +57,8 @@ function App() {
         <Route path="/blocked-users" element={<Blocked type={'blocked_users'} text={'Blocked Users'} />} />
         <Route path="/blocked-communities" element={<Blocked type={'blocked_communities'} text={'Blocked Communities'} />} />
         <Route path="/muted-words" element={<Blocked type={'muted_words'} text={'Muted Words'} />} />
+        <Route path="/post" element={<Post />} />
+        <Route path="/reply" element={<Reply />} />
 
 
       </Routes>
