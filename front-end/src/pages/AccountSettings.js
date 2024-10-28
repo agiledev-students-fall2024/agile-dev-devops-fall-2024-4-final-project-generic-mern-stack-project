@@ -3,8 +3,6 @@ import axios from "axios"
 import TitleAndDescription from '../components/TitleAndDescription'
 import NavigationBar from '../components/NavigationBar'
 import AccountInfo from '../components/AccountInfo'
-import SubmitButton from "../components/SubmitButton"
-//import './AccountSettings.css'
 import { Link } from 'react-router-dom';
 
 const AccountSettings = (props) => {
@@ -33,7 +31,8 @@ const AccountSettings = (props) => {
     }, [])
 
     // if user did not click the link to the popup: render normally
-    if (!popup) {
+    if (popup) {
+        console.log(popup)
         return (
             <div className="w-[90%] flex flex-col justify-center items-center gap-8 p-8 m-[auto]">
                 <TitleAndDescription
@@ -42,44 +41,13 @@ const AccountSettings = (props) => {
                 />
 
                 <div className="flex flex-col justify-center items-center w-[70%] mx-auto gap-2 bg-lavender_blush-900 p-2 rounded-md">
-                <h2 className="text-xl text-ebony-600 text-center mb-2">Account Information</h2>
+                    <h2 className="text-xl text-ebony-600 text-center mb-2">Account Information</h2>
                     <AccountInfo title={"Username"} text={data.username} />
                     <AccountInfo title={"Name"} text={data.name} />
                     <AccountInfo title={"Email"} text={data.email} />
                     <AccountInfo title={"Password"} text={data.password} />
                 </div>
 
-                <div className="w-[60%] flex justify-center">
-                <SubmitButton
-                    placeholder="Delete your data and account"
-                    onClick={openPopup}
-                />
-                </div>
-
-                <NavigationBar />
-            </div>
-        )
-    }
-    // open popup window for deactivation information
-    else {
-        return (
-            <div className="w-[90%] flex flex-col justify-center items-center gap-6 p-8 m-[auto]">
-                <TitleAndDescription
-                    title={props.text}
-                    description={"See your account information like your email and password."}
-                />
-
-                <h2 className="text-xl text-ebony-700 text-center font-bold">Account Information</h2>
-
-                <div className="flex flex-col justify-center items-center w-[75%] mx-auto gap-2">
-                    <AccountInfo title={"Username"} text={data.username} />
-                    <AccountInfo title={"Name"} text={data.name} />
-                    <AccountInfo title={"Email"} text={data.email} />
-                    <AccountInfo title={"Password"} text={data.password} />
-                </div>
-
-                <h2>Deactivate Account</h2>
-                <p className="delete-link" onClick={openPopup}>Delete your data and account</p>
                 <div className="Popup-box">
                     <div className="content">
                         <p className="Popup-title">Are you sure you want to deactivate?</p>
@@ -90,6 +58,34 @@ const AccountSettings = (props) => {
                         </div>
                     </div>
                 </div>
+                <NavigationBar />
+            </div>
+        )
+    }
+    // open popup window for deactivation information
+    else {
+        return (
+            <div className="w-[90%] flex flex-col justify-center items-center gap-8 p-8 m-[auto]">
+                <TitleAndDescription
+                    title={props.text}
+                    description={"See your account information like your email and password."}
+                />
+
+                <div className="flex flex-col justify-center items-center w-[70%] mx-auto gap-2 bg-lavender_blush-900 p-2 rounded-md">
+                    <h2 className="text-xl text-ebony-600 text-center mb-2">Account Information</h2>
+                    <AccountInfo title={"Username"} text={data.username} />
+                    <AccountInfo title={"Name"} text={data.name} />
+                    <AccountInfo title={"Email"} text={data.email} />
+                    <AccountInfo title={"Password"} text={data.password} />
+                </div>
+
+                <div className="w-[60%] flex justify-center">
+                    <button
+                        className="w-[100%] p-2 bg-ebony border-ebony rounded-lg text-rose-700 font-semibold hover:bg-rose-700 hover:text-ebony hover:border-rose-700"
+                        onClick={openPopup}>Delete your data and account
+                    </button>
+                </div>
+
                 <NavigationBar />
             </div>
         )
