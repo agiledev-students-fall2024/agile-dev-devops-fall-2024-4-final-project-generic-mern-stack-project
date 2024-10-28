@@ -16,7 +16,9 @@ import PostBlogTextField from "./components/PostBlogTextField"; // C17
 import ChangeAccountInfoBox from "./components/ChangeAccountInfoBox"; // C19
 import ChangeProflieTextBox from "./components/ChangeProfileTextBox"; //C20
 import BackButton from "./components/BackButton"; //C14
+import ReplyButton from "./components/ReplyButton"; // Need to create this for replies page 
 import Home from "./pages/Home";
+import Replies from "./pages/Replies";
 import Community from "./pages/Community";
 import SubCommunityPage from "./pages/SubCommunityPage";
 import Blog from "./pages/Blog";
@@ -41,7 +43,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<Home />} />
         <Route path="/community" element={<Community />} />
         <Route path="/community/:communityId" element={<SubCommunityPage />} />
         <Route path="/blog" element={<Blog />} />
@@ -59,6 +61,7 @@ function App() {
         <Route path="/muted-words" element={<Blocked type={'muted_words'} text={'Muted Words'} />} />
         <Route path="/post" element={<Post />} />
         <Route path="/reply" element={<Reply />} />
+        <Route path="/replies" element={<Replies />} />
 
 
       </Routes>

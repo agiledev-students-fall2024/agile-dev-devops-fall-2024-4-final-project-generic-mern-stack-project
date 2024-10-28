@@ -11,13 +11,13 @@ const NavigationBar = () => {
             <nav className="Footer-navbar">
                 <ul className="Nav-links">
                     <li className="Nav-item">
-                        <Link to="/home"><FaHome/></Link>
+                        <Link to="/"><FaHome/></Link>
                     </li>
                     <li className="Nav-item">
                         <Link to="/community"><RiCommunityFill/></Link>
                     </li>
                     <li className="Nav-item">
-                        <Link to="/blog"><MdPostAdd/></Link>
+                        <Link to="/post"><MdPostAdd/></Link>
                     </li>
                     <li className="Nav-item">
                         <Link to="/profile"><ImProfile/></Link>
