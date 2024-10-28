@@ -2,12 +2,12 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/home';
 import Goal from './pages/Goal';
+import Balances from './pages/Balances';
 import { Link } from 'react-router-dom';
 
 {/*
 import Charts from './pages/charts';
 import Goals from './pages/goals';
-import Balances from './pages/balances';
 import MyAccount from './pages/myaccount';
 import WhatIfCalculator from './pages/whatifcalculator';
 */}
@@ -17,7 +17,8 @@ function App() {
     <Router>
       <nav>
         <Link to="/">Home</Link> | 
-        <Link to="/goal">Goal</Link> | 
+        <Link to="/goal">Goals</Link> | 
+        <Link to="/balances">Balances</Link> | 
         {/*
         <Link to="/charts">Charts</Link> | 
         <Link to="/goals">Goals</Link> | 
@@ -30,6 +31,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/goal" element={<Goal />} />
+        <Route path="/balances" element={<Balances />} />
         
        {/* 
         <Route path="/charts" element={<Charts />} />
