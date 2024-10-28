@@ -1,13 +1,11 @@
 import React from "react"
-import './AccountInfo.css'
+//import './AccountInfo.css'
 
 const AccountInfo = (props) => {
     return (
-        <div className="content">
-            <div className="account-info">
-                <p className="title">{props.title}</p>
-                <p className="text">{props.text}</p>
-            </div>
+        <div className="grid grid-cols-2 w-full max-w-[90%] gap-2 m-auto items-center">
+            <div className="text-md text-left truncate text-ebony-600 font-semibold">{props.title}</div>
+            <div className="text-md text-right truncate text-rose-600 font-medium">{props.text}</div>
         </div>
     )
 }
