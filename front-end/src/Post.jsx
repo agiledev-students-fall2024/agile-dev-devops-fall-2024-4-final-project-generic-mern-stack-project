@@ -1,18 +1,9 @@
-//function Post() {
-//return (
-//<div className="text-center">
-// <h1 className="text-4xl font-bold">Post</h1>
-// <p className="text-gray-600">report incident here</p>
-//</div>
-// );
-//}
-//export default Post;
-import React, { useState, useRef } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState, useRef } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function Post() {
   const [image, setImage] = useState(null);
-  const [caption, setCaption] = useState("");
+  const [caption, setCaption] = useState('');
   const fileInputRef = useRef(null);
 
   const handleImageUpload = (e) => {
@@ -39,7 +30,7 @@ function Post() {
   };
 
   const handleImageClick = () => {
-    fileInputRef.current.click(); 
+    fileInputRef.current.click();
   };
 
   const handleDragOver = (e) => {
@@ -51,8 +42,8 @@ function Post() {
   };
 
   const handlePostClick = () => {
-    console.log("Post clicked. Caption:", caption);
-    alert("Post submitted successfully!");
+    console.log('Post clicked. Caption:', caption);
+    alert('Post submitted successfully!');
   };
 
   return (
@@ -63,7 +54,7 @@ function Post() {
       <div className="image-uploader">
         <div
           className={`w-full rounded h-64 mb-4 border-2 border-dashed flex justify-center items-center cursor-pointer ${
-            image ? "" : "bg-gray-100"
+            image ? '' : 'bg-gray-100'
           }`}
           onClick={handleImageClick}
           onDrop={handleDrop}
@@ -86,7 +77,7 @@ function Post() {
           type="file"
           accept="image/*"
           ref={fileInputRef}
-          style={{ display: "none" }}
+          style={{ display: 'none' }}
           onChange={handleImageUpload}
         />
       </div>
@@ -111,7 +102,6 @@ function Post() {
       >
         Post
       </button>
-
     </div>
   );
 }
