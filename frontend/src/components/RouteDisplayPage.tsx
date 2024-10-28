@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import StoreSearchBar from "./StoresSearchBar";
 import MyStoresButton from "./MyStoresButton";
 import sampleStores from "@/stores";
+import SoHoMap from "./SoHoMap";
 
 export default function RouteDisplayPage() {
   const navigate = useNavigate();
@@ -10,11 +11,9 @@ export default function RouteDisplayPage() {
   const routeDisplay = sampleStores.map((route, index) => (
     <div
       key={route.id}
-      className="flex justify-between border-2 bg-gray-100 hover:bg-gray-200 border-gray-300 rounded-md p-3 mb-2"
+      className="flex justify-center items-center text-center border-2 border-gray-300 bg-gray-100 hover:bg-gray-200 rounded-md p-2 mb-1"
     >
-      <div className="flex flex-col">
-        <span className="text-xl font-semibold">{index + 1}. {route.name}</span>
-      </div>
+      <span className="text-sm font-medium">{index + 1}. {route.name}</span>
     </div>
   ));
 
@@ -38,7 +37,7 @@ export default function RouteDisplayPage() {
 
   return (
     <div className="p-5">
-      <div className="text-3xl font-bold mb-8">Your Shopping Route</div>
+      <div className="text-3xl font-bold mb-6 text-center">Your Shopping Route</div>
 
       <div className="mb-6">
         {routeDisplay}
