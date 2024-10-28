@@ -109,14 +109,14 @@ const Profile = () => {
             )
         } else if (user.layout === 'masonry-title'){
             return (
-                <div className='profile-posts layout--masonry'>
+                <div className='profile-posts layout--masonry mt-8'>
                     { posts.map( (post, index) => {
                         const dateObject = new Date(post.date)
                         return (
                             <Link 
                                 key={`profile-${user.username}-${post.id}`} 
                                 to={`/blogpostloggedin/${post.id}`} 
-                                className=' text-reset text-decoration-none'
+                                className='text-reset text-decoration-none'
                             >   
                                 <div>
                                     { post.imageUrl ? 
@@ -140,7 +140,7 @@ const Profile = () => {
             )
         } else if (user.layout === 'masonry'){
             return (
-                <div className={`profile-posts layout--masonry masonry-img`}>
+                <div className='profile-posts layout--masonry masonry-img'>
                     { posts.map( (post, index) => (
                         <Link 
                             key={`profile-${user.username}-${post.id}`} 
@@ -164,7 +164,7 @@ const Profile = () => {
             )
         } else {
             return (
-                <div className={`profile-posts layout`}>
+                <div className='profile-posts layout'>
                     {posts.map( post => {
                         const dateObject = new Date(post.date)
                         return (
@@ -221,7 +221,7 @@ const Profile = () => {
                     </div>
                 </div>
                 <div className='mx-3 mb-5'>
-                    <hr />
+                    <hr/>
                     { 
                         posts.length !== 0 ?
                         renderPosts():

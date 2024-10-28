@@ -50,7 +50,7 @@
     grid-template-columns: 1fr;
     flex-wrap: wrap;
     row-gap: 2rem;
-    margin-top: 3rem;
+    margin-top: 1rem;
 }
 
 .layout--grid {
@@ -58,7 +58,7 @@
     grid-template-columns: repeat(2, 1fr);
     column-gap: .5rem;
     row-gap: 1rem;
-    margin-top: 2rem;
+    margin-top: 1rem;
     place-items: center;
 }
 
@@ -75,6 +75,10 @@
 .layout--masonry {
     column-count: 2;
     column-gap: .625rem;
+}
+
+.layout--masonry a {
+    margin-top: 2rem !important;
 }
 
 .layout--masonry div {
@@ -103,6 +107,10 @@
     margin-top: 2rem !important;
 }
 
+.profile-posts {
+    margin-bottom: 3rem;
+}
+
 .profile-posts:not(.layout--masonry) .no-img {
     width: 60%; 
     height: auto; 
@@ -128,9 +136,9 @@
     margin-bottom: 0;
 }
 
-#profile-blog-posts + div > div {
+/* #profile-blog-posts + div > div {
     margin-top: 0;
-}
+} */
 
 #profile-blog-posts + div > div > * {
     margin-top: 1rem;
