@@ -2,7 +2,6 @@ import axios from 'axios'
 import { useState, useEffect } from 'react'
 import NavigationBar from '../components/NavigationBar'
 import SearchBar from '../components/SearchBar'
-import TitleAndDescriptionBox from '../components/TitleAndDescriptionBox'
 //import './Community.css'
 
 const Community = () => {
@@ -58,20 +57,7 @@ const Community = () => {
         <>
         <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-6 p-8">
             <h1 className="text-2xl text-ebony-700 text-center font-bold">Communities</h1>
-            <SearchBar/>
-
-            <section className="flex flex-col justify-center w-[100%] gap-0">
-                {data.map(item => (
-                    <div key={item.id} className="groups">
-                        <TitleAndDescriptionBox
-                            link={`/community/${item.id}`}
-                            title={item.name}
-                            description={item.description}
-                        />
-                    </div>
-                
-                ))}
-            </section>
+            <SearchBar searchItems={data}/>
             
             <div className="padding"></div>
             <NavigationBar/>
