@@ -22,14 +22,19 @@ const ProfileDropdown = () => {
         </>
       ) : (
         <>
-          <Link to="/login" className="profile-dropdown-item">
-            <span className="profile-dropdown-item-icon">🔑</span>
-            Login
-          </Link>
-          <Link to="/signup" className="profile-dropdown-item">
-            <span className="profile-dropdown-item-icon">📝</span>
-            Sign Up
-          </Link>
+          <div>
+            <Link to="/login" className="profile-dropdown-item">
+              <span className="profile-dropdown-item-icon">🔑</span>
+              Login
+            </Link>
+          </div>
+          <div>
+            <Link to="/signup" className="profile-dropdown-item">
+              <span className="profile-dropdown-item-icon">📝</span>
+              Sign Up
+            </Link>
+          </div>
+
         </>
       )}
     </div>
