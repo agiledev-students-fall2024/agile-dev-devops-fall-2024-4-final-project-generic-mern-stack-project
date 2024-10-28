@@ -4,12 +4,7 @@ import axios from 'axios'
 
 
 function Activity_Tracker(){
-    const [activeTab, setActiveTab] = useState('activities')
     const [activitiesData, setActivitiesData] = useState([])
-
-    const handleTabChange = (tab)=>{
-        setActiveTab(tab);
-    }
 
     useEffect(() => {
         const fetchActivitiesData = async () => {
@@ -28,28 +23,12 @@ function Activity_Tracker(){
         
             <div className='activity-tracker-header'>
                 <h1 className='activity-tracker-title'>Activities Tracker</h1>
-                <div className='activity-nav'>
-                    <button
-                    className={activeTab==='progress'? 'active': ''}
-                    onClick={()=>handleTabChange('progress')}>Progress
-                    </button>
-                    <button
-                        className={activeTab==='activities'? 'active': ''}
-                        onClick={()=>handleTabChange('activities')}>Activities
-                    </button>
-                </div>
             </div>
             
         
-        <div className='tab-content'>
-            {activeTab==='progress' && (
-                <div>
-                    <h2>Progress Tab Open</h2>
-                </div>
-            )}
-            {activeTab==='activities' && (
-                 <div className='activities-div'>
-                    {activitiesData.map((activity, index) => (
+            <div className='tab-content'>
+                <div className='activities-div'>
+                {activitiesData.map((activity, index) => (
                     <div className="activity-card" key={index}>
                         <h2>{activity.date}</h2>
                         <h3>{activity.activity_name}</h3>
@@ -57,9 +36,8 @@ function Activity_Tracker(){
                     </div>
                 ))}
                 </div>
-            )}
 
-        </div>
+            </div>
             
         </div>
     )
