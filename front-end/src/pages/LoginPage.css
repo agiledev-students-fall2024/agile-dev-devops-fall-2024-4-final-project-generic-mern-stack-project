@@ -1,0 +1,59 @@
+/* src/pages/LoginPage.css */
+.login-page {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  .login-form div {
+    margin-bottom: 15px;
+  }
+  
+  .login-form label {
+    display: block;
+  }
+  
+  .login-form input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+
+  .centered {
+    text-align: center; /* Center the text */
+  }
+
+
+  .login-form label {
+    font-family: 'Poppins', sans-serif;
+    display: block;
+    margin-bottom: 5px; /* Space between label and input */
+    font-weight: bold; /* Make labels bold */
+    color: #555; /* Softer gray for labels */
+  }
+
+  .login-page button {
+    padding: 12px; /* Increased padding for better touch target */
+    width: 100%;
+    background-color: #ff385c; /* Pink background */
+    color: #ffffff; /* White text */
+    border: none; /* Remove default border */
+    border-radius: 6px; /* More rounded button corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 18px; /* Larger font size for readability */
+    font-weight: bold; /* Bold text for emphasis */
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  }
+  
+  .login-page button:hover {
+    background-color: #e74c3c; /* Darker shade on hover */
+    transform: translateY(-2px); /* Slight lift effect on hover */
+  }
+  
+  .login-page button:active {
+    background-color: #c0392b; /* Even darker shade when clicked */
+    transform: translateY(0); /* Return to original position */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Less shadow when active */
+  }
+  

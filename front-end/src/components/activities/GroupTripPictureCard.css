@@ -1,0 +1,11 @@
+.trip-image-container img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 10px;
+  }
+
+  h1 {
+    color: #000000;
+  }
+  

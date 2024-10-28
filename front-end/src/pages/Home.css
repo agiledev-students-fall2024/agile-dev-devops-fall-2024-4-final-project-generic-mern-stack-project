@@ -1,0 +1,48 @@
+.home {
+  padding: 2rem;
+}
+
+.home__trips {
+  margin-top: 2rem;
+}
+
+.home__trips-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem; 
+}
+
+.home__trips-title {
+  font-size: 2rem; 
+  font-weight: 700; 
+  color: #333; 
+  margin-bottom: 0; 
+}
+
+.home__trips-actions {
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem; 
+}
+
+.home__trips-actions a {
+  color: #FF385C;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.2s ease;
+}
+
+.home__trips-actions a:hover {
+  color: #e0304b; 
+}
+
+.home__trips-actions__separator {
+  color: #ccc; 
+  margin: 0 0.5rem; 
+}
+
+.trip-tabs {
+  margin-bottom: 1.5rem; 
+}
