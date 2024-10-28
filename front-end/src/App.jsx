@@ -1,28 +1,51 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
+import {FiMenu} from 'react-icons/fi'; //importing hamburger icon
 import Home from './pages/home';
 import Goal from './pages/Goal';
 import LoginPage from './pages/loginPage';
 import Registration from './pages/registration';
+import Me from './pages/me';
+import './App.css';
+
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true); //change it back
+  const [isMenuOpen, setIsMenuOpen]=useState(false);
 
   // Function to handle successful login
   const handleLogin = () => {
     setIsLoggedIn(true);
+    setIsMenuOpen(false); //close menu on login
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setIsMenuOpen(false); //close menu on logout
+  };
+
+  const toggleMenu=()=>{
+    setIsMenuOpen(!isMenuOpen);
   };
 
   return (
     <Router>
-      <nav>
-        <Link to="/">Home</Link> | 
-        <Link to="/goal">Goal</Link> | 
-        {!isLoggedIn && <Link to="/login">Login</Link>}
-      </nav>
+      {isLoggedIn && (
+        <div style={{ position: 'absolute', top: 10, left: 10 }}>
+          <FiMenu size={30} onClick={toggleMenu} style={{ cursor: 'pointer', color: 'black' }} />
+        </div>
+      )}
+
+      {isLoggedIn && isMenuOpen && (
+        <div className="hamburger-dropdown"> {/* Add the unique class here */}
+          <nav>
+            <Link to="/me" onClick={toggleMenu}>Me</Link>
+            <button onClick={handleLogout}>Logout</button>
+          </nav>
+        </div>
+      )}
 
       <Routes>
-        {/* Route for Login */}
         {!isLoggedIn ? (
           <>
             <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
@@ -33,9 +56,10 @@ function App() {
           <>
             <Route path="/" element={<Home />} />
             <Route path="/goal" element={<Goal />} />
+            <Route path="/me" element={<Me />} />
             <Route path="*" element={<Navigate to="/" />} />
           </>
-        )} 
+        )}
       </Routes>
     </Router>
   );
