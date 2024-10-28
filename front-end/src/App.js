@@ -10,6 +10,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import PastTrip from './pages/PastTrip';
 import './App.css';
 import ActivitiesPage from './pages/ActivitiesPage';
+import Locations from './pages/Locations';
 const App = () => {
   return (
     <AuthProvider>
@@ -39,6 +40,7 @@ const Main = () => {
           <Route path="/signUp" element={<SignUpPage onSignUp={handleSignUp} />} />
           <Route path="/past-trip/:id" element={<PastTrip />} />
           <Route path="/a" element={<ActivitiesPage />} />
+          <Route path="/locations" element={<Locations />} />
         </Routes>
       </main>
     </>
