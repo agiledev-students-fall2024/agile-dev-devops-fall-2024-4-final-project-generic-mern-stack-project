@@ -76,8 +76,8 @@ function Profile() {
                 </div>
 
                 <div className='profileSection'>
-                    <p>Age: {profileData.age}</p>
-                    <p>Location: {profileData.location}</p>
+                    <p><strong>Age:</strong> {profileData.age}</p>
+                    <p><strong>Location:</strong> {profileData.location}</p>
                 </div>
 
                 <button type="button" onClick={goToSignupProfile}>Edit Profile</button>
