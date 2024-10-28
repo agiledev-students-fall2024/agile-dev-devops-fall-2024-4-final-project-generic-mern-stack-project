@@ -8,7 +8,7 @@ function Header() {
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
   return (
-    <header className="p-4 bg-blue-500 text-white flex justify-between items-center">
+    <header className="h-6 p-4 bg-blue-500 text-white flex justify-between items-center">
       <h1 className="text-xl font-bold">Cyclable</h1>
 
       <button
@@ -19,7 +19,7 @@ function Header() {
       </button>
 
       {menuOpen && (
-        <div className="absolute top-16 right-4 w-64 bg-white shadow-lg p-4">
+        <div className="absolute top-16 right-4 w-64 bg-white shadow-lg p-4 z-10">
           <button
             className="absolute top-2 right-2 text-xl"
             onClick={toggleMenu}
