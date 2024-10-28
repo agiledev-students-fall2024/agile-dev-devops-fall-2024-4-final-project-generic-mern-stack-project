@@ -1,0 +1,68 @@
+
+h1 {
+
+    font-family: Impact, sans-serif;
+    color: #050404;
+    font-size: 45px;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+
+    }
+
+
+
+h2 {
+    padding: 25px 75px 75px 100px;
+}
+
+.Altlogo{
+    /* width: 100px; */
+    height: 100px;
+    margin: 20px auto;
+}
+    
+
+button.feedback-btn {
+    padding: 10px;
+    background-color: #7e57c2; 
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+button.feedback-btn:hover {
+    background-color: #5e35b1; 
+}
+  
+button.feedback-btn:active {
+    background-color: #cec3e8;
+}
+
+
+button.contact-btn {
+    padding: 10px;
+    background-color: #7e57c2; 
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+button.contact-btn:hover {
+    background-color: #5e35b1; 
+}
+  
+button.contact-btn:active {
+    background-color: #cec3e8;
+}
+
+
+.aboutpg-buttoncontainer{
+    display:flex;
+    justify-content: center;
+    padding-top: 0.5em;
+    gap: 30px;
+}
