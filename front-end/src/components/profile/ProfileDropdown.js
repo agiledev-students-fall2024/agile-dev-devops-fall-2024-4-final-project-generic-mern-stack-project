@@ -12,7 +12,8 @@ const ProfileDropdown = () => {
       {isLoggedIn ? (
         <>
           <Link to="/profile" className="profile-dropdown-item">
-            <span className="profile-dropdown-item-icon">🧑</span>
+            {/* <span className="profile-dropdown-item-icon">🧑</span> */}
+            <span className="profile-dropdown-item-icon">⭐️</span>
             Profile
           </Link>
           <button className="profile-dropdown-item" onClick={signOut}>

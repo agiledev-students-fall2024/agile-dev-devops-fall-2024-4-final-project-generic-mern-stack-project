@@ -8,12 +8,13 @@ const SignUpPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { login } = useAuth(); // Get login function from context
+  const { login, setUsername: setAuthUsername } = useAuth(); // Get login function and setUsername from context
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Username:', username);
     console.log('Password:', password);
+    setAuthUsername(username); // Set username in context
     login(); // Call login on successful signup
     navigate('/');
   };
