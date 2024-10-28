@@ -15,40 +15,40 @@ const Accessibility = (props) => {
     }
 
     return (
-        <>
+        <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-6 p-8">
             <TitleAndDescription
                 title={props.text}
                 description={"Manage your color mode, display, and font settings"}
             />
 
-            <div className="content">
-                <div className="element">
-                    <p className="label">Display color mode</p>
+            <div className="w-[70%] mx-auto gap-2 bg-lavender_blush-900 p-2 rounded-md">
+                <div className="flex flex-row justify-between mx-10 my-5">
+                    <p>Display color mode</p>
                     <DropdownMenu
                         name={"color-mode"}
                         label={"Color Mode"}
                         options={["Light", "Dark"]}
                     />
                 </div>
-                <div className="element">
-                    <p className="label">Display Images</p>
+                <div className="flex flex-row justify-between mx-10 my-5">
+                    <p>Display Images</p>
                     <DropdownMenu
                         name={"display-images"}
                         label={"Display Images"}
                         options={["Show", "Hide"]}
                     />
                 </div>
-                <div className="element">
-                    <p className="label">Font Size</p>
+                <div className="flex flex-row justify-between mx-10 my-5">
+                    <p>Font Size</p>
                 </div>
-                <div className="font-element">
-                    <p className={"example-text px-" + size}>Lorem ipsum odor amet, consectetuer adipiscing elit. Metus ex eget tristique fringilla convallis morbi tincidunt.</p>
-                    <input type="range" default="16" step="2" min="10" max="18" onChange={adjustFontSize}></input>
+                <div className="flex flex-col justify-between items-center">
+                    <p className={"mb-5 w-[70%] px-" + size}>Lorem ipsum odor amet, consectetuer adipiscing elit. Metus ex eget tristique fringilla convallis morbi tincidunt.</p>
+                    <input className="w-[80%] mb-5" type="range" default="16" step="2" min="10" max="18" onChange={adjustFontSize}></input>
                 </div>
             </div>
 
             <NavigationBar />
-        </>
+        </div>
     )
 }
 
