@@ -23,6 +23,7 @@ function CreateTask() {
     const [due_date, setDue_date] = useState("")
     const [priority, setPriority] = useState("Low")
     const [recurring, setRecurring] = useState("No")
+    const [recurringPeriod, setRecurringPeriod] = useState("");
 
     const handleTitle = (e) => {
         setTitle(e.target.value)
@@ -47,6 +48,9 @@ function CreateTask() {
     const handleRecurring = (e) => {
         setRecurring(e.target.value)
     }
+    const handleRecurringPeriod = (e) => {
+        setRecurringPeriod(e.target.value)
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -56,6 +60,7 @@ function CreateTask() {
         task.current.due_date = due_date
         task.current.priority = priority
         task.current.recurring = recurring
+        task.current.recurringPeriod = recurring === "Yes" ? recurringPeriod : "";
         //send task to backend
         nav("/Tasks")
     }
@@ -93,6 +98,18 @@ function CreateTask() {
                     <option value="No">No</option>
                 </select>
             </div>
+            {recurring === "Yes" && (
+                <div>
+                    <h3>Recurring Period</h3>
+                    <select value={recurringPeriod} onChange={handleRecurringPeriod}>
+                        <option value="">Select Recurrence</option>
+                        <option value="Weekly">Weekly</option>
+                        <option value="Biweekly">Biweekly</option>
+                        <option value="Monthly">Monthly</option>
+                        <option value="Bimonthly">Bimonthly</option>
+                    </select>
+                </div>
+            )}
             <div className="create-task-buttons">
                 <Link to="/Tasks"> <button className="cancel-btn">Cancel</button></Link>
                 <button onClick={handleSubmit} className="create-btn">Create Task</button>
