@@ -10,7 +10,7 @@ import './App.css';
 
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true); //change it back
+  const [isLoggedIn, setIsLoggedIn] = useState(); //change it back
   const [isMenuOpen, setIsMenuOpen]=useState(false);
 
   // Function to handle successful login
