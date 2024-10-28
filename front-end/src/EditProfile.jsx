@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function EditProfile() {
   const [formData, setFormData] = useState({
-    biography: '',
-    username: 'unique_username',
     name: '',
-    age: ''
+    username: '',
+    biography: '',
+    gender: ''
   });
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
+    navigate('/profile');
   };
 
   const handleChange = (e) => {
@@ -55,6 +58,14 @@ function EditProfile() {
               className="w-full py-3 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600 transition-colors"
             >
               Save Changes
+            </button>
+
+            <button 
+              type="button"
+              onClick={() => navigate('/profile')}
+              className="w-full py-3 mt-4 bg-gray-500 text-white rounded-lg font-medium hover:bg-gray-600 transition-colors"
+            >
+              Return to Profile
             </button>
           </form>
         </div>
