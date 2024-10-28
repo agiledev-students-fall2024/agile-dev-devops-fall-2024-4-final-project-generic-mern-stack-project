@@ -30,7 +30,28 @@ const noteSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true
-  }
+  },
+  attachments: [{
+    fileId: {
+      type: String,
+      default: () => require('uuid').v4(),
+      required: true
+    },
+    fileName: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    fileType: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    fileSize: {
+      type: Number,
+      required: true
+    }
+  }]
 });
 
 const Note = mongoose.model('Note', noteSchema);
