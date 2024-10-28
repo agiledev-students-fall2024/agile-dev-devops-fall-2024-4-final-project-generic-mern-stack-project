@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Note - Easy Note</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="menu-icon" onclick="toggleNav()">☰</div>
+        <div class="logo"></div>
+        <div class="account-icon"></div>
+    </header>
+
+    <nav class="nav-sidebar" id="navSidebar">
+        <ul class="nav-list">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li><a href="new-note.html" class="nav-link">New Note</a></li>
+            <li><a href="math.html" class="nav-link">Math Notes</a></li>
+            <li><a href="export.html" class="nav-link">Export</a></li>
+        </ul>
+    </nav>
+    <main class="container">
+        <section class="new-note-view">
+            <h1 class="page-title">New Note</h1>
+
+            <div class="note-editor">
+                <input type="text" class="note-title-input" placeholder="Title">
+                <textarea class="note-content" placeholder="Type..."></textarea>
+                <button class="share-button">share</button>
+            </div>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+
+</html>
