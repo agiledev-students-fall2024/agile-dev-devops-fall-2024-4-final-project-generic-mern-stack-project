@@ -8,6 +8,23 @@ import TitleAndDescriptionBox from '../components/TitleAndDescriptionBox'
 const Community = () => {
     //stores the fake data into data 
     const [data, setData] = useState([])
+    const [input, setInput] = useState("")
+    const [filteredData, setFilteredData] = useState([])
+
+    const handleSearch = (e) => {
+        console.log(e.target.value)
+        setInput(e.target.value)
+
+        if (input.trim() === ''){
+            return
+        }
+        
+        const newData = data.filter(item => {
+            return item.name.toLowerCase().includes(input.toLowerCase())
+        })
+
+        setFilteredData(newData);
+    }
 
     useEffect(() => {
         console.log("Currently getting community groups' data...")
@@ -54,14 +71,16 @@ const Community = () => {
 
     }, [])
 
+    console.log(data)
+
     return (
         <>
         <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-6 p-8">
             <h1 className="text-xl text-ebony-700 text-center font-bold">Communities</h1>
-            <SearchBar/>
+            <SearchBar searchInput={input} setSearchInput={setInput} handleSearch={handleSearch}/>
 
             <section className="flex flex-col justify-center w-[100%] gap-0">
-                {data.map(item => (
+                {filteredData.map(item => (
                     <div key={item.id} className="groups">
                         <TitleAndDescriptionBox
                             link={`/community/${item.id}`}
