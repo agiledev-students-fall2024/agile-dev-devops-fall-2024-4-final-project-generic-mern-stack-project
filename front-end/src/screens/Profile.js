@@ -1,4 +1,4 @@
-import '../styles/profile.css'
+import '../styles/Profile.css'
 import '../styles/main.css'
 import React from 'react'
 import { Navigate } from 'react-router-dom'
@@ -32,10 +32,10 @@ const Profile = () => {
                     const blockedUsers = []
             
                     blockedData.forEach(item => {
-                        if (item.blocked_id === loggedInData[0].id) {
-                            blockedUsers.push(item.blocker_id)
-                        } else if (item.blocker_id === loggedInData[0].id){
-                            blockedUsers.push(item.blocked_id)
+                        if (item.blocked_id_1 === loggedInData[0].id) {
+                            blockedUsers.push(item.blocked_id_2)
+                        } else if (item.blocked_id_2 === loggedInData[0].id){
+                            blockedUsers.push(item.blocked_id_1)
                         }
                     })
 
@@ -43,6 +43,7 @@ const Profile = () => {
                 }
 
                 const foundBlockedUsers = getBlockedUsers()
+                console.log(foundBlockedUsers)
                 if (foundBlockedUsers.includes(foundUser.id)){
                     setRedirect(true) 
                 }
