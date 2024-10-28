@@ -15,8 +15,10 @@ const Community = () => {
         console.log(e.target.value)
         setInput(e.target.value)
 
-        if (input.trim() === '') return
-
+        if (input.trim() === ''){
+            return
+        }
+        
         const newData = data.filter(item => {
             return item.name.toLowerCase().includes(input.toLowerCase())
         })
