@@ -6,9 +6,10 @@ import Home from './pages/Home';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import ProfileDropdown from './components/profile/ProfileDropdown';
-import { AuthProvider, useAuth } from './context/AuthContext'; // Import AuthContext
+import { AuthProvider, useAuth } from './context/AuthContext';
+import PastTrip from './pages/PastTrip';
 import './App.css';
-
+import ActivitiesPage from './pages/ActivitiesPage';
 const App = () => {
   return (
     <AuthProvider>
@@ -25,7 +26,6 @@ const Main = () => {
 
   const handleSignUp = () => {
     console.log('User signed up');
-    // Login logic if needed
   };
 
   return (
@@ -37,6 +37,8 @@ const Main = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signUp" element={<SignUpPage onSignUp={handleSignUp} />} />
+          <Route path="/past-trip/:id" element={<PastTrip />} />
+          <Route path="/a" element={<ActivitiesPage />} />
         </Routes>
       </main>
     </>
