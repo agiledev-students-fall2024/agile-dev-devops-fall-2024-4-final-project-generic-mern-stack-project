@@ -9,24 +9,26 @@
 }
 
 .signup-page h2 {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
     text-align: center;
     color: #333; /* Darker text for better readability */
     font-family: 'Arial', sans-serif; /* Use a clean font */
     margin-bottom: 20px;
 }
 
-.signup-form div {
+.signup-page div {
     margin-bottom: 15px;
 }
 
-.signup-form label {
+.signup-page label {
+    font-family: 'Poppins', sans-serif;
     display: block;
     margin-bottom: 5px; /* Space between label and input */
     font-weight: bold; /* Make labels bold */
     color: #555; /* Softer gray for labels */
 }
 
-.signup-form input {
+.signup-page input {
     width: 100%;
     padding: 10px; /* Increased padding for a more comfortable input area */
     border: 1px solid #ddd; /* Light border */
