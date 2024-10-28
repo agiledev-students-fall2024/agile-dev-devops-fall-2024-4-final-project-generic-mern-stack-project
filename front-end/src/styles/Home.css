@@ -10,6 +10,8 @@
   border: .5px solid gray;
   padding: 1rem;
   border-radius: .8rem;
+  margin-right: 12px;
+  margin-left: 12px;
 }
 
 .home-posts h2 {
@@ -17,17 +19,6 @@
   margin-top: .5rem;
   font-weight: 600;
   color: black;
-}
-
-#home-blog-posts {
-  margin-bottom: 0;
-}
-
-#home-blog-posts + div > div {
-  margin-top: 0;
-}
-#home-blog-posts + div > div > * {
-  margin-top: 1rem;
 }
 
 .home-posts:not(.layout--masonry) img:not(.no-img) {
@@ -38,4 +29,8 @@
 
 .post-content {
   font-size: 1rem;
+}
+
+.container:not(#profile-blog-posts){
+  margin-bottom: 5rem;
 }
