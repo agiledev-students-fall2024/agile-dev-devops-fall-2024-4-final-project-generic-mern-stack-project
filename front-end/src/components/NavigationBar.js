@@ -11,7 +11,7 @@ const NavigationBar = () => {
             <nav className="Footer-navbar">
                 <ul className="Nav-links">
                     <li className="Nav-item">
-                        <Link to="/"><FaHome/></Link>
+                        <Link to="/home"><FaHome/></Link>
                     </li>
                     <li className="Nav-item">
                         <Link to="/community"><RiCommunityFill/></Link>
