@@ -4,30 +4,39 @@ import './NewGoal.css';
 import { Link } from 'react-router-dom';
 const NewGoal = () => {
     const [title, setTitle] = useState('');
+    const [selectedTasks, setSelectedTasks] = useState([]);
     const [tasks, setTasks] = useState(['']);
+    const [showTaskList, setShowTaskList] = useState(false);
     const [dueDate, setDueDate] = useState('');
-    const [priority, setPriority] = useState('Medium');
     const navigate = useNavigate();
 
-    const handleAddTask = () => {
-        setTasks([...tasks, '']);
-    };
+    const availableTasks = [
+        'Read Algorithms Notes',
+        'Complete React Project',
+        'Prepare for Math Exam',
+        'Write Report on Ethics',
+        'Finish SDE Homework'
+    ];
 
-    const handleTaskChange = (index, value) => {
-        const newTasks = [...tasks];
-        newTasks[index] = value;
-        setTasks(newTasks);
+    const toggleTaskList = () => {
+        setShowTaskList((prevShow) => !prevShow);
+    };
+    const handleTaskSelection = (task) => {
+        setSelectedTasks((prevSelectedTasks) =>
+            prevSelectedTasks.includes(task)
+                ? prevSelectedTasks.filter((t) => t !== task)
+                : [...prevSelectedTasks, task]
+        );
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const newGoal = {
             title,
-            tasks: tasks.filter(task => task), // Remove any empty tasks
+            tasks: selectedTasks,
             dueDate,
-            priority,
             completed_tasks: [],
-            incomplete_tasks: tasks.filter(task => task), // Start with all tasks as incomplete
+            incomplete_tasks: selectedTasks
         };
         console.log(newGoal); // Replace with logic to save the new goal
         navigate('/Goals');
@@ -59,38 +68,32 @@ const NewGoal = () => {
                     />
                 </div>
 
-                <div className="form-group">
-                    <label htmlFor="priority">Priority</label>
-                    <select
-                        id="priority"
-                        value={priority}
-                        onChange={(e) => setPriority(e.target.value)}
-                    >
-                        <option value="High">High</option>
-                        <option value="Medium">Medium</option>
-                        <option value="Low">Low</option>
-                    </select>
-                </div>
 
                 <div className="tasks-section">
-                    <label>Tasks</label>
-                    {tasks.map((task, index) => (
-                        <div key={index} className="task-input-group">
-                            <input
-                                type="text"
-                                placeholder={`Task ${index + 1}`}
-                                value={task}
-                                onChange={(e) => handleTaskChange(index, e.target.value)}
-                                required
-                            />
-                        </div>
-                    ))}
-                    <button type="button" onClick={handleAddTask} className="add-btn">
-                        Add Task
+                    <button type="button" onClick={toggleTaskList} className="task-select-btn">
+                        Select from Existing Tasks
                     </button>
+                    {showTaskList && (
+                        <div className="task-list-dropdown">
+                            {availableTasks.map((task, index) => (
+                                <div key={index} className="task-item">
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedTasks.includes(task)}
+                                        onChange={() => handleTaskSelection(task)}
+                                    />
+                                    <span>{task}</span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
-
-                <button type="submit" className="submit-btn">Save Goal</button>
+                <div className="new-goal-buttons">
+                    <Link to="/Goals">
+                        <button className="cancel-btn">Cancel</button>
+                    </Link>
+                    <button type="submit" className="create-btn">Save Goal</button>
+                </div>
             </form>
         </div>
     );
