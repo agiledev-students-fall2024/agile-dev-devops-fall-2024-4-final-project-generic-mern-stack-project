@@ -38,3 +38,7 @@ createRoot(document.getElementById("root")!).render(
     </StoreProvider>
   </StrictMode>,
 );
+
+import SavedRoutesPage from "./components/SavedRoutesPage";
+
+<Route path="/saved-routes" element={<SavedRoutesPage />} />
