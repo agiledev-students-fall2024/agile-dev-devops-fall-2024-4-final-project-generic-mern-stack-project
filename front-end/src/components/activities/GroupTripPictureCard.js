@@ -2,7 +2,7 @@ import React from 'react';
 import './GroupTripPictureCard.css';
 
 const GroupTripPictureCard = ({ tripName, tripId }) => {
-  const imageUrl = `https://picsum.photos/id/${tripId}/500/200`;
+  const imageUrl = `https://picsum.photos/200/100?random`;
 
   return (
     <div className="group-trip-picture-card">
