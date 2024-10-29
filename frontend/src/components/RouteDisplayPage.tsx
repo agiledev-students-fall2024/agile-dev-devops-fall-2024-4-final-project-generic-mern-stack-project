@@ -1,8 +1,6 @@
 import { Button } from "./ui/button";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import StoreSearchBar from "./StoresSearchBar";
-import MyStoresButton from "./MyStoresButton";
 import sampleStores from "@/stores";
 import SoHoMap from "./SoHoMap";
 import RouteDisplayModal from "./RouteDisplayModal";
@@ -50,13 +48,17 @@ export default function RouteDisplayPage() {
     <div className="p-5">
       <div className="text-3xl font-bold mb-6 text-center">Your Shopping Route</div>
 
+      {/* <div className="w-full h-[300px] border-2 border-black">
+          <SoHoMap />
+      </div> */}
+
       <div className="mb-6">
         {routeDisplay}
       </div>
 
       <div className="flex justify-between">
-        {SaveButton}
         {BackButton}
+        {SaveButton}
       </div>
 
       <RouteDisplayModal
