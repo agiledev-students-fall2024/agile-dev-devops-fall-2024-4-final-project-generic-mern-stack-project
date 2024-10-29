@@ -153,19 +153,11 @@ h2 {
 }
 
 @media screen and (max-width: 768px) {
-    .home-container {
-        padding: 10px;
-    }
-
     .budget-overview,
     .notifications,
     .transactions {
         margin: 10px 0;
         padding: 15px;
-    }
-
-    .header-month {
-        font-size: 1.5rem;
     }
 
     .budget-details p,
@@ -176,10 +168,6 @@ h2 {
 }
 
 @media screen and (max-width: 480px) {
-    .header-month {
-        font-size: 1.3rem;
-    }
-
     .budget-details p,
     .notifications li,
     .transaction-item span {
