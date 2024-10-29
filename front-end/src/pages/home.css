@@ -1,0 +1,129 @@
+h2{
+    font-size: 1.2em;
+}
+
+
+.home-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.budget-overview,
+.notifications,
+.transactions {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar-container {
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 30px;
+    margin-bottom: 15px;
+}
+
+.progress-bar {
+    background-color: #487bf1;
+    height: 100%;
+    line-height: 30px;
+    color: white;
+    text-align: center;
+}
+
+.notifications ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.notifications li {
+    background-color: #fff3cd;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.transactions h2 {
+    margin-bottom: 10px;
+}
+
+.transaction-list {
+    list-style: none;
+    padding: 0;
+}
+
+.transaction-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.transaction-item span {
+    flex: 1;
+}
+
+.transaction-item span:nth-child(2) {
+    text-align: right;
+    font-weight: bold;
+    flex: 0.5;
+}
+
+.transaction-item span:nth-child(3) {
+    text-align: right;
+    flex: 0.5;
+}
+
+.transaction-item:last-child {
+    border-bottom: none;
+}
+
+.transaction-item:hover {
+    background-color: #f0f0f0;
+}
+
+@media screen and (max-width: 768px) {
+    .home-container {
+        padding: 10px;
+    }
+
+    .budget-overview,
+    .notifications,
+    .transactions {
+        margin: 10px 0;
+        padding: 15px;
+    }
+
+    .header-month {
+        font-size: 1.5rem;
+    }
+
+    .budget-details p {
+        font-size: 16px;
+    }
+
+    .notifications li,
+    .transaction-item span {
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .header-month {
+        font-size: 1.3rem;
+    }
+
+    .budget-details p,
+    .notifications li,
+    .transaction-item span {
+        font-size: 14px;
+    }
+
+    .progress-bar-container {
+        height: 25px;
+    }
+}
