@@ -16,7 +16,7 @@ function Recipes() {
           difficulty: item.difficulty_level,
           ingredients: item.ingredients,
           steps: item.instructions ? item.instructions.split(". ") : [],
-          imgs: ['https://picsum.photos/400', 'https://picsum.photos/400', 'https://picsum.photos/400'],
+          imgs: 'https://picsum.photos/400',
         }));
         setRecipeData(formattedData);
       } catch (error) {
@@ -48,7 +48,7 @@ function Recipes() {
                 <h1>Food: {recipeItem.dish}</h1>
                 <p>Ingredients: {recipeItem.ingredients}</p>
               </div>
-              <img src={recipeItem.imgs[0]} alt="oops,img problems!" />
+              <img src={recipeItem.imgs} alt="oops,img problems!" />
             </button>
           </div>
         ))}
@@ -57,14 +57,14 @@ function Recipes() {
       {selectedRecipe && (
         <div className="popup-overlay" onClick={close}>
           <div className="popup-content" onClick={(e) => e.stopPropagation()}>
-            <h1>{selectedRecipe.dish}</h1>
+            <h1>Dish: {selectedRecipe.dish}</h1>
             <p><strong>Ingredients:</strong> {selectedRecipe.ingredients}</p>
 
             {selectedRecipe.steps.map((step, index) => (
               <div key={index}>
                 <h2>Step {index + 1}:</h2>
                 <p>{step}</p>
-                <img src={selectedRecipe.imgs[index]} alt="oops,img problems!" />
+                <img src={selectedRecipe.imgs} alt="oops,img problems!" />
               </div>
             ))}
 
