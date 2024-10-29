@@ -1,4 +1,4 @@
-// C14 Wilson
+// C14 
 import React, { useState } from 'react';
 import './PostBlogTextField.css';
 import DropdownMenu from './DropdownMenu';
@@ -53,3 +53,4 @@ const PostBlogTextField = ({ onCancel, onPost }) => {
 };
 
 export default PostBlogTextField;
+
