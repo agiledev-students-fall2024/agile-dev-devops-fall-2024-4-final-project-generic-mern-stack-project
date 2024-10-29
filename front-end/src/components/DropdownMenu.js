@@ -10,8 +10,8 @@ const DropdownMenu = (props) => {
     }
 
     return (
-        <div className="flex justify-center overflow-hidden px-4 py-2 bg-transparent border-[1px] border-rose rounded-md text-rose font-bold">
-            <select className="rounded-md" name={props.name} onChange={handleChange}>
+        <div className="flex justify-center overflow-hidden px-4 py-2 bg-lavender_blush-900 border-[1px] border-rose rounded-md text-rose font-bold">
+            <select className="bg-transparent" name={props.name} onChange={handleChange}>
                 <option value="select">{props.label}</option>
 
                 {props.options.map(x => (

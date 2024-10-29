@@ -4,7 +4,7 @@ import BlogPost from '../components/BlogPost';
 import DropdownMenu from '../components/DropdownMenu';
 import NavigationBar from '../components/NavigationBar';
 import SearchBar from '../components/SearchBar';
-import './Home.css';
+//import './Home.css';
 
 const Home = () => {
     const [searchInput, setSearchInput] = useState("");
@@ -36,7 +36,7 @@ const Home = () => {
     ];
 
     return (
-        <div className="home-container">
+        <div className="w-[100%] flex flex-col justify-center items-center gap-6 p-8 mx-auto md:w-[90%] lg:w-[70%]">
             <SearchBar 
                 searchInput={searchInput} 
                 setSearchInput={setSearchInput} 
@@ -49,7 +49,7 @@ const Home = () => {
                 options={['Community 1', 'Community 2', 'Community 3']} 
             />
             
-            <div className="blog-posts">
+            <div className="w-[100%] flex flex-col gap-4 md:w-[80%] lg:w-[70%]">
                 {mockBlogPosts.map((post, index) => (
                     <BlogPost 
                         key={index}
