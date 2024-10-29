@@ -15,6 +15,7 @@ const router = createBrowserRouter(
     <>
       <Route path="/login" element={<LoginForm />} />
       <Route path="/signup" element={<SignupForm />} />
+      <Route path="/saved-routes" element={<SavedRoutesPage />} 
     </>,
   ),
 );
@@ -25,6 +26,3 @@ createRoot(document.getElementById("root")!).render(
   </StrictMode>,
 );
 
-import SavedRoutesPage from "./components/SavedRoutesPage";
-
-<Route path="/saved-routes" element={<SavedRoutesPage />} />
