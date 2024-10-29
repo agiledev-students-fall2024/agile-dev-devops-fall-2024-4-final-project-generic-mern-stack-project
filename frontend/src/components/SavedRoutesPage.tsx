@@ -3,6 +3,7 @@ import { SavedRoute } from "@/types";
 import UpdateSavedRouteButton from "./UpdateSavedRouteButton";
 import CopyLinkButton from "./CopyLinkButton";
 import DeleteRouteButton from "./DeleteRouteButton";
+import { useState, useEffect } from "react";
 
 const sampleSavedRoutes: SavedRoute[] = [
   {
@@ -38,7 +39,7 @@ export default function SavedRoutesPage() {
           ))}
         </div>
       </div>
-      <div className="flex gap-2 my-auto">
+      <div className="flex flex-col gap-4 justify-center">
         <CopyLinkButton routeId={route.id} />
         <UpdateSavedRouteButton route={route} />
         <DeleteRouteButton route={route} />
@@ -47,15 +48,18 @@ export default function SavedRoutesPage() {
   ));
 
   return (
-    <div className="p-5">
-      <div className="text-3xl font-bold mb-8">Your Saved Routes</div>
+    <div className="p-5 flex flex-col gap-4">
+      <div className="text-3xl font-bold">Your Saved Routes</div>
+      <div className="text-md font-light">
+        View, edit, or share your saved shopping routes. Click any route to see
+        its optimized path.
+      </div>
       <div className="flex flex-col gap-5">{savedRoutes}</div>
     </div>
   );
 }
-import React, { useState, useEffect } from "react";
 
-const SavedRoutesPage = () => {
+const SavedRoutesPage2 = () => {
   const [routes, setRoutes] = useState([]);
   const [selectedRoute, setSelectedRoute] = useState(null);
 
@@ -87,7 +91,10 @@ const SavedRoutesPage = () => {
       <div className="map-container">
         {selectedRoute ? (
           <div>
-            <p>[Interactive Map with Labeled Stores and Path for {selectedRoute.name}]</p>
+            <p>
+              [Interactive Map with Labeled Stores and Path for{" "}
+              {selectedRoute.name}]
+            </p>
           </div>
         ) : (
           <p>Please select a route to display the map.</p>
@@ -96,7 +103,9 @@ const SavedRoutesPage = () => {
       <ul className="store-list">
         {selectedRoute &&
           selectedRoute.stores.map((store, index) => (
-            <li key={index}>{index + 1}. {store}</li>
+            <li key={index}>
+              {index + 1}. {store}
+            </li>
           ))}
       </ul>
       <div className="button-container">
@@ -113,5 +122,3 @@ const SavedRoutesPage = () => {
     </div>
   );
 };
-
-export default SavedRoutesPage;
