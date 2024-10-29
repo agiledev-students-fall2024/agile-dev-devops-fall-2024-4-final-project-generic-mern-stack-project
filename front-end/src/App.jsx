@@ -7,6 +7,7 @@ import Registration from './pages/registration';
 import RecurringPayments from './pages/RecurringPayments';
 import Me from './pages/me';
 import Balances from './pages/Balances';
+import Charts from './pages/charts';
 
 
 import Transactions from './pages/Transactions';
@@ -48,6 +49,7 @@ function App() {
             <Route path="/me" element={<Me />} />
             <Route path="/balances" element={<Balances />} />
             <Route path="*" element={<Navigate to="/" />} />
+            <Route path="/charts" element={<Charts />} />
           </>
         )}
 
