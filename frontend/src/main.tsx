@@ -9,12 +9,14 @@ import {
 } from "react-router-dom";
 import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
+import SavedRoutesList from "./components/SavedRoutesList";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/login" element={<LoginForm />} />
       <Route path="/signup" element={<SignupForm />} />
+      <Route path="/saved-routes" element={<SavedRoutesList />}
     </>,
   ),
 );
