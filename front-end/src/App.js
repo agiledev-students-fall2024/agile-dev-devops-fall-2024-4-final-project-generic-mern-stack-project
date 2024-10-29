@@ -1,7 +1,6 @@
 import "./App.css";
 import ConditionalNavBar from "./components/ConditionalNavBar";
 import Home from "./pages/Home";
-import Replies from "./pages/Replies";
 import Community from "./pages/Community";
 import SubCommunityPage from "./pages/SubCommunityPage";
 import Blog from "./pages/Blog";
@@ -17,7 +16,7 @@ import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Post from "./pages/Post";
-import Reply from "./pages/Reply";
+
 
 function App() {
   const noNavRoutes = ["/login", "/signup", "/forgotpassword", "/resetpassword"];
@@ -45,8 +44,6 @@ function App() {
             <Route path="/blocked-communities" element={<Blocked type={'blocked_communities'} text={'Blocked Communities'} />} />
             <Route path="/muted-words" element={<Blocked type={'muted_words'} text={'Muted Words'} />} />
             <Route path="/post" element={<Post />} />
-            <Route path="/reply" element={<Reply />} />
-            <Route path="/replies" element={<Replies />} />
           </Routes>
         </div>
       </div>
