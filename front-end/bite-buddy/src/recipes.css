@@ -2,75 +2,106 @@
   overflow-x: hidden;
 }*/
 
+.recipePage {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
 .centered-header {
-    text-align: center;       /* Center the text horizontally */
-    position: absolute;       /* Positioning the header */
-    top: 0;                   /* Place it at the top */
-    left: 50%;                /* Start positioning from the horizontal center of the page */
-    transform: translateX(-50%);  /* Move the element to truly center it */
-    width: 100%;              /* Ensure it takes the full width */
-    padding: 20px;            /* Add some padding around the header */
-    font-size: 2em;           /* Adjust the font size */
-    font-weight: bold;        /* Make the header bold */
+  box-sizing: border-box;
+  text-align: center;       /* Center the text horizontally */
+  position: relative;       /* Positioning the header */
+  top: 0;                   /* Place it at the top */
+  left: 50%;                /* Start positioning from the horizontal center of the page */
+  transform: translateX(-50%);  /* Move the element to truly center it */
+  width: 100%;              /* Ensure it takes the full width */
+  margin: 0;
+  padding: 20px;            /* Add some padding around the header */
+  font-size: 2em;           /* Adjust the font size */
+  font-weight: bold;        /* Make the header bold */
 }
 
 .recipeDashboardOuter {
-  list-style-type: none;
-  padding-top: 50px;
-  margin-top:10%;
-  
-}
-
-.recipeDashboardInner {
-  list-style-type: none;
-  padding-top: 20px;
-  
+  box-sizing: border-box;
+  width: 100%;
+  padding-bottom: 20px;
 }
 
 .recipeHeader{
-  position:relative;
-  padding:50px;
-  display:block;
+  box-sizing: border-box;
   justify-content:left;
+  font-size: 2em;
+  font-style: italic;
+  margin: 0;
+  padding: 10px;
+}
+
+.recipeDashboardInner {
+  box-sizing: border-box;
 }
 
 .recipeCard{
-  padding: 50px;
-  width: 75vw;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  padding: 10px;
+  width: 100%;
   position:relative;
-  top:-4vw;
-  overflow: hidden;
-  padding-bottom:8%;
-
+  border: black;
+  border-style: solid;
+  height: 300px;
 }
 
-.recipeCard h1{
-  position: absolute;
-  top: 1%;
-  left: 1%;
-}
-
-.recipeCard p{
-  position: absolute;
-  top: 55px;
-  left: 1%;
-  text-align:left;
-}
-
-.recipeCard img {
+.recipeImg{
+  box-sizing: border-box;
+  width: 100%;
+  height: 40%;
+  flex-shrink: 0;
   position: relative; /* Keeps it in normal document flow */
-  margin-top: 100px;
+  justify-content: flex-start;
+}
+
+.recipeImg img{
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  flex-shrink: 0;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  position: relative; /* Keeps it in normal document flow */
 }
 
 .recipeText {
-  
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  justify-content: flex-start;
 }
 
+.recipeCard h1{
+  position: relative;
+  margin: 2%;
+  top: 1%;
+  text-align: left;
+  font-size: 1.5em;
+}
 
+.recipeCard p{
+  position: relative;
+  margin: 2%;
+  text-align:left;
+}
 
 .popup-overlay {
     position: fixed;
-    overflow-y: auto;
+    overflow-y: hidden;
     top: 0;
     left: 0;
     width: 100%;
@@ -84,10 +115,11 @@
   }
 
   .popup-overlay h1{
+    position: relative;
     color:black;
     font-size: 3em;           /* Adjust the font size */
     font-weight: bold;        /* Make the header bold */
-    
+    width: 100%;
   }
 
   .popup-overlay img{
@@ -100,34 +132,43 @@
     
   }
   .popup-content {
-    margin-top:55%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
     background-color: rgb(243, 238, 238);
     border-radius: 8px;
-    width: 50%;
-    height: 100vw;
+    width: 95%;
+    height: 200vw;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     margin-bottom:2%
   }
   
-
   .popup-content h2, .popup-content p {
     color: black;
+    margin: 1%;
   }
+
+  .popup-content div {
+    margin-top: 5%
+  }
+  
   .close-button {
     position: fixed;
+    text-align: center;
     top: 20px; /* Distance from the top of the viewport */
     right: 20px; /* Distance from the right side of the viewport */
-    padding: 10px 20px;
+    padding: 0;
+    margin: 0;
     background-color: #ff5555;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-size: 1%;
+    font-weight: bold;
   }
 
-  
-  
   .close-button:hover {
     background-color: #ff2222;
   }

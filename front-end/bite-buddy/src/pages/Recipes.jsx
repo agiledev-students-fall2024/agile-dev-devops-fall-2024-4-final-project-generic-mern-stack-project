@@ -36,22 +36,23 @@ function Recipes() {
   };
 
   return (
-    <div>
-      <h1 className="centered-header">RECIPES</h1>
-
+    <div className='recipePage'>
       <div className="recipeDashboardOuter">
+        <h1 className="centered-header">RECIPES</h1>
         <h2 className="recipeHeader">Novice Recipes</h2>
-        {recipeData.map((recipeItem, index) => (
-          <div className="recipeDashboardInner" key={index}>
-            <button className="recipeCard" onClick={() => handleStartClick(recipeItem)}>
-              <div className="recipeText">
-                <h1>Food: {recipeItem.dish}</h1>
-                <p>Ingredients: {recipeItem.ingredients}</p>
-              </div>
-              <img src={recipeItem.imgs} alt="oops,img problems!" />
-            </button>
-          </div>
-        ))}
+        <div className="recipeDashboardInner">
+            {recipeData.map((recipeItem, index) => (
+                <div className="recipeCard" onClick={() => handleStartClick(recipeItem)} key={index}>
+                    <div className='recipeImg'>
+                        <img src={recipeItem.imgs} alt="oops,img problems!" />
+                    </div>
+                    <div className='recipeText'>
+                        <h1>Food: {recipeItem.dish}</h1>
+                        <p>Ingredients: {recipeItem.ingredients}</p>
+                    </div>
+                </div>
+            ))}
+        </div>
       </div>
 
       {selectedRecipe && (
@@ -67,9 +68,8 @@ function Recipes() {
                 <img src={selectedRecipe.imgs} alt="oops,img problems!" />
               </div>
             ))}
-
-            <button className="close-button" onClick={close}>Close</button>
           </div>
+          <button className="close-button" onClick={close}>X</button>
         </div>
       )}
     </div>
