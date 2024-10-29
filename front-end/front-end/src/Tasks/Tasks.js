@@ -4,20 +4,8 @@ import './Tasks.css';
 
 const TASKS_PER_PAGE = 5; // Number of tasks per page
 
-function Tasks() {
-  const [tasks, setTasks] = useState([
-    { name: 'Read Algorithms Notes', due: '11/23', status: 'finished' },
-    { name: 'Read SDE Notes', due: '11/25', status: 'ongoing' },
-    { name: 'Read Ethics Notes', due: '11/24', status: 'not_started' },
-    { name: 'Complete React Project', due: '11/26', status: 'not_started' },
-    { name: 'Study for Math Exam', due: '11/27', status: 'ongoing' },
-    { name: 'Prepare Presentation', due: '11/28', status: 'ongoing' },
-    { name: 'Write Blog Post', due: '11/29', status: 'finished' },
-    { name: 'Finish Machine Learning Assignment', due: '12/01', status: 'not_started' },
-    { name: 'Start Gym Routine', due: '12/02', status: 'ongoing' },
-    { name: 'Read Ethics Paper', due: '12/03', status: 'not_started' }
-  ]);
-
+function Tasks( { tasks, setTasks }) {
+  
   const [currentPage, setCurrentPage] = useState(1);
   const [showFilters, setShowFilters] = useState(false);  // State to toggle filter visibility
   const [filters, setFilters] = useState({
@@ -119,7 +107,9 @@ function Tasks() {
             />
             <span className="status-icon">{getStatusIcon(task.status)}</span>
             <span className="task-name">{task.name}</span>
-            <button className="edit-btn">Edit</button>
+            <button className="edit-btn">
+              <Link to={`/edit-task/${index}`}>Edit</Link>
+            </button>
             <span className="due-date">{task.due}</span>
           </div>
         ))}
