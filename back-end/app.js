@@ -5,15 +5,13 @@ const jwt = require('jsonwebtoken');
 const noteRoutes = require('./routes/note'); 
 const userRoutes = require('./routes/user'); 
 const loginRoutes = require('./routes/login');
+require("dotenv").config({ silent: true })
 
 const app = express();
 app.use(express.json()); 
 
 
-
-const uri = 'mongodb+srv://zq2076:bNhyzzyDk1JZg1dt@full-mern-stack-web-app.s8yum.mongodb.net/?retryWrites=true&w=majority&appName=Full-MERN-Stack-Web-App';
-
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.log(err));
 
