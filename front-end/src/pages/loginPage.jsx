@@ -1,4 +1,4 @@
-// src/pages/LoginPage.jsx
+// src/pages/loginPage.jsx
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './loginPage.css';
@@ -8,17 +8,18 @@ const LoginPage = ({ onLogin }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
+  // Function to handle login validation
   const handleLogin = () => {
     if (!username || !password) {
       setError('Username and password are required.');
       return;
     }
 
-    // Mock login validation
-    if (username === 'user' && password === 'pass') {
-      onLogin(); // Call the function passed from App.jsx to set login status
+    // Hardcoded username and password for demo purposes
+    if (username === 'username' && password === 'password') {
+      onLogin();
     } else {
-      setError('Invalid username or password');
+      setError('Invalid username or password.');
     }
   };
 
@@ -39,11 +40,13 @@ const LoginPage = ({ onLogin }) => {
       />
       {error && <p className="error">{error}</p>}
       <button onClick={handleLogin}>Login</button>
-      
-      {/* Link to Register Page */}
-      <p>
-        Not registered? <Link to="/register">Create an account</Link>
-      </p>
+
+      {/* Registration link */}
+      <div className="register-container">
+        <Link to="/register" className="register-link">
+          Not registered? Create an account
+        </Link>
+      </div>
     </div>
   );
 };
