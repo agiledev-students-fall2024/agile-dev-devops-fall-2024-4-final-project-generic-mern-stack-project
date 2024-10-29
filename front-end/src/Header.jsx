@@ -8,7 +8,7 @@ function Header() {
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
   return (
-    <header className="h-12 px-4 bg-emerald-800 text-white flex justify-between items-center">
+    <header className="h-6 px-4 bg-emerald-800 text-white flex justify-between items-center">
       <h1 className="text-lg font-extrabold">Cyclable</h1>
 
       <FaAlignJustify 
