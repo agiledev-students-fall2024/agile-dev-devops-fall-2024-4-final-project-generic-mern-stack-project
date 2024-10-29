@@ -3,10 +3,10 @@ import React, { createContext, useContext } from 'react';
 const UserContext = createContext();
 
 export class User {
-  constructor(id, email, savedRestaurants) {
+  constructor(id, email, likedRestaurants=[]) {
     this.id = id;
     this.name = email;
-    this.savedRestaurants = savedRestaurants;
+    this.likedRestaurants = this.likedRestaurants;
   }
 
   /**

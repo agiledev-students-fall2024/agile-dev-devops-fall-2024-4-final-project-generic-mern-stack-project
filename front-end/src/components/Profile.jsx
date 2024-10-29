@@ -7,7 +7,7 @@ const ProfilePage = () => {
   const [name, setName] = useState("");
   const [profilePic, setProfilePic] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [savedRestaurants, setSavedRestaurants] = useState({});
+  const [likedRestaurants, setLikedRestaurants] = useState({});
   const [filterCuisine, setFilterCuisine] = useState("All");
   const [filterNeighborhood, setFilterNeighborhood] = useState("All");
   const [filterPrice, setFilterPrice] = useState("All");
@@ -19,7 +19,7 @@ const ProfilePage = () => {
       const data = {}; // Placeholder for the backend data of the restaurants
 
       setTimeout(() => {
-        setSavedRestaurants(data);
+        setLikedRestaurants(data);
       }, 1000);
     };
 
@@ -31,21 +31,21 @@ const ProfilePage = () => {
       "Are you sure that you want to delete this restaurant?"
     );
     if (confirmed) {
-      const updatedRestaurants = { ...savedRestaurants };
+      const updatedRestaurants = { ...likedRestaurants };
       delete updatedRestaurants[id];
-      setSavedRestaurants(updatedRestaurants);
+      setLikedRestaurants(updatedRestaurants);
     }
   };
 
   const uniqueCuisines = Array.from(
-    new Set(Object.values(savedRestaurants).map((r) => r.cuisine))
+    new Set(Object.values(likedRestaurants).map((r) => r.cuisine))
   );
   const uniqueNeighborhoods = Array.from(
-    new Set(Object.values(savedRestaurants).map((r) => r.neighborhood))
+    new Set(Object.values(likedRestaurants).map((r) => r.neighborhood))
   );
 
-  const filteredRestaurants = Object.keys(savedRestaurants).filter((id) => {
-    const restaurant = savedRestaurants[id];
+  const filteredRestaurants = Object.keys(likedRestaurants).filter((id) => {
+    const restaurant = likedRestaurants[id];
     const cuisineMatch =
       filterCuisine === "All" || restaurant.cuisine === filterCuisine;
     const neighborhoodMatch =
@@ -85,7 +85,7 @@ const ProfilePage = () => {
         </div>
       </div>
 
-      <h2>Saved Restaurants</h2>
+      <h2>Liked Restaurants</h2>
 
       <div className="filters">
         {/* ... (filter controls remain the same) */}
@@ -94,7 +94,7 @@ const ProfilePage = () => {
       <div className="body">
         {filteredRestaurants.length > 0 ? (
           filteredRestaurants.map((id) => {
-            const restaurant = savedRestaurants[id];
+            const restaurant = likedRestaurants[id];
             return (
               <div className="restaurant-card" key={id}>
                 <img
@@ -116,7 +116,7 @@ const ProfilePage = () => {
             );
           })
         ) : (
-          <p>No restaurants saved.</p>
+          <p>No restaurants liked.</p>
         )}
       </div>
 

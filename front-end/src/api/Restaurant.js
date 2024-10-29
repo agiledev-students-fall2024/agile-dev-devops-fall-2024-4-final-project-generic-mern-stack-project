@@ -43,7 +43,7 @@ export async function bulkFetchRestaurants(userId) {
   return restaurants;
 }
 
-export async function fetchSavedRestaurants(userId) {
+export async function fetchLikedRestaurants(userId) {
   if (!userId) throw new Error("Empty userId. Cannot fetch");
 
   let fetchUrl = "";

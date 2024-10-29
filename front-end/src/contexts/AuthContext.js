@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext } from "react";
 import { AccountInfoContext } from "./AccountInfoContext";
-import { fetchUser, User } from "../api/User";
+import { fetchUser } from "../api/User";
 
 export const AuthContext = createContext();
 

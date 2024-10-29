@@ -1,18 +1,11 @@
 import React, { useState, useContext } from "react";
 import "../styles/FilterPopup.css"; // Create this CSS file for styling
-import { AccountInfoContext } from "../contexts/AccountInfoContext";
+import { SwipableFeedContext } from "../contexts/SwipableFeedContext";
 
 const FilterPopup = ({ open, close }) => {
-  const {
-    setFilteredRestaurants,
-    allrestaurants,
-    accountInfo,
-    setFilters,
-    filteredRestaurants,
-  } = useContext(AccountInfoContext);
-  const { filters } = accountInfo;
+  const { setFilteredRestaurants, setFilters, allRestaurants } = SwipableFeedContext;
   const [search, setSearch] = useState("");
-  const pills = [...new Set(allrestaurants.flatMap((r) => r.pills))];
+  const pills = [...new Set(allRestaurants.flatMap((r) => r.pills))];
   const [searchResults, setSearchResults] = useState([]);
 
   const handleCheckboxChange = (pill) => {
@@ -30,7 +23,7 @@ const FilterPopup = ({ open, close }) => {
   const handleSearchChange = (event) => {
     const value = event.target.value;
     setSearch(value);
-    const results = allrestaurants.filter((r) =>
+    const results = allRestaurants.filter((r) =>
       r.name.toLowerCase().includes(value.toLowerCase())
     );
     setSearchResults(results);
@@ -38,7 +31,7 @@ const FilterPopup = ({ open, close }) => {
 
   const handleSearchSelect = (restaurant) => {
     setFilteredRestaurants((prevFiltered) => {
-      const otherRestaurants = allrestaurants.filter(
+      const otherRestaurants = allRestaurants.filter(
         (r) => r.id !== restaurant.id
       );
       return [restaurant, ...otherRestaurants];
@@ -51,7 +44,7 @@ const FilterPopup = ({ open, close }) => {
   };
 
   const filterRestaurants = (pills, searchQuery) => {
-    const filtered = allrestaurants.filter((restaurant) => {
+    const filtered = allRestaurants.filter((restaurant) => {
       const matchesPills =
         pills.length === 0 ||
         pills.every((pill) => restaurant.pills.includes(pill));
