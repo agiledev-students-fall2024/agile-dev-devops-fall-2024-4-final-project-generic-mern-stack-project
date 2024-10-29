@@ -63,7 +63,6 @@ const AccountSettings = (props) => {
                         <p className="text-ebony cursor-pointer font-bold hover:text-rose hover:border-rose border-[1px] border-ebony py-2 px-4 rounded-md" onClick={closePopup}>Cancel</p>
                     </div>
                 </div>
-                <NavigationBar />
             </div>
         )
     }
