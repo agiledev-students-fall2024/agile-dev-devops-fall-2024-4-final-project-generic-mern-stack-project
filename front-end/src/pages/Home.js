@@ -36,7 +36,7 @@ const Home = () => {
     ];
 
     return (
-        <div className="w-[100%] flex flex-col justify-center items-center gap-6 p-8 mx-auto md:w-[90%] lg:w-[70%]">
+        <div className="w-[100%] flex flex-col justify-center items-center gap-6 p-8 mx-auto md:w-[90%]">
             <SearchBar 
                 searchInput={searchInput} 
                 setSearchInput={setSearchInput} 
@@ -59,8 +59,6 @@ const Home = () => {
                     />
                 ))}
             </div>
-
-            <NavigationBar />
         </div>
     );
 };

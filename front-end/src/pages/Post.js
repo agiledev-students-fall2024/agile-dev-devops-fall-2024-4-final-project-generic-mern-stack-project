@@ -8,7 +8,6 @@ const Post = () => {
     return (
         <div className="post-page-container">
             <PostBlogTextField />
-            <NavigationBar />
         </div>
     );
 };

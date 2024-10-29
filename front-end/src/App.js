@@ -5,7 +5,7 @@ import TextAndButton from "./components/TextAndButton";
 import UploadImage from "./components/UploadImage";
 import DropdownMenu from "./components/DropdownMenu";
 import TitleAndDescriptionBox from "./components/TitleAndDescriptionBox";
-import NavigationBar from "./components/NavigationBar";
+import ConditionalNavBar from "./components/ConditionalNavBar";
 import SubCommunity from "./components/SubCommunity";
 import CommunityPopup from "./components/CommunityPopup";
 import InputField from "./components/InputField";
@@ -31,41 +31,51 @@ import AccountSettings from "./pages/AccountSettings"
 import Privacy from "./pages/Privacy"
 import Blocked from "./pages/Blocked"
 import Accessibility from "./pages/Accessibility"
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Post from "./pages/Post";
-import Reply from "./pages/Reply"
+import Reply from "./pages/Reply";
 
 function App() {
+  const noNavRoutes = ["/login", "/signup", "/forgotpassword", "/resetpassword"];
+
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/community" element={<Community />} />
-        <Route path="/community/:communityId" element={<SubCommunityPage />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/forgotpassword" element={<ForgotPassword />} />
-        <Route path="/resetpassword" element={<ResetPassword />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/account-settings" element={<AccountSettings text={"Account Settings"} />} />
-        <Route path="/accessibility" element={<Accessibility text={"Accessibility"} />} />
-        <Route path="/privacy" element={<Privacy />} />
-        <Route path="/blocked-users" element={<Blocked type={'blocked_users'} text={'Blocked Users'} />} />
-        <Route path="/blocked-communities" element={<Blocked type={'blocked_communities'} text={'Blocked Communities'} />} />
-        <Route path="/muted-words" element={<Blocked type={'muted_words'} text={'Muted Words'} />} />
-        <Route path="/post" element={<Post />} />
-        <Route path="/reply" element={<Reply />} />
-        <Route path="/replies" element={<Replies />} />
-
-
-      </Routes>
+      <div className="flex h-screen">
+        <ConditionalNavBar noNavRoutes={noNavRoutes} />
+        <div className="flex-1 p-4 z-0 overflow-y-auto h-screen">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/community" element={<Community />} />
+            <Route path="/community/:communityId" element={<SubCommunityPage />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/forgotpassword" element={<ForgotPassword />} />
+            <Route path="/resetpassword" element={<ResetPassword />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/account-settings" element={<AccountSettings text={"Account Settings"} />} />
+            <Route path="/accessibility" element={<Accessibility text={"Accessibility"} />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/blocked-users" element={<Blocked type={'blocked_users'} text={'Blocked Users'} />} />
+            <Route path="/blocked-communities" element={<Blocked type={'blocked_communities'} text={'Blocked Communities'} />} />
+            <Route path="/muted-words" element={<Blocked type={'muted_words'} text={'Muted Words'} />} />
+            <Route path="/post" element={<Post />} />
+            <Route path="/reply" element={<Reply />} />
+            <Route path="/replies" element={<Replies />} />
+          </Routes>
+        </div>
+      </div>
     </Router>
+  );
+}
+
+export default App
+
     // <>
     //   <div className="App m-[auto] font-sera">
     //     <Router>
@@ -190,7 +200,4 @@ function App() {
     //     </Router>
     //   </div>
     // </>
-  );
-}
 
-export default App;

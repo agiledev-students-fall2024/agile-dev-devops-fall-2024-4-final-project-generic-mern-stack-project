@@ -82,8 +82,6 @@ const AccountSettings = (props) => {
                         onClick={openPopup}>Delete your data and account
                     </button>
                 </div>
-
-                <NavigationBar />
             </div>
         )
     }

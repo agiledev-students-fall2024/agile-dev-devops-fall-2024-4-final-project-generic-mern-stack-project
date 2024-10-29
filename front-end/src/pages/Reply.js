@@ -8,7 +8,6 @@ const Reply = () => {
     return (
         <div className="reply-page-container">
             <PostBlogTextField />
-            <NavigationBar />
         </div>
     );
 };

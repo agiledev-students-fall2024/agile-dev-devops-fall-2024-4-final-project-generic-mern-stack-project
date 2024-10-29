@@ -42,7 +42,6 @@ const Blocked = (props) => {
                         <TextAndButton key={item.id} text={item.username} button={"Unblock"} />
                     ))}
                 </div>
-                <NavigationBar />
             </div>
         )
     }
@@ -56,7 +55,6 @@ const Blocked = (props) => {
                         <TextAndButton key={item.id} text={item.community} button={"Unblock"} />
                     ))}
                 </div>
-                <NavigationBar />
             </div>
         )
     }
@@ -70,7 +68,6 @@ const Blocked = (props) => {
                         <TextAndButton key={item.id} text={item.muted_word} button={"Unmute"} />
                     ))}
                 </div>
-                <NavigationBar />
             </div>
         )
     }
