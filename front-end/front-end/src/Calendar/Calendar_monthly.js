@@ -50,11 +50,19 @@ const Calendar_monthly = () => {
                         <div className="week" key={weekIndex}>
                             {week.map((day, dayIndex) => (
                                 <div className="day" key={dayIndex}>
+                                    {/* Day number with Link */}
                                     {day ? (
                                         <Link to={`/day/${day}`} className="day-link">
                                             {day}
                                         </Link>
                                     ) : ' '}
+                                    
+                                    {/* Conditionally render Tasks */}
+                                    <div className='task_calendar'>
+                                        {day !== null ? <p>Tasks:</p> : null} 
+                                        {/* Placeholder for task count or actual data */}
+                                        {day !== null ? <p>3</p> : null} 
+                                    </div>
                                 </div>
                             ))}
                         </div>
