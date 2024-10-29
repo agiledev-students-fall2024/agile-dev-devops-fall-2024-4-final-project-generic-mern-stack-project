@@ -13,13 +13,19 @@ function Notifications() {
     return daysUntilDue;
   };
 
+  const extractDueDay = (dueDate) => {
+    const match = dueDate.match(/\d+/); 
+    return match ? parseInt(match[0], 10) : null;
+  };
+
   const upcomingBills = recurringBills
     .map((bill) => {
-      const dueDay = parseInt(bill.dueDate, 10); 
+      const dueDay = extractDueDay(bill.dueDate);
+      if (dueDay === null) return null;
       const daysUntilDue = calculateDaysUntilDue(dueDay);
       return { ...bill, daysUntilDue };
     })
-    .filter((bill) => bill.daysUntilDue > 0 && bill.daysUntilDue <= 5);
+    .filter((bill) => bill && bill.daysUntilDue > 0 && bill.daysUntilDue <= 5);
 
   return (
     <section className="notifications">

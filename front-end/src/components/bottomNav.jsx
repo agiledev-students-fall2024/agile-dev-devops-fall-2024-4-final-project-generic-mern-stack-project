@@ -5,19 +5,19 @@ import './bottomNav.css';
 function BottomNav() {
   return (
     <nav className="bottom-nav">
-      <NavLink to="/" className="nav-item" activeClassName="active">
+      <NavLink to="/" className="nav-item" activeclassname="active">
         <img src="./home.png" alt="Home" />
         <span>Home</span>
       </NavLink>
-      <NavLink to="/charts" className="nav-item" activeClassName="active">
+      <NavLink to="/charts" className="nav-item" activeclassname="active">
         <img src="./charts.png" alt="Charts" />
         <span>Charts</span>
       </NavLink>
-      <NavLink to="/balances" className="nav-item" activeClassName="active">
+      <NavLink to="/balances" className="nav-item" activeclassname="active">
         <img src="./bank.png" alt="Balances" />
         <span>Balances</span>
       </NavLink>
-      <NavLink to="/goal" className="nav-item" activeClassName="active">
+      <NavLink to="/goal" className="nav-item" activeclassname="active">
         <img src="./goals.png" alt="Goals" />
         <span>Goals</span>
       </NavLink>
