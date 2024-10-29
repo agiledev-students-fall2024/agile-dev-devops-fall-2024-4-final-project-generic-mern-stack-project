@@ -1,5 +1,3 @@
-// import './TextAndButton.css'
-
 const TextAndButton = (props) => {
     return (
         <div className="flex flex-row justify-between items-center space-x-40 bg-lavender_blush-900 py-4 px-8 border-[1px] border-rose-900 w-full">

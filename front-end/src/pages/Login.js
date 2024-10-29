@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-//import "./Login.css";
 import InputField from "../components/InputField";
 import LogoPageTitle from "../components/LogoPageTitle";
 import SubmitButton from "../components/SubmitButton";
-// import Logo from "../assets/upload-image-placeholder.png";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {

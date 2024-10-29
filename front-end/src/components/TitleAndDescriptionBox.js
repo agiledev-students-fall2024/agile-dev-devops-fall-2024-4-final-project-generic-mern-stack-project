@@ -1,4 +1,4 @@
-//import './TitleAndDescriptionBox.css'
+
 import { Link } from 'react-router-dom'
 
 const TitleAndDescriptionBox = (props) => {

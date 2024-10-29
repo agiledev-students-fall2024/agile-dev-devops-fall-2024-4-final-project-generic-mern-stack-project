@@ -1,5 +1,5 @@
 import React from "react";
-//import "./LogoPageTitle.css";
+
 function LogoPageTitle({ logoSrc, title }) {
   return (
     <>

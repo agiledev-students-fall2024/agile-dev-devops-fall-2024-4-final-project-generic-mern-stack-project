@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-//import "./ResetPassword.css";
 import LogoPageTitle from "../components/LogoPageTitle";
 import InputField from "../components/InputField";
-// import Logo from "../assets/upload-image-placeholder.png";
 import { Link, useNavigate } from "react-router-dom";
 import SubmitButton from "../components/SubmitButton";
 

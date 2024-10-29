@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-// import "./Signup.css";
 import LogoPageTitle from "../components/LogoPageTitle";
-// import Logo from "../assets/upload-image-placeholder.png";
 import InputField from "../components/InputField";
 import SubmitButton from "../components/SubmitButton";
 import { Link, useNavigate } from "react-router-dom";
