@@ -18,7 +18,7 @@ const SearchBar = ({ searchInput, setSearchInput, handleSearch }) => {
         onChange={handleChange}
         value={searchInput || ''}
       />
-      <button onClick={handleSearch} className="h-10 rounded-md bg-ebony-700 text-rose-700 hover:text-ebony-700 hover:bg-rose-700 font-bold px-2 w-[8%] flex flex-col justify-center items-center rounded-l-none">
+      <button onClick={handleSearch} className="h-10 rounded-md bg-ebony-700 text-rose-700 hover:text-ebony-700 hover:bg-rose-700 font-bold px-2 w-[15%] md:w-[10%] lg:w-[8%] flex flex-col justify-center items-center rounded-l-none">
         <BsSearchHeart size={24}/>
       </button>
 
