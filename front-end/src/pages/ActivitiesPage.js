@@ -3,15 +3,17 @@ import axios from 'axios';
 import GroupTripPictureCard from '../components/activities/GroupTripPictureCard';
 import ActivityCard from '../components/activities/ActivityCard';
 import './ActivitiesPage.css';
+import { Link, useParams } from 'react-router-dom'; //this is for the dynamic routing
 
 const ActivitiesPage = () => {
   const [activities, setActivities] = useState([]); 
   const [error, setError] = useState(null); 
+  const { locationId } = useParams(); //this gets the locationId from the route (look at App.js if you are confused)
 
   useEffect(() => {
     
     axios
-      .get('https://mock-api-misty-fog-1131.fly.dev/api/locations/location_001/activities')
+      .get(`https://mock-api-misty-fog-1131.fly.dev/api/locations/${locationId}/activities`) //this is the dynamic route
       .then((response) => {
         console.log('API Response:', response.data); 
         setActivities(response.data); 
@@ -30,7 +32,9 @@ const ActivitiesPage = () => {
         <button>Food</button>
         <button>Activities</button>
         <button>Stay</button>
-        <button className="new-activity-button">Create Activity</button>
+        <Link to={`/add-activity/${locationId}`} className="add-activity-link">
+          Create Activity
+        </Link>
       </div>
 
       {error ? ( // Show error if present
