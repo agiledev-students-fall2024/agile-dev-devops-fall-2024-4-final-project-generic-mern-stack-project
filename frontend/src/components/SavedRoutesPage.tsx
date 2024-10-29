@@ -1,83 +1,62 @@
-import React from "react";
-
-// Mock data for testing
-const mockRouteData = {
-  stores: ["Store Name 1", "Store Name 2", "Store Name 3", "Store Name 4", "Store Name 5"],
-};
+import React, { useState, useEffect } from "react";
 
 const SavedRoutesPage = () => {
-  const { stores } = mockRouteData;
+  const [routes, setRoutes] = useState([]);
+  const [selectedRoute, setSelectedRoute] = useState(null);
+
+  // Fetch saved routes from the API
+  useEffect(() => {
+    fetch("/api/routes")
+      .then((response) => response.json())
+      .then((data) => setRoutes(data))
+      .catch((error) => console.error("Error fetching routes:", error));
+  }, []);
+
+  // Select a route to display on the map and show stores
+  const handleSelectRoute = (route) => {
+    setSelectedRoute(route);
+  };
+
+  // Placeholder function for saving route
+  const handleSaveRoute = () => {
+    console.log("Route saved!");
+    // API call to save the route would go here
+  };
 
   return (
-    <div className="saved-routes-page" style={styles.container}>
-      <header style={styles.header}>
+    <div className="saved-routes-page">
+      <header>
+        <img src="path/to/logo.png" alt="Logo" />
         <h2>Your Shopping Route</h2>
       </header>
-
-      <div style={styles.mapContainer}>
-        <img src="/map-placeholder.png" alt="Map Placeholder" style={styles.mapImage} /> {/* use map-placeholder image to replace the interactive map for now */}
+      <div className="map-container">
+        {selectedRoute ? (
+          <div>
+            <p>[Interactive Map with Labeled Stores and Path for {selectedRoute.name}]</p>
+          </div>
+        ) : (
+          <p>Please select a route to display the map.</p>
+        )}
       </div>
-
-      <ul style={styles.storeList}>
-        {stores.map((store, index) => (
-          <li key={index} style={styles.storeItem}>{index + 1}. {store}</li>
+      <ul className="store-list">
+        {selectedRoute &&
+          selectedRoute.stores.map((store, index) => (
+            <li key={index}>{index + 1}. {store}</li>
+          ))}
+      </ul>
+      <div className="button-container">
+        <button onClick={handleSaveRoute}>Save This Route</button>
+        <button onClick={() => setSelectedRoute(null)}>Back to Start</button>
+      </div>
+      <ul className="route-list">
+        {routes.map((route) => (
+          <li key={route.id} onClick={() => handleSelectRoute(route)}>
+            {route.name}
+          </li>
         ))}
       </ul>
-
-      <div style={styles.buttonContainer}>
-        <button style={styles.saveButton}>Save This Route</button>
-        <button style={styles.backButton}>Back to Start</button>
-      </div>
     </div>
   );
-};
-
-// Inline styles for simplicity; move to a CSS/SCSS file if preferred
-const styles = {
-  container: {
-    textAlign: "center",
-    padding: "20px",
-    maxWidth: "500px",
-    margin: "0 auto",
-    backgroundColor: "#f0f0f0",
-  },
-  header: {
-    marginBottom: "20px",
-  },
-  mapContainer: {
-    border: "1px solid #ccc",
-    padding: "20px",
-    marginBottom: "20px",
-  },
-  mapImage: {
-    width: "100%",
-    height: "auto",
-  },
-  storeList: {
-    listStyle: "none",
-    padding: "0",
-  },
-  storeItem: {
-    padding: "10px",
-    borderBottom: "1px solid #ccc",
-  },
-  buttonContainer: {
-    marginTop: "20px",
-  },
-  saveButton: {
-    padding: "10px 20px",
-    marginRight: "10px",
-    backgroundColor: "#333",
-    color: "#fff",
-    border: "none",
-    cursor: "pointer",
-  },
-  backButton: {
-    padding: "10px 20px",
-    backgroundColor: "#ccc",
-    border: "none",
-    cursor: "pointer",
-  },
 };
 
 export default SavedRoutesPage;
