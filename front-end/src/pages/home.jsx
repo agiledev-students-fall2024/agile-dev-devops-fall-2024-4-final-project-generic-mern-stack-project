@@ -9,18 +9,21 @@ import { Link } from 'react-router-dom';
 
 function Home() {
   const { progressData, overall } = BudgetProgress();
-  const [showAllCategories, setShowAllCategories] = useState(false);
-  const toggleAllCategories = () => setShowAllCategories(!showAllCategories);
-
+  const [showBreakdown, setShowBreakdown] = useState(false);
+  const viewBreakdown = () => setShowBreakdown(!showBreakdown)
   const totalBudget = overall.totalBudget || 0;
   const totalSpent = overall.totalSpent || 0;
+  const remainingBudget = totalBudget - totalSpent;
   const overallSpent = overall.overallSpent || 0;
+  const isOverBudget = totalSpent > totalBudget;
 
   const sortedProgressData = [...progressData].sort((a, b) => b.spent - a.spent);
 
   return (
     <div className="home-container">
       <Header />
+    
+      
 
       <section className="budget-overview">
         <h2>Monthly Spending Progress</h2>
@@ -32,23 +35,15 @@ function Home() {
         </div>
         
         <div className="budget-details">
-          <button className="view-all-btn" onClick={toggleAllCategories}>
-            {showAllCategories ? 'Hide Breakdown' : 'View Breakdown'}
+          <button className="view-breakdown" onClick={viewBreakdown}>
+            {showBreakdown ? 'Hide Breakdown' : 'View Breakdown'}
           </button>
 
-          {showAllCategories && (
-            <div className="all-categories">
-              {sortedProgressData.map(({ category, spent, limit, percentage }) => (
-                <div key={category} className="category-progress">
-                  <p><strong>{category}</strong></p>
-                  <div
-                    className={`progress-bar ${spent > limit ? 'over-limit' : 'under-limit'}`}
-                    style={{ width: `${Math.min(percentage, 100)}%` }}
-                  >
-                    {Math.round(percentage)}%
-                  </div>
-                </div>
-              ))}
+          {showBreakdown && (
+            <div className="budget-breakdown">
+              <p><strong>Total Budget:</strong> ${totalBudget}</p>
+              <p><strong>Spent:</strong> ${totalSpent}</p>
+              <p><strong>Remaining:</strong> ${remainingBudget > 0 ? remainingBudget : 0}</p>
             </div>
           )}
         </div>
@@ -57,7 +52,7 @@ function Home() {
       <Notifications />
 
       <section className="transactions">
-        <Link to="/transactions">
+        <Link to="/transactions" className="transactions-link">
           <h2 style={{ cursor: 'pointer', color: '#487bf1' }}>Transactions</h2>
         </Link>
         <ul className="transaction-list">

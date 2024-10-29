@@ -1,5 +1,6 @@
 .home-container {
     padding: 20px;
+    padding-bottom: 70px;
     font-family: Arial, sans-serif;
 }
 
@@ -74,7 +75,7 @@ h2 {
 }
 
 /* view breakdown */
-.view-all-btn {
+.view-breakdown {
     display: flex;
     justify-content: center;
     margin: 0px auto;
@@ -110,9 +111,15 @@ h2 {
 }
 
 /* transactions */
-.transactions h2 {
-    margin-bottom: 10px;
+.transactions-link {
+    color: inherit; 
+    text-decoration: none;
 }
+
+.transactions-link:hover {
+    color: #345e9a; 
+}
+
 
 .transaction-list {
     list-style: none;
@@ -153,19 +160,11 @@ h2 {
 }
 
 @media screen and (max-width: 768px) {
-    .home-container {
-        padding: 10px;
-    }
-
     .budget-overview,
     .notifications,
     .transactions {
         margin: 10px 0;
         padding: 15px;
-    }
-
-    .header-month {
-        font-size: 1.5rem;
     }
 
     .budget-details p,
@@ -176,10 +175,6 @@ h2 {
 }
 
 @media screen and (max-width: 480px) {
-    .header-month {
-        font-size: 1.3rem;
-    }
-
     .budget-details p,
     .notifications li,
     .transaction-item span {

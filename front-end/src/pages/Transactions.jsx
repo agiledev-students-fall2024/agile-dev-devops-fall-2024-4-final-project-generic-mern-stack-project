@@ -11,7 +11,7 @@ function Transactions() {
       <button className="back-button" onClick={() => navigate('/')}>
         ← Back
       </button>
-      <h2>All Transactions</h2>
+      <h2>October Transactions</h2>
       <ul className="transaction-list">
         <li className="transaction-item header">
           <span>Merchant</span>

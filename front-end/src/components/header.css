@@ -7,18 +7,24 @@
 }
 
 .header-month {
-  font-size: 200px;
+  font-size: 35px;
   font-weight: bold;
-  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 0;
   padding: 0;
 }
 
 .header-budget {
   font-size: 16px;
-  color: #999;
+  color: #8a8585;
   padding: 0;
-  margin-top: -10px;
-  position: relative;
+  margin-top: -200px;
+  margin-bottom: 0;
+  display: inline-block;
+  width: 40%; /* Set the width here */
+  text-align: center;
+  background-color: rgb(235, 235, 237);
+  border-radius: 30px;
 }
 
 .dropdown-menu {
@@ -44,4 +50,16 @@
 
 .dropdown-menu li:hover {
   background-color: #659adf;
+}
+
+@media screen and (max-width: 768px) {
+    .header-month {
+        font-size: 2rem;
+    }
+  }
+
+@media screen and (max-width: 480px) {
+    .header-month {
+        font-size: 2rem;
+    }
 }
