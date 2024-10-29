@@ -25,9 +25,9 @@ const Login = () => {
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
             <input type="password" id="password" className="mt-1 block w-full border border-gray-300 rounded-md p-2" required />
           </div>
-          <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">Login</button>
+          <button type="submit" className="bg-emerald-800 text-white px-4 py-2 rounded-md">Login</button>
         </form>
-        <p className="mt-4">Don't have an account? <Link to="/signup" className="text-blue-500">Sign up</Link></p>
+        <p className="mt-4">Don't have an account? <Link to="/signup" className="text-emerald-800">Sign up</Link></p>
       </div>
     </div>
   );

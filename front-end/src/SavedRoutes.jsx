@@ -11,8 +11,13 @@ const SavedRoutes = () => {
 
   const fetchRoutes = async () => {
     try {
-      const response = await axios.get(BASE_URL);
-      setRoutes(response.data);
+      // const response = await axios.get(BASE_URL);
+      // setRoutes(response.data);
+      axios
+      .get('/Routes.json') 
+      .then(response => {
+        setRoutes(response.data);
+      })
     } catch (error) {
       console.error("Error fetching routes:", error);
     }
