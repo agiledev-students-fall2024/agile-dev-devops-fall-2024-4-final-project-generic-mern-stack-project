@@ -50,7 +50,7 @@ function App() {
             <Route path="/Goals" element={<Goals />} />
             <Route path="/NewGoal" element={<NewGoal />} />
             {/* Rena's part : monthly Calendar */}
-            <Route path="/Monthly_calendar" element={<Calendar_monthly/>} />
+            <Route path="/Calendar_monthly" element={<Calendar_monthly/>} />
             <Route path="/day/:day" element={<DailyView />} /> {/* Daily view route */}
           </Routes>
         </BrowserRouter>
