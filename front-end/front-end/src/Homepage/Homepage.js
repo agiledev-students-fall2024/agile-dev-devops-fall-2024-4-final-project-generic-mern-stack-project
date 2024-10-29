@@ -14,7 +14,7 @@ const Homepage = () => {
 
       <div className="menu">
         <Link to="/Tasks" className="menu-btn">Tasks</Link> 
-        <Link to="/Monthly_calendar" className="menu-btn">Calendars</Link>
+        <Link to="/Calendar_monthly" className="menu-btn">Calendars</Link>
         <Link to="/Goals" className="menu-btn">Goal Setting</Link>
       </div>
     </div>

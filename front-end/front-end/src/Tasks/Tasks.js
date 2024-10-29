@@ -2,34 +2,42 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Tasks.css';
 
-const TASKS_PER_PAGE = 5; // Number of tasks per page
+const TASKS_PER_PAGE = 5;
 
-function Tasks( { tasks, setTasks }) {
-  
+function Tasks({ tasks, setTasks }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [showFilters, setShowFilters] = useState(false);  // State to toggle filter visibility
+  const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({
     priority: '',
     status: '',
     subject: '',
   });
+  const [sortAsc, setSortAsc] = useState(true); // New state for sorting
+
+  // Filtered and sorted tasks
+  const filteredTasks = tasks
+    .filter(task => 
+      (filters.priority === '' || task.priority === filters.priority) &&
+      (filters.status === '' || task.status === filters.status) &&
+      (filters.subject === '' || task.subject === filters.subject)
+    )
+    .sort((a, b) => {
+      if (!sortAsc) return new Date(b.due) - new Date(a.due);
+      return new Date(a.due) - new Date(b.due);
+    });
 
   // Pagination logic
-  const totalPages = Math.ceil(tasks.length / TASKS_PER_PAGE);
+  const totalPages = Math.ceil(filteredTasks.length / TASKS_PER_PAGE);
   const indexOfLastTask = currentPage * TASKS_PER_PAGE;
   const indexOfFirstTask = indexOfLastTask - TASKS_PER_PAGE;
-  const currentTasks = tasks.slice(indexOfFirstTask, indexOfLastTask);
+  const currentTasks = filteredTasks.slice(indexOfFirstTask, indexOfLastTask);
 
   const nextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
   const prevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
   // Toggle task status
@@ -55,10 +63,11 @@ function Tasks( { tasks, setTasks }) {
     return '';
   };
 
-  // Handle filter visibility toggle
-  const toggleFilterVisibility = () => {
-    setShowFilters(!showFilters);
-  };
+  // Toggle filter visibility
+  const toggleFilterVisibility = () => setShowFilters(!showFilters);
+
+  // Toggle sorting order
+  const toggleSortOrder = () => setSortAsc(!sortAsc);
 
   return (
     <div className="main-tasks-container">
@@ -66,7 +75,9 @@ function Tasks( { tasks, setTasks }) {
 
       <div className="filter-sort-container">
         <button className="filter-btn" onClick={toggleFilterVisibility}>Filter</button>
-        <button className="sort-btn">Sort by Due Date</button>
+        <button className="sort-btn" onClick={toggleSortOrder}>
+          Sort by Due Date {sortAsc ? '▲' : '▼'}
+        </button>
       </div>
 
       {/* Filters */}
@@ -127,7 +138,7 @@ function Tasks( { tasks, setTasks }) {
           </button>
         </div>
 
-        <Link to="/CreateTask"> <button className="add-task-btn">Add New Task</button></Link>
+        <Link to="/CreateTask"><button className="add-task-btn">Add New Task</button></Link>
         <Link to="/" className="home-btn">Home</Link>
       </div>
     </div>
