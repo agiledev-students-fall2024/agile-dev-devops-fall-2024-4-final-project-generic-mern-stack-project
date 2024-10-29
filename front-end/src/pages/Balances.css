@@ -1,53 +1,80 @@
+/* Layout and Container Styling */
 .Home {
-    display: flex;
-    justify-content: center; 
-    align-items: flex-start; 
-    height: 100vh;
-  }
-  
-  .container {
-    display: flex;
-    flex-direction: column; 
-    align-items: center; 
-    width: 80%;
-    margin-top: 50px;
-  }
-  
-  .accounts-section, .debt-section {
-    width: 45%; 
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-    margin-bottom: 20px;
-  }
-  
-  h1 {
-    text-align: center;
-  }
-  
-  p {
-    text-align: center;
-  }
-  
-  .edit-button, .delete-button {
-    margin: 10px 5px;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .edit-button {
-    background-color: #ffc107;
-    color: white;
-  }
-  
-  .delete-button {
-    background-color: #dc3545;
-    color: white;
-  }
-  /* Modal Styling */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  margin-top: 50px;
+}
+
+.accounts-section,
+.debt-section {
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  margin-bottom: 20px;
+}
+
+/* Button Container Styling */
+.add-accounts,
+.add-debt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+
+/* Button Styling */
+.edit-button,
+.delete-button {
+  margin: 10px 5px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.edit-button {
+  background-color: #ffc107;
+  color: white;
+}
+
+.delete-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.add-more-button,
+.plaid-button {
+  width: 100%;
+  max-width: 200px;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  border: none;
+}
+
+.add-more-button {
+  background-color: #28a745;
+}
+
+.plaid-button {
+  background-color: #0077cc;
+}
+
+/* Modal Styling */
 .modal {
   position: fixed;
   top: 0;
@@ -65,25 +92,25 @@
   padding: 20px;
   border-radius: 10px;
   width: 400px;
-  max-width: 90%; /* Ensure the modal doesn't overflow the screen */
-  box-sizing: border-box; /* Ensures padding is included in the width */
+  max-width: 90%;
+  box-sizing: border-box;
   text-align: center;
 }
 
 .modal-content input {
   display: block;
-  width: 100%; 
-  max-width: 100%; /* Prevents the input fields from exceeding modal width */
+  width: 100%;
+  max-width: 100%;
   padding: 10px;
   margin-bottom: 15px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  box-sizing: border-box; /* Ensures padding is included in the input width */
+  box-sizing: border-box;
 }
 
 .modal-buttons {
   display: flex;
-  justify-content: space-between; /* Makes the buttons aligned properly */
+  justify-content: space-between;
 }
 
 .modal-buttons button {
