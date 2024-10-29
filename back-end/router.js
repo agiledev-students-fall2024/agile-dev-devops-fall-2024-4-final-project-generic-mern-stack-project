@@ -22,7 +22,6 @@ router.post('/transcribe', uploadMulter.single('audio'), async (req, res) => {
         else{
             return res.status(400).json({ error: 'No file uploaded or URL provided' });
         }
-
         const transcript = await transcribe(audioSRC);
         const actualTranscript = transcript.text;
         return res.send({ actualTranscript });
@@ -30,6 +29,7 @@ router.post('/transcribe', uploadMulter.single('audio'), async (req, res) => {
     } catch (error) {
         console.error("Transcription Error", error);
         res.status(500).json({ error: 'Failed to transcribe' });
+    }})
 
 
 router.post('/summarize', async (req, res) => {
