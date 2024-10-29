@@ -1,0 +1,19 @@
+#root {
+    display: flex;
+    /* Use flexbox to center content */
+    justify-content: center;
+    /* Center horizontally */
+    align-items: center;
+    /* Center vertically */
+    height: 100vh;
+    /* Full viewport height */
+    text-align: center;
+    /* Center text within the div */
+    margin: auto;
+
+    width: 80%;
+
+    padding: 35px;
+
+    box-sizing: border-box;
+}
