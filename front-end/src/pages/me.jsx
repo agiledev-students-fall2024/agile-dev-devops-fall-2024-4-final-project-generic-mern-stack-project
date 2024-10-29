@@ -1,63 +1,73 @@
 // src/pages/me.jsx
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import "./me.css";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import './me.css';
 
-function Me() {
-  const [userData, setUserData] = useState(null);
-  const [errorMessage, setErrorMessage] = useState("");
+const Me = () => {
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
-    const mockarooUrl = "https://my.api.mockaroo.com/tracker.json?key=a3c50f90";
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get('https://my.api.mockaroo.com/tracker.json?key=a3c50f90');
+        setUser(response.data[0]); // Assuming the response is an array with user objects
+      } catch (error) {
+        setError('Unable to load user data');
+        console.error("Error fetching user data from Mockaroo:", error);
+      }
+    };
 
-    axios.get(mockarooUrl)
-      .then((response) => {
-        console.log("API Response:", response.data);
-
-        // Select the first user or a randomly selected user
-        const user = response.data[0];  // Adjust this as needed
-        if (user) {
-          setUserData(user);
-        } else {
-          setErrorMessage("No user data available.");
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching mock data:", error);
-        setErrorMessage("Unable to load user data.");
-      });
+    fetchUserData();
   }, []);
 
-  if (errorMessage) {
-    return <p className="error">{errorMessage}</p>;
+  const handleChangePassword = () => {
+    setMessage("Sorry, can't do that. There's no backend yet.");
+  };
+
+  if (error) {
+    return <div>{error}</div>;
   }
 
-  if (!userData) {
+  if (!user) {
     return <div>Loading...</div>;
   }
-
-  // Mask the password with asterisks
-  const maskedPassword = "*".repeat(userData.password.length);
 
   return (
     <div className="me-container">
       <h2>My Account</h2>
-      
-      {/* Profile Picture */}
-      <div className="profile-picture">
-        <img 
-          src={`https://picsum.photos/seed/${userData.username}/100`} 
-          alt="Profile"
-        />
-      </div>
+      <img
+        className="profile-pic"
+        src={`https://picsum.photos/seed/${user.username}/100`}
+        alt="Profile"
+      />
+      <p><strong>First Name:</strong> {user.first_name}</p>
+      <p><strong>Last Name:</strong> {user.last_name}</p>
+      <p><strong>Username:</strong> {user.username}</p>
+      <p><strong>Email:</strong> {user.email}</p>
+      <p><strong>Password:</strong> ***</p>
 
-      <p><strong>First Name:</strong> {userData.first_name}</p>
-      <p><strong>Last Name:</strong> {userData.last_name}</p>
-      <p><strong>Username:</strong> {userData.username}</p>
-      <p><strong>Email:</strong> {userData.email}</p>
-      <p><strong>Password:</strong> {maskedPassword}</p>
+      {/* Password Change Section */}
+      <div className="password-change-section">
+        <input
+          type="password"
+          className="password-input"
+          placeholder="New Password"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+        />
+        <button
+          className="change-password-btn"
+          onClick={handleChangePassword}
+        >
+          Change Password
+        </button>
+        {message && <p className="info-message">{message}</p>}
+      </div>
     </div>
   );
-}
+};
 
 export default Me;
