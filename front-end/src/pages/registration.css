@@ -4,47 +4,46 @@
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  max-width: 400px; /* Centered form with max-width */
-  margin: 0 auto; /* Center horizontally */
 }
 
-.registration-container h2 {
-  margin-bottom: 20px;
-  color: #333;
+.registration-container form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 300px;
 }
 
 .registration-container input {
-  margin: 10px 0;
-  padding: 12px;
-  width: 100%; /* Full width for each row */
-  max-width: 300px;
-  font-size: 1em;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
+  margin-bottom: 10px;
+  padding: 10px;
+  width: 100%;
 }
 
 .registration-container button {
-  padding: 12px 20px;
-  font-size: 1em;
+  padding: 10px;
+  margin-top: 10px;
   cursor: pointer;
-  border: none;
-  background-color: #576dfd; /* Button color */
-  color: white;
-  border-radius: 5px;
+}
+
+.login-link-container {
   margin-top: 15px;
-  width: 100%; /* Full-width button */
-  max-width: 300px;
-}
-
-.registration-container .error {
-  color: rgba(255, 0, 0, 0.547);
-  margin-top: 5px;
   font-size: 0.9em;
+  text-align: center;
 }
 
-.registration-container .success {
-  color: rgba(38, 241, 38, 0.559);
-  margin-top: 5px;
+.login-link {
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.login-link:hover {
+  color: #0056b3;
+}
+/* src/pages/registration.css */
+.error-message {
+  color: red;
+  margin-top: 10px;
+  text-align: center;
   font-size: 0.9em;
 }
