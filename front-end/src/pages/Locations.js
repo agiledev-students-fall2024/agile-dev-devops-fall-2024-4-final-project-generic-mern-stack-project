@@ -1,3 +1,4 @@
+// Locations.js
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import LocationCard from '../components/location/LocationCard';
@@ -40,9 +41,11 @@ const Locations = () => {
     <div className="locations-page">
       <div className="locations-header">
         <h1>Locations</h1>
-        <Link to={`/add-location/${tripId}`} className="add-location-link">
-          Add Location
-        </Link>
+        {tripStatus !== 'completed' && (
+          <Link to={`/add-location/${tripId}`} className="add-location-link">
+            Add Location
+          </Link>
+        )}
       </div>
       <div className="locations-grid">
         {locations.map((location) => (
@@ -58,6 +61,7 @@ const Locations = () => {
 };
 
 export default Locations;
+
 
 
 //if the Mock API shuts down, use these hardcoded locations instead:
