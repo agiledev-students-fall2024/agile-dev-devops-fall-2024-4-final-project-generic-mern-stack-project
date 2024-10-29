@@ -1,0 +1,36 @@
+/* App.css */
+.hamburger-dropdown {
+    position: absolute;
+    top: 40px;
+    left: 10px;
+    width: 160px;
+    background-color: rgba(112, 130, 145, 0.777); /* Soft blue, semi-transparent */
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 5px 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+  }
+  
+  .hamburger-dropdown nav a,
+  .hamburger-dropdown nav button {
+    color: white;
+    text-decoration: none;
+    padding: 8px 12px;
+    font-size: 0.9em;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+  }
+  
+  .hamburger-dropdown nav a:hover,
+  .hamburger-dropdown nav button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  

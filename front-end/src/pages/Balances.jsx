@@ -22,27 +22,22 @@ const Balances = () => {
   const handleAddOrEditItem = () => {
     if (isEditing) {
       if (isDebtModal) {
-        // Edit existing debt
         const updatedDebts = [...debts]
         updatedDebts[currentItemIndex] = { ...newItem, amount: Number(newItem.amount) }
         setDebts(updatedDebts)
       } else {
-        // Edit existing account
         const updatedAccounts = [...accounts]
         updatedAccounts[currentItemIndex] = { ...newItem, amount: Number(newItem.amount) }
         setAccounts(updatedAccounts)
       }
     } else {
       if (isDebtModal) {
-        // Add new debt
         setDebts([...debts, { ...newItem, amount: Number(newItem.amount) }])
       } else {
-        // Add new account
         setAccounts([...accounts, { ...newItem, amount: Number(newItem.amount) }])
       }
     }
 
-    // Reset modal and close
     setNewItem({ type: '', amount: '', number: '', dueDate: '', paymentSchedule: '' })
     setShowModal(false)
     setIsEditing(false)
@@ -75,6 +70,11 @@ const Balances = () => {
     setShowModal(true)
   }
 
+  // Function to handle the Plaid button click... doesn't work yet
+  const handlePlaidButtonClick = () => {
+    alert("This button doesn't work yet!")
+  }
+
   return (
     <main className="Home">
       {/* Flexbox container for Accounts and Debt sections */}
@@ -85,7 +85,7 @@ const Balances = () => {
           <p>View and edit all bank account information below</p>
           {accounts.length > 0 ? (
             accounts.map((account, index) => (
-              <div key={index} className="account">
+              <div key={index}>
                 <div className="account-type">
                   {account.type} - XXXX{account.number}
                 </div>
@@ -102,6 +102,10 @@ const Balances = () => {
           <div className="add-accounts">
             <button className="add-more-button" onClick={() => { setShowModal(true); setIsDebtModal(false) }}>
               Add More Accounts
+            </button>
+            {/* New Link Account with Plaid Button */}
+            <button className="plaid-button" onClick={handlePlaidButtonClick}>
+              Link Account with Plaid
             </button>
           </div>
         </section>
