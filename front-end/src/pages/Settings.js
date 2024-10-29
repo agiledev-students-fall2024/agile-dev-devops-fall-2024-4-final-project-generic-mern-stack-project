@@ -25,8 +25,6 @@ const Settings = () => {
                     description={"Manage how Seraphim content is displayed to you."}
                 />
             </section>
-
-            <NavigationBar />
         </div>
     )
 }

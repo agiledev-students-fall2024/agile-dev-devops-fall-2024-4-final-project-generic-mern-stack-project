@@ -22,8 +22,6 @@ const Privacy = () => {
                 title={"Muted Words"}
                 description={"When you mute words, you won't see posts with those words in your Home page."}
             />
-
-            <NavigationBar />
         </div>
     )
 }

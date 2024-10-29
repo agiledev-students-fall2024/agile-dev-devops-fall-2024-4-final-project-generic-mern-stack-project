@@ -46,8 +46,6 @@ const Accessibility = (props) => {
                     <input className="w-[80%] mb-5" type="range" default="16" step="2" min="10" max="18" onChange={adjustFontSize}></input>
                 </div>
             </div>
-
-            <NavigationBar />
         </div>
     )
 }
