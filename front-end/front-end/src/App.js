@@ -9,6 +9,7 @@ import Homepage from './Homepage/Homepage';
 import Tasks from './Tasks/Tasks';
 import CreateTask from './Tasks/CreateTask';
 import Calendar_monthly from './Calendar/Calendar_monthly';
+import DailyView from './Calendar/DailyView';
 import Header from './header';
 import Goals from './Goals/Goals';
 import NewGoal from './Goals/NewGoal';
@@ -26,6 +27,7 @@ function App() {
             <Route path="/NewGoal" element={<NewGoal />} />
             {/* Rena's part : monthly Calendar */}
             <Route path="/Monthly_calendar" element={<Calendar_monthly/>} />
+            <Route path="/day/:day" element={<DailyView />} /> {/* Daily view route */}
           </Routes>
         </BrowserRouter>
       </div>
