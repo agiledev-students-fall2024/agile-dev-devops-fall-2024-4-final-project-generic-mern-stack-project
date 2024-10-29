@@ -46,6 +46,7 @@ npm install
 
 ## Building and Testing
 ### Building
+#### Building the Front End
 Change to the `front-end/bite-buddy` directory.
 ```
 cd 4-final-project-bite-buddy/front-end/bite-buddy
@@ -57,6 +58,7 @@ npm run build
 ```
 
 ### Testing
+#### Testing the Front End
 To run the dev version for testing:
 ```
 npm run dev
