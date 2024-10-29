@@ -29,6 +29,7 @@ import '../Home.css';
 const Home = () => {
     const [activitiesData, setActivitiesData] = useState([]);
     const [weeklyData, setWeeklyData] = useState([]);
+    const [recipeData, setRecipeData] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -48,12 +49,25 @@ const Home = () => {
             setWeeklyData([...fetchedData]);
         };
 
+        const fetchRecipeData = async () => {
+            const response = await axios.get('https://my.api.mockaroo.com/basic_recipe.json?key=bd61d090');
+            const fetchedData = response.data || [];
+            console.log(fetchedData);
+
+            setRecipeData([...fetchedData]);
+        };
+
         fetchWeeklyData();
         fetchActivitiesData();
+        fetchRecipeData();
     }, []);
 
     const goToActivityTracker = () => {
         navigate('/activity-tracker');
+    };
+
+    const goToRecipePage = () => {
+        navigate('/recipes');
     };
 
     return (
@@ -70,6 +84,31 @@ const Home = () => {
                     <p><strong>Time Spent Cooking:</strong> {weeklyData[0].time_spent_cooking_1}:{weeklyData[0].time_spent_cooking_2}:{weeklyData[0].time_spent_cooking_3}</p>
                     <button onClick={goToActivityTracker}>See More</button>
                 </div>
+            )}
+            {recipeData.length > 0 && (
+                <>
+                    <div className="recipe-card">
+                        <p className="recipe-type">Suggested Recipe</p>
+                        <h2>{recipeData[0].recipe_name}</h2>
+                        <p>{recipeData[0].recipe_description}</p>
+                        <div className="recipe-image">
+                        <img src="https://picsum.photos/100" alt={recipeData[1].recipe_name} />
+                        </div>
+                        <button className="make-recipe-button" onClick={goToRecipePage}>Make Recipe</button>
+                    </div>
+
+                    {recipeData.length > 1 && (
+                        <div className="recipe-card">
+                            <p className="recipe-type">Friend's Recipe</p>
+                            <h2>{recipeData[1].recipe_name}</h2>
+                            <p>{recipeData[1].recipe_description}</p>
+                            <div className="recipe-image">
+                                <img src="https://picsum.photos/100" alt={recipeData[1].recipe_name} />
+                            </div>
+                            <button className="make-recipe-button" onClick={goToRecipePage}>Make Recipe</button>
+                        </div>
+                    )}
+                </>
             )}
         </div>
     );
