@@ -4,6 +4,7 @@ import Home from './pages/home';
 import Goal from './pages/Goal';
 import Balances from './pages/Balances';
 import { Link } from 'react-router-dom';
+import charts from './pages/charts';
 
 {/*
 import Charts from './pages/charts';
@@ -19,6 +20,7 @@ function App() {
         <Link to="/">Home</Link> | 
         <Link to="/goal">Goals</Link> | 
         <Link to="/balances">Balances</Link> | 
+        <Link to="/charts">charts</Link> |
         {/*
         <Link to="/charts">Charts</Link> | 
         <Link to="/goals">Goals</Link> | 
@@ -32,6 +34,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/goal" element={<Goal />} />
         <Route path="/balances" element={<Balances />} />
+        <Route path="/charts" element={<charts />} />
         
        {/* 
         <Route path="/charts" element={<Charts />} />
