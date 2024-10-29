@@ -5,7 +5,7 @@ import TitleAndDescriptionBox from '../components/TitleAndDescriptionBox'
 
 const Privacy = () => {
     return (
-        <div className="w-[90%] m-[auto] flex flex-col justify-center items-center p-8">
+        <div className="w-[100%] m-[auto] flex flex-col justify-center items-center p-8 md:w-[80%] lg:w-[60%]">
             <h1 className="text-xl text-ebony-700 text-center font-bold mb-5">Privacy</h1>
 
             <TitleAndDescriptionBox

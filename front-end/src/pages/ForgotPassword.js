@@ -26,7 +26,7 @@ export default function ForgotPassword() {
     navigate("/resetpassword");
   };
   return (
-    <div className="w-[90%] lg:w-[60%] m-[auto] flex flex-col justify-center items-center gap-6 p-8">
+    <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-6 p-8 md:w-[60%] lg:w-[40%]">
       <LogoPageTitle logoSrc="seraphim-logo.PNG" title="Forgot Password?" />
       <div className="w-[80%] flex flex-col gap-4">
         <InputField

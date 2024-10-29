@@ -75,7 +75,7 @@ const Community = () => {
 
     return (
         <>
-        <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-6 p-8">
+        <div className="w-[100%] m-[auto] flex flex-col justify-center items-center gap-6 p-8 md:w-[80%] lg:w-[70%]">
             <h1 className="text-xl text-ebony-700 text-center font-bold">Communities</h1>
             <SearchBar searchInput={input} setSearchInput={setInput} handleSearch={handleSearch}/>
             
