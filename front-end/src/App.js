@@ -22,13 +22,14 @@ const App = () => {
       <main className="App-main">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/past-trip/:id" element={<PastTrip />} />
-          <Route path="/activities/:locationId" element={<ActivitiesPage />} />
+          <Route path="/past-trip/:locationId" element={<PastTrip />} /> 
+        < Route path="/activities/:locationId" element={<ActivitiesPage />} /> 
           <Route path="/locations/:tripId" element={<Locations />} />
           <Route path="/add-activity/:locationId" element={<AddActivity />} />
           <Route path="/add-location/:tripId" element={<AddLocation />} />
           <Route path="/profile" element={<ProfilesPage />} />
           <Route path="/create-trip" element={<AddTrip />} />
+          
         </Routes>
       </main>
     </Router>
