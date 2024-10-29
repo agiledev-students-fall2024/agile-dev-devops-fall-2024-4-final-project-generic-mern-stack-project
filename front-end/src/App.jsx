@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
-import {FiMenu} from 'react-icons/fi'; //importing hamburger icon
+import { FiMenu } from 'react-icons/fi'; // Importing hamburger icon
 import Home from './pages/home';
 import Goal from './pages/Goal';
 import LoginPage from './pages/loginPage';
 import Registration from './pages/registration';
 import Me from './pages/me';
+import Balances from './pages/Balances';
 import './App.css';
 
 
+
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(); //change it back
+  const [isLoggedIn, setIsLoggedIn] = useState(true); //change it back
   const [isMenuOpen, setIsMenuOpen]=useState(false);
 
   // Function to handle successful login

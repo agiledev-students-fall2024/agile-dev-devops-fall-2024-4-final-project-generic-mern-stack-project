@@ -17,19 +17,6 @@
     box-sizing: border-box;
   }
   
-  p {
-    font-size: 1em;
-    color: #333;
-    margin: 10px 0;
-    width: 100%;
-    text-align: left;
-    padding: 10px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-sizing: border-box;
-  }
-  
   .password-change-section {
     margin-top: 20px;
     width: 100%;
