@@ -29,10 +29,10 @@ const SubCommunity = (props) => {
                 <CommunityPopup isOpen={isOpen} close={openOrClose}/>
             </div>
 
-            <img className="rounded-full w-[45%] m-[-5px] ring-[6px] ring-rose-700" src={props.image} alt="group logo"/>
+            <img className="rounded-full w-[35%] ring-[6px] ring-rose-700" src={props.image} alt="group logo"/>
 
             <h2 className="text-lg font-bold text-ebony-600">{props.name}</h2>
-            <p className="text-md text-ebony-700 m-[-10px] p-4">{props.description}</p>
+            <p className="text-md text-ebony-700 p-4">{props.description}</p>
         </div>
     )
 }

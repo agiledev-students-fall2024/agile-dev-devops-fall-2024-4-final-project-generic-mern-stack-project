@@ -9,9 +9,8 @@
 }
 
 select {
-    border: 0;
     background: transparent;
     width: 350px;
     height: auto;
-    border: 1px solid #d9d9d9;
+    border: 1px solid #FFAFCC;
 }

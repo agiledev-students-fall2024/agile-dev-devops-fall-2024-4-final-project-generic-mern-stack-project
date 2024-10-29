@@ -35,10 +35,8 @@ const Blocked = (props) => {
     // blocked users page
     if (props.type === "blocked_users") {
         return (
-            <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-6 p-8">
+            <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-8 p-8">
                 <h1 className="text-xl text-ebony-700 text-center font-bold">{props.text}</h1>
-                <SearchBar SearchBarName={"Search blocked accounts"} />
-                <hr></hr>
                 <div>
                     {data.map(item => (
                         <TextAndButton key={item.id} text={item.username} button={"Unblock"} />
@@ -51,37 +49,29 @@ const Blocked = (props) => {
     // blocked communities page
     else if (props.type === "blocked_communities") {
         return (
-            <>
-                <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-6 p-8">
-                    <h1 className="text-xl text-ebony-700 text-center font-bold">{props.text}</h1>
-                    <SearchBar SearchBarName={"Search blocked communities"} />
-                    <hr></hr>
-                    <div className="blocked_list">
-                        {data.map(item => (
-                            <TextAndButton key={item.id} text={item.community} button={"Unblock"} />
-                        ))}
-                    </div>
-                    <NavigationBar />
+            <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-8 p-8">
+                <h1 className="text-xl text-ebony-700 text-center font-bold">{props.text}</h1>
+                <div>
+                    {data.map(item => (
+                        <TextAndButton key={item.id} text={item.community} button={"Unblock"} />
+                    ))}
                 </div>
-            </>
+                <NavigationBar />
+            </div>
         )
     }
     // muted words page
     else if (props.type === "muted_words") {
         return (
-            <>
-                <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-6 p-8">
-                    <h1 className="text-xl text-ebony-700 text-center font-bold">{props.text}</h1>
-                    <SearchBar SearchBarName={"Search muted words"} />
-                    <hr></hr>
-                    <div className="blocked_list">
-                        {data.map(item => (
-                            <TextAndButton key={item.id} text={item.muted_word} button={"Unmute"} />
-                        ))}
-                    </div>
-                    <NavigationBar />
+            <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-8 p-8">
+                <h1 className="text-xl text-ebony-700 text-center font-bold">{props.text}</h1>
+                <div>
+                    {data.map(item => (
+                        <TextAndButton key={item.id} text={item.muted_word} button={"Unmute"} />
+                    ))}
                 </div>
-            </>
+                <NavigationBar />
+            </div>
         )
     }
 }

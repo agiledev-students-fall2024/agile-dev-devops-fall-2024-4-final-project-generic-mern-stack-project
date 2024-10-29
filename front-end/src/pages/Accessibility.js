@@ -21,9 +21,9 @@ const Accessibility = (props) => {
                 description={"Manage your color mode, display, and font settings"}
             />
 
-            <div className="w-[70%] mx-auto gap-2 bg-lavender_blush-900 p-2 rounded-md">
+            <div className="w-[90%] mx-auto gap-4 bg-lavender_blush-900 p-2 rounded-md">
                 <div className="flex flex-row justify-between mx-10 my-5">
-                    <p>Display color mode</p>
+                    <p className="text-md text-ebony font-bold">Display color mode</p>
                     <DropdownMenu
                         name={"color-mode"}
                         label={"Color Mode"}
@@ -31,7 +31,7 @@ const Accessibility = (props) => {
                     />
                 </div>
                 <div className="flex flex-row justify-between mx-10 my-5">
-                    <p>Display Images</p>
+                    <p className="text-md text-ebony font-bold">Display Images</p>
                     <DropdownMenu
                         name={"display-images"}
                         label={"Display Images"}
@@ -39,10 +39,10 @@ const Accessibility = (props) => {
                     />
                 </div>
                 <div className="flex flex-row justify-between mx-10 my-5">
-                    <p>Font Size</p>
+                    <p className="text-md text-ebony font-bold">Font Size</p>
                 </div>
                 <div className="flex flex-col justify-between items-center">
-                    <p className={"mb-5 w-[70%] px-" + size}>Lorem ipsum odor amet, consectetuer adipiscing elit. Metus ex eget tristique fringilla convallis morbi tincidunt.</p>
+                    <p className={"text-ebony font-thin mb-5 w-[70%] px-" + size}>Lorem ipsum odor amet, consectetuer adipiscing elit. Metus ex eget tristique fringilla convallis morbi tincidunt.</p>
                     <input className="w-[80%] mb-5" type="range" default="16" step="2" min="10" max="18" onChange={adjustFontSize}></input>
                 </div>
             </div>
