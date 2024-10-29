@@ -8,8 +8,6 @@ const Privacy = () => {
         <div className="w-[90%] m-[auto] flex flex-col justify-center items-center p-8">
             <h1 className="text-xl text-ebony-700 text-center font-bold mb-5">Privacy</h1>
 
-            <SearchBar className="my-6"/>
-
             <TitleAndDescriptionBox
                 link={"/blocked-users"}
                 title={"Blocked Users"}
