@@ -4,14 +4,7 @@ import { Link } from 'react-router-dom';
 const Home = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
-      {/* Navbar */}
-      <nav className="w-full flex justify-between items-center p-4 bg-white shadow-md">
-        <div className="text-2xl font-bold">Logo</div>
-        <div className="space-x-4">
-          <button className="p-2">Menu</button>
-        </div>
-      </nav>
-
+      
       {/* Logo Section */}
       <section className="flex-1 flex flex-col justify-center items-center">
         <h1 className="text-5xl font-bold mb-4">Logo</h1>
