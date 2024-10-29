@@ -3,7 +3,6 @@ import './header.css';
 
 function Header() {
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [currentMonth] = useState(new Date().toLocaleString('default', { month: 'long' }));  // Dynamically get current month
   const [currentBudget, setCurrentBudget] = useState('Personal Budget');
 
   const budgetOptions = [
@@ -11,7 +10,6 @@ function Header() {
     'Create New Budget'
   ];
 
-  // implement later for changing budget
   const handleBudgetChange = (option) => {
     if (option === 'Create New Budget') {
       console.log("Redirect to new budget creation page");
@@ -23,9 +21,12 @@ function Header() {
 
   return (
     <div className="header-container">
-      <div className="header-title" onClick={() => setDropdownVisible(!dropdownVisible)}>
-        <h1 className="header-month">{currentMonth}</h1>
-        <p className="header-budget">{currentBudget}</p>
+      <h1 className="header-month">{new Date().toLocaleString('default', { month: 'long' })}</h1>
+      
+      <div className="header-title">
+        <p className="header-budget" onClick={() => setDropdownVisible(!dropdownVisible)}>
+          {currentBudget}
+        </p>
       </div>
       
       {dropdownVisible && (
