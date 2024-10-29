@@ -8,12 +8,15 @@ import Registration from './pages/registration';
 import RecurringPayments from './pages/RecurringPayments';
 import Me from './pages/me';
 import Balances from './pages/Balances';
+import Charts from './pages/charts';
+
+
 import Transactions from './pages/Transactions';
 import BottomNav from './components/bottomNav';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); //change it back
+  const [isLoggedIn, setIsLoggedIn] = useState(true); //change it back
   const handleLogin = () => {
     setIsLoggedIn(true);
   };
@@ -25,6 +28,7 @@ function App() {
   return (
     <Router>
       <Routes>
+
         {!isLoggedIn ? (
           <>
             <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
@@ -40,8 +44,13 @@ function App() {
             <Route path="/me" element={<Me />} />
             <Route path="/balances" element={<Balances />} />
             <Route path="*" element={<Navigate to="/" />} />
+
+            <Route path="/charts" element={<Charts />} />
           </Route>
+
+
         )}
+
       </Routes>
       <BottomNav />
     </Router>
