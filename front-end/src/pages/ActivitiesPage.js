@@ -1,32 +1,39 @@
+// ActivitiesPage.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import GroupTripPictureCard from '../components/activities/GroupTripPictureCard';
 import ActivityCard from '../components/activities/ActivityCard';
 import './ActivitiesPage.css';
-import { Link, useParams } from 'react-router-dom'; //this is for the dynamic routing
+import { Link, useParams } from 'react-router-dom';
 
 const ActivitiesPage = () => {
+  const { locationId } = useParams(); // Gets the locationId from the route
   const [activities, setActivities] = useState([]); 
-  const [error, setError] = useState(null); 
-  const { locationId } = useParams(); //this gets the locationId from the route (look at App.js if you are confused)
+  const [locationName, setLocationName] = useState("Activities");
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    
+    // Fetch the location details to get the name
     axios
-      .get(`https://mock-api-misty-fog-1131.fly.dev/api/locations/${locationId}/activities`) //this is the dynamic route
-      .then((response) => {
-        console.log('API Response:', response.data); 
-        setActivities(response.data); 
+      .get(`https://mock-api-misty-fog-1131.fly.dev/api/locations/${locationId}`)
+      .then((locationResponse) => {
+        setLocationName(locationResponse.data.name); // Set the location name
+
+        // Fetch activities associated with this location
+        return axios.get(`https://mock-api-misty-fog-1131.fly.dev/api/locations/${locationId}/activities`);
+      })
+      .then((activitiesResponse) => {
+        setActivities(activitiesResponse.data); // Set activities
       })
       .catch((error) => {
-        console.error('Error fetching activities:', error); // Log error
+        console.error('Error fetching data:', error); // Log error
         setError('Failed to fetch activities'); // Set error message
       });
-  }, []); // Empty dependency array to run only once on mount
+  }, [locationId]); // Dependency array includes locationId for dynamic loading
 
   return (
     <div className="activities-page">
-      <GroupTripPictureCard tripName="New York City Spring Break Trip" tripId={101} />
+      <GroupTripPictureCard tripName={locationName} tripId={locationId} /> {/* Display location name */}
 
       <div className="tabs">
         <button>Food</button>
@@ -37,8 +44,8 @@ const ActivitiesPage = () => {
         </Link>
       </div>
 
-      {error ? ( // Show error if present
-        <p>{error}</p>
+      {error ? (
+        <p>{error}</p> // Show error if present
       ) : (
         <div className="activity-list">
           {activities.map((activity) => (
