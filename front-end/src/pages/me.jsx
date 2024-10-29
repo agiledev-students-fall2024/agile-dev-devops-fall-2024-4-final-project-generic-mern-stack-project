@@ -1,58 +1,73 @@
 // src/pages/me.jsx
 import React, { useState, useEffect } from 'react';
-import mockData from '../mockData';
+import axios from 'axios';
 import './me.css';
 
-const MyAccount = () => {
-  const [userInfo, setUserInfo] = useState(null);
+const Me = () => {
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [passwordChangeMessage, setPasswordChangeMessage] = useState('');
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
-    if (mockData && mockData.length > 0) {
-      const user = mockData[0];
-      setUserInfo({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        username: user.username,
-        email: user.email,
-        password: user.password,
-      });
-    } else {
-      console.error("No user data available in mockData");
-    }
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get('https://my.api.mockaroo.com/tracker.json?key=a3c50f90');
+        setUser(response.data[0]); // Assuming the response is an array with user objects
+      } catch (error) {
+        setError('Unable to load user data');
+        console.error("Error fetching user data from Mockaroo:", error);
+      }
+    };
+
+    fetchUserData();
   }, []);
 
   const handleChangePassword = () => {
-    setPasswordChangeMessage("Sorry, can't do that. No backend logic right now.");
+    setMessage("Sorry, can't do that. There's no backend yet.");
   };
 
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (!user) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    userInfo && (
-      <div className="me-container">
-        <h2>My Account</h2>
-        <p><strong>First Name:</strong> {userInfo.firstName}</p>
-        <p><strong>Last Name:</strong> {userInfo.lastName}</p>
-        <p><strong>Username:</strong> {userInfo.username}</p>
-        <p><strong>Email:</strong> {userInfo.email}</p>
-        <p><strong>Password:</strong> {userInfo.password}</p>
-        
-        <div className="password-change-section">
-          <input
-            type="password"
-            placeholder="New Password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            className="password-input"
-          />
-          <button onClick={handleChangePassword} className="change-password-btn">
-            Change Password
-          </button>
-          {passwordChangeMessage && <p className="info-message">{passwordChangeMessage}</p>}
-        </div>
+    <div className="me-container">
+      <h2>My Account</h2>
+      <img
+        className="profile-pic"
+        src={`https://picsum.photos/seed/${user.username}/100`}
+        alt="Profile"
+      />
+      <p><strong>First Name:</strong> {user.first_name}</p>
+      <p><strong>Last Name:</strong> {user.last_name}</p>
+      <p><strong>Username:</strong> {user.username}</p>
+      <p><strong>Email:</strong> {user.email}</p>
+      <p><strong>Password:</strong> ***</p>
+
+      {/* Password Change Section */}
+      <div className="password-change-section">
+        <input
+          type="password"
+          className="password-input"
+          placeholder="New Password"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+        />
+        <button
+          className="change-password-btn"
+          onClick={handleChangePassword}
+        >
+          Change Password
+        </button>
+        {message && <p className="info-message">{message}</p>}
       </div>
-    )
+    </div>
   );
 };
 
-export default MyAccount;
+export default Me;
