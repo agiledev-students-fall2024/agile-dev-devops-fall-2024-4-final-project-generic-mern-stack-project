@@ -23,7 +23,7 @@ export default function ResetPassword() {
   }
 
   return (
-    <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-6 p-8">
+    <div className="w-[90%] lg:w-[60%] m-[auto] flex flex-col justify-center items-center gap-6 p-8">
       <LogoPageTitle
         logoSrc="./seraphim-logo.PNG"
         title="Set New Password"

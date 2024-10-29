@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
+import axios from "axios"
 
 // Blog post component
 const BlogPost = () => {
@@ -11,6 +12,16 @@ const BlogPost = () => {
 
   // Load the post data
   useEffect(() => {
+    // fetch data
+    axios("https://my.api.mockaroo.com/blogpost.json?key=baec6df0")
+      .then(response => {
+        // setPost(response.data)
+      })
+      .catch(err => {
+        console.log(`No more requests allowed.`)
+        console.error(err)
+      })
+
     // Mock data for the post
     setPost({
       profilePic: "seraphim-logo.png",
@@ -57,7 +68,6 @@ const BlogPost = () => {
       </div>
 
       <div className="w-[95%] m-auto text-lg text-ebony">{post.text}</div>
-
       {post.images && post.images.length === 1 ? (
         <img
           src={post.images[0]}
@@ -108,16 +118,16 @@ const BlogPost = () => {
           />
           <div className="flex flex-row gap-2">
             <button
-                onClick={handleReplySubmit}
-                className="mt-2 bg-rose text-lavender_blush-900 py-1 px-4 rounded-md hover:bg-ebony"
+              onClick={handleReplySubmit}
+              className="mt-2 bg-rose text-lavender_blush-900 py-1 px-4 rounded-md hover:bg-ebony"
             >
-                Post Reply
+              Post Reply
             </button>
             <button
-                onClick={handleReplyCancel}
-                className="mt-2 bg-transparent text-ebony border-[1px] border-ebony py-1 px-4 rounded-md hover:text-rose hover:border-rose"
+              onClick={handleReplyCancel}
+              className="mt-2 bg-transparent text-ebony border-[1px] border-ebony py-1 px-4 rounded-md hover:text-rose hover:border-rose"
             >
-                Cancel
+              Cancel
             </button>
           </div>
           {replies.length > 0 && (
