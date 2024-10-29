@@ -6,6 +6,8 @@ import PastTrip from './pages/PastTrip';
 import './App.css';
 import ActivitiesPage from './pages/ActivitiesPage';
 import Locations from './pages/Locations';
+import AddActivity from './pages/AddActivity';
+import AddLocation from './pages/AddLocation';
 const App = () => {
   const user = { name: "John Doe", profilePicture: "https://via.placeholder.com/100" };
   const isLoggedIn = !!user;
@@ -21,6 +23,8 @@ const App = () => {
           <Route path="/past-trip/:id" element={<PastTrip />} />
           <Route path="/activities/:locationId" element={<ActivitiesPage />} />
           <Route path="/locations/:tripId" element={<Locations />} />
+          <Route path="/add-activity/:locationId" element={<AddActivity />} />
+          <Route path="/add-location/:tripId" element={<AddLocation />} />
         </Routes>
       </main>
     </Router>
