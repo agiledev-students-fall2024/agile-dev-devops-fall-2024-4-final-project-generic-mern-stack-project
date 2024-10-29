@@ -4,7 +4,7 @@ const transactionData = [
     { id: 3, merchant: "Whole Foods", category: 'Groceries', amount: 195, date: 'Oct 21' },
     { id: 4, merchant: "Shell Gas Station", category: 'Fuel', amount: 40, date: 'Oct 21' },
     { id: 5, merchant: "Planet Fitness", category: 'Health', amount: 25, date: 'Oct 19' },
-    { id: 6, merchant: "Starbucks", category: 'Coffee', amount: 5, date: 'Oct 19' },
+    { id: 6, merchant: "Starbucks", category: 'Other', amount: 5, date: 'Oct 19' },
     { id: 7, merchant: "Trader Joe's", category: 'Groceries', amount: 120, date: 'Oct 15' },
     { id: 8, merchant: "Electric Co.", category: 'Utilities', amount: 75, date: 'Oct 15' },
     { id: 9, merchant: "Amazon", category: 'Shopping', amount: 120, date: 'Oct 15' },
