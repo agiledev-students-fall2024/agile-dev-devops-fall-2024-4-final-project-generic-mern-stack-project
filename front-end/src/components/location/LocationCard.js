@@ -1,13 +1,17 @@
+// LocationCard.js
 import React from 'react';
-import './LocationCard.css';
 import { useNavigate } from 'react-router-dom';
+import './LocationCard.css';
 
-const LocationCard = ({ location }) => {
-  const navigate = useNavigate(); //need to initialize this, not sure exactly why
+const LocationCard = ({ location, tripStatus }) => {
+  const navigate = useNavigate();
 
   const handleCardClick = () => {
-    //navigate('/a'); //this is just a placeholder before we build the backend
-    navigate(`/activities/${location.id}`); //now it's dynamically routing, this is good
+    if (tripStatus === 'completed') {
+      navigate(`/past-trip/${location.id}`); // Route to PastTrip if trip is completed
+    } else {
+      navigate(`/activities/${location.id}`); // Route to ActivitiesPage if trip is ongoing
+    }
   };
 
   return (

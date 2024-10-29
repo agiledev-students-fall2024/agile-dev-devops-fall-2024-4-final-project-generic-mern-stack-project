@@ -1,3 +1,4 @@
+// Locations.js
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import LocationCard from '../components/location/LocationCard';
@@ -6,39 +7,53 @@ import axios from 'axios';
 
 const Locations = () => {
   const [locations, setLocations] = useState([]);
-  const [loading, setLoading] = useState(true); // for the if loading statement below
-  const { tripId } = useParams(); //this gets the tripId for the dynamic routing
+  const [tripStatus, setTripStatus] = useState(null); // State to hold the trip status
+  const [loading, setLoading] = useState(true);
+  const { tripId } = useParams();
 
-  const fetchLocations = async () => {
+  const fetchLocationsAndStatus = async () => {
     try {
-      const response = await axios.get(
-        `https://mock-api-misty-fog-1131.fly.dev/api/trips/${tripId}/locations` //edited this too
+      // Fetch locations
+      const locationsResponse = await axios.get(
+        `https://mock-api-misty-fog-1131.fly.dev/api/trips/${tripId}/locations`
       );
-      setLocations(response.data);
+      setLocations(locationsResponse.data);
+
+      // Fetch trip details to get the status
+      const tripResponse = await axios.get(
+        `https://mock-api-misty-fog-1131.fly.dev/api/trips/${tripId}`
+      );
+      setTripStatus(tripResponse.data.status); // Set the trip status (e.g., 'completed' or 'ongoing')
     } catch (error) {
-      console.error('Error fetching locations:', error);
+      console.error('Error fetching locations or trip status:', error);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchLocations();
+    fetchLocationsAndStatus();
   }, []);
 
-  if (loading) return <p>Loading locations...</p>; //this is the loading from fetchLocations, i didn't add any styling to this
+  if (loading) return <p>Loading locations...</p>;
 
   return (
     <div className="locations-page">
       <div className="locations-header">
         <h1>Locations</h1>
-        <Link to={`/add-location/${tripId}`} className="add-location-link">
-          Add Location
-        </Link>
+        {tripStatus !== 'completed' && (
+          <Link to={`/add-location/${tripId}`} className="add-location-link">
+            Add Location
+          </Link>
+        )}
       </div>
       <div className="locations-grid">
         {locations.map((location) => (
-          <LocationCard key={location.id} location={location} />
+          <LocationCard
+            key={location.id}
+            location={location}
+            tripStatus={tripStatus} // Pass trip status to each LocationCard
+          />
         ))}
       </div>
     </div>
@@ -46,6 +61,8 @@ const Locations = () => {
 };
 
 export default Locations;
+
+
 
 //if the Mock API shuts down, use these hardcoded locations instead:
   // const fetchLocations = async () => {

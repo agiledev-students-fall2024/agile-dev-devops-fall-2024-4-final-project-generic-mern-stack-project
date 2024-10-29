@@ -1,44 +1,44 @@
+// PastTrip.js
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import GroupTripPictureCard from '../components/activities/GroupTripPictureCard';
 import PastActivityCard from '../components/activities/PastActivityCard';
 import './PastTrip.css';
 
 const PastTrip = () => {
+  const { locationId } = useParams(); // Retrieve locationId from URL
   const [activities, setActivities] = useState([]);
-  const [tripName, setTripName] = useState("Past Trip Details");
+  const [locationName, setLocationName] = useState("Past Trip Details");
   const [error, setError] = useState(null);
-  const tripId = "trip_456"; 
 
   useEffect(() => {
-   
-    axios
-      .get(`https://mock-api-misty-fog-1131.fly.dev/api/trips/${tripId}`)
-      .then((tripResponse) => {
-        const locationId = tripResponse.data.locations[0]; 
-        setTripName(tripResponse.data.name); 
+    // Fetch location details and activities using locationId
+    const fetchLocationData = async () => {
+      try {
+        // Fetch location name and other details
+        const locationResponse = await axios.get(
+          `https://mock-api-misty-fog-1131.fly.dev/api/locations/${locationId}`
+        );
+        setLocationName(locationResponse.data.name); // Set the location name
 
-        
-        return axios.get(`https://mock-api-misty-fog-1131.fly.dev/api/locations/${locationId}`);
-      })
-      .then((locationResponse) => {
-        setTripName(locationResponse.data.name); 
+        // Fetch activities associated with this location
+        const activitiesResponse = await axios.get(
+          `https://mock-api-misty-fog-1131.fly.dev/api/locations/${locationId}/activities`
+        );
+        setActivities(activitiesResponse.data); // Set activities data
+      } catch (error) {
+        console.error('Error fetching location data:', error);
+        setError('Failed to load past trip data');
+      }
+    };
 
-        
-        return axios.get(`https://mock-api-misty-fog-1131.fly.dev/api/locations/${locationResponse.data.id}/activities`);
-      })
-      .then((activitiesResponse) => {
-        setActivities(activitiesResponse.data); 
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-        setError('Failed to fetch data');
-      });
-  }, []);
+    fetchLocationData();
+  }, [locationId]); // Run effect whenever locationId changes
 
   return (
     <div className="past-activities-page">
-      <GroupTripPictureCard tripName={tripName} tripId={101} /> 
+      <GroupTripPictureCard tripName={locationName} tripId={locationId} />
 
       <div className="past-tabs">
         <button>Food</button>
@@ -47,13 +47,12 @@ const PastTrip = () => {
       </div>
 
       {error ? (
-        <p>{error}</p>
+        <p>{error}</p> // Display error message if data fetch fails
       ) : (
         <div className="past-activity-list">
           {activities.map((activity) => (
             <PastActivityCard
               key={activity.id}
-              id={activity.id}
               title={activity.name}
               description={activity.description}
               price={activity.price ? `$${activity.price}` : 'Free'}
