@@ -1,50 +1,59 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Home from './pages/home';
 import Goal from './pages/Goal';
+import LoginPage from './pages/loginPage';
+import Registration from './pages/registration';
+import RecurringPayments from './pages/RecurringPayments';
+import Me from './pages/me';
 import Balances from './pages/Balances';
-import { Link } from 'react-router-dom';
-import charts from './pages/charts';
 
-{/*
-import Charts from './pages/charts';
-import Goals from './pages/goals';
-import MyAccount from './pages/myaccount';
-import WhatIfCalculator from './pages/whatifcalculator';
-*/}
+
+import Transactions from './pages/Transactions';
+import BottomNav from './components/bottomNav';
+import SideNavBar from './components/sideNavBar';
 
 function App() {
-  return (
-    <Router>
-      <nav>
-        <Link to="/">Home</Link> | 
-        <Link to="/goal">Goals</Link> | 
-        <Link to="/balances">Balances</Link> | 
-        <Link to="/charts">charts</Link> |
-        {/*
-        <Link to="/charts">Charts</Link> | 
-        <Link to="/goals">Goals</Link> | 
-        <Link to="/balances">Balances</Link> | 
-        <Link to="/myaccount">My Account</Link> | 
-        <Link to="/whatifcalculator">What-If Calculator</Link>
-        */}
-      </nav>
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const location = useLocation();
 
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  };
+
+  return (
+    <>
+      {location.pathname !== '/transactions' && (
+        <SideNavBar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
+      )}
+      
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/goal" element={<Goal />} />
-        <Route path="/balances" element={<Balances />} />
-        <Route path="/charts" element={<charts />} />
-        
-       {/* 
-        <Route path="/charts" element={<Charts />} />
-        <Route path="/goals" element={<Goals />} />
-        <Route path="/balances" element={<Balances />} />
-        <Route path="/myaccount" element={<MyAccount />} />
-        <Route path="/whatifcalculator" element={<WhatIfCalculator />} />
-        */}
+
+        {!isLoggedIn ? (
+          <>
+            <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
+            <Route path="/register" element={<Registration />} />
+            <Route path="*" element={<Navigate to="/login" />} />
+          </>
+        ) : (
+          <>
+            <Route path="/" element={<Home />} />
+            <Route path="/goal" element={<Goal />} />
+            <Route path="/transactions" element={<Transactions />} />
+            <Route path="/recurringPayments" element={<RecurringPayments />} />
+            <Route path="/me" element={<Me />} />
+            <Route path="/balances" element={<Balances />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </>
+        )}
+
       </Routes>
-    </Router>
+      <BottomNav />
+    </>
   );
 }
 

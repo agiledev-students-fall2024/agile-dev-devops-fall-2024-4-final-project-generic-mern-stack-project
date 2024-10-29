@@ -1,13 +1,14 @@
-h2{
-    font-size: 1.2em;
-}
-
-
 .home-container {
     padding: 20px;
+    padding-bottom: 70px;
     font-family: Arial, sans-serif;
 }
 
+h2 {
+    font-size: 1.2em;
+}
+
+/* sections */
 .budget-overview,
 .notifications,
 .transactions {
@@ -18,22 +19,84 @@ h2{
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+/* total budget */
 .progress-bar-container {
-    background-color: #e0e0e0;
     border-radius: 10px;
     overflow: hidden;
     height: 30px;
     margin-bottom: 15px;
+    border: 1px solid #d3d3d3; 
 }
 
 .progress-bar {
-    background-color: #487bf1;
     height: 100%;
     line-height: 30px;
     color: white;
     text-align: center;
+    font-weight: bold;
+    min-width: 0;
+    background-color: #487bf1;
 }
 
+.under-limit {
+    background-color: #4caf50; 
+}
+
+.over-limit {
+    background-color: #f44336;
+}
+
+
+/* category progress bars */
+.budget-details {
+    margin-top: 0px;
+}
+
+.category-progress {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 8px; 
+}
+
+.category-progress p {
+    margin: 0 0 4px; 
+    font-size: 0.9em; 
+    font-weight: bold;
+}
+
+.category-progress .progress-bar {
+    height: 15px;
+    line-height: 15px;
+    border-radius: 5px;
+    font-size: 0.8em; 
+    border: 1px solid #d3d3d3; 
+    width: 100%;
+    
+}
+
+/* view breakdown */
+.view-breakdown {
+    display: flex;
+    justify-content: center;
+    margin: 0px auto;
+    color: #487bf1;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    background-color: transparent;
+    padding: 0;
+}
+
+.view-all-btn:hover {
+    background-color: rgb(186, 184, 184);
+}
+
+.all-categories {
+    margin-top: 15px;
+}
+
+/* Notifications */
 .notifications ul {
     list-style-type: none;
     padding: 0;
@@ -47,9 +110,16 @@ h2{
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.transactions h2 {
-    margin-bottom: 10px;
+/* transactions */
+.transactions-link {
+    color: inherit; 
+    text-decoration: none;
 }
+
+.transactions-link:hover {
+    color: #345e9a; 
+}
+
 
 .transaction-list {
     list-style: none;
@@ -63,19 +133,22 @@ h2{
     border-bottom: 1px solid #e0e0e0;
 }
 
+.transaction-item.header {
+    font-weight: bold;
+    background-color: #f2f2f2;
+    border-top: 1px solid #e0e0e0;
+}
+
+/* columns */
 .transaction-item span {
     flex: 1;
+    text-align: left;
 }
 
-.transaction-item span:nth-child(2) {
+.transaction-item span:nth-child(3),
+.transaction-item span:nth-child(4) {
     text-align: right;
     font-weight: bold;
-    flex: 0.5;
-}
-
-.transaction-item span:nth-child(3) {
-    text-align: right;
-    flex: 0.5;
 }
 
 .transaction-item:last-child {
@@ -87,10 +160,6 @@ h2{
 }
 
 @media screen and (max-width: 768px) {
-    .home-container {
-        padding: 10px;
-    }
-
     .budget-overview,
     .notifications,
     .transactions {
@@ -98,14 +167,7 @@ h2{
         padding: 15px;
     }
 
-    .header-month {
-        font-size: 1.5rem;
-    }
-
-    .budget-details p {
-        font-size: 16px;
-    }
-
+    .budget-details p,
     .notifications li,
     .transaction-item span {
         font-size: 16px;
@@ -113,10 +175,6 @@ h2{
 }
 
 @media screen and (max-width: 480px) {
-    .header-month {
-        font-size: 1.3rem;
-    }
-
     .budget-details p,
     .notifications li,
     .transaction-item span {
