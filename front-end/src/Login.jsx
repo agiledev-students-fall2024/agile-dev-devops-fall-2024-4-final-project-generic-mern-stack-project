@@ -30,7 +30,7 @@ const Login = () => {
       // Simulate OTP validation
       await new Promise((resolve) => setTimeout(resolve, 500));
       // Accept any OTP as valid and log in the user
-      login({ email });
+      await login({ email });
       setMessage('Login successful!');
       // Redirect to feed page
       navigate('/feed');

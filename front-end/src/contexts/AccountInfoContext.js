@@ -1,4 +1,5 @@
 import React, { createContext, useState } from "react";
+import { User, fetchUser } from "../api/User";
 
 const fakeRestaurants = [
   {
@@ -116,17 +117,9 @@ const fakeRestaurants = [
 export const AccountInfoContext = createContext();
 
 export const AccountInfoProvider = ({ children }) => {
-  const [accountInfo, setAccountInfo] = useState({
-    username: "JohnDoe",
-    email: "john.doe@example.com",
-    likedRestaurants: [],
-    filters: [], // <-- Manage filters here
-    search: "",
-  });
-
-  const [allrestaurants, setAllRestaurants] = useState(fakeRestaurants);
-  const [filteredRestaurants, setFilteredRestaurants] =
-    useState(fakeRestaurants);
+  const [accountInfo, setAccountInfo] = useState(User("123","amosbloomberg@gmail.com", []));
+  const [allrestaurants, setAllRestaurants] = useState([]);
+  const [filteredRestaurants, setFilteredRestaurants] = useState([]);
 
   const addLikedRestaurant = (restaurant) => {
     setAccountInfo((prev) => ({
@@ -159,6 +152,7 @@ export const AccountInfoProvider = ({ children }) => {
         allrestaurants,
         filteredRestaurants,
         setFilteredRestaurants,
+        setAccountInfo,
       }}
     >
       {children}
