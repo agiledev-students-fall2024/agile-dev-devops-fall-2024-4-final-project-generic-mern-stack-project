@@ -13,7 +13,7 @@ const Challenges = () => {
 
     useEffect(() => {
         const fetchChallengesData = async () => {
-            const response = await axios.get('https://my.api.mockaroo.com/challenges?key=d6450400');
+            const response = await axios.get('https://my.api.mockaroo.com/challenges?key=594b4990');
             const fetchedData = response.data || [];
             console.log(fetchedData)
 

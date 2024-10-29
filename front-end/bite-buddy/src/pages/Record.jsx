@@ -22,7 +22,7 @@ function Record() {
   useEffect(() => {
     const fetchAllRecipes = async () => {
       try {
-        const response = await axios.get('https://my.api.mockaroo.com/recipe_steps?key=d6450400');
+        const response = await axios.get('https://my.api.mockaroo.com/recipe_steps?key=594b4990');
         const fetchedData = response.data || [];
         console.log('Fetched all data:', fetchedData);
         setAllRecipes([...fetchedData]);
