@@ -6,7 +6,6 @@ import Goal from './pages/Goal';
 import LoginPage from './pages/loginPage';
 import Registration from './pages/registration';
 import Me from './pages/me';
-import Balances from './pages/Balances';
 import './App.css';
 
 
