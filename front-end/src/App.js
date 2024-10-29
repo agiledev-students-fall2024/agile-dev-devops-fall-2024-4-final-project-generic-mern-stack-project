@@ -8,6 +8,7 @@ import ActivitiesPage from './pages/ActivitiesPage';
 import Locations from './pages/Locations';
 import AddActivity from './pages/AddActivity';
 import AddLocation from './pages/AddLocation';
+import ProfilesPage from './pages/ProfilesPage';
 const App = () => {
   const user = { name: "John Doe", profilePicture: "https://via.placeholder.com/100" };
   const isLoggedIn = !!user;
@@ -25,6 +26,8 @@ const App = () => {
           <Route path="/locations/:tripId" element={<Locations />} />
           <Route path="/add-activity/:locationId" element={<AddActivity />} />
           <Route path="/add-location/:tripId" element={<AddLocation />} />
+          <Route path="/profile" element={<ProfilesPage />} />
+          
         </Routes>
       </main>
     </Router>
