@@ -1,5 +1,4 @@
 import React from 'react'
-import SearchBar from '../components/SearchBar'
 import NavigationBar from '../components/NavigationBar'
 import TitleAndDescriptionBox from '../components/TitleAndDescriptionBox'
 

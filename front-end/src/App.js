@@ -1,31 +1,11 @@
-import logo from "./logo.svg";
 import "./App.css";
-import TitleAndDescription from "./components/TitleAndDescription";
-import TextAndButton from "./components/TextAndButton";
-import UploadImage from "./components/UploadImage";
-import DropdownMenu from "./components/DropdownMenu";
-import TitleAndDescriptionBox from "./components/TitleAndDescriptionBox";
 import ConditionalNavBar from "./components/ConditionalNavBar";
-import SubCommunity from "./components/SubCommunity";
-import CommunityPopup from "./components/CommunityPopup";
-import InputField from "./components/InputField";
-import SubmitButton from "./components/SubmitButton";
-import LogoPageTitle from "./components/LogoPageTitle";
-import SearchBar from "./components/SearchBar";
-import PostBlogTextField from "./components/PostBlogTextField"; // C17
-import ChangeAccountInfoBox from "./components/ChangeAccountInfoBox"; // C19
-import ChangeProflieTextBox from "./components/ChangeProfileTextBox"; //C20
-import BackButton from "./components/BackButton"; //C14
-import ReplyButton from "./components/ReplyButton"; // Need to create this for replies page 
 import Home from "./pages/Home";
 import Replies from "./pages/Replies";
 import Community from "./pages/Community";
 import SubCommunityPage from "./pages/SubCommunityPage";
 import Blog from "./pages/Blog";
 import Profile from "./pages/Profile";
-import BlogPost from "./components/BlogPost";
-import About from "./components/About";
-import ProfileHeader from "./components/ProfileHeader";
 import Settings from "./pages/Settings"
 import AccountSettings from "./pages/AccountSettings"
 import Privacy from "./pages/Privacy"

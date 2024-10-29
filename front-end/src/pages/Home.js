@@ -4,7 +4,7 @@ import BlogPost from '../components/BlogPost';
 import DropdownMenu from '../components/DropdownMenu';
 import NavigationBar from '../components/NavigationBar';
 import SearchBar from '../components/SearchBar';
-//import './Home.css';
+
 
 const Home = () => {
     const [searchInput, setSearchInput] = useState("");

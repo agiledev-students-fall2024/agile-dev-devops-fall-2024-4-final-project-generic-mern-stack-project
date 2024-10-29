@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-//import "./SearchBar.css";
+import React from "react";
+
 import { BsSearchHeart } from "react-icons/bs";
 
 const SearchBar = ({ searchInput, setSearchInput, handleSearch }) => {

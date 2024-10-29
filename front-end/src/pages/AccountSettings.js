@@ -27,10 +27,18 @@ const AccountSettings = (props) => {
             .catch(err => {
                 console.log(`No more requests allowed.`)
                 console.error(err)
+                const mock_data = {
+                    "id": 1,
+                    "username": "jparkins0",
+                    "name": "Jeniffer Parkins",
+                    "email": "jparkins0@cornell.edu",
+                    "password": "yP6.dvW&"
+                }
+                setData(mock_data)
             })
     }, [])
 
-    // if user did not click the link to the popup: render normally
+    // if user clicked the link to the popup: render popup
     if (popup) {
         return (
             <div className="w-[90%] flex flex-col justify-center items-center gap-8 p-8 m-[auto]">
@@ -59,7 +67,7 @@ const AccountSettings = (props) => {
             </div>
         )
     }
-    // open popup window for deactivation information
+    // if user did not click popup: render normally
     else {
         return (
             <div className="w-[90%] flex flex-col justify-center items-center gap-8 p-8 m-[auto]">
