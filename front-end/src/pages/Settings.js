@@ -5,7 +5,7 @@ import './Settings.css'
 
 const Settings = () => {
     return (
-        <div className="w-[90%] flex flex-col justify-center items-center gap-6 p-8 m-[auto]">
+        <div className="w-[90%] flex flex-col justify-center items-center gap-6 p-8 m-[auto] lg:w-[70%]">
             <h1 className="text-xl text-ebony-700 text-center font-bold">Settings</h1>
 
             <section className="flex flex-col justify-center w-[100%] gap-0">

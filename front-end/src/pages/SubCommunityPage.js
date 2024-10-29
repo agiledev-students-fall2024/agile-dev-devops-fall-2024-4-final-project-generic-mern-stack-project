@@ -38,7 +38,7 @@ const SubCommunityPage = (props) => {
     const image = `https://picsum.photos/200?id=${props.communityId}`
 
     return (
-        <div className="w-[95%] m-[auto] flex flex-col justify-center items-center gap-6 p-8">
+        <div className="w-[95%] m-[auto] flex flex-col justify-center items-center gap-6 p-8 md:w-[80%] lg:w-[70%]">
             <SubCommunity 
                 image={image}
                 name={data.name}
