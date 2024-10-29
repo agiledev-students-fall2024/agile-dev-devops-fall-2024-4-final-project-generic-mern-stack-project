@@ -7,7 +7,8 @@ const Profile = () => {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({ username: 'unique_username', routes: [] });
   const API_KEY = process.env.REACT_APP_MOCKAROO_API_KEY;
-  const ROUTES_URL = `https://my.api.mockaroo.com/Saved_Routes.JSON?key=${API_KEY}`;
+  // const ROUTES_URL = `https://my.api.mockaroo.com/Saved_Routes.JSON?key=${API_KEY}`;
+  const ROUTES_URL = './Routes.json'
 
   useEffect(() => {
     const fetchRoutes = async () => {
