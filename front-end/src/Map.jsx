@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
-import { SearchBox } from '@mapbox/search-js-react';
 import mapboxgl from 'mapbox-gl';
+import { SearchBox } from '@mapbox/search-js-react';
+import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions';
+import '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 function Map() {
@@ -19,7 +21,18 @@ function Map() {
       zoom: 13.5, // starting zoom
     });
 
+    // add navigation control
     mapInstanceRef.current.addControl(new mapboxgl.NavigationControl());
+
+    // add mapbox directions
+    mapInstanceRef.current.addControl(
+      new MapboxDirections({
+        accessToken: mapboxgl.accessToken,
+        unit: 'metric',
+        profile: 'mapbox/cycling',
+      }),
+      'top-left',
+    );
 
     mapInstanceRef.current.on('load', () => {
       setMapLoaded(true);
