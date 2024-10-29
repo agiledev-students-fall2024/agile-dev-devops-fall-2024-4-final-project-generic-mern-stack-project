@@ -27,7 +27,7 @@ const router = createBrowserRouter(
         <Route index path="/" element={<Home />} />
         <Route index path="/suggest" element={<SuggestPage />} />
         <Route path="/help" element={<HelpPage />} />
-        <Route path="/saved-routes" element={<SavedRoutesPage />}
+        <Route path="/saved-routes" element={<SavedRoutesPage />}/>
       </Route>
     </>,
   ),
