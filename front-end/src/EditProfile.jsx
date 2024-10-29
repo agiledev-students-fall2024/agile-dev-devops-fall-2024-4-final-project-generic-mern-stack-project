@@ -2,18 +2,49 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function EditProfile() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     username: '',
     biography: '',
     gender: ''
   });
-  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Form submitted:', formData);
-    navigate('/profile');
+  const [errors, setErrors] = useState({
+    name: '',
+    username: '',
+    biography: '',
+    gender: ''
+  });
+
+  const validateField = (name, value) => {
+    switch (name) {
+      case 'name':
+        if (!value.trim()) return 'Name is required';
+        if (value.length < 2) return 'Name must be at least 2 characters';
+        if (value.length > 50) return 'Name must be less than 50 characters';
+        return '';
+
+      case 'username':
+        if (!value.trim()) return 'Username is required';
+        if (value.length < 3) return 'Username must be at least 3 characters';
+        if (value.length > 20) return 'Username must be less than 20 characters';
+        if (!/^[a-zA-Z0-9_]+$/.test(value)) return 'Username can only contain letters, numbers, and underscores';
+        return '';
+
+      case 'biography':
+        if (value.length > 200) return 'Biography must be less than 200 characters';
+        return '';
+
+      case 'gender':
+        if (value && !['male', 'female', 'other', 'prefer not to say'].includes(value.toLowerCase())) {
+          return 'Please select a valid gender option';
+        }
+        return '';
+
+      default:
+        return '';
+    }
   };
 
   const handleChange = (e) => {
@@ -22,6 +53,37 @@ function EditProfile() {
       ...prev,
       [name]: value
     }));
+    
+    // Validate on change
+    const error = validateField(name, value);
+    setErrors(prev => ({
+      ...prev,
+      [name]: error
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    // Validate all fields
+    const newErrors = {};
+    let hasErrors = false;
+    
+    Object.keys(formData).forEach(key => {
+      const error = validateField(key, formData[key]);
+      if (error) {
+        newErrors[key] = error;
+        hasErrors = true;
+      }
+    });
+
+    if (hasErrors) {
+      setErrors(newErrors);
+      return;
+    }
+
+    console.log('Form submitted:', formData);
+    navigate('/profile');
   };
 
   return (
@@ -43,19 +105,28 @@ function EditProfile() {
                   {key}:
                 </label>
                 <input
-                  type="text"
+                  type={key === 'gender' ? 'select' : 'text'}
                   name={key}
                   value={value}
                   onChange={handleChange}
-                  placeholder={`Update ${key}`}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none"
+                  placeholder={`Enter your ${key}`}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none
+                    ${errors[key] ? 'border-red-500' : 'border-gray-200'}`}
                 />
+                {errors[key] && (
+                  <p className="text-red-500 text-sm mt-1">{errors[key]}</p>
+                )}
+                {key === 'biography' && (
+                  <p className="text-sm text-gray-500 mt-1">
+                    {200 - (value?.length || 0)} characters remaining
+                  </p>
+                )}
               </div>
             ))}
 
             <button 
               type="submit"
-              className="w-full py-3 bg-emerald-800 text-white rounded-lg font-medium hover:bg-grey-600 transition-colors"
+              className="w-full py-3 bg-emerald-800 text-white rounded-lg font-medium hover:bg-emerald-700 transition-colors"
             >
               Save Changes
             </button>
