@@ -8,19 +8,11 @@ import Registration from './pages/registration';
 import Me from './pages/me';
 import './App.css';
 import Balances from './pages/Balances';
-
-<<<<<<< HEAD
-=======
-{/*
-import Charts from './pages/charts';
-import Goals from './pages/goals';
-import MyAccount from './pages/myaccount';
-import WhatIfCalculator from './pages/whatifcalculator';
-*/}
->>>>>>> 7ddf7c17cf0eeb76c797155c7f54370f7666a284
+import Transactions from './pages/Transactions';
+import BottomNav from './components/bottomNav';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(); //change it back
+  const [isLoggedIn, setIsLoggedIn] = useState(true); //change it back
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Function to handle successful login
@@ -66,12 +58,14 @@ function App() {
           <>
             <Route path="/" element={<Home />} />
             <Route path="/goal" element={<Goal />} />
+            <Route path="/transactions" element={<Transactions />} />
             <Route path="/me" element={<Me />} />
             <Route path="/balances" element={<Balances />} />
             <Route path="*" element={<Navigate to="/" />} />
           </>
         )}
       </Routes>
+      <BottomNav />
     </Router>
   );
 }
