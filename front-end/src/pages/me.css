@@ -16,18 +16,9 @@
   box-sizing: border-box;
 }
 
-.profile-picture {
-  width: 100px;
-  height: 100px;
+.profile-pic {
   border-radius: 50%;
-  overflow: hidden;
   margin-bottom: 20px;
-}
-
-.profile-picture img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 p {
@@ -41,4 +32,46 @@ p {
   border: 1px solid #ddd;
   border-radius: 5px;
   box-sizing: border-box;
+}
+
+.password-change-section {
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.password-input {
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.change-password-btn {
+  padding: 10px 20px;
+  width: auto;
+  border: none;
+  border-radius: 5px;
+  background-color: #3f7af9;
+  color: white;
+  cursor: pointer;
+  font-size: 1em;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.change-password-btn:hover {
+  background-color: #72c7ff;
+}
+
+.info-message {
+  color: rgb(234, 98, 98);
+  margin-top: 10px;
+  font-size: 0.9em;
+  text-align: center;
+  width: 100%;
 }
