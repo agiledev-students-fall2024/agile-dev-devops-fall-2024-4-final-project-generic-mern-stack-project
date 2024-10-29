@@ -23,3 +23,41 @@ Daily standups will occur 3 days a week: once before lecture on Tuesday, once be
 - Team members will make granular and small commits - one for each feature or bug fix - with descriptive messages.
 - Code should be well-documented and self-documenting.
 - Codebase should not include dead or commented-out code.
+
+## Git Workflow
+Each team member should clone the public GitHub repository for Bite Buddy. They will branch from their local copy and make changes to that branch, then push changes to their remote branch and open a pull request to merge into the main branch. Another team member will review the changes and merge them if they are satisfactory.
+
+## Contributing Rules
+Contributors should open a pull request for changes to be merged from their remote branch to the main branch of the GitHub repository. These changes should contain only working code, and must be well documented and readable.
+
+## Local Development Eenvironment
+### Setting Up the Front-End Environment
+Requires Node.js
+
+Change to the `front-end/bite-buddy` directory.
+```
+cd 4-final-project-bite-buddy/front-end/bite-buddy
+```
+
+Install packages
+```
+npm install
+```
+
+## Building and Testing
+### Building
+Change to the `front-end/bite-buddy` directory.
+```
+cd 4-final-project-bite-buddy/front-end/bite-buddy
+```
+
+Build with NPM.
+```
+npm run build
+```
+
+### Testing
+To run the dev version for testing:
+```
+npm run dev
+```
