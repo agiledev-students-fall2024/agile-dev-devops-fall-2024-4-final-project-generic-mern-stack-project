@@ -1,5 +1,6 @@
+// App.jsx
 import React, { useState } from 'react';
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/home';
 import Goal from './pages/Goal';
 import LoginPage from './pages/loginPage';
@@ -9,11 +10,10 @@ import Me from './pages/me';
 import Balances from './pages/Balances';
 import Transactions from './pages/Transactions';
 import BottomNav from './components/bottomNav';
-import SideNavBar from './components/sideNavBar';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const location = useLocation();
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -24,11 +24,7 @@ function App() {
   };
 
   return (
-    <>
-      {location.pathname !== '/transactions' && (
-        <SideNavBar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
-      )}
-      
+    <Router>
       <Routes>
         {!isLoggedIn ? (
           <>
@@ -37,7 +33,7 @@ function App() {
             <Route path="*" element={<Navigate to="/login" />} />
           </>
         ) : (
-          <>
+          <Route element={<ProtectedRoute isLoggedIn={isLoggedIn} handleLogout={handleLogout} />}>
             <Route path="/" element={<Home />} />
             <Route path="/goal" element={<Goal />} />
             <Route path="/transactions" element={<Transactions />} />
@@ -45,11 +41,11 @@ function App() {
             <Route path="/me" element={<Me />} />
             <Route path="/balances" element={<Balances />} />
             <Route path="*" element={<Navigate to="/" />} />
-          </>
+          </Route>
         )}
       </Routes>
       <BottomNav />
-    </>
+    </Router>
   );
 }
 
