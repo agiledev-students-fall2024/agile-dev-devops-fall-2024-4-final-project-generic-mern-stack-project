@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-//import "./InputField.css";
+import React from "react";
+
 function InputField({
   imgSrc = "",
   inputfieldName,

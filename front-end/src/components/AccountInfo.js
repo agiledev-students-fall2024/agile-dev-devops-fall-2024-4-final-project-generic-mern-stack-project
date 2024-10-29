@@ -1,5 +1,4 @@
 import React from "react"
-//import './AccountInfo.css'
 
 const AccountInfo = (props) => {
     return (

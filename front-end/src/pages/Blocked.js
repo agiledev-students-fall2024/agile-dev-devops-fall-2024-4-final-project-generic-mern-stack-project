@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
-import SearchBar from '../components/SearchBar'
 import NavigationBar from '../components/NavigationBar'
 import TextAndButton from '../components/TextAndButton'
 
