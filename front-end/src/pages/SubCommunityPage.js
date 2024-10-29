@@ -2,7 +2,6 @@ import axios from 'axios'
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import SubCommunity from '../components/SubCommunity'
-//import './SubCommunityPage.css'
 
 const SubCommunityPage = (props) => {
     //stores the fake data into data 

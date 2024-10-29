@@ -1,4 +1,3 @@
-//import './CommunityPopup.css'
 import { TbXboxXFilled } from "react-icons/tb";
 
 const CommunityPopup =  ({isOpen, close}) => {

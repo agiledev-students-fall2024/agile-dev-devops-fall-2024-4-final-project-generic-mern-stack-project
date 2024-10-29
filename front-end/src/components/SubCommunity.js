@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import CommunityPopup from './CommunityPopup'
-//import './SubCommunity.css'
 import { FaPlusCircle } from "react-icons/fa";
 import BackButton from './BackButton';
 import { useNavigate } from 'react-router-dom';

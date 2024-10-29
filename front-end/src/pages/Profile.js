@@ -1,4 +1,4 @@
-import { useState } from 'react'
+
 import BlogPost from "../components/BlogPost"
 
 const Profile = (props) => {
