@@ -1,0 +1,109 @@
+.new-goal-container {
+background-color: white;
+padding: 20px;
+border-radius: 10px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+width: 400px;
+margin: 50px auto;
+text-align: center;
+}
+
+.page-title {
+font-size: 32px;
+color: black;
+margin-bottom: 20px;
+}
+
+.form-group {
+margin-bottom: 15px;
+text-align: left;
+}
+
+.form-group label {
+display: block;
+font-size: 16px;
+margin-bottom: 5px;
+color: #333;
+}
+
+.form-group input, 
+.form-group select {
+width: 100%;
+padding: 10px;
+border: 1px solid #ccc;
+border-radius: 5px;
+box-sizing: border-box;
+font-size: 16px;
+}
+
+.tasks-section {
+text-align: left;
+margin-top: 15px;
+}
+
+.task-input-group {
+margin-bottom: 10px;
+}
+
+.new-goal-buttons {
+display: flex;
+justify-content: space-between;
+margin-top: 20px;
+}
+
+.cancel-btn {
+flex: 1;
+padding: 10px 20px;
+background-color: #007BFF;
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+transition: background-color 0.3s ease;
+margin-right: 10px;
+}
+
+.create-btn {
+flex: 1;
+padding: 10px 20px;
+background-color: #007BFF;
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+transition: background-color 0.3s ease;
+}
+
+.cancel-btn:hover,
+.create-btn:hover {
+background-color: purple;
+}
+.task-select-btn {
+background-color: #6200ea;
+color: #ffffff;
+border: none;
+padding: 8px 16px;
+cursor: pointer;
+margin-top: 10px;
+border-radius: 5px;
+}
+
+.task-list-dropdown {
+border: 1px solid #ddd;
+background-color: #f9f9f9;
+padding: 10px;
+margin-top: 8px;
+max-height: 200px;
+overflow-y: auto;
+border-radius: 5px;
+}
+
+.task-item {
+display: flex;
+align-items: center;
+margin-bottom: 5px;
+}
+
+.task-item input[type="checkbox"] {
+margin-right: 8px;
+}
