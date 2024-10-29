@@ -8,7 +8,6 @@ import Registration from './pages/registration';
 import Me from './pages/me';
 import './App.css';
 import Balances from './pages/Balances';
-import { Link } from 'react-router-dom';
 
 {/*
 import Charts from './pages/charts';
@@ -18,8 +17,8 @@ import WhatIfCalculator from './pages/whatifcalculator';
 */}
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true); //change it back
-  const [isMenuOpen, setIsMenuOpen]=useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(); //change it back
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Function to handle successful login
   const handleLogin = () => {
@@ -32,7 +31,7 @@ function App() {
     setIsMenuOpen(false); //close menu on logout
   };
 
-  const toggleMenu=()=>{
+  const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
@@ -65,6 +64,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/goal" element={<Goal />} />
             <Route path="/me" element={<Me />} />
+            <Route path="/balances" element={<Balances />} />
             <Route path="*" element={<Navigate to="/" />} />
           </>
         )}
