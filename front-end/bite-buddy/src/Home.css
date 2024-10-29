@@ -1,0 +1,122 @@
+.home-container {
+    padding: 20px;
+    background-color: black;
+}
+
+.activity-card {
+    background-color: black;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    overflow: visible;
+}
+
+.activity-card h2, .activity-card h3 {
+    margin: 0 0 10px;
+}
+
+.activity-card p {
+    margin: 0 0 10px;
+}
+
+.activity-image {
+    margin: 10px 0;
+}
+
+.activity-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.start-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.start-button.different-color {
+    background-color: #28a745;
+}
+
+.close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.activity-image-popup img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+/* CSS for Recipe Cards */
+.recipe-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    max-width: 600px;
+    position: relative;
+}
+
+.recipe-type {
+    font-size: 6px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.recipe-card h2 {
+    font-size: 18px;
+    color: #666;
+    margin: 0 0 5px;
+}
+
+.recipe-card p {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 15px;
+}
+
+.recipe-image {
+    width: 100px;
+    height: 100px;
+    background-color: #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.make-recipe-button {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    align-self: flex-end;
+    margin-top: auto;
+}
