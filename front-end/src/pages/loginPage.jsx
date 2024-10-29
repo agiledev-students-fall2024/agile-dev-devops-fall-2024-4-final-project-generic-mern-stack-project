@@ -1,70 +1,54 @@
+// src/pages/loginPage.jsx
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
-import { FiMenu } from 'react-icons/fi'; // Importing hamburger icon
-import Home from './pages/home';
-import Goal from './pages/Goal';
-import LoginPage from './pages/loginPage';
-import Registration from './pages/registration';
-import Me from './pages/me';
-import './App.css';
-import Balances from './pages/Balances';
+import { Link } from 'react-router-dom';
+import './loginPage.css';
 
-function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true); //change it back
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+const LoginPage = ({ onLogin }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  // Function to handle successful login
+  // Function to handle login validation
   const handleLogin = () => {
-    setIsLoggedIn(true);
-    setIsMenuOpen(false); // Close menu on login
-  };
+    if (!username || !password) {
+      setError('Username and password are required.');
+      return;
+    }
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setIsMenuOpen(false); // Close menu on logout
-  };
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    // Hardcoded username and password for demo purposes
+    if (username === 'username' && password === 'password') {
+      onLogin();
+    } else {
+      setError('Invalid username or password.');
+    }
   };
 
   return (
-    <Router>
-      {isLoggedIn && (
-        <div style={{ position: 'absolute', top: 10, left: 10 }}>
-          <FiMenu size={30} onClick={toggleMenu} style={{ cursor: 'pointer', color: 'black' }} />
-        </div>
-      )}
+    <div className="login-container">
+      <h2>Login</h2>
+      <input
+        type="text"
+        placeholder="Username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      {error && <p className="error">{error}</p>}
+      <button onClick={handleLogin}>Login</button>
 
-      {isLoggedIn && isMenuOpen && (
-        <div className="hamburger-dropdown">
-          <nav>
-            {/* Change "Me" to "My Account" in the Link */}
-            <Link to="/me" onClick={toggleMenu}>My Account</Link>
-            <button onClick={handleLogout}>Logout</button>
-          </nav>
-        </div>
-      )}
-
-      <Routes>
-        {!isLoggedIn ? (
-          <>
-            <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
-            <Route path="/register" element={<Registration />} />
-            <Route path="*" element={<Navigate to="/login" />} />
-          </>
-        ) : (
-          <>
-            <Route path="/" element={<Home />} />
-            <Route path="/goal" element={<Goal />} />
-            <Route path="/me" element={<Me />} /> {/* Path remains /me */}
-            <Route path="/balances" element={<Balances />} />
-            <Route path="*" element={<Navigate to="/" />} />
-          </>
-        )}
-      </Routes>
-    </Router>
+      {/* Registration link */}
+      <div className="register-container">
+        <Link to="/register" className="register-link">
+          Not registered? Create an account
+        </Link>
+      </div>
+    </div>
   );
-}
+};
 
-export default App;
+export default LoginPage;
