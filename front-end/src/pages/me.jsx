@@ -1,58 +1,58 @@
 // src/pages/me.jsx
-import React, { useState, useEffect } from 'react';
-import mockData from '../mockData';
-import './me.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./me.css";
 
-const MyAccount = () => {
-  const [userInfo, setUserInfo] = useState(null);
-  const [newPassword, setNewPassword] = useState('');
-  const [passwordChangeMessage, setPasswordChangeMessage] = useState('');
+function Me() {
+  const [userData, setUserData] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    if (mockData && mockData.length > 0) {
-      const user = mockData[0];
-      setUserInfo({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        username: user.username,
-        email: user.email,
-        password: user.password,
+    const mockarooUrl = "https://my.api.mockaroo.com/tracker.json?key=a3c50f90";
+
+    axios.get(mockarooUrl)
+      .then((response) => {
+        console.log("API Response:", response.data);
+
+        // Option 1: Get the first user in the response
+        const user = response.data[0];
+        
+        // Option 2: Randomly select a user
+        // const user = response.data[Math.floor(Math.random() * response.data.length)];
+
+        if (user) {
+          setUserData(user);
+        } else {
+          setErrorMessage("No user data available.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching mock data:", error);
+        setErrorMessage("Unable to load user data.");
       });
-    } else {
-      console.error("No user data available in mockData");
-    }
   }, []);
 
-  const handleChangePassword = () => {
-    setPasswordChangeMessage("Sorry, can't do that. No backend logic right now.");
-  };
+  if (errorMessage) {
+    return <p className="error">{errorMessage}</p>;
+  }
+
+  if (!userData) {
+    return <div>Loading...</div>;
+  }
+
+  // Mask the password with asterisks
+  const maskedPassword = "*".repeat(userData.password.length);
 
   return (
-    userInfo && (
-      <div className="me-container">
-        <h2>My Account</h2>
-        <p><strong>First Name:</strong> {userInfo.firstName}</p>
-        <p><strong>Last Name:</strong> {userInfo.lastName}</p>
-        <p><strong>Username:</strong> {userInfo.username}</p>
-        <p><strong>Email:</strong> {userInfo.email}</p>
-        <p><strong>Password:</strong> {userInfo.password}</p>
-        
-        <div className="password-change-section">
-          <input
-            type="password"
-            placeholder="New Password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            className="password-input"
-          />
-          <button onClick={handleChangePassword} className="change-password-btn">
-            Change Password
-          </button>
-          {passwordChangeMessage && <p className="info-message">{passwordChangeMessage}</p>}
-        </div>
-      </div>
-    )
+    <div className="me-container">
+      <h2>My Account</h2>
+      <p><strong>First Name:</strong> {userData.first_name}</p>
+      <p><strong>Last Name:</strong> {userData.last_name}</p>
+      <p><strong>Username:</strong> {userData.username}</p>
+      <p><strong>Email:</strong> {userData.email}</p>
+      <p><strong>Password:</strong> {maskedPassword}</p>
+    </div>
   );
-};
+}
 
-export default MyAccount;
+export default Me;
