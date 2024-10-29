@@ -7,8 +7,15 @@ import LoginPage from './pages/loginPage';
 import Registration from './pages/registration';
 import Me from './pages/me';
 import './App.css';
+import Balances from './pages/Balances';
+import { Link } from 'react-router-dom';
 
-
+{/*
+import Charts from './pages/charts';
+import Goals from './pages/goals';
+import MyAccount from './pages/myaccount';
+import WhatIfCalculator from './pages/whatifcalculator';
+*/}
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(true); //change it back

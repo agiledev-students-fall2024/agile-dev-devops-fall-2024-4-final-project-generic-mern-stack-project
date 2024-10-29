@@ -1,60 +1,65 @@
-import { useState } from 'react';
-import ReactDOM from 'react-dom/client';
-import './Goal.css'
+import { useState, useEffect } from 'react';
+import './Goal.css';
 
-function GoalForm() {
-  const [inputs, setInputs] = useState({});
+function GoalForm({ initialData, onSubmit }) {
+  const [inputs, setInputs] = useState({
+    username: '',
+    spending: '',
+    spendingDetails: ''
+  });
+
+  useEffect(() => {
+    if (initialData) {
+      setInputs(initialData); // Initialize with existing goal data if editing
+    }
+  }, [initialData]);
 
   const handleChange = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setInputs(values => ({ ...values, [name]: value }));
-  }
+    const { name, value } = event.target;
+    setInputs((values) => ({ ...values, [name]: value }));
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    alert(inputs);
-  }
+    onSubmit(inputs); // Submit goal to parent component
+    setInputs({ username: '', spending: '', spendingDetails: '' }); // Clear form
+  };
 
   return (
     <form onSubmit={handleSubmit}>
       <label>
         Name Your Goal: 
-        <input 
-          type="text" 
-          name="username" 
-          value={inputs.username || ""} 
+        <input
+          type="text"
+          name="username"
+          value={inputs.username || ""}
           onChange={handleChange}
         />
       </label>
       <label>
         Spending:
-        <select 
-          name="spending" 
-          value={inputs.spending || ""} 
+        <select
+          name="spending"
+          value={inputs.spending || ""}
           onChange={handleChange}
         >
-          <option value="" disabled> spending frequency</option>
+          <option value="" disabled>spending frequency</option>
           <option value="daily">Daily</option>
           <option value="monthly">Monthly</option>
           <option value="yearly">Yearly</option>
         </select>
       </label>
       <label>
-       
-        <input 
-          type="text" 
-          name="spendingDetails" 
-          value={inputs.spendingDetails || ""} 
+        <input
+          type="text"
+          name="spendingDetails"
+          value={inputs.spendingDetails || ""}
           onChange={handleChange}
         />
       </label>
-      <input  className="button" type="submit" />
+      <input className="button" type="submit" />
     </form>
   );
 }
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<GoalForm />);
 
 export default GoalForm;

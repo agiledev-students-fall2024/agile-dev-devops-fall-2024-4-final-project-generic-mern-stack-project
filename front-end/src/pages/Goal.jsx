@@ -1,17 +1,56 @@
-// import { Link } from 'react-router-dom'
 import GoalForm from './GoalForm';
 import React, { useState } from 'react';
-import './Goal.css'
-const Goal = props => {
-    const [showForm, setShowForm] = useState(false);
+import './Goal.css';
+import { FacebookShareButton, EmailShareButton, LinkedinShareButton } from 'react-share';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFacebook, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import { faEnvelope, faCommentDots } from '@fortawesome/free-solid-svg-icons';
+
+const Goal = () => {
+    const [goals, setGoals] = useState([]); // List of created goals
+    const [showShareOptions, setShowShareOptions] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [currentGoalIndex, setCurrentGoalIndex] = useState(null); // Track which goal is being edited
+
     const handleClick = () => {
-        // implementation details
+        setShowShareOptions(!showShareOptions);
     };
-    const handleClick1 = () => {
-        <link rel="calculator" href="https://maniruzzamanakash.github.io/react-calculator" />
+
+    const handleiMessageShare = () => {
+        if (navigator.share) {
+            navigator.share({
+                title: "Check out my goal on Goal Tracker!",
+                text: "I'm tracking my goals. Join me in reaching our dreams!",
+                url: `${window.location.origin}/goal`
+            }).catch((error) => console.log("Error sharing", error));
+        } else {
+            alert("Sharing is not supported on this browser.");
+        }
     };
-    const handleClick2 = () => {
-        // implementation details
+
+    // Add a new goal or edit an existing one
+    const handleAddOrEditGoal = (goal) => {
+        if (isEditing && currentGoalIndex !== null) {
+            const updatedGoals = [...goals];
+            updatedGoals[currentGoalIndex] = goal; // Update the current goal
+            setGoals(updatedGoals);
+            setIsEditing(false);
+            setCurrentGoalIndex(null);
+        } else {
+            setGoals([...goals, goal]); // Add a new goal
+        }
+    };
+
+    // Trigger edit mode
+    const handleEditGoal = (index) => {
+        setIsEditing(true);
+        setCurrentGoalIndex(index);
+    };
+
+    // Delete a goal
+    const handleDeleteGoal = (index) => {
+        const updatedGoals = goals.filter((_, i) => i !== index);
+        setGoals(updatedGoals);
     };
 
     return (
@@ -19,34 +58,72 @@ const Goal = props => {
             <h1>Goals</h1>
             <div className="grid-container">
                 <div className="grid-item1">
-            <div>
-                <button type="button" className="button" onClick={handleClick}>
-                    Share a Goal
-                </button>
+                    <div>
+                        <button type="button" className="button" onClick={handleClick}>
+                            Share a Goal
+                        </button>
+                    </div>
+
+                    {showShareOptions && (
+                        <div style={{ marginTop: '10px', display: 'flex', gap: '10px' }}>
+                            <FacebookShareButton url={`${window.location.origin}/goal`}>
+                                <FontAwesomeIcon icon={faFacebook} size="2x" />
+                            </FacebookShareButton>
+                            <EmailShareButton url={`${window.location.origin}/goal`}>
+                                <FontAwesomeIcon icon={faEnvelope} size="2x" />
+                            </EmailShareButton>
+                            <LinkedinShareButton url={`${window.location.origin}/goal`}>
+                                <FontAwesomeIcon icon={faLinkedin} size="2x" />
+                            </LinkedinShareButton>
+                            <button className="button" onClick={handleiMessageShare}>
+                                <FontAwesomeIcon icon={faCommentDots} size="2x" />
+                            </button>
+                        </div>
+                    )}
+                </div>
+
+                <div className="grid-item2">
+                    <div>
+                        <a href="https://maniruzzamanakash.github.io/react-calculator/" target="_blank" rel="noopener noreferrer">
+                            <button type="button" className="button">
+                                What-If Calculator
+                            </button>
+                        </a>
+                    </div>
+                </div>
+
+                <div className="grid-item3">
+                    <h2>{isEditing ? "Edit Goal" : "Create New Goal"}</h2>
+                    <GoalForm
+                        initialData={isEditing && goals[currentGoalIndex] ? goals[currentGoalIndex] : null}
+                        onSubmit={handleAddOrEditGoal}
+                    />
+                </div>
+
+                {/* Goals List */}
+                <div className="goals-list">
+                    <h2>Your Goals</h2>
+                    {goals.length > 0 ? (
+                        goals.map((goal, index) => (
+                            <div key={index} className="goal-item">
+                                <h3>{goal.username}</h3>
+                                <p>Spending: {goal.spending}</p>
+                                <p>Details: {goal.spendingDetails}</p>
+                                <button className="edit-button" onClick={() => handleEditGoal(index)}>
+                                    Edit
+                                </button>
+                                <button className="delete-button" onClick={() => handleDeleteGoal(index)}>
+                                    Delete
+                                </button>
+                            </div>
+                        ))
+                    ) : (
+                        <p>No goals added yet.</p>
+                    )}
+                </div>
             </div>
-            </div>
-            <div className="grid-item2">
-            <div>
-            <a href=" https://maniruzzamanakash.github.io/react-calculator/" target="_blank">
-            <button type="button" className="button" onClick={handleClick1}>
-                    What-If Calculator
-                </button>
-      </a>
-      </div>
-      </div>
-     
-      <div className="grid-item3">
-        <h2>Create New Goal</h2>
-            <GoalForm />
-            </div>
-            </div>
-           
-           
         </main>
+    );
+};
 
-    )
-}
-
-
-
-export default Goal
+export default Goal;
