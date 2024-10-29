@@ -24,9 +24,10 @@
     color: #ff4081;
   }
   
-  .new-activity-button {
+  .add-activity-link {
     margin-left: auto;
     font-weight: bold;
+    text-decoration: none;
     color: #e91e63;
     cursor: pointer;
   }

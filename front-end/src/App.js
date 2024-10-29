@@ -6,10 +6,14 @@ import PastTrip from './pages/PastTrip';
 import './App.css';
 import ActivitiesPage from './pages/ActivitiesPage';
 import Locations from './pages/Locations';
+import AddActivity from './pages/AddActivity';
+import AddLocation from './pages/AddLocation';
 const App = () => {
   const user = { name: "John Doe", profilePicture: "https://via.placeholder.com/100" };
   const isLoggedIn = !!user;
 
+  //i added dynamic routes to locations and activities (a)
+  // changed /a to /activities
   return (
     <Router>
       <Header user={user} isLoggedIn={isLoggedIn} />
@@ -17,8 +21,10 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/past-trip/:id" element={<PastTrip />} />
-          <Route path="/a" element={<ActivitiesPage />} />
-          <Route path="/locations" element={<Locations />} />
+          <Route path="/activities/:locationId" element={<ActivitiesPage />} />
+          <Route path="/locations/:tripId" element={<Locations />} />
+          <Route path="/add-activity/:locationId" element={<AddActivity />} />
+          <Route path="/add-location/:tripId" element={<AddLocation />} />
         </Routes>
       </main>
     </Router>

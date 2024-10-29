@@ -1,0 +1,52 @@
+.add-activity-form {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .add-activity-form h2 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .add-activity-form label {
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+    font-size: 16px;
+  }
+  
+  .add-activity-form input,
+  .add-activity-form textarea {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 5px;
+    font-size: 16px;
+  }
+  
+  .add-activity-form textarea {
+    resize: none;
+    height: 80px;
+  }
+  
+  .add-activity-form button {
+    padding: 12px;
+    background-color: #e91e63;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+  
+  .add-activity-form button:hover {
+    background-color: #ff4081;
+  }
+  
