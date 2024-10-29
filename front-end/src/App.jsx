@@ -1,4 +1,3 @@
-// App.jsx
 import React, { useState } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Home from './pages/home';
@@ -7,7 +6,6 @@ import LoginPage from './pages/loginPage';
 import Registration from './pages/registration';
 import RecurringPayments from './pages/RecurringPayments';
 import Me from './pages/me';
-import './App.css';
 import Balances from './pages/Balances';
 import Transactions from './pages/Transactions';
 import BottomNav from './components/bottomNav';
