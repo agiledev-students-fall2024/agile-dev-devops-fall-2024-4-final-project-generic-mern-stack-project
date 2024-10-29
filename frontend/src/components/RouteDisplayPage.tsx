@@ -1,16 +1,24 @@
 import { Button } from "./ui/button";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import StoreSearchBar from "./StoresSearchBar";
 import MyStoresButton from "./MyStoresButton";
 import sampleStores from "@/stores";
 import SoHoMap from "./SoHoMap";
+import RouteDisplayModal from "./RouteDisplayModal";
 
 export default function RouteDisplayPage() {
   const navigate = useNavigate();
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const handleSaveList = (name: string, description: string) => {
+    console.log("saved route:", { name, description, stores: sampleStores });
+    alert("route will be saved to database when database is connected");
+  };
 
   const routeDisplay = sampleStores.map((route, index) => (
     <div
-      key={route.id}
+      key={route._id}
       className="flex justify-center items-center text-center border-2 border-gray-300 bg-gray-100 hover:bg-gray-200 rounded-md p-2 mb-1"
     >
       <span className="text-sm font-medium">{index + 1}. {route.name}</span>
@@ -20,7 +28,10 @@ export default function RouteDisplayPage() {
   const SaveButton = (
     <Button
       className="bg-green-500 text-white py-2 px-4 rounded-lg font-medium hover:bg-green-600"
-      onClick={() => console.log("To the save list modal")}
+      onClick={() => {
+        setModalOpen(true);
+        console.log("Save Button Clicked; modal open");
+      }}
     >
       Save This List
     </Button>
@@ -47,6 +58,12 @@ export default function RouteDisplayPage() {
         {SaveButton}
         {BackButton}
       </div>
+
+      <RouteDisplayModal
+        isOpen={isModalOpen}
+        onClose={() => setModalOpen(false)}
+        onSave={handleSaveList}
+      />
     </div>
   );
 }
