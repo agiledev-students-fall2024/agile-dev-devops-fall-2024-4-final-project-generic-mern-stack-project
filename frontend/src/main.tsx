@@ -24,3 +24,7 @@ createRoot(document.getElementById("root")!).render(
     <RouterProvider router={router} />
   </StrictMode>,
 );
+
+import SavedRoutesPage from "./components/SavedRoutesPage";
+
+<Route path="/saved-routes" element={<SavedRoutesPage />} />
