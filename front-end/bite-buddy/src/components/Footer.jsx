@@ -121,6 +121,9 @@ function Hamburger({ activeTab }) {
                             <Link to="/challenges" onClick={() => { setIsOpen(false); }}><div className="navigation-icon"><CiMedal />Challenges</div></Link>
                         </li>
                         <li>
+                            <Link to="/progress-tracker" onClick={() => { setIsOpen(false); }}><div className="navigation-icon"><CiMedal />Progress</div></Link>
+                        </li>
+                        <li>
                             <Link to="/record" onClick={() => { setIsOpen(false); }}><div className="navigation-icon"><BsRecord2 /> Record Activity</div></Link>
                         </li>
                         <li>
