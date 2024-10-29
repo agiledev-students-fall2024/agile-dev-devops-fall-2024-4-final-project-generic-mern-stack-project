@@ -5,6 +5,11 @@ module.exports = {
   ],
   theme: {},
   theme: {
+    screens: {
+      'sm': '640px',
+      'md': '768px',
+      'lg': '1024px',
+    },
     fontFamily: {
       custom: ['sera', 'sans-serif'],
     },

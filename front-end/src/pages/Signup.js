@@ -30,7 +30,7 @@ export default function Signup() {
     setPassword(e.target.value);
   }
   return (
-    <div className="w-[90%] flex flex-col justify-center items-center gap-4 p-8 m-[auto]">
+    <div className="w-[90%] flex flex-col justify-center items-center gap-4 p-8 mx-auto md:w-[60%] lg:w-[40%]">
       <LogoPageTitle logoSrc="seraphim-logo.PNG" title="Create an account" />
       <div className=" w-[80%] flex flex-col justify-center items-center gap-4">
         <InputField inputfieldName="Name" handleChange={handleNameChange} />

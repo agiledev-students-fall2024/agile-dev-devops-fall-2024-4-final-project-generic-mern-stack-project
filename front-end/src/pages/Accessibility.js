@@ -15,7 +15,7 @@ const Accessibility = (props) => {
     }
 
     return (
-        <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-6 p-8">
+        <div className="w-[100%] m-[auto] flex flex-col justify-center items-center gap-6 p-8 md:w-[80%] lg:w-[60%]">
             <TitleAndDescription
                 title={props.text}
                 description={"Manage your color mode, display, and font settings"}
