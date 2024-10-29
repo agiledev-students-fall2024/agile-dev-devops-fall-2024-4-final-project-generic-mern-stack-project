@@ -7,7 +7,7 @@
     align-items: center;
 }
 
-.back-button-image {
-    width: 24px; /* Adjust the size as needed */
-    height: 24px;
+.arrow-button{
+    width: 30px;
+    height: 30px;
 }
