@@ -50,7 +50,8 @@ Team members will commit to the following norms and values of the team:
 ## Setting Up the Local Development Environment
 
 1. Clone the repository from `GitHub` to the local desktop. 
-2. Install all tools, dependencies, and other necessary files (e.g. `git`).
+2. Install all tools, dependencies, and other necessary files (e.g. `git`) with `npm install`. 
+3. Run `npm start` to launch both front end and back end.
 
 ## Building and Testing the Project
 

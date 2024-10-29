@@ -2,6 +2,8 @@ import { useState } from 'react'
 import CommunityPopup from './CommunityPopup'
 //import './SubCommunity.css'
 import { FaPlusCircle } from "react-icons/fa";
+import BackButton from './BackButton';
+import { useNavigate } from 'react-router-dom';
 
 const SubCommunity = (props) => {
     const [isOpen, setStatus] = useState(false)
@@ -10,8 +12,15 @@ const SubCommunity = (props) => {
         setStatus(!isOpen)
     }
 
+    const back = useNavigate()
+
+    const handleBackButton = () => {
+        back(-1)
+    }
+
     return (
-        <div className="w-[100%] flex flex-col justify-center items-center p-6 bg-lavender_blush-900 rounded-lg shadow-md shadow-ebony-900 gap-6">
+        <div className="w-[100%] flex flex-col justify-center items-center p-6 bg-lavender_blush-900 rounded-lg shadow-md shadow-ebony-900 relative">
+            <BackButton backButtonHandler={handleBackButton}/>
             <div className="flex justify-end w-[100%] mb-6">
                 <button className="bg-ebony-700 px-4 py-2 rounded-lg font-light text-rose-700 hover:text-ebony-700 hover:bg-rose-700 flex flex-row items-center gap-2" onClick={openOrClose}>Join <FaPlusCircle /></button>
             </div>

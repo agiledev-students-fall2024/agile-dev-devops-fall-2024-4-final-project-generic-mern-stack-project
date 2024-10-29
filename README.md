@@ -16,7 +16,19 @@ Seraphim is a creative social platform designed to foster authentic self-express
 
 ## Usage
 
-Instructions for building and testing go here.
+### How to set up the project:
+1. Clone the [project repository](https://github.com/agiledev-students-fall2024/4-final-project-seraphim) from `GitHub` to your local desktop. You may use Visual Studio Code or your preferred code editor. 
+
+### How to run the front-end of the project:
+1. In terminal, locate the project directory. 
+2. Move to the front-end directory of the project. 
+3. Run `npm install` to install all the dependencies listed in `package.json`. 
+4. In addition to the listed dependencies, run `npm install react-router-dom` and `npm install react-icons` separately to include code and elements needed in this project. 
+5. Run `npm start` to run the app in development mode. It will launch [http://localhost:3000/](http://localhost:3000/) that will enable you to view the front-end in the browser.
+6. Go to a new tab in terminal where you should be at the front-end directory. Run `npx tailwindcss -i ./src/index.css -o ./src/output.css --watch` to view real-time changes in tailwind (styling) whenever the file is saved. 
+7. The front-end is all set to code and view by now. 
+
+**Note:** Instructions for testing will be added later on.
 
 ## Team Members
 
