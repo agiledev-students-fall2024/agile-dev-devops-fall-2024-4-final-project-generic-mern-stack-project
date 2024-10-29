@@ -1,4 +1,5 @@
 /* src/pages/me.css */
+
 .me-container {
     display: flex;
     flex-direction: column;
@@ -17,7 +18,7 @@
     box-sizing: border-box;
   }
   
-  p {
+  .me-container p {
     font-size: 1em;
     color: #333;
     margin: 10px 0;
@@ -30,12 +31,12 @@
     box-sizing: border-box;
   }
   
-  .password-change-section {
+  .me-container .password-change-section {
     margin-top: 20px;
     width: 100%;
   }
   
-  .password-input {
+  .me-container .password-input {
     padding: 10px;
     width: 100%;
     border-radius: 5px;
@@ -44,7 +45,7 @@
     box-sizing: border-box;
   }
   
-  .change-password-btn {
+  .me-container .change-password-btn {
     padding: 10px;
     width: 100%;
     border: none;
@@ -55,11 +56,11 @@
     font-size: 1em;
   }
   
-  .change-password-btn:hover {
+  .me-container .change-password-btn:hover {
     background-color: #72c7ff;
   }
   
-  .info-message {
+  .me-container .info-message {
     color: rgb(234, 98, 98);
     margin-top: 10px;
     font-size: 0.9em;
