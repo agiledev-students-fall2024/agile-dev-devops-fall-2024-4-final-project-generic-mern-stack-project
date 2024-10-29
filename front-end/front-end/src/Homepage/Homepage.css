@@ -19,7 +19,8 @@
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
-    width: 400px;
+    width: 350px;
+    margin: 50px auto;
   }
   
   /* Heading */
@@ -57,13 +58,13 @@
   }
   
   .menu-btn {
-    padding: 20px;  /* Increased padding for larger buttons */
-    margin: 15px 0;  /* Increased margin for spacing between buttons */
+    padding: 20px;  
+    margin: 15px 0; 
     border: 2px solid black;
     border-radius: 10px;
     background-color: #fff;
     cursor: pointer;
-    font-size: 20px;  /* Increased font size */
+    font-size: 20px;
     font-weight: bold;
     transition: all 0.3s ease;
   }

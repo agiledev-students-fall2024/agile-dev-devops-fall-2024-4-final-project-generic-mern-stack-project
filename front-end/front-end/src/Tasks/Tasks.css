@@ -11,20 +11,21 @@ height: 100vh;
 display: flex;
 justify-content: space-between;
 margin-bottom: 15px;
-    gap: 10px;
+gap: 10px;
 }
 .main-tasks-container {
 background-color: white;
-width: 350px;  /* Set width to match the Home page */
+width: 400px;  /* Set width to match the Home page */
 padding: 20px;
 border-radius: 15px;
 box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);  /* Consistent box-shadow */
 text-align: center;
+margin: 50px auto;
 }
 
 /* Title for Task Page */
 .tasks-title {
-font-size: 20px;  /* Make sure font size is consistent with Home page */
+font-size: 32px;
 margin-bottom: 20px;
 }
 

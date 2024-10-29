@@ -1,17 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './CreateTask.css';
 
 
 function CreateTask() {
-    const [task, setTask] = useState({
+
+    const task = useRef({
         title: "",
         description: "",
         subject: "",
-        due_date: "",
+        due_date: "", //turn this into a date object before sending to the backend so the date can work with time tracking libraries
         priority: "",
-        recurring: ""
+        recurring: "",
+        status: "not_started"
     })
+
+    const nav = useNavigate()
 
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
@@ -19,7 +23,7 @@ function CreateTask() {
     const [due_date, setDue_date] = useState("")
     const [priority, setPriority] = useState("Low")
     const [recurring, setRecurring] = useState("No")
-    const [error, setError] = useState("")
+    const [recurringPeriod, setRecurringPeriod] = useState("");
 
     const handleTitle = (e) => {
         setTitle(e.target.value)
@@ -44,9 +48,21 @@ function CreateTask() {
     const handleRecurring = (e) => {
         setRecurring(e.target.value)
     }
+    const handleRecurringPeriod = (e) => {
+        setRecurringPeriod(e.target.value)
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        task.current.title = title
+        task.current.description = description
+        task.current.subject = subject
+        task.current.due_date = due_date
+        task.current.priority = priority
+        task.current.recurring = recurring
+        task.current.recurringPeriod = recurring === "Yes" ? recurringPeriod : "";
+        //send task to backend
+        nav("/Tasks")
     }
 
     return (
@@ -65,7 +81,7 @@ function CreateTask() {
             </div>
             <div>
                 <h3>Due Date</h3>
-                <input type="text" value={due_date} onChange={handleDue_date} placeholder={"Input Due Date Here"}/>
+                <input type="date" onChange={handleDue_date}/>
             </div>
             <div>
                 <h3>Priority</h3>
@@ -82,9 +98,22 @@ function CreateTask() {
                     <option value="No">No</option>
                 </select>
             </div>
-            <br></br>
-            <Link to="/Tasks" className="cancel-btn">Cancel</Link>
-            <Link to="/Tasks" className="create-btn">Create Task</Link>
+            {recurring === "Yes" && (
+                <div>
+                    <h3>Recurring Period</h3>
+                    <select value={recurringPeriod} onChange={handleRecurringPeriod}>
+                        <option value="">Select Recurrence</option>
+                        <option value="Weekly">Weekly</option>
+                        <option value="Biweekly">Biweekly</option>
+                        <option value="Monthly">Monthly</option>
+                        <option value="Bimonthly">Bimonthly</option>
+                    </select>
+                </div>
+            )}
+            <div className="create-task-buttons">
+                <Link to="/Tasks"> <button className="cancel-btn">Cancel</button></Link>
+                <button onClick={handleSubmit} className="create-btn">Create Task</button>
+            </div>
         </div>
     )
 
