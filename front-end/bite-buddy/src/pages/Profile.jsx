@@ -11,7 +11,7 @@
 //     return(
 //         <>
 //             <h1 className='title'>Bite Buddy Profile Card</h1>
-//             <div className='registerDiv'>
+//             <div className='profileDiv'>
 //                 <h2>Alexander Hamilton</h2>
 //                 <img className='profile-pic' src="https://picsum.photos/100" alt="profile-pic" />
 
@@ -66,7 +66,7 @@ function Profile() {
     return (
         <>
             <h1 className='title'>Profile</h1>
-            <div className='registerDiv'>
+            <div className='profileDiv'>
                 <h2>{profileData.first_name} {profileData.last_name}</h2>
                 <img className='profile-pic' src="https://picsum.photos/100" alt="profile-pic" />
 
