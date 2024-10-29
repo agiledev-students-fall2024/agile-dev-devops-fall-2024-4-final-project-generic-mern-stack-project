@@ -1,13 +1,22 @@
 // src/Login.js
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate(); // Get the navigate function
+
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Prevent the default form submission
+    // Here you can add your authentication logic (e.g., API call)
+    // After successful login, navigate to the Map page
+    navigate('/map');
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="bg-white p-6 rounded shadow-md">
         <h2 className="text-2xl mb-4">Login</h2>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
             <input type="email" id="email" className="mt-1 block w-full border border-gray-300 rounded-md p-2" required />
@@ -18,7 +27,6 @@ const Login = () => {
           </div>
           <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">Login</button>
         </form>
-        {/* Link to the signup page */}
         <p className="mt-4">Don't have an account? <Link to="/signup" className="text-blue-500">Sign up</Link></p>
       </div>
     </div>
@@ -26,4 +34,3 @@ const Login = () => {
 };
 
 export default Login;
-
