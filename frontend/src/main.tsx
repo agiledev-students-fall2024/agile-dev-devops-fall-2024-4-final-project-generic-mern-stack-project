@@ -15,6 +15,7 @@ import Home from "./components/Home";
 import SuggestPage from "./components/SuggestPage";
 import { StoreProvider } from "./context/StoresContext";
 import HelpPage from "./components/HelpPage";
+import RouteDisplayPage from "./components/RouteDisplayPage";
 import SavedRoutesPage from "./components/SavedRoutesPage";
 
 const router = createBrowserRouter(
@@ -28,6 +29,7 @@ const router = createBrowserRouter(
         <Route index path="/" element={<Home />} />
         <Route index path="/suggest" element={<SuggestPage />} />
         <Route path="/help" element={<HelpPage />} />
+        <Route path="/route-display" element={<RouteDisplayPage />} />
         <Route index path="/saved-routes" element={<SavedRoutesPage />} />
       </Route>
     </>,
