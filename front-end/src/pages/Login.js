@@ -18,10 +18,7 @@ export default function Login() {
 
   function handleBtnClick(e) {
     e.preventDefault();
-    // setUsername(username);
-    // setPassword(password);
     console.log("Login as: ", username, password);
-    // console.log("Login as: whatwhat");
     navigate("/");
   }
 
@@ -43,7 +40,10 @@ export default function Login() {
         />
       </div>
       <SubmitButton placeholder="Login" link="/" handleClick={handleBtnClick} />
-      <Link className="text-rose underline font-bold hover:text-ebony" to="/forgotpassword">
+      <Link
+        className="text-rose underline font-bold hover:text-ebony"
+        to="/forgotpassword"
+      >
         I forgot my password
       </Link>
       <div className="text-ebony-700 font-bold text-center">

@@ -13,7 +13,7 @@ export default function Signup() {
 
   function handleBtnClick() {
     console.log("signup as: ", name, userName, email, password);
-    navigate("/");
+    navigate(`/verifyemail?email=${email}`);
   }
   function handleNameChange(e) {
     setName(e.target.value);
@@ -48,11 +48,6 @@ export default function Signup() {
         />
       </div>
       <SubmitButton placeholder="Signup" handleClick={handleBtnClick} />
-      {/* <div className="btn-container">
-        <button className="signup-btn" onClick={handleClick}>
-          Signup
-        </button>
-      </div> */}
       <div className="text-ebony-700 font-bold text-center">
         Already have an account?{" "}
         <Link className="text-rose underline hover:text-ebony" to="/login">
