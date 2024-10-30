@@ -46,7 +46,7 @@ const PostBlogTextField = ({ onCancel, onPost }) => {
             />
             <div className="footer">
                 <button>Attach Image</button>
-                <button>Attach GIF</button>
+                
             </div>
         </div>
     );

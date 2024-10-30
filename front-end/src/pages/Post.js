@@ -8,7 +8,7 @@ const Post = () => {
     const navigate = useNavigate();
 
     const handleCancel = () => {
-        navigate('/'); // Redirect to the home page
+        navigate(-1); // Go back to previous page
     };
 
     const handlePost = (postContent, selectedOption) => {
