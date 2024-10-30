@@ -2,50 +2,36 @@ import React, { useState, useEffect, useContext } from 'react';
 import '../styles/Profile.css';
 import { AccountInfoContext } from '../contexts/AccountInfoContext';
 import RestaurantListItem from './RestaurantListItem';
+import { User } from '../api/User';
 
 const ProfilePage = () => {
-  const [name, setName] = useState("");
-  const [profilePic, setProfilePic] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [likedRestaurants, setLikedRestaurants] = useState({});
   const [filterCuisine, setFilterCuisine] = useState("All");
   const [filterNeighborhood, setFilterNeighborhood] = useState("All");
   const [filterPrice, setFilterPrice] = useState("All");
   const [filterStatus, setFilterStatus] = useState("All");
-  const { accountInfo } = useContext(AccountInfoContext);
-
-  useEffect(() => {
-    const fetchRestaurants = async () => {
-      const data = {}; // Placeholder for the backend data of the restaurants
-
-      setTimeout(() => {
-        setLikedRestaurants(data);
-      }, 1000);
-    };
-
-    fetchRestaurants();
-  }, []);
+  const { accountInfo, setAccountInfo } = useContext(AccountInfoContext);
 
   const handleDelete = (id) => {
     const confirmed = window.confirm(
       "Are you sure that you want to delete this restaurant?"
     );
     if (confirmed) {
-      const updatedRestaurants = { ...likedRestaurants };
+      const updatedRestaurants = { ...accountInfo.likedRestaurants };
       delete updatedRestaurants[id];
-      setLikedRestaurants(updatedRestaurants);
+      setAccountInfo((prev) => {new User(prev.id, prev.email, updatedRestaurants)});
     }
   };
 
   const uniqueCuisines = Array.from(
-    new Set(Object.values(likedRestaurants).map((r) => r.cuisine))
+    new Set(Object.values(accountInfo.likedRestaurants).map((r) => r.cuisine))
   );
   const uniqueNeighborhoods = Array.from(
-    new Set(Object.values(likedRestaurants).map((r) => r.neighborhood))
+    new Set(Object.values(accountInfo.likedRestaurants).map((r) => r.neighborhood))
   );
 
-  const filteredRestaurants = Object.keys(likedRestaurants).filter((id) => {
-    const restaurant = likedRestaurants[id];
+  const filteredRestaurants = Object.keys(accountInfo.likedRestaurants).filter((id) => {
+    const restaurant = accountInfo.likedRestaurants[id];
     const cuisineMatch =
       filterCuisine === "All" || restaurant.cuisine === filterCuisine;
     const neighborhoodMatch =
@@ -74,12 +60,12 @@ const ProfilePage = () => {
       <div className="header">
         <div className="profile-elements">
           <img
-            src={profilePic}
-            alt={`${name}'s profile`}
+            src={accountInfo.profilePic}
+            alt={`${accountInfo.email}'s profile`}
             className="profile-pic"
           />
           <div className="profile-info">
-            <h2>{name}</h2>
+            <h2>{accountInfo.email}</h2>
             <p>{phoneNumber}</p>
           </div>
         </div>
@@ -94,7 +80,7 @@ const ProfilePage = () => {
       <div className="body">
         {filteredRestaurants.length > 0 ? (
           filteredRestaurants.map((id) => {
-            const restaurant = likedRestaurants[id];
+            const restaurant = accountInfo.likedRestaurants[id];
             return (
               <div className="restaurant-card" key={id}>
                 <img

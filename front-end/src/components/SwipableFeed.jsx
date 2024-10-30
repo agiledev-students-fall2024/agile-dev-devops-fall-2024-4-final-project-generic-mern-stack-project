@@ -1,14 +1,14 @@
-import React, { useState, useContext, useEffect } from "react";swi
+import React, { useState, useContext, useEffect } from "react";
 import SwipeableCard from "./SwipeableCard";
 import RestaurantCard from "./RestaurantCard";
 import { AccountInfoContext } from "../contexts/AccountInfoContext";
 import "../styles/SwipeableFeed.css";
 import { bulkFetchRestaurants } from "../api/Restaurant";
 import { AuthContext } from "../contexts/AuthContext";
-import { SwipableFeedContext } from "../context/SwipableFeedContext";
+import { SwipableFeedContext } from "../contexts/SwipableFeedContext";
 
 const SwipableFeed = () => {
-  const { filteredRestaurants:restaurants } = useContext(SwipableFeedContext);
+  const { setFilteredRestaurants, filteredRestaurants:restaurants } = useContext(SwipableFeedContext);
   const [currentIndex, setCurrentIndex] = useState(0);
   const { accountInfo, addLikedRestaurant } = useContext(AccountInfoContext);
   const { isAuthenticated } = useContext(AuthContext)
@@ -19,10 +19,15 @@ const SwipableFeed = () => {
   }, [restaurants]);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      const restaurants = bulkFetchRestaurants(accountInfo.id);
-      setAllRestaurants(restaurants);
+    async function fetch() {
+      if (isAuthenticated) {
+        const restaurants = await bulkFetchRestaurants(accountInfo.id);
+        setAllRestaurants(restaurants);
+        console.log(restaurants);
+        setFilteredRestaurants(restaurants);
+      }
     }
+    fetch()
   }, [isAuthenticated]);
 
   const handleSwipeLeft = async () => {

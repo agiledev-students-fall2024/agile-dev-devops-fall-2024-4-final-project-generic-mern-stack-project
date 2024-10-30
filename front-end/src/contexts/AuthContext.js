@@ -6,12 +6,13 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const { setAccountInfo } = useContext(AccountInfoContext)
+  const { setAccountInfo } = useContext(AccountInfoContext);
 
   const login = async (email) => {
     setIsAuthenticated(true);
 
     const user = await fetchUser(email)
+    console.log(user);
 
     // This assumes that userData has the correct fields -Eric
     setAccountInfo(user)

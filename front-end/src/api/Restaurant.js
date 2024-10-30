@@ -25,19 +25,25 @@ export class Restaurant {
  * @returns A Restaurant object from the desired restaurant
  */
 export async function bulkFetchRestaurants(userId) {
-  if (process.env.NODE_ENV !== "production") {
-    return [];
-  }
   if (!userId) throw new Error("Empty userId. Cannot fetch");
+
+  const API_KEY = process.env.REACT_APP_API_KEY
 
   let fetchUrl = "";
   if (process.env.NODE_ENV == "production")
     fetchUrl = "http://backend/api/restaurant";
-  else fetchUrl = "https://api.mockaroo.com/api";
+  else fetchUrl = `https://my.api.mockaroo.com/restaurant.json?key=${API_KEY}`;
 
-  const response = await fetch(fetchUrl).then((response) => response.json);
+
+  const response = await fetch(fetchUrl)
+    .then((response) => {
+      return response.json()
+    })
+    .then((data) => {
+      return data
+  });
   const restaurants = new Array();
-  response.restaurants.map((restaurant) => {
+  response.flatMap((restaurant) => {
     restaurants.push(Restaurant.from(restaurant));
   });
   return restaurants;
@@ -70,7 +76,7 @@ export async function fetchRestaurant(restaurantId) {
 
     };
   }
-  if (!userId) throw new Error("Empty restaurantId. Cannot fetch");
+  if (!restaurantId) throw new Error("Empty restaurantId. Cannot fetch");
 
   let fetchUrl = "";
   if (process.env.NODE_ENV == "production") fetchUrl = `http://backend/api/restaurant?id=${restaurantId}`;

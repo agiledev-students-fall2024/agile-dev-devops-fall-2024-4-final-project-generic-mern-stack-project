@@ -1,12 +1,26 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "../styles/FilterPopup.css"; // Create this CSS file for styling
 import { SwipableFeedContext } from "../contexts/SwipableFeedContext";
 
 const FilterPopup = ({ open, close }) => {
-  const { setFilteredRestaurants, setFilters, allRestaurants } = SwipableFeedContext;
+  const { setFilteredRestaurants, filters, setFilters, allRestaurants } = useContext(SwipableFeedContext);
   const [search, setSearch] = useState("");
-  const pills = [...new Set(allRestaurants.flatMap((r) => r.pills))];
+  const [pills, setPills] = useState([])
   const [searchResults, setSearchResults] = useState([]);
+
+  useEffect(() => {
+    if (allRestaurants) {
+      if (allRestaurants.length > 0) {
+        for (const restaurant of allRestaurants) {
+          restaurant.pills.flatMap((pill) =>
+          setPills((prev) => {
+            return [...prev,pill]
+          }
+          ));
+        };
+      }
+    }
+  },[allRestaurants])
 
   const handleCheckboxChange = (pill) => {
     let updatedFilters;

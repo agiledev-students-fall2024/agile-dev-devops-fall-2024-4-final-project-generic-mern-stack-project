@@ -35,6 +35,7 @@ const Login = () => {
       // Redirect to feed page
       navigate('/feed');
     } catch (error) {
+      console.log(error);
       setMessage('Invalid OTP.');
     }
   };

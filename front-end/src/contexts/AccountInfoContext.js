@@ -18,6 +18,18 @@ export const AccountInfoProvider = ({ children }) => {
     });
   };
 
+  function removeLikedRestaurant(restaurant) {
+    setAccountInfo((prev) => {
+      // Create a new User object, preserving other fields
+      const updatedAccount = new User(
+        prev.id,
+        prev.email,
+        [prev.likedRestaurants.splice(prev.likedRestaurants.indexOf(restaurant))]  // Add the new restaurant
+      );
+      return updatedAccount;
+    });
+  };
+
   return (
     <AccountInfoContext.Provider
       value={{
