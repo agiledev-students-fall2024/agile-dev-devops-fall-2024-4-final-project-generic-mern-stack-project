@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import BlogPost from '../components/BlogPost';
 import DropdownMenu from '../components/DropdownMenu';
-import NavigationBar from '../components/NavigationBar';
 import SearchBar from '../components/SearchBar';
 
 const Home = () => {
