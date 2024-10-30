@@ -24,11 +24,11 @@ const BlogPost = () => {
 
     // Mock data for the post
     setPost({
-      profilePic: "seraphim-logo.png",
+      profilePic: "seraphim-logo.PNG",
       name: "John Doe",
       userName: "johndoe",
       text: "This is an example post.",
-      images: ["seraphim-logo.png", "seraphim-logo.png"],
+      images: ["seraphim-logo.PNG", "seraphim-logo.PNG"],
       replies: [],
       likes: 500,
     });
