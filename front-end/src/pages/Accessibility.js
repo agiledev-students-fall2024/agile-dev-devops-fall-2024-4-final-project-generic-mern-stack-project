@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import TitleAndDescription from '../components/TitleAndDescription'
-import NavigationBar from '../components/NavigationBar'
 import DropdownMenu from '../components/DropdownMenu'
 import "./Accessibility.css"
 

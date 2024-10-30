@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { useState, useEffect } from 'react'
-import NavigationBar from '../components/NavigationBar'
 import SearchBar from '../components/SearchBar'
 import TitleAndDescriptionBox from '../components/TitleAndDescriptionBox'
 

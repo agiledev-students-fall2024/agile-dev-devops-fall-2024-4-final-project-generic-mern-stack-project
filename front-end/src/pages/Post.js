@@ -2,7 +2,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import PostBlogTextField from '../components/PostBlogTextField';
-import NavigationBar from '../components/NavigationBar';
 import './Post.css';
 
 const Post = () => {
