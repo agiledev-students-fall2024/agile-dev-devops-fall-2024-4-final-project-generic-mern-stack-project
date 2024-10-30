@@ -22,19 +22,8 @@ export default function ResetPassword() {
 
   return (
     <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-6 p-8 md:w-[60%] lg:w-[40%]">
-      <LogoPageTitle
-        logoSrc="./seraphim-logo.PNG"
-        title="Set New Password"
-      />
+      <LogoPageTitle logoSrc="./seraphim-logo.PNG" title="Set New Password" />
       <div className="w-[80%] flex flex-col gap-4">
-        {/* <div className="input-container">
-          <label>Password</label>
-          <input className="password" type="password"></input>
-        </div>
-        <div className="input-container">
-          <label>Confirm password</label>
-          <input className="confirm-password" type="password"></input>
-        </div> */}
         <InputField
           inputfieldName="Password"
           inputType="password"
@@ -48,14 +37,12 @@ export default function ResetPassword() {
           handleChange={handleConfirmpasswordChange}
         />
       </div>
-        {/* <Link to="/">
-          <button>Reset Password</button>
-        </Link> */}
-      <SubmitButton
-        placeholder="Reset Password"
-        handleClick={handleBtnClick}
-      />
-      <Link className="text-rose underline font-bold hover:text-ebony" to="/login" >
+
+      <SubmitButton placeholder="Reset Password" handleClick={handleBtnClick} />
+      <Link
+        className="text-rose underline font-bold hover:text-ebony"
+        to="/login"
+      >
         Back to Login
       </Link>
     </div>

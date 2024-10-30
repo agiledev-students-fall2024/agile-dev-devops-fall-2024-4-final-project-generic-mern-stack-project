@@ -33,20 +33,34 @@ export default function ForgotPassword() {
           value={email}
           handleChange={handleEmailChange}
         />
-
-        {/* <button className="submit-eamil-btn" onClick={handleClick}>
-          Submit
-        </button> */}
       </div>
       <SubmitButton placeholder="Send" handleClick={handleSendClick} />
       {submittedEmail && (
         <div className="flex flex-col gap-4 justify-center items-center">
-          <div className="text-ebony-700 font-bold">We sent a code to {submittedEmail}</div>
+          <div className="text-ebony-700 font-bold">
+            We sent a code to {submittedEmail}
+          </div>
           <div className="w-[80%] flex flex-row gap-4 justify-evenly items-center">
-            <input className="w-[25%] h-16 rounded-md text-center text-2xl font-bold text-rose" type="text" maxLength="1" />
-            <input className="w-[25%] h-16 rounded-md text-center text-2xl font-bold text-rose" type="text" maxLength="1" />
-            <input className="w-[25%] h-16 rounded-md text-center text-2xl font-bold text-rose" type="text" maxLength="1" />
-            <input className="w-[25%] h-16 rounded-md text-center text-2xl font-bold text-rose" type="text" maxLength="1" />
+            <input
+              className="w-[25%] h-16 rounded-md text-center text-2xl font-bold text-rose"
+              type="text"
+              maxLength="1"
+            />
+            <input
+              className="w-[25%] h-16 rounded-md text-center text-2xl font-bold text-rose"
+              type="text"
+              maxLength="1"
+            />
+            <input
+              className="w-[25%] h-16 rounded-md text-center text-2xl font-bold text-rose"
+              type="text"
+              maxLength="1"
+            />
+            <input
+              className="w-[25%] h-16 rounded-md text-center text-2xl font-bold text-rose"
+              type="text"
+              maxLength="1"
+            />
           </div>
           <SubmitButton
             placeholder="Continue"
@@ -54,7 +68,10 @@ export default function ForgotPassword() {
           />
         </div>
       )}
-      <Link className="text-rose underline font-bold hover:text-ebony" to="/login">
+      <Link
+        className="text-rose underline font-bold hover:text-ebony"
+        to="/login"
+      >
         Back to Login
       </Link>
     </div>
