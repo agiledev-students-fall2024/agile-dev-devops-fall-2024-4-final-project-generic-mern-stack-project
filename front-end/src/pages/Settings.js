@@ -1,5 +1,4 @@
 import React from "react"
-import NavigationBar from '../components/NavigationBar'
 import TitleAndDescriptionBox from '../components/TitleAndDescriptionBox'
 import './Settings.css'
 
