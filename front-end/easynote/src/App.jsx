@@ -5,7 +5,6 @@ import Layout from './components/Layout';
 import Home from './components/Home';
 import NewNote from './components/NewNote';
 import ExistingNotes from './components/ExistingNotes';
-import MathNotes from './components/MathNotes';
 import Login from './components/Login';
 import Signup from './components/SignUp';
 import AuthGuard from './components/AuthGuard';
@@ -42,14 +41,7 @@ const App = () => {
                 </AuthGuard>
               }
             />
-            <Route
-              path="math"
-              element={
-                <AuthGuard>
-                  <MathNotes />
-                </AuthGuard>
-              }
-            />
+            
           </Route>
         </Routes>
       </BrowserRouter>
