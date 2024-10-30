@@ -59,8 +59,6 @@ const Layout = () => {
         <ul className="nav-list">
           <li><Link to="/" className="nav-link" onClick={() => setIsNavOpen(false)}>Home</Link></li>
           <li><Link to="/new-note" className="nav-link" onClick={() => setIsNavOpen(false)}>New Note</Link></li>
-          <li><Link to="/math" className="nav-link" onClick={() => setIsNavOpen(false)}>Math Notes</Link></li>
-          <li><Link to="/export" className="nav-link" onClick={() => setIsNavOpen(false)}>Export</Link></li>
           <li><Link to="/existing-notes" className="nav-link" onClick={() => setIsNavOpen(false)}>Existing Notes</Link></li>
         </ul>
       </nav>
