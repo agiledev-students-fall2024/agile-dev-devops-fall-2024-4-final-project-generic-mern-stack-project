@@ -22,6 +22,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Post from "./pages/Post";
 import VerifyEmail from "./pages/VerifyEmail";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
   const noNavRoutes = [
@@ -30,6 +31,7 @@ function App() {
     "/forgotpassword",
     "/resetpassword",
     "/verifyemail",
+    "/landing",
   ];
 
   return (
@@ -38,6 +40,7 @@ function App() {
         <ConditionalNavBar noNavRoutes={noNavRoutes} />
         <div className="flex-1 p-4 z-0 overflow-y-auto h-screen">
           <Routes>
+            <Route path="/landing" element={<LandingPage />} />
             <Route path="/" element={<Home />} />
             <Route path="/community" element={<Community />} />
             <Route
