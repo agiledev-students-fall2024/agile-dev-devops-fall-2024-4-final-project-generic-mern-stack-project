@@ -7,6 +7,7 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+import { Toaster } from "@/components/ui/toaster";
 import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
 import ProtectedRouteWrapper from "./components/ProtectedRouteWrapper";
@@ -14,6 +15,7 @@ import Home from "./components/Home";
 import SuggestPage from "./components/SuggestPage";
 import { StoreProvider } from "./context/StoresContext";
 import HelpPage from "./components/HelpPage";
+import SavedRoutesPage from "./components/SavedRoutesPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,6 +28,7 @@ const router = createBrowserRouter(
         <Route index path="/" element={<Home />} />
         <Route index path="/suggest" element={<SuggestPage />} />
         <Route path="/help" element={<HelpPage />} />
+        <Route index path="/saved-routes" element={<SavedRoutesPage />} />
       </Route>
     </>,
   ),
@@ -34,11 +37,8 @@ const router = createBrowserRouter(
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <StoreProvider>
+      <Toaster />
       <RouterProvider router={router} />
     </StoreProvider>
   </StrictMode>,
 );
-
-import SavedRoutesPage from "./components/SavedRoutesPage";
-
-<Route path="/saved-routes" element={<SavedRoutesPage />} />
