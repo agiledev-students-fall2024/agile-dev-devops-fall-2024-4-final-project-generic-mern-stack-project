@@ -4,14 +4,14 @@ module.exports = {
   theme: {
     extend: {
       height: {
-        '6': '6vh',
-        '94': '94vh',
+        6: '6vh',
+        94: '94vh',
       },
       minHeight: {
-        '94': '94vh'
+        94: '94vh',
       },
       margin: {
-        '6': '6vh',
+        6: '6vh',
       },
     },
   },

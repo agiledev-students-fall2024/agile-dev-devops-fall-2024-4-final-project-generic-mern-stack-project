@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, ChevronRight } from 'lucide-react';
 import axios from 'axios';
-import { FaAngleDoubleRight } from "react-icons/fa";
+import { FaAngleDoubleRight } from 'react-icons/fa';
 
 const Profile = () => {
   const navigate = useNavigate();
-  const [userInfo, setUserInfo] = useState({ username: 'unique_username', routes: [] });
+  const [userInfo, setUserInfo] = useState({
+    username: 'unique_username',
+    routes: [],
+  });
   const API_KEY = process.env.REACT_APP_MOCKAROO_API_KEY;
   const ROUTES_URL = `https://my.api.mockaroo.com/Saved_Routes.JSON?key=${API_KEY}`;
   // const ROUTES_URL = './Routes.json'
@@ -17,45 +20,47 @@ const Profile = () => {
         const { data } = await axios.get(ROUTES_URL);
         setUserInfo(prevInfo => ({ ...prevInfo, routes: data }));
       } catch (error) {
-        console.error("Error fetching routes:", error);
+        console.error('Error fetching routes:', error);
       }
     };
     fetchRoutes();
   }, []);
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="pt-16 px-4">
-        <div className="flex items-start space-x-4 mb-8">
-          <div className="w-24 h-24 bg-gray-100 rounded-lg flex items-center justify-center">
-            <User size={32} className="text-gray-400" />
+    <div className='min-h-screen bg-white'>
+      <div className='px-4 pt-16'>
+        <div className='mb-8 flex items-start space-x-4'>
+          <div className='flex h-24 w-24 items-center justify-center rounded-lg bg-gray-100'>
+            <User size={32} className='text-gray-400' />
           </div>
-          <div className="flex-1">
-            <h2 className="text-lg font-medium">{userInfo.username}</h2>
-            <button 
+          <div className='flex-1'>
+            <h2 className='text-lg font-medium'>{userInfo.username}</h2>
+            <button
               onClick={() => navigate('/edit-profile')}
-              className="mt-2 px-4 py-2 text-sm bg-emerald-800 text-white rounded-lg hover:bg-blue-600 transition-colors"
+              className='mt-2 rounded-lg bg-emerald-800 px-4 py-2 text-sm text-white transition-colors hover:bg-blue-600'
             >
               Edit Profile
             </button>
           </div>
         </div>
 
-        <div className="mb-4 flex justify-between items-center">
-          <h3 className="text-lg font-medium">Saved Routes</h3>
-          <div className="flex items-center cursor-pointer" onClick={() => navigate('/saved-routes')}>
-            <span className="text-gray-600 mr-1">more</span>
-            <FaAngleDoubleRight className="text-emerald-800" />
+        <div className='mb-4 flex items-center justify-between'>
+          <h3 className='text-lg font-medium'>Saved Routes</h3>
+          <div
+            className='flex cursor-pointer items-center'
+            onClick={() => navigate('/saved-routes')}
+          >
+            <span className='mr-1 text-gray-600'>more</span>
+            <FaAngleDoubleRight className='text-emerald-800' />
           </div>
         </div>
 
-
-        <div className="space-y-3 mb-8">
+        <div className='mb-8 space-y-3'>
           {userInfo.routes.map((route, index) => (
-            <div 
+            <div
               key={index}
-              className="p-4 bg-gray-50 rounded-lg text-left text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer"
-              onClick={() => navigate('/map')} 
+              className='cursor-pointer rounded-lg bg-gray-50 p-4 text-left text-gray-700 transition-colors hover:bg-gray-100'
+              onClick={() => navigate('/map')}
             >
               {route.name}
             </div>
