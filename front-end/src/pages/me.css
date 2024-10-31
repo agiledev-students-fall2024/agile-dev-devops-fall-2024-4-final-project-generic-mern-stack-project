@@ -9,10 +9,8 @@
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin: auto;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
+  top: 50px;
   box-sizing: border-box;
 }
 
@@ -21,12 +19,17 @@
   margin-bottom: 20px;
 }
 
-.me-container p {
-  font-size: 1em;
-  color: #333;
+.field-container {
+  display: flex;
+  flex-direction: column;
   margin: 10px 0;
   width: 100%;
-  text-align: left;
+}
+
+.display-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 10px;
   background-color: #fff;
   border: 1px solid #ddd;
@@ -34,37 +37,39 @@
   box-sizing: border-box;
 }
 
-.password-change-section {
-  margin-top: 20px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.field-value {
+  color: #333;
 }
 
-.password-input {
-  padding: 10px;
+.edit-input-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   width: 100%;
+}
+
+.edit-input {
+  padding: 10px;
+  width: 70%;
   border-radius: 5px;
   border: 1px solid #ddd;
-  margin-bottom: 10px;
   box-sizing: border-box;
 }
 
-.change-password-btn {
-  padding: 10px 20px;
-  width: auto;
+.edit-btn,
+.save-btn {
+  padding: 5px 10px;
   border: none;
   border-radius: 5px;
   background-color: #3f7af9;
   color: white;
   cursor: pointer;
-  font-size: 1em;
-  margin-top: 10px;
+  font-size: 0.9em;
   text-align: center;
 }
 
-.change-password-btn:hover {
+.edit-btn:hover,
+.save-btn:hover {
   background-color: #72c7ff;
 }
 

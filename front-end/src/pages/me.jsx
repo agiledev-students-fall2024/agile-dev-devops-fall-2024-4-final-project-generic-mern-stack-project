@@ -1,4 +1,3 @@
-// src/pages/me.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './me.css';
@@ -6,25 +5,45 @@ import './me.css';
 const Me = () => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState('');
-  const [newPassword, setNewPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [editFields, setEditFields] = useState({
+    first_name: false,
+    last_name: false,
+    username: false,
+    email: false,
+    password: false,
+  });
+  const [updatedData, setUpdatedData] = useState({});
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get('https://my.api.mockaroo.com/tracker.json?key=a3c50f90');
+        const response = await axios.get(
+          'https://my.api.mockaroo.com/tracker.json?key=a3c50f90'
+        );
         setUser(response.data[0]); // Assuming the response is an array with user objects
+        setUpdatedData(response.data[0]);
       } catch (error) {
         setError('Unable to load user data');
-        console.error("Error fetching user data from Mockaroo:", error);
+        console.error('Error fetching user data from Mockaroo:', error);
       }
     };
 
     fetchUserData();
   }, []);
 
-  const handleChangePassword = () => {
-    setMessage("Sorry, can't do that. There's no backend yet.");
+  const toggleEditField = (field) => {
+    setEditFields((prev) => ({ ...prev, [field]: !prev[field] }));
+  };
+
+  const handleChange = (e, field) => {
+    setUpdatedData({ ...updatedData, [field]: e.target.value });
+  };
+
+  const handleSave = (field) => {
+    setMessage(`"${field}" has been updated!`);
+    toggleEditField(field);
+    // In a real app, you would also send the updated data to the backend here.
   };
 
   if (error) {
@@ -43,29 +62,46 @@ const Me = () => {
         src={`https://picsum.photos/seed/${user.username}/100`}
         alt="Profile"
       />
-      <p><strong>First Name:</strong> {user.first_name}</p>
-      <p><strong>Last Name:</strong> {user.last_name}</p>
-      <p><strong>Username:</strong> {user.username}</p>
-      <p><strong>Email:</strong> {user.email}</p>
-      <p><strong>Password:</strong> ***</p>
 
-      {/* Password Change Section */}
-      <div className="password-change-section">
-        <input
-          type="password"
-          className="password-input"
-          placeholder="New Password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-        />
-        <button
-          className="change-password-btn"
-          onClick={handleChangePassword}
-        >
-          Change Password
-        </button>
-        {message && <p className="info-message">{message}</p>}
-      </div>
+      {/* Editable Fields */}
+      {['first_name', 'last_name', 'username', 'email', 'password'].map(
+        (field) => (
+          <div key={field} className="field-container">
+            <label>
+              <strong>{field.replace('_', ' ').toUpperCase()}:</strong>
+            </label>
+            {editFields[field] ? (
+              <div className="edit-input-container">
+                <input
+                  type={field === 'password' ? 'password' : 'text'}
+                  value={updatedData[field] || ''}
+                  onChange={(e) => handleChange(e, field)}
+                  placeholder={`Enter new ${field.replace('_', ' ')}`}
+                  className="edit-input"
+                />
+                <button className="save-btn" onClick={() => handleSave(field)}>
+                  Save
+                </button>
+              </div>
+            ) : (
+              <div className="display-container">
+                <span className="field-value">
+                  {field === 'password' ? '***' : updatedData[field]}
+                </span>
+                <button
+                  className="edit-btn"
+                  onClick={() => toggleEditField(field)}
+                >
+                  Edit
+                </button>
+              </div>
+            )}
+          </div>
+        )
+      )}
+
+      {/* Display Info Message */}
+      {message && <p className="info-message">{message}</p>}
     </div>
   );
 };
