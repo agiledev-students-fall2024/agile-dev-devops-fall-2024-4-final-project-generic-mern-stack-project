@@ -11,8 +11,8 @@ function Recipes() {
     const fetchRecipeData = async () => {
       try {
         const response = await axios.get('https://my.api.mockaroo.com/recipes.json?key=a170a060');
-        const formattedData = response.data.map((item,recipe_number) => ({
-          recipeData:recipe_number,
+        const formattedData = response.data.map((item,row_number) => ({
+          recipe_id:row_number,
           dish: item.recipe_name,
           difficulty: item.difficulty_level,
           ingredients: item.ingredients,
