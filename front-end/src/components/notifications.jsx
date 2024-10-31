@@ -6,11 +6,12 @@ function Notifications() {
   const currentDay = today.getDate();
 
   const calculateDaysUntilDue = (dueDay) => {
-    let daysUntilDue = dueDay - currentDay;
-    if (daysUntilDue < 0) {
-      daysUntilDue += 30; 
+    if (dueDay >= currentDay) {
+      return dueDay - currentDay;
+    } else {
+      const daysInCurrentMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+      return daysInCurrentMonth - currentDay + dueDay;
     }
-    return daysUntilDue;
   };
 
   const extractDueDay = (dueDate) => {
@@ -34,7 +35,7 @@ function Notifications() {
         {upcomingBills.length > 0 ? (
           upcomingBills.map((bill) => (
             <li key={bill.id}>
-              💡 Upcoming {bill.category}: {bill.name} - Due in {bill.daysUntilDue} days
+              💡 Upcoming {bill.category}: {bill.name} - Due in {bill.daysUntilDue} {bill.daysUntilDue === 1 ? "day" : "days"}
             </li>
           ))
         ) : (
