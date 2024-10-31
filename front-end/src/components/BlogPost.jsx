@@ -3,36 +3,27 @@ import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 import axios from "axios"
 
 // Blog post component
-const BlogPost = () => {
-  const [post, setPost] = useState({});
+const BlogPost = ({ post }) => {
+  const [blogPost, setBlogPost] = useState({});
   const [liked, setLiked] = useState(false);
   const [replies, setReplies] = useState([]);
   const [showReplies, setShowReplies] = useState(false);
   const [newReply, setNewReply] = useState("");
 
-  // Load the post data
   useEffect(() => {
-    // fetch data
+    // Mock data for the post
+    setBlogPost(post);
+
+    // Fetch data only if necessary
     axios("https://my.api.mockaroo.com/blogpost.json?key=baec6df0")
       .then(response => {
-        // setPost(response.data)
+        // setBlogPost(response.data) // Uncomment this line if you want to fetch data
       })
       .catch(err => {
-        console.log(`No more requests allowed.`)
-        console.error(err)
-      })
-
-    // Mock data for the post
-    setPost({
-      profilePic: "seraphim-logo.PNG",
-      name: "John Doe",
-      userName: "johndoe",
-      text: "This is an example post.",
-      images: ["seraphim-logo.PNG", "seraphim-logo.PNG"],
-      replies: [],
-      likes: 500,
-    });
-  }, []);
+        console.log(`No more requests allowed.`);
+        console.error(err);
+      });
+  }, [post]); 
 
   const handleReplySubmit = () => {
     if (newReply.trim()) {
@@ -47,7 +38,7 @@ const BlogPost = () => {
 
   const toggleLike = () => {
     setLiked(!liked);
-    setPost((prev) => ({
+    setBlogPost((prev) => ({
       ...prev,
       likes: liked ? prev.likes - 1 : prev.likes + 1,
     }));
@@ -58,30 +49,30 @@ const BlogPost = () => {
   };
 
   return (
-    <div className="w-[100%] px-4 py-2 bg-lavender_blush-900 rounded-lg shadow-md shadow-ebony-900">
+    <div className="w-[100%] md:w-[95%] px-4 py-2 bg-lavender_blush-900 rounded-lg shadow-md shadow-ebony-900 m-auto">
       <div className="flex flex-row items-center">
         <img src={post.profilePic} alt="Profile" className="w-32 h-32 rounded-md" />
         <p className="flex flex-col justify-start items-center text-md">
-          <span className="font-bold text-ebony">{post.name}</span>
-          <span className="text-rose opacity-[75%]">@{post.userName}</span>
+          <span className="font-bold text-ebony">{blogPost.name}</span>
+          <span className="text-rose opacity-[75%]">@{blogPost.userName}</span>
         </p>
       </div>
 
-      <div className="w-[95%] m-auto text-lg text-ebony">{post.text}</div>
-      {post.images && post.images.length === 1 ? (
+      <div className="w-[95%] m-auto text-lg text-ebony">{blogPost.text}</div>
+      {blogPost.images && blogPost.images.length === 1 ? (
         <img
-          src={post.images[0]}
-          alt="Post"
+          src={blogPost.images[0]}
+          alt="Blog Post"
           className="w-[95%] h-auto rounded-md m-auto mt-3 bg-ebony-800"
           style={{ maxHeight: "400px", objectFit: "cover" }}
         />
       ) : (
         <div className="grid grid-cols-2 gap-4 w-[95%] m-auto mt-3">
-          {post.images && post.images.map((image, index) => (
+          {blogPost.images && blogPost.images.map((image, index) => (
             <img
               key={index}
               src={image}
-              alt={`Post image ${index + 1}`}
+              alt={`Blog Post ${index + 1}`}
               className="w-full h-48 rounded-md object-cover bg-ebony-800"
             />
           ))}
@@ -96,7 +87,7 @@ const BlogPost = () => {
             <FcLikePlaceholder size="32" style={{ filter: "brightness(0) saturate(100%) invert(96%) sepia(51%) saturate(944%) hue-rotate(284deg) brightness(105%) contrast(104%)" }} />
           )}
           <div>
-            <span className="font-bold text-lg">{formatLikes(post.likes)}</span> Hearts
+            <span className="font-bold text-lg">{formatLikes(blogPost.likes)}</span> Hearts
           </div>
         </button>
         <button
