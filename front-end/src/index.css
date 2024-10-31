@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.mapboxgl-ctrl-top {
+  transform: translateX(-30vw) !important; /* Use with caution */
+}
+
+.mapboxgl-ctrl-top .mapboxgl-ctrl {
+  width: 70vw;
+}
+
+.mapboxgl-ctrl-geocoder input[type='text'] {
+  padding: 16px 32px !important;
+}
