@@ -22,7 +22,7 @@ const ProfileForm = ({ userData, isEditMode, onEditToggle, onInputChange }) => {
         </div>
       </div>
 
-      {/* Emoji Picker for Profile Avatar */}
+      {/* This is the Emoji Picker for Profile Avatar */}
       <div className="form-section">
         <div className="field-group">
           <label>Profile Avatar</label>

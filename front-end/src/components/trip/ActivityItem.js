@@ -1,6 +1,5 @@
-// src/components/trip/ActivityItem.js
 import React from 'react';
-//import './ActivityItem.css'; // Optional: Style the activity item if needed
+//import './ActivityItem.css'; 
 
 const ActivityItem = ({ title }) => (
   <div className="activity-item">
