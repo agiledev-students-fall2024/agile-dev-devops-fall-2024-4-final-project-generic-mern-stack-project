@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import Header from '../components/header';
 import BudgetProgress from '../mocks/BudgetProgress.jsx';
 import Notifications from '../components/notifications.jsx';
+import transactionData from '../mocks/transactionData'; 
 import './home.css';
-import transactionData from '../mocks/transactionData';
 import { Link } from 'react-router-dom';
 
 function Home() {
@@ -11,20 +11,58 @@ function Home() {
   const [showBreakdown, setShowBreakdown] = useState(false);
   const [isEditingBudget, setIsEditingBudget] = useState(false); // Tracks edit mode
   const [monthlyBudget, setMonthlyBudget] = useState(overall.totalBudget || 0); // Stores budget input
-  const viewBreakdown = () => setShowBreakdown(!showBreakdown);
+  const [showCategoryBreakdown, setShowCategoryBreakdown] = useState(false); 
+  const [transactions, setTransactions] = useState([...transactionData]); 
+  const [showAddTransaction, setShowAddTransaction] = useState(false); 
+  const [newTransaction, setNewTransaction] = useState({
+    merchant: '',
+    category: '',
+    amount: '',
+    date: ''
+  }); 
 
+  const viewBreakdown = () => setShowBreakdown(!showBreakdown);
+  const toggleCategoryBreakdown = () => setShowCategoryBreakdown(!showCategoryBreakdown); 
+
+  const totalBudget = overall.totalBudget || 0;
   const totalSpent = overall.totalSpent || 0;
   const remainingBudget = monthlyBudget - totalSpent;
   const overallSpent = overall.overallSpent || 0;
 
   const handleBudgetEdit = () => setIsEditingBudget(!isEditingBudget);
   const handleBudgetChange = (e) => setMonthlyBudget(Number(e.target.value));
-
   const saveBudget = () => setIsEditingBudget(false);
 
   const sortedProgressData = [...progressData].sort(
     (a, b) => b.spent - a.spent
   );
+
+  const categoryTotals = transactions.reduce((acc, transaction) => {
+    const { category, amount } = transaction;
+    if (!acc[category]) {
+      acc[category] = 0;
+    }
+    acc[category] += amount;
+    return acc;
+  }, {});
+
+  const handleAddTransaction = () => {
+    if (newTransaction.merchant && newTransaction.category && newTransaction.amount && newTransaction.date) {
+      const newTransactionWithId = { 
+        ...newTransaction, 
+        id: transactions.length + 1, 
+        amount: parseFloat(newTransaction.amount) 
+      };
+      setTransactions(prevTransactions => [newTransactionWithId, ...prevTransactions]); 
+      setShowAddTransaction(false); 
+      setNewTransaction({ merchant: '', category: '', amount: '', date: '' });
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewTransaction({ ...newTransaction, [name]: value });
+  };
 
   return (
     <div className="home-container">
@@ -80,6 +118,23 @@ function Home() {
               </p>
             </div>
           )}
+          
+          <button className="view-breakdown" onClick={toggleCategoryBreakdown}>
+            {showCategoryBreakdown ? 'Hide Category Breakdown' : 'View Category Breakdown'}
+          </button>
+
+          {showCategoryBreakdown && (
+            <div className="category-breakdown">
+              <h3>Category Breakdown</h3>
+              <ul>
+                {Object.keys(categoryTotals).map(category => (
+                  <li key={category}>
+                    <strong>{category}:</strong> ${categoryTotals[category].toFixed(2)}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </section>
 
@@ -89,6 +144,9 @@ function Home() {
         <Link to="/transactions" className="transactions-link">
           <h2 style={{ cursor: 'pointer', color: '#487bf1' }}>Transactions</h2>
         </Link>
+        <button className="button" onClick={() => setShowAddTransaction(true)}>
+          Add Transaction
+        </button>
         <ul className="transaction-list">
           <li className="transaction-item header">
             <span>Merchant</span>
@@ -96,16 +154,63 @@ function Home() {
             <span>Amount</span>
             <span>Date</span>
           </li>
-          {transactionData.slice(0, 5).map((transaction) => (
+          {transactions.slice(0, 5).map((transaction) => (
             <li key={transaction.id} className="transaction-item">
               <span>{transaction.merchant}</span>
               <span>{transaction.category}</span>
-              <span>${transaction.amount}</span>
+              <span>${transaction.amount.toFixed(2)}</span>
               <span>{transaction.date}</span>
             </li>
           ))}
         </ul>
       </section>
+
+      {/* Modal for Adding a New Transaction */}
+      {showAddTransaction && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>Add New Transaction</h2>
+            <label>
+              Merchant:
+              <input
+                type="text"
+                name="merchant"
+                value={newTransaction.merchant}
+                onChange={handleInputChange}
+              />
+            </label>
+            <label>
+              Category:
+              <input
+                type="text"
+                name="category"
+                value={newTransaction.category}
+                onChange={handleInputChange}
+              />
+            </label>
+            <label>
+              Amount:
+              <input
+                type="number"
+                name="amount"
+                value={newTransaction.amount}
+                onChange={handleInputChange}
+              />
+            </label>
+            <label>
+              Date:
+              <input
+                type="date"
+                name="date"
+                value={newTransaction.date}
+                onChange={handleInputChange}
+              />
+            </label>
+            <button className="button" onClick={handleAddTransaction}>Add Transaction</button>
+            <button className="button" onClick={() => setShowAddTransaction(false)}>Cancel</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
