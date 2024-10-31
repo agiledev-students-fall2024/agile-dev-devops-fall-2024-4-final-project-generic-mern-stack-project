@@ -5,6 +5,8 @@ import './RecurringPayments.css';
 function RecurringPayments() {
   const [payments, setPayments] = useState(recurringBills);
   const [showModal, setShowModal] = useState(false);
+  const [isEditing, setIsEditing] = useState(false); 
+  const [currentPaymentIndex, setCurrentPaymentIndex] = useState(null);
   const [newPayment, setNewPayment] = useState({
     name: '',
     category: '',
@@ -12,10 +14,29 @@ function RecurringPayments() {
     dueDate: ''
   });
 
-  const handleAddPayment = () => {
-    setPayments([...payments, newPayment]);
-    setShowModal(false);
+  const handleAddOrEditPayment = () => {
+    if (isEditing && currentPaymentIndex !== null) {
+      const updatedPayments = [...payments];
+      updatedPayments[currentPaymentIndex] = newPayment;
+      setPayments(updatedPayments);
+    } else {
+      setPayments([...payments, newPayment]);
+    }
+    resetForm();
+  };
+
+  const handleEdit = (index) => {
+    setCurrentPaymentIndex(index);
+    setNewPayment(payments[index]);
+    setIsEditing(true);
+    setShowModal(true);
+  };
+
+  const resetForm = () => {
     setNewPayment({ name: '', category: '', amount: '', dueDate: '' });
+    setShowModal(false);
+    setIsEditing(false);
+    setCurrentPaymentIndex(null);
   };
 
   return (
@@ -26,17 +47,17 @@ function RecurringPayments() {
           + Add New Payment
         </button>
       </header>
-      
+
       <ul className="payments-list">
-        {payments.map((payment) => (
-          <li key={payment.id} className="payment-item">
+        {payments.map((payment, index) => (
+          <li key={index} className="payment-item">
             <div className="payment-details">
               <p className="payment-name">{payment.name}</p>
               <p className="payment-category">{payment.category}</p>
               <p className="payment-amount">${payment.amount}</p>
               <p className="payment-due-date">{payment.dueDate}</p>
             </div>
-            <button className="edit-payment-btn" onClick={() => console.log("Edit Payment")}>
+            <button className="edit-payment-btn" onClick={() => handleEdit(index)}>
               Edit
             </button>
           </li>
@@ -46,7 +67,7 @@ function RecurringPayments() {
       {showModal && (
         <div className="modal">
           <div className="modal-content">
-            <h2>Add New Recurring Payment</h2>
+            <h2>{isEditing ? "Edit Payment" : "Add New Payment"}</h2>
             <label>
               Name:
               <input
@@ -84,8 +105,8 @@ function RecurringPayments() {
               />
             </label>
             <div className="modal-buttons">
-              <button onClick={handleAddPayment}>Add</button>
-              <button onClick={() => setShowModal(false)}>Cancel</button>
+              <button onClick={handleAddOrEditPayment}>{isEditing ? "Save Changes" : "Add"}</button>
+              <button onClick={resetForm}>Cancel</button>
             </div>
           </div>
         </div>
