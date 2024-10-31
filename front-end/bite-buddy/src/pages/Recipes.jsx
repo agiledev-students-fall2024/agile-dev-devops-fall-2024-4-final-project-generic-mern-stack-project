@@ -2,13 +2,15 @@ import '../index.css';
 import '../recipes.css';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Recipes() {
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [recipeData, setRecipeData] = useState([]);
+  const navigate = useNavigate()
 
   useEffect(() => {
-    const fetchRecipeData = async () => {
+    /*const fetchRecipeData = async () => {
       try {
         const response = await axios.get('https://my.api.mockaroo.com/recipes.json?key=a170a060');
         const formattedData = response.data.map((item) => ({
@@ -22,7 +24,24 @@ function Recipes() {
       } catch (error) {
         console.error('Error fetching data:', error);
       }
+    };*/
+    const fetchRecipeData = async () => {
+      try {
+        const response = await axios.get('https://my.api.mockaroo.com/recipe_steps?key=594b4990');
+        const formattedData = response.data.map((item) => ({
+          dish: item.recipe_name,
+          difficulty: item.id,
+          ingredients: item.ingredients.item,
+          steps: item.recipe_steps.step || [],
+          id:item.id,
+          imgs: 'https://picsum.photos/400',
+        }));
+        setRecipeData(formattedData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     };
+
 
     fetchRecipeData();
   }, []);
@@ -33,6 +52,11 @@ function Recipes() {
 
   const close = () => {
     setSelectedRecipe(null);
+  };
+  const handleStartRecipe = (recipeId) => {
+    // Navigate to the record activity page, passing the recipe data
+    console.log('going to recipe id:' +recipeId)
+    navigate('/record', { state: { recipeId } });
   };
 
   return (
@@ -50,7 +74,9 @@ function Recipes() {
                         <h1>Food: {recipeItem.dish}</h1>
                         <p>Ingredients: {recipeItem.ingredients}</p>
                     </div>
+                    <button className="start-button" onClick={() => handleStartRecipe(recipeItem.id)}>START RECIPE</button>
                 </div>
+                
             ))}
         </div>
       </div>
@@ -60,7 +86,7 @@ function Recipes() {
           <div className="popup-content" onClick={(e) => e.stopPropagation()}>
             <h1>Dish: {selectedRecipe.dish}</h1>
             <p><strong>Ingredients:</strong> {selectedRecipe.ingredients}</p>
-
+            <button className="start-button" onClick={() => handleStartRecipe(selectedRecipe.id)}>START RECIPE</button>
             {selectedRecipe.steps.map((step, index) => (
               <div key={index}>
                 <h2>Step {index + 1}:</h2>

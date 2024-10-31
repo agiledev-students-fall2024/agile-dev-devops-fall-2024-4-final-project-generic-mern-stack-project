@@ -24,7 +24,6 @@ function Record() {
       try {
         const response = await axios.get('https://my.api.mockaroo.com/recipe_steps?key=594b4990');
         const fetchedData = response.data || [];
-        console.log('Fetched all data:', fetchedData);
         setAllRecipes([...fetchedData]);
       } catch (error) {
         console.error('Error fetching recipes:', error);
@@ -94,7 +93,7 @@ function Record() {
 
       <h3>Steps:</h3>
       <div className="steps-container">
-        {currRecipe.recipe_steps?.steps?.map((step, index) => (
+        {currRecipe.recipe_steps?.step?.map((step, index) => (
           <div key={index} className="step-card">
             <h4>Step {index + 1}</h4>
             <p>{step}</p>
