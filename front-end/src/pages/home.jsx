@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 function Home() {
   const { progressData, overall } = BudgetProgress();
   const [showBreakdown, setShowBreakdown] = useState(false);
+  const [showCategoryBreakdown, setShowCategoryBreakdown] = useState(false); 
   const [transactions, setTransactions] = useState([...transactionData]); 
   const [showAddTransaction, setShowAddTransaction] = useState(false); 
   const [newTransaction, setNewTransaction] = useState({
@@ -19,6 +20,8 @@ function Home() {
   }); 
 
   const viewBreakdown = () => setShowBreakdown(!showBreakdown);
+  const toggleCategoryBreakdown = () => setShowCategoryBreakdown(!showCategoryBreakdown); 
+
   const totalBudget = overall.totalBudget || 0;
   const totalSpent = overall.totalSpent || 0;
   const remainingBudget = totalBudget - totalSpent;
@@ -26,6 +29,15 @@ function Home() {
   const isOverBudget = totalSpent > totalBudget;
 
   const sortedProgressData = [...progressData].sort((a, b) => b.spent - a.spent);
+
+  const categoryTotals = transactions.reduce((acc, transaction) => {
+    const { category, amount } = transaction;
+    if (!acc[category]) {
+      acc[category] = 0;
+    }
+    acc[category] += amount;
+    return acc;
+  }, {});
 
   const handleAddTransaction = () => {
     if (newTransaction.merchant && newTransaction.category && newTransaction.amount && newTransaction.date) {
@@ -36,7 +48,7 @@ function Home() {
       };
       setTransactions(prevTransactions => [newTransactionWithId,...prevTransactions]); 
       setShowAddTransaction(false); 
-      setNewTransaction({ merchant: '', category: '', amount: '', date: '' }); // Reset form fields
+      setNewTransaction({ merchant: '', category: '', amount: '', date: '' });
     }
   };
 
@@ -68,6 +80,23 @@ function Home() {
               <p><strong>Total Budget:</strong> ${totalBudget}</p>
               <p><strong>Spent:</strong> ${totalSpent}</p>
               <p><strong>Remaining:</strong> ${remainingBudget > 0 ? remainingBudget : 0}</p>
+            </div>
+          )}
+          
+          <button className="view-breakdown" onClick={toggleCategoryBreakdown}>
+            {showCategoryBreakdown ? 'Hide Category Breakdown' : 'View Category Breakdown'}
+          </button>
+
+          {showCategoryBreakdown && (
+            <div className="category-breakdown">
+              <h3>Category Breakdown</h3>
+              <ul>
+                {Object.keys(categoryTotals).map(category => (
+                  <li key={category}>
+                    <strong>{category}:</strong> ${categoryTotals[category].toFixed(2)}
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
         </div>

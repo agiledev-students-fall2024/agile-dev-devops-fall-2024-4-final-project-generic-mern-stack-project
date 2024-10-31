@@ -21,10 +21,15 @@ function BudgetProgress() {
     };
   });
 
-  const totalSpent = progressData.reduce((acc, { spent }) => acc + spent, 0);
-  const totalLimit = budgetLimits.MonthlyBudget || 1;
+  const totalSpent = Object.values(spentPerCategory).reduce((acc, amount) => acc + amount, 0);
+  
+  const totalLimit = budgetLimits.MonthlyBudget || 3000;
   const overallSpent = (totalSpent / totalLimit) * 100;
   const remaining = totalLimit - totalSpent;
+
+  console.log("Category Totals:", spentPerCategory);
+  console.log("Total Spent:", totalSpent);
+  console.log("Total Limit:", totalLimit);
 
   return {
     progressData,
