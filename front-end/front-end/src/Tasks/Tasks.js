@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Tasks.css';
-
+import { useNavigate } from 'react-router-dom';
 const TASKS_PER_PAGE = 5;
 
 function Tasks() {
@@ -15,6 +15,7 @@ function Tasks() {
   const [sortAsc, setSortAsc] = useState(true);
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
+  const nav = useNavigate()
 
   useEffect(() => {
     const collect = async () => {
@@ -74,6 +75,9 @@ function Tasks() {
     if (status === 'ongoing') return '-';
     return '';
   };
+  const handleEdit = () => {
+    nav('/EditTask');
+  };
 
   const toggleFilterVisibility = () => setShowFilters(!showFilters);
   const toggleSortOrder = () => setSortAsc(!sortAsc);
@@ -130,9 +134,7 @@ function Tasks() {
               />
               <span className="status-icon">{getStatusIcon(task.status)}</span>
               <span className="task-name">{task.name}</span>
-              <button className="edit-btn">
-                <Link to={`/edit-task/${index}`}>Edit</Link>
-              </button>
+              <button onClick={handleEdit} className="edit-btn">Edit</button>
               <span className="due-date">{task.due}</span>
             </div>
           ))
@@ -150,8 +152,8 @@ function Tasks() {
           </button>
         </div>
 
-        <Link to="/CreateTask"><button className="add-task-btn">Add New Task</button></Link>
-        <Link to="/" className="home-btn">Home</Link>
+        <Link to="/CreateTask" className="home-btn">Add New Task</Link>
+        <Link to="/Homepage" className="home-btn">Home</Link>
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ const Header = () => {
 
     return (
         <div className="header">
-            <Link to="/">Home</Link>
+            <Link to="/Homepage">Home</Link>
             <Link to="/Tasks">Tasks</Link>
             <Link to="/Calendar_monthly">Calendar</Link>
             <Link to="/Goals">Goals</Link>

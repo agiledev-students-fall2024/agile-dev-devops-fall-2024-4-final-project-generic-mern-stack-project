@@ -21,7 +21,7 @@ const Goals = () => {
     const [selectedGoal, setSelectedGoal] = useState(null);
 
     return (
-        <div className="container">
+        <div className="goal-container">
             <h1 className="page-title">Goals</h1>
             <Link to="/NewGoal" className="new-goal-btn">New</Link>
             <div className="goals-list">
@@ -42,7 +42,7 @@ const Goals = () => {
                     ))
                 )}
             </div>
-            <Link to="/" className="home-btn">Home</Link>
+            <Link to="/Homepage" className="home-btn">Home</Link>
             {selectedGoal && (
                 <TaskModal goal={selectedGoal} onClose={() => setSelectedGoal(null)} />
             )}

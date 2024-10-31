@@ -33,8 +33,8 @@ const Calendar_monthly = () => {
     const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
     return (
-        <main className="Calendar_monthly">
-            <div className="container">
+        <main>
+            <div className="calendar-container">
                 <div className='title'>
                     <h2>{monthStr}, {year}</h2>
                 </div>
@@ -42,7 +42,7 @@ const Calendar_monthly = () => {
                 <div className="month">
                     <div className='header'>
                         {dayNames.map((dayName, index) => (
-                            <div className="dayname" key={index}>{dayName}</div>
+                            <div className="dayName" key={index}>{dayName}</div>
                         ))}
                     </div>
 
