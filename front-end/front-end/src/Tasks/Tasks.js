@@ -25,6 +25,7 @@ function Tasks() {
       const response = await fetch('https://my.api.mockaroo.com/tasks?key=34c59640');
       const data = await response.json();
       setTasks(data);
+      console.log(data)
       setLoading(false);
     };
     collect();
