@@ -1,48 +1,29 @@
-.Charts h1 {
+.charts-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 20px; /* Increased padding at the top */
+}
+
+/* Center-align and add space for the title */
+.charts-page h2 {
     text-align: center;
+    margin: 40px 0 20px; /* Adds top margin to space out from the top */
+}
+
+.chart-container {
+    width: 80%;
+    margin-top: 30px; /* Adds margin between each chart container */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.chart-container h3 {
     margin-bottom: 20px;
-}
-
-.chart-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    padding: 20px;
-}
-
-.chart-item {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     text-align: center;
-}
-
-.net-worth {
-    grid-column: span 2;
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-.net-worth h3 {
-    margin-bottom: 10px;
-}
-
-.net-worth-amount {
-    font-size: 1.5em;
-    margin-bottom: 15px;
-}
-
-.button {
-    background-color: #287DDE;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
 }
 
 @media screen and (max-width: 768px) {
@@ -54,3 +35,4 @@
         grid-column: span 1;
     }
 }
+
