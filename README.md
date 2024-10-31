@@ -10,7 +10,7 @@ Cyclable’s mission is to make biking in NYC more accessible and enjoyable for 
 
 ## Core Team Members
 
-- **[Nikky](https://github.com/nikkylu)**
+- **[Nikky Lu](https://github.com/nikkylu)**
 - **[Eleazar Neri](https://github.com/afknero)**
 - **[Diya Agrawal](https://github.com/diyagr)**
 - **[Hojong Shim](https://github.com/hojongshim)**

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { FaAngleDoubleRight } from "react-icons/fa";
 
 const SavedRoutes = () => {
   const navigate = useNavigate();
@@ -11,13 +12,13 @@ const SavedRoutes = () => {
 
   const fetchRoutes = async () => {
     try {
-      // const response = await axios.get(BASE_URL);
-      // setRoutes(response.data);
-      axios
-      .get('/Routes.json') 
-      .then(response => {
-        setRoutes(response.data);
-      })
+      const response = await axios.get(BASE_URL);
+      setRoutes(response.data);
+      // axios
+      // .get('/Routes.json') 
+      // .then(response => {
+      //   setRoutes(response.data);
+      // })
     } catch (error) {
       console.error("Error fetching routes:", error);
     }

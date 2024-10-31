@@ -11,19 +11,21 @@ import Signup from './Signup'; // Import the Signup component
 
 function App() {
   return (
-    <Router>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/post" element={<Post />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/edit-profile" element={<EditProfile />} />
-        <Route path="/map" element={<Map />} />
-        <Route path="/saved-routes" element={<SavedRoutes />} />
-        <Route path="/login" element={<Login />} /> {/* Add Login route */}
-        <Route path="/signup" element={<Signup />} /> {/* Add Signup route */}
-      </Routes>
-    </Router>
+    <div className="h-screen overflow-hidden">
+      <Router>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/post" element={<Post />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
+          <Route path="/map" element={<Map />} />
+          <Route path="/saved-routes" element={<SavedRoutes />} />
+          <Route path="/login" element={<Login />} /> {/* Add Login route */}
+          <Route path="/signup" element={<Signup />} /> {/* Add Signup route */}
+        </Routes>
+      </Router>
+    </div>
   );
 }
 
