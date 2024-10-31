@@ -1,4 +1,3 @@
-// ActivitiesPage.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import GroupTripPictureCard from '../components/activities/GroupTripPictureCard';
@@ -13,23 +12,21 @@ const ActivitiesPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch the location details to get the name
     axios
       .get(`https://mock-api-misty-fog-1131.fly.dev/api/locations/${locationId}`)
       .then((locationResponse) => {
-        setLocationName(locationResponse.data.name); // Set the location name
+        setLocationName(locationResponse.data.name);
 
-        // Fetch activities associated with this location
         return axios.get(`https://mock-api-misty-fog-1131.fly.dev/api/locations/${locationId}/activities`);
       })
       .then((activitiesResponse) => {
-        setActivities(activitiesResponse.data); // Set activities
+        setActivities(activitiesResponse.data); 
       })
       .catch((error) => {
-        console.error('Error fetching data:', error); // Log error
-        setError('Failed to fetch activities'); // Set error message
+        console.error('Error fetching data:', error); 
+        setError('Failed to fetch activities'); 
       });
-  }, [locationId]); // Dependency array includes locationId for dynamic loading
+  }, [locationId]);
 
   return (
     <div className="activities-page">
@@ -45,7 +42,7 @@ const ActivitiesPage = () => {
       </div>
 
       {error ? (
-        <p>{error}</p> // Show error if present
+        <p>{error}</p>
       ) : (
         <div className="activity-list">
           {activities.map((activity) => (

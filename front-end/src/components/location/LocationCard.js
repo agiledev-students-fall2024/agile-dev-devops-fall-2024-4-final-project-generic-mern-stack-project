@@ -1,4 +1,3 @@
-// LocationCard.js
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LocationCard.css';
@@ -8,9 +7,9 @@ const LocationCard = ({ location, tripStatus }) => {
 
   const handleCardClick = () => {
     if (tripStatus === 'completed') {
-      navigate(`/past-trip/${location.id}`); // Route to PastTrip if trip is completed
+      navigate(`/past-trip/${location.id}`); 
     } else {
-      navigate(`/activities/${location.id}`); // Route to ActivitiesPage if trip is ongoing
+      navigate(`/activities/${location.id}`); 
     }
   };
 
