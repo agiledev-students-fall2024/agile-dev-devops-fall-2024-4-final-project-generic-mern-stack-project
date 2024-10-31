@@ -1,4 +1,3 @@
-// Locations.js
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import LocationCard from '../components/location/LocationCard';
@@ -7,23 +6,21 @@ import axios from 'axios';
 
 const Locations = () => {
   const [locations, setLocations] = useState([]);
-  const [tripStatus, setTripStatus] = useState(null); // State to hold the trip status
+  const [tripStatus, setTripStatus] = useState(null); 
   const [loading, setLoading] = useState(true);
   const { tripId } = useParams();
 
   const fetchLocationsAndStatus = async () => {
     try {
-      // Fetch locations
       const locationsResponse = await axios.get(
         `https://mock-api-misty-fog-1131.fly.dev/api/trips/${tripId}/locations`
       );
       setLocations(locationsResponse.data);
 
-      // Fetch trip details to get the status
       const tripResponse = await axios.get(
         `https://mock-api-misty-fog-1131.fly.dev/api/trips/${tripId}`
       );
-      setTripStatus(tripResponse.data.status); // Set the trip status (e.g., 'completed' or 'ongoing')
+      setTripStatus(tripResponse.data.status);
     } catch (error) {
       console.error('Error fetching locations or trip status:', error);
     } finally {
@@ -52,7 +49,7 @@ const Locations = () => {
           <LocationCard
             key={location.id}
             location={location}
-            tripStatus={tripStatus} // Pass trip status to each LocationCard
+            tripStatus={tripStatus}
           />
         ))}
       </div>

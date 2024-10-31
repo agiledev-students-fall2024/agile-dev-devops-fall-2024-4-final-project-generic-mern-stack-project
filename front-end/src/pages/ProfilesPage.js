@@ -1,4 +1,3 @@
-// ProfilesPage.js
 import React, { useState, useEffect } from 'react';
 import ProfileHeader from '../components/profile/ProfileHeader';
 import ProfileForm from '../forms/ProfileForm';

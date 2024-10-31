@@ -7,8 +7,8 @@ const AddLocationForm = ({ onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ name, address }); // Call the parent’s submit function (passed in as prop)
-    setName(''); // clear inputs
+    onSubmit({ name, address }); // call parent’s submit function (passed in as a prop)
+    setName(''); // clear the inputs
     setAddress(''); 
   };
 
