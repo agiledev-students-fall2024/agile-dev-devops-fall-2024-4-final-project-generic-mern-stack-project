@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import './Register.css'
 const Login = () => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
@@ -50,7 +50,7 @@ const Login = () => {
     }
 
     return (
-        <div>
+        <div className="register-container">
             <h1>Login</h1>
                 <div>
                     <h3>Username</h3>
@@ -68,7 +68,8 @@ const Login = () => {
                     <h3>Last Name</h3>
                     <input type="password" value={lastName} onChange={handleLastName} placeholder={"Input Password Here"}/>
                 </div>
-                <button onClick={handleSubmit}>Submit</button>
+                    <button onClick={handleSubmit} className="register-btn">Submit</button>
+            
         </div>
     )
 }
