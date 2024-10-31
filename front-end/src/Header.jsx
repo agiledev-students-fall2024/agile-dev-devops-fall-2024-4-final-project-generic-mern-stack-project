@@ -8,30 +8,30 @@ function Header() {
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
   return (
-    <header className="fixed top-0 w-full h-6 px-4 z-10 bg-emerald-800 text-white flex justify-between items-center">
-      <h1 className="text-lg font-extrabold">
-        <Link to="/">Cyclable</Link>
+    <header className='fixed top-0 z-10 flex h-6 w-full items-center justify-between bg-emerald-800 px-4 text-white'>
+      <h1 className='text-lg font-extrabold'>
+        <Link to='/'>Cyclable</Link>
       </h1>
 
       <FaAlignJustify
-        className="cursor-pointer text-white hover:text-gray-300"
+        className='cursor-pointer text-white hover:text-gray-300'
         onClick={toggleMenu}
         size={24}
       />
 
       {menuOpen && (
-        <div className="absolute top-16 right-4 w-64 bg-gray-100 shadow-lg p-4 z-10 rounded-lg">
+        <div className='absolute right-4 top-16 z-10 w-64 rounded-lg bg-gray-100 p-4 shadow-lg'>
           <FaCompress
-            className="absolute top-2 right-2 cursor-pointer text-emerald-800 hover:text-gray-600"
+            className='absolute right-2 top-2 cursor-pointer text-emerald-800 hover:text-gray-600'
             onClick={toggleMenu}
             size={20}
           />
-          <nav className="mt-4">
-            <ul className="flex flex-col items-end space-y-4">
+          <nav className='mt-4'>
+            <ul className='flex flex-col items-end space-y-4'>
               <li>
                 <Link
-                  to="/"
-                  className="text-emerald-800 font-semibold hover:underline"
+                  to='/'
+                  className='font-semibold text-emerald-800 hover:underline'
                   onClick={toggleMenu}
                 >
                   Home
@@ -39,8 +39,8 @@ function Header() {
               </li>
               <li>
                 <Link
-                  to="/map"
-                  className="text-emerald-800 font-semibold hover:underline"
+                  to='/map'
+                  className='font-semibold text-emerald-800 hover:underline'
                   onClick={toggleMenu}
                 >
                   Map
@@ -48,8 +48,8 @@ function Header() {
               </li>
               <li>
                 <Link
-                  to="/post"
-                  className="text-emerald-800 font-semibold hover:underline"
+                  to='/post'
+                  className='font-semibold text-emerald-800 hover:underline'
                   onClick={toggleMenu}
                 >
                   Post
@@ -57,8 +57,8 @@ function Header() {
               </li>
               <li>
                 <Link
-                  to="/profile"
-                  className="text-emerald-800 font-semibold hover:underline"
+                  to='/profile'
+                  className='font-semibold text-emerald-800 hover:underline'
                   onClick={toggleMenu}
                 >
                   Profile
@@ -66,8 +66,8 @@ function Header() {
               </li>
               <li>
                 <Link
-                  to="/saved-routes"
-                  className="text-emerald-800 font-semibold hover:underline"
+                  to='/saved-routes'
+                  className='font-semibold text-emerald-800 hover:underline'
                   onClick={toggleMenu}
                 >
                   Saved Routes

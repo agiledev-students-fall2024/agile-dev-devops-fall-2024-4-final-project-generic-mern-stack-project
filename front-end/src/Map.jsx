@@ -73,13 +73,13 @@ function Map() {
   }, []);
 
   return (
-    <div className="relative h-screen">
+    <div className='relative h-screen'>
       {/* Map container */}
-      <div id="map-container" className="h-94 w-full" ref={mapContainerRef} />
+      <div id='map-container' className='h-94 w-full' ref={mapContainerRef} />
 
-      <div className="absolute bottom-16 right-12 p-2 bg-white rounded-full shadow-lg cursor-pointer">
+      <div className='absolute bottom-16 right-12 cursor-pointer rounded-full bg-white p-2 shadow-lg'>
         <FaArrowDown
-          className="text-2xl text-emerald-800"
+          className='text-2xl text-emerald-800'
           onClick={() => navigate('/saved-routes')}
         />
       </div>
