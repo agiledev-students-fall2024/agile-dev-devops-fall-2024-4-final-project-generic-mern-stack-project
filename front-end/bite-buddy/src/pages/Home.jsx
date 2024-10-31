@@ -60,7 +60,7 @@ const Home = () => {
 
         const fetchRecipeData = async () => {
             try{
-            const response = await axios.get('https://my.api.mockaroo.com/basic_recipe.json?key=bd61d090');
+            const response = await axios.get('https://my.api.mockaroo.com/basic_recipe.json?key=786e37d0');
             const fetchedData = response.data || [];
             console.log(fetchedData);
 
