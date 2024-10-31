@@ -9,7 +9,7 @@ function RecurringPayments() {
     name: '',
     category: '',
     amount: '',
-    dueDate: '' // Updated to handle 'dueDate' as a single string
+    dueDate: ''
   });
 
   const handleAddPayment = () => {
