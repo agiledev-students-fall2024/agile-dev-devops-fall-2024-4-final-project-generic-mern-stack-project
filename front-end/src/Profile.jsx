@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, ChevronRight } from 'lucide-react';
 import axios from 'axios';
+import { FaAngleDoubleRight } from "react-icons/fa";
 
 const Profile = () => {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({ username: 'unique_username', routes: [] });
   const API_KEY = process.env.REACT_APP_MOCKAROO_API_KEY;
-  // const ROUTES_URL = `https://my.api.mockaroo.com/Saved_Routes.JSON?key=${API_KEY}`;
-  const ROUTES_URL = './Routes.json'
+  const ROUTES_URL = `https://my.api.mockaroo.com/Saved_Routes.JSON?key=${API_KEY}`;
+  // const ROUTES_URL = './Routes.json'
 
   useEffect(() => {
     const fetchRoutes = async () => {
@@ -40,9 +41,14 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className="mb-4">
+        <div className="mb-4 flex justify-between items-center">
           <h3 className="text-lg font-medium">Saved Routes</h3>
+          <div className="flex items-center cursor-pointer" onClick={() => navigate('/saved-routes')}>
+            <span className="text-gray-600 mr-1">more</span>
+            <FaAngleDoubleRight className="text-emerald-800" />
+          </div>
         </div>
+
 
         <div className="space-y-3 mb-8">
           {userInfo.routes.map((route, index) => (

@@ -1,13 +1,16 @@
 import { useState, useRef, useEffect } from 'react';
+import {Link, useNavigate } from 'react-router-dom';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions';
 import '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css';
-import { faTruckMedical } from '@fortawesome/free-solid-svg-icons';
+import { faTruckMedical} from '@fortawesome/free-solid-svg-icons';
+import { FaArrowDown } from "react-icons/fa";
 
 function Map() {
+  const navigate = useNavigate();
   const mapContainerRef = useRef();
   const mapInstanceRef = useRef();
   const [mapLoaded, setMapLoaded] = useState(false);
@@ -72,9 +75,14 @@ function Map() {
   }, []);
 
   return (
-    <>
-      <div id="map-container" className="h-94 w-full" ref={mapContainerRef} />
-    </>
+    <div className="relative h-screen">
+      {/* Map container */}
+      <div id="map-container" className="h-full w-full" ref={mapContainerRef} />
+
+      <div className="absolute bottom-16 right-12 p-2 bg-white rounded-full shadow-lg cursor-pointer">
+        <FaArrowDown className="text-2xl text-emerald-800" onClick={() => navigate('/saved-routes')}/>
+      </div>
+    </div>
   );
 }
 export default Map;

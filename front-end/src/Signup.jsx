@@ -1,6 +1,7 @@
 // src/Signup.js
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { FaAngleDoubleLeft } from "react-icons/fa";
 
 const Signup = () => {
   const navigate = useNavigate(); // Get the navigate function
@@ -13,7 +14,10 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center relative">
+      <div className="absolute top-4 left-4 cursor-pointer" onClick={() => navigate('/')}>
+        <FaAngleDoubleLeft className="text-2xl text-emerald-800" />
+      </div>
       <div className="bg-white p-6 rounded shadow-md">
         <h2 className="text-2xl mb-4">Sign Up</h2>
         <form onSubmit={handleSubmit}>
