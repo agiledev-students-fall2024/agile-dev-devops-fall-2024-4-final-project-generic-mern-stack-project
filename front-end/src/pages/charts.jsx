@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Line, Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import './charts.css';
 
 // Register Chart.js components
 ChartJS.register(
@@ -19,10 +20,8 @@ const ChartsPage = () => {
   const [incomeData, setIncomeData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Mocked Data - Replace with actual data fetch
   useEffect(() => {
     const fetchData = async () => {
-      // Replace this with an API call to fetch financial data
       const mockExpenseData = [500, 400, 300, 700, 600, 400, 800, 500, 600, 700, 400, 900];
       const mockIncomeData = [1000, 1200, 900, 1100, 1000, 1200, 1300, 1150, 1200, 1250, 1300, 1400];
       
@@ -37,7 +36,6 @@ const ChartsPage = () => {
     return <div>Loading data...</div>;
   }
 
-  // Line Chart Data
   const lineChartData = {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     datasets: [
@@ -46,7 +44,7 @@ const ChartsPage = () => {
         data: expenseData,
         borderColor: 'rgba(255, 99, 132, 1)',
         backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        tension: 0.2,  // Adds smoothness to the line
+        tension: 0.2,
       },
       {
         label: 'Monthly Income',
@@ -58,7 +56,6 @@ const ChartsPage = () => {
     ],
   };
 
-  // Bar Chart Data
   const barChartData = {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     datasets: [
@@ -70,7 +67,6 @@ const ChartsPage = () => {
     ],
   };
 
-  // Chart options for both charts
   const chartOptions = {
     responsive: true,
     plugins: {
