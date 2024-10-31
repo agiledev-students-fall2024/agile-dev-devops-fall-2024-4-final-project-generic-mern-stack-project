@@ -7,6 +7,12 @@ module.exports = {
         '6': '6vh',
         '94': '94vh',
       },
+      minHeight: {
+        '94': '94vh'
+      },
+      margin: {
+        '6': '6vh',
+      },
     },
   },
   plugins: [],

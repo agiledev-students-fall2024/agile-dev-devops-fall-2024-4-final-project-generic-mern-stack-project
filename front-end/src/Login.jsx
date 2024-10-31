@@ -11,7 +11,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative">
+    <div className="h-94 flex items-center justify-center relative">
       <div className="absolute top-4 left-4 cursor-pointer" onClick={() => navigate('/')}>
         <FaAngleDoubleLeft className="text-2xl text-emerald-800" />
       </div>
