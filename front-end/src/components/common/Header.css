@@ -2,25 +2,26 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 3rem; 
+  padding: 1rem 3rem;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .header__logo-link {
   color: #FF385C;
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: bold;
   text-decoration: none;
-  margin-right: 1rem; 
+  margin-right: 1rem;
 }
 
 .header__right {
   display: flex;
   align-items: center;
-  margin-left: 1rem; 
+  gap: 1.5rem;
 }
 
+/* Profile Styles */
 .header__profile-wrapper {
   position: relative;
   cursor: pointer;
@@ -29,12 +30,12 @@
 .header__profile {
   display: flex;
   align-items: center;
-  border: 1px solid #ccc; 
+  border: 1px solid #ccc;
   border-radius: 25px;
   padding: 0.25rem 0.5rem;
   gap: 0.4rem;
-  background-color: #fff; 
-  margin-right: 1rem; 
+  background-color: #fff;
+  margin-right: 1rem;
 }
 
 .header__profile-menu-icon {
@@ -44,4 +45,44 @@
 
 .header__profile-icon {
   font-size: 1.5rem;
+}
+
+/* Auth Links for Logged-Out State */
+.header__auth {
+  display: flex;
+  gap: 1rem;
+}
+
+.header__auth-link,
+.header__auth-button {
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 20px;
+  transition: background-color 0.3s, color 0.3s, transform 0.2s;
+  border: 2px solid transparent;
+}
+
+/* Login Link */
+.header__auth-link {
+  color: #FF385C;
+  border: 2px solid #FF385C;
+}
+
+.header__auth-link:hover {
+  color: #fff;
+  background-color: #FF385C;
+}
+
+/* Sign Up Button */
+.header__auth-button {
+  color: #fff;
+  background-color: #FF385C;
+  border: 2px solid #FF385C;
+}
+
+.header__auth-button:hover {
+  background-color: #e0304b;
+  transform: scale(1.05);
 }
