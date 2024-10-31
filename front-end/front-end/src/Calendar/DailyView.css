@@ -21,7 +21,7 @@
 .task-item {
     display: flex;
     justify-content: space-between;
-    background-color: #f4f4f4;
+    background-color: white;
     padding: 10px;
     border-radius: 8px;
     margin-bottom: 10px;
@@ -30,7 +30,7 @@
 
 .task-name {
     font-size: 16px;
-    color: #555;
+    color: gray;
 }
 
 .task-done-btn, .task-pending-btn {

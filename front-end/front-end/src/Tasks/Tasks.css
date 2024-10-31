@@ -1,6 +1,6 @@
 
 body {
-background-color: #f9f9f9;
+background-color: white;
 display: flex;
 justify-content: center;
 align-items: center;
@@ -15,21 +15,19 @@ gap: 10px;
 }
 .main-tasks-container {
 background-color: white;
-width: 400px;  /* Set width to match the Home page */
+width: 400px;
 padding: 20px;
 border-radius: 15px;
-box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);  /* Consistent box-shadow */
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 text-align: center;
 margin: 50px auto;
 }
 
-/* Title for Task Page */
 .tasks-title {
 font-size: 32px;
 margin-bottom: 20px;
 }
 
-/* Task List */
 .task-list {
 margin-top: 10px;
 }
@@ -38,7 +36,7 @@ margin-top: 10px;
 display: flex;
 align-items: center;
 justify-content: space-between;
-background-color: #f4f4f4;
+background-color: white;
 padding: 10px;
 border-radius: 8px;
 margin-bottom: 10px;
@@ -73,11 +71,10 @@ font-weight: bold;
 font-size: 14px;
 }
 
-/* Status Icon Styling */
 .status-icon {
 margin-right: 10px;
 font-size: 18px;
-color: green;  /* Adjust color if necessary */
+color: green; 
 }
 
 
@@ -85,13 +82,12 @@ color: green;  /* Adjust color if necessary */
 background-color: #0056b3;
 }
 
-/* Add Task & Home Buttons */
 .add-task-btn,
 .home-btn {
 display: block;
 margin: 10px auto;
 padding: 15px;
-width: 100%;  /* Ensure buttons are full width */
+width: 100%;
 background-color: #2196F3;
 color: white;
 border: none;
@@ -105,7 +101,6 @@ font-size: 16px;
 background-color: purple;
 }
 
-/* Pagination Styling */
 .pagination {
 margin: 20px 0;
 display: flex;

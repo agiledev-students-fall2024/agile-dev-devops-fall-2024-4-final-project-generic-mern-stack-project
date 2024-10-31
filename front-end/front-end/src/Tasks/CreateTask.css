@@ -3,7 +3,7 @@
 width: 400px;
 margin: 0 auto;
 padding: 20px;
-background-color: #f8f9fa;
+background-color: white;
 border-radius: 10px;
 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 margin: 50px auto;
@@ -15,7 +15,6 @@ margin-bottom: 8px;
 color: #333;
 }
 
-/* Input fields styling */
 .create-task-container input[type="text"], 
 .create-task-container select {
 width: 100%;
@@ -25,7 +24,7 @@ border: 1px solid #ccc;
 border-radius: 5px;
 box-sizing: border-box;
 font-size: 16px;
-background-color: #fff;
+background-color: white;
 color: #333;
 }
 
