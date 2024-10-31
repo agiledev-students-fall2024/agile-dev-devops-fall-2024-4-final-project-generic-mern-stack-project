@@ -5,6 +5,7 @@ import './ProfilesPage.css';
 
 const ProfilesPage = () => {
   const [userData, setUserData] = useState({
+    username: '',
     firstName: '',
     lastName: '',
     email: '',
@@ -17,9 +18,10 @@ const ProfilesPage = () => {
   useEffect(() => {
     async function fetchUserData() {
       try {
-        const response = await fetch('https://mock-api-misty-fog-1131.fly.dev/api/users/user_123'); 
+        const response = await fetch('https://mock-api-misty-fog-1131.fly.dev/api/users/user_123');
         const data = await response.json();
-        setUserData(data); 
+        const [firstName, lastName] = data.name.split(' '); // Split full name
+        setUserData({ ...data, firstName, lastName });
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -43,7 +45,7 @@ const ProfilesPage = () => {
 
   return (
     <div className="profiles-page">
-      <ProfileHeader name={`${userData.firstName} ${userData.lastName}`} />
+      <ProfileHeader name={`${userData.firstName} ${userData.lastName}`} profilePicture={userData.profilePicture} />
       <ProfileForm
         userData={userData}
         isEditMode={isEditMode}
