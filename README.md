@@ -55,6 +55,12 @@ To start the application , run:
 npm start
 ```
 
+To create an optimized production build, run:
+
+```bash
+npm run build
+```
+
 The app will be accessible locally at `http://localhost:3000`.
 
 ## How to Contribute
