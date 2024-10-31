@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Tasks.css';
 
 const TASKS_PER_PAGE = 5;
 
-function Tasks({ tasks, setTasks }) {
+function Tasks() {
   const [currentPage, setCurrentPage] = useState(1);
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({
@@ -12,9 +12,23 @@ function Tasks({ tasks, setTasks }) {
     status: '',
     subject: '',
   });
-  const [sortAsc, setSortAsc] = useState(true); // New state for sorting
+  const [sortAsc, setSortAsc] = useState(true);
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  // Filtered and sorted tasks
+  useEffect(() => {
+    const collect = async () => {
+      setLoading(true);
+      //const session = window.localStorage.getItem("session_id")
+      //this is to retrieve a logged in user's object, if null no user is signed in
+      const response = await fetch('https://my.api.mockaroo.com/tasks?key=34c59640');
+      const data = await response.json();
+      setTasks(data);
+      setLoading(false);
+    };
+    collect();
+  }, []);
+
   const filteredTasks = tasks
     .filter(task => 
       (filters.priority === '' || task.priority === filters.priority) &&
@@ -26,7 +40,6 @@ function Tasks({ tasks, setTasks }) {
       return new Date(a.due) - new Date(b.due);
     });
 
-  // Pagination logic
   const totalPages = Math.ceil(filteredTasks.length / TASKS_PER_PAGE);
   const indexOfLastTask = currentPage * TASKS_PER_PAGE;
   const indexOfFirstTask = indexOfLastTask - TASKS_PER_PAGE;
@@ -40,7 +53,6 @@ function Tasks({ tasks, setTasks }) {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
-  // Toggle task status
   const toggleStatus = (index) => {
     const taskIndex = (currentPage - 1) * TASKS_PER_PAGE + index;
     setTasks(tasks.map((task, i) => {
@@ -59,14 +71,11 @@ function Tasks({ tasks, setTasks }) {
 
   const getStatusIcon = (status) => {
     if (status === 'finished') return '✓';
-    if (status === 'ongoing') return '–';
+    if (status === 'ongoing') return '-';
     return '';
   };
 
-  // Toggle filter visibility
   const toggleFilterVisibility = () => setShowFilters(!showFilters);
-
-  // Toggle sorting order
   const toggleSortOrder = () => setSortAsc(!sortAsc);
 
   return (
@@ -80,7 +89,6 @@ function Tasks({ tasks, setTasks }) {
         </button>
       </div>
 
-      {/* Filters */}
       {showFilters && (
         <div className="filter-options">
           <select name="priority" onChange={(e) => setFilters({ ...filters, priority: e.target.value })}>
@@ -106,26 +114,30 @@ function Tasks({ tasks, setTasks }) {
         </div>
       )}
 
-      {/* Task List */}
       <div className="task-list">
-        {currentTasks.map((task, index) => (
-          <div className="task-item" key={index}>
-            <input
-              type="checkbox"
-              checked={task.status === 'finished'}
-              readOnly
-              onClick={() => toggleStatus(index)}
-            />
-            <span className="status-icon">{getStatusIcon(task.status)}</span>
-            <span className="task-name">{task.name}</span>
-            <button className="edit-btn">
-              <Link to={`/edit-task/${index}`}>Edit</Link>
-            </button>
-            <span className="due-date">{task.due}</span>
-          </div>
-        ))}
+        {loading ? (
+          <p>Loading...</p>
+        ) : tasks.length === 0 ? (
+          <p>No tasks found.</p>
+        ) : (
+          currentTasks.map((task, index) => (
+            <div className="task-item" key={index}>
+              <input
+                type="checkbox"
+                checked={task.status === 'finished'}
+                readOnly
+                onClick={() => toggleStatus(index)}
+              />
+              <span className="status-icon">{getStatusIcon(task.status)}</span>
+              <span className="task-name">{task.name}</span>
+              <button className="edit-btn">
+                <Link to={`/edit-task/${index}`}>Edit</Link>
+              </button>
+              <span className="due-date">{task.due}</span>
+            </div>
+          ))
+        )}
 
-        {/* Pagination */}
         <div className="pagination">
           <button className='page-btn' onClick={prevPage} disabled={currentPage === 1}>
             Previous

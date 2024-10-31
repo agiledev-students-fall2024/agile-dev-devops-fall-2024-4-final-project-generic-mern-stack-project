@@ -12,6 +12,7 @@ function CreateTask() {
         due_date: "", //turn this into a date object before sending to the backend so the date can work with time tracking libraries
         priority: "",
         recurring: "",
+        recurring_period: "",
         status: "not_started"
     })
 
@@ -53,11 +54,15 @@ function CreateTask() {
     }
 
     const handleSubmit = (e) => {
+        if (!title || !subject || !due_date || !priority || (recurring === "Yes" && !recurringPeriod)) {
+            alert("Please fill out all required fields.");
+            return;
+        }
         e.preventDefault()
         task.current.title = title
         task.current.description = description
         task.current.subject = subject
-        task.current.due_date = due_date
+        task.current.due_date = new Date(due_date)
         task.current.priority = priority
         task.current.recurring = recurring
         task.current.recurringPeriod = recurring === "Yes" ? recurringPeriod : "";
@@ -73,7 +78,7 @@ function CreateTask() {
             </div>
             <div>
                 <h3>Description</h3>
-                <input type="text" value={description} onChange={handleDescription} placeholder={"Input Description Here"}/>
+                <input type="text" value={description} onChange={handleDescription} placeholder={"Input Description Here (Optional)"}/>
             </div>
             <div>
                 <h3>Subject</h3>
@@ -112,7 +117,7 @@ function CreateTask() {
             )}
             <div className="create-task-buttons">
                 <Link to="/Tasks"> <button className="cancel-btn">Cancel</button></Link>
-                <button onClick={handleSubmit} className="create-btn">Create Task</button>
+                <button type="submit" onClick={handleSubmit} className="create-btn">Create Task</button>
             </div>
         </div>
     )
