@@ -43,7 +43,7 @@ function Profile() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const mockarooUrl = 'https://my.api.mockaroo.com/bite_buddy_1.json?key=bd61d090';
+        const mockarooUrl = 'https://my.api.mockaroo.com/bite_buddy_profile.json?key=786e37d0';
 
         axios.get(mockarooUrl)
             .then(response => {
