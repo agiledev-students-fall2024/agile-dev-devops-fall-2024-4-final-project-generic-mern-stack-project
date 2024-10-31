@@ -27,5 +27,5 @@ export default function PriceRangeFilters({ handleFilterClick }: Props) {
       {"$".repeat(priceRangeToDollarIcons[priceRange as PriceRange])})
     </Button>
   ));
-  return <div className="flex flex-col gap-5">{priceRangeButtons}</div>;
+  return <div className="flex flex-col">{priceRangeButtons}</div>;
 }
