@@ -10,6 +10,8 @@ import AddActivity from './pages/AddActivity';
 import AddLocation from './pages/AddLocation';
 import ProfilesPage from './pages/ProfilesPage';
 import AddTrip from './pages/AddTrip';
+import JoinTrip from './pages/JoinTrip';
+
 const App = () => {
   const user = { name: "John Doe", profilePicture: "https://via.placeholder.com/100" };
   const isLoggedIn = !!user;
@@ -23,12 +25,13 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/past-trip/:locationId" element={<PastTrip />} /> 
-        < Route path="/activities/:locationId" element={<ActivitiesPage />} /> 
+          <Route path="/activities/:locationId" element={<ActivitiesPage />} /> 
           <Route path="/locations/:tripId" element={<Locations />} />
           <Route path="/add-activity/:locationId" element={<AddActivity />} />
           <Route path="/add-location/:tripId" element={<AddLocation />} />
           <Route path="/profile" element={<ProfilesPage />} />
           <Route path="/create-trip" element={<AddTrip />} />
+          <Route path="/join-trip" element={<JoinTrip />} />
           
         </Routes>
       </main>
