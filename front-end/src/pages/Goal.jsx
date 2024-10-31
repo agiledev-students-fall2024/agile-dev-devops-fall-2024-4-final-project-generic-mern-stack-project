@@ -82,15 +82,7 @@ const Goal = () => {
                     )}
                 </div>
 
-                <div className="grid-item2">
-                    <div>
-                        <a href="https://maniruzzamanakash.github.io/react-calculator/" target="_blank" rel="noopener noreferrer">
-                            <button type="button" className="button">
-                                What-If Calculator
-                            </button>
-                        </a>
-                    </div>
-                </div>
+               
 
                 <div className="grid-item3">
                     <h2>{isEditing ? "Edit Goal" : "Create New Goal"}</h2>
