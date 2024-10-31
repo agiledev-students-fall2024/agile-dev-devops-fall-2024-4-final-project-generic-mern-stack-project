@@ -1,0 +1,11 @@
+# Ignore documentation files
+*.md
+
+# Ignore build directories
+dist/
+build/
+node_modules/
+
+# Ignore test files
+__tests__/
+*.spec.js
