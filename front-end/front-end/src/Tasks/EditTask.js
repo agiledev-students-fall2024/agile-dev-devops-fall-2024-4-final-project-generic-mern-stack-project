@@ -4,13 +4,15 @@ import './CreateTask.css';
 
 
 function EditTask({ tasks, setTasks }) {
-    const { taskId } = useParams(); // Get the task ID from the URL
-    const taskIndex = parseInt(taskId, 10);  // Convert taskId to a number
+    const { taskId } = useParams(); 
+    const taskIndex = parseInt(taskId, 10);
     const navigate = useNavigate();
-    const task = tasks[taskIndex];
-
+    // const task = tasks[taskIndex];
+    const task = tasks?.find(task => task.id === taskIndex);
     //Impossible to use fake data for this page since mockaroo randomly generates data instead of storing it
-
+    // Comment for the edit task: because of the restriction of mock data now, 
+    // this function cannot fully achieved, so the way we connect it is not exactly true.
+    // the page itself can be seen from http://localhost:3000/EditTask.
     const [title, setTitle] = useState(task?.name || '');
     const [description, setDescription] = useState(task?.description || '')
     const [subject, setSubject] = useState(task?.subject || '')
@@ -49,8 +51,7 @@ function EditTask({ tasks, setTasks }) {
          };
         setTasks(updatedTasks); // Update the task list
         navigate('/tasks'); // Redirect to the task list
-      };
-
+      }
     return (
     <div className="create-task-container">
         <h2>Edit Task</h2>

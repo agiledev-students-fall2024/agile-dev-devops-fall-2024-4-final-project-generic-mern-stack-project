@@ -75,8 +75,8 @@ function Tasks() {
     if (status === 'ongoing') return '-';
     return '';
   };
-  const handleEdit = () => {
-    nav('/EditTask');
+  const handleEdit = (taskId) => {
+    nav('/EditTask/${taskId}');
   };
 
   const toggleFilterVisibility = () => setShowFilters(!showFilters);
@@ -134,7 +134,10 @@ function Tasks() {
               />
               <span className="status-icon">{getStatusIcon(task.status)}</span>
               <span className="task-name">{task.name}</span>
-              <button onClick={handleEdit} className="edit-btn">Edit</button>
+              <button onClick={handleEdit(task.id)} className="edit-btn">Edit</button>
+              {/* Comment for the edit task: because of the restriction of mock data now, 
+              this function cannot fully achieved, so the way we connect it is not exactly true.
+              the page itself can be seen from http://localhost:3000/EditTask. */}
               <span className="due-date">{task.due}</span>
             </div>
           ))

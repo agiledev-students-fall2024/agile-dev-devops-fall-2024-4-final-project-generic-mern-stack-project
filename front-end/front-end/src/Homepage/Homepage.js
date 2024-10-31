@@ -22,8 +22,6 @@ function Homepage(){
 
       <div className="urgent-tasks">
         <div className="task">Urgent Tasks</div>
-        <div className="task">XXXXXXXXXXXX</div>
-        <div className="task">XXXXXXXXXXXX</div>
       </div>
 
       <div className="menu">
