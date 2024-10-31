@@ -13,7 +13,7 @@
 .chart-item {
     background-color: #f9f9f9;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 9px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
@@ -22,7 +22,7 @@
     grid-column: span 2;
     background-color: #f9f9f9;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 9px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     text-align: center;
 }

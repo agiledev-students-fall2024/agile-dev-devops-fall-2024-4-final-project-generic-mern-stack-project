@@ -19,7 +19,7 @@ const ChartsPage = () => {
   const [incomeData, setIncomeData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Mocked Data - Replace with actual data fetching
+  // Mocked Data - Replace with actual data fetch
   useEffect(() => {
     const fetchData = async () => {
       // Replace this with an API call to fetch financial data
