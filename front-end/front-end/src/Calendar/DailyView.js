@@ -8,6 +8,9 @@ const DailyView = () => {
         { id: 1, name: "Complete assignment", status: "ongoing" },
         { id: 2, name: "Meeting with team", status: "not_started" },
     ]);
+    //uses params to search for object ids but nothing is stored in the database yet
+    //mockaroo api also randomizes data, including ids, so populating the daily view accurately
+    //based on task id is impossible withoug a database
 
     const handleStatusChange = (taskId) => {
         setTasks(tasks.map(task =>

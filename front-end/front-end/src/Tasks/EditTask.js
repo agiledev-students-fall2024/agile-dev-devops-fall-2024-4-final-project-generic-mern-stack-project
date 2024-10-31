@@ -9,13 +9,17 @@ function EditTask({ tasks, setTasks }) {
     const navigate = useNavigate();
     const task = tasks[taskIndex];
 
+    //Impossible to use fake data for this page since mockaroo randomly generates data instead of storing it
+
     const [title, setTitle] = useState(task?.name || '');
     const [description, setDescription] = useState(task?.description || '')
     const [subject, setSubject] = useState(task?.subject || '')
     const [due_date, setDue_date] = useState(task?.due || '')
     const [priority, setPriority] = useState(task?.priority ||"Low")
     const [recurring, setRecurring] = useState(task?.recurring ||"No")
+    const [recurring_period, setRecurring_period] = useState(task?.recurring_period ||"");
     const [error, setError] = useState("")
+    
 
     const handleTitle = (e) => setTitle(e.target.value)
     const handleDescription = (e) => setDescription(e.target.value)
@@ -23,10 +27,15 @@ function EditTask({ tasks, setTasks }) {
     const handleDueDate = (e) => setDue_date(e.target.value)
     const handlePriority = (e) => setPriority(e.target.value)
     const handleRecurring = (e) => setRecurring(e.target.value)
+    const handleRecurringPeriod = (e) => setRecurring_period(e.target.value)
  
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (!title || !subject || !due_date || !priority || (recurring === "Yes" && !recurring_period)) {
+            alert("Please fill out all required fields.");
+            return;
+        }
         const updatedTasks = [...tasks];
         updatedTasks[taskId] = { 
             ...task, 
@@ -35,7 +44,9 @@ function EditTask({ tasks, setTasks }) {
             subject: subject,
             due: due_date,
             priority: priority,
-            recurring:recurring };
+            recurring:recurring,
+            recurring_period: recurring_period
+         };
         setTasks(updatedTasks); // Update the task list
         navigate('/tasks'); // Redirect to the task list
       };
@@ -55,7 +66,7 @@ function EditTask({ tasks, setTasks }) {
         </div>
         <div>
                 <h3>Description</h3>
-                <input type="text" value={description} onChange={handleDescription} placeholder={"Input Description Here"}/>
+                <input type="text" value={description} onChange={handleDescription} placeholder={"Input Description Here (Optional)"}/>
             </div>
             <div>
                 <h3>Subject</h3>
@@ -63,7 +74,7 @@ function EditTask({ tasks, setTasks }) {
             </div>
             <div>
                 <h3>Due Date</h3>
-                <input type="text" value={due_date} onChange={handleDueDate} placeholder={"Input Due Date Here"}/>
+                <input type="date" onChange={handleDueDate}/>
             </div>
             <div>
                 <h3>Priority</h3>
@@ -79,12 +90,26 @@ function EditTask({ tasks, setTasks }) {
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
                 </select>
-            </div>   
-        <br></br>    
+            </div>
+            {recurring === "Yes" && (
+                <div>
+                    <h3>Recurring Period</h3>
+                    <select value={recurring_period} onChange={handleRecurringPeriod}>
+                        <option value="">Select Recurrence</option>
+                        <option value="Weekly">Weekly</option>
+                        <option value="Biweekly">Biweekly</option>
+                        <option value="Monthly">Monthly</option>
+                        <option value="Bimonthly">Bimonthly</option>
+                    </select>
+                </div>
+            )}   
+        <br></br>
+        {/*Delete Button*/}    
+        <Link to="/tasks" className="cancel-btn">Delete</Link>     
         <Link to="/tasks" className="cancel-btn">Cancel</Link>
         <Link type="submit" onClick={handleSubmit} className="create-btn">
             Save
-        </Link>       
+        </Link>  
    
     </div>
     
