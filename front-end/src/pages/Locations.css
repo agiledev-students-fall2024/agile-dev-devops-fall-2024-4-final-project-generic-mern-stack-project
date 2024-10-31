@@ -1,3 +1,7 @@
+.locations-page {
+    padding: 20px;
+}
+
 .locations-header {
     display: flex;
     justify-content: space-between;
@@ -24,6 +28,14 @@
     color: #e0304b;
 }
 
+.locations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
 .status-dropdown {
     padding: 0.75rem;
     font-size: 1rem;
@@ -44,4 +56,11 @@
     outline: none;
     border-color: #FF385C;
     box-shadow: 0 0 5px rgba(255, 56, 92, 0.5);
+}
+
+.status-dropdown option {
+    padding: 10px;
+    font-size: 1rem;
+    color: #333333;
+    background-color: #ffffff;
 }

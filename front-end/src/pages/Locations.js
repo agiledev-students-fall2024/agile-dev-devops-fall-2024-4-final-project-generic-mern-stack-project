@@ -42,20 +42,22 @@ const Locations = () => {
     <div className="locations-page">
       <div className="locations-header">
         <h1>Locations</h1>
-        <select
-          className="status-dropdown"
-          value={tripStatus}
-          onChange={handleStatusChange}
-        >
-          <option value="ongoing">Ongoing</option>
-          <option value="completed">Completed</option>
-          <option value="upcoming">Upcoming</option>
-        </select>
-        {tripStatus !== 'completed' && (
-          <Link to={`/add-location/${tripId}`} className="add-location-link">
-            Add Location
-          </Link>
-        )}
+        <div className="header-right">
+          {tripStatus !== 'completed' && (
+            <Link to={`/add-location/${tripId}`} className="add-location-link">
+              Add Location
+            </Link>
+          )}
+          <select
+            className="status-dropdown"
+            value={tripStatus}
+            onChange={handleStatusChange}
+          >
+            <option value="ongoing">Ongoing</option>
+            <option value="completed">Completed</option>
+            <option value="upcoming">Upcoming</option>
+          </select>
+        </div>
       </div>
       <div className="locations-grid">
         {locations.map((location) => (
