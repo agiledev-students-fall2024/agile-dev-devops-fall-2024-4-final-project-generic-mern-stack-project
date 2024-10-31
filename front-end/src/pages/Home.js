@@ -1,4 +1,3 @@
-// Home.js
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import TripTabs from '../components/trip/TripTabs';
