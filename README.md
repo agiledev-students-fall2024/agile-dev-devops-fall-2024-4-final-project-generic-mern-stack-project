@@ -15,6 +15,7 @@ Our vision is to revolutionize personal financial management by offering an all-
 - **[Tony Liu](https://github.com/tony102809)**
 - **[Olivia Yu](https://github.com/zitongyu756)**
 - **[Jessy Huang ](https://github.com/jh7305)**
+- **[Chris Bobadilla](https://github.com/chrisbobadilla)**
 
 
 
