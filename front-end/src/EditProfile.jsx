@@ -3,11 +3,22 @@ import { useNavigate } from 'react-router-dom';
 
 function EditProfile() {
   const navigate = useNavigate();
+
+  // Add predefined gender options
+  const genderOptions = [
+    'Select gender',
+    'Male',
+    'Female',
+    'Non-binary',
+    'Other',
+    'Prefer not to say'
+  ];
+
   const [formData, setFormData] = useState({
     name: '',
     username: '',
     biography: '',
-    gender: ''
+    gender: 'Select gender'
   });
 
   const [errors, setErrors] = useState({
@@ -37,11 +48,9 @@ function EditProfile() {
         return '';
 
       case 'gender':
-        if (value && !['male', 'female', 'other', 'prefer not to say'].includes(value.toLowerCase())) {
-          return 'Please select a valid gender option';
-        }
+        if (value === 'Select gender') return 'Please select a gender option';
         return '';
-
+  
       default:
         return '';
     }
@@ -54,7 +63,6 @@ function EditProfile() {
       [name]: value
     }));
     
-    // Validate on change
     const error = validateField(name, value);
     setErrors(prev => ({
       ...prev,
@@ -86,6 +94,38 @@ function EditProfile() {
     navigate('/profile');
   };
 
+  const renderFormField = (key, value) => {
+    if (key === 'gender') {
+      return (
+        <select
+          name={key}
+          value={value}
+          onChange={handleChange}
+          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none
+            ${errors[key] ? 'border-red-500' : 'border-gray-200'}`}
+        >
+          {genderOptions.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      );
+    }
+
+    return (
+      <input
+        type="text"
+        name={key}
+        value={value}
+        onChange={handleChange}
+        placeholder={`Enter your ${key}`}
+        className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none
+          ${errors[key] ? 'border-red-500' : 'border-gray-200'}`}
+      />
+    );
+  };
+
   return (
     <div className="App">
       <div className="pt-16 px-4 min-h-screen bg-white">
@@ -104,15 +144,7 @@ function EditProfile() {
                 <label className="block text-sm font-medium text-gray-700 capitalize">
                   {key}:
                 </label>
-                <input
-                  type={key === 'gender' ? 'select' : 'text'}
-                  name={key}
-                  value={value}
-                  onChange={handleChange}
-                  placeholder={`Enter your ${key}`}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none
-                    ${errors[key] ? 'border-red-500' : 'border-gray-200'}`}
-                />
+                {renderFormField(key, value)}
                 {errors[key] && (
                   <p className="text-red-500 text-sm mt-1">{errors[key]}</p>
                 )}
