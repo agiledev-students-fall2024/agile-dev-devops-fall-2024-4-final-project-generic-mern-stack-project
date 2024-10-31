@@ -1,10 +1,16 @@
+// Home.js
 import React, { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import TripTabs from '../components/trip/TripTabs';
 import TripList from '../components/trip/TripList';
 import './Home.css';
 
-const Home = () => {
+const Home = ({ isLoggedIn }) => {
   const [activeTab, setActiveTab] = useState('current');
+
+  // if (!isLoggedIn) {
+  //   return <Navigate to="/log-in" replace />;
+  // }
 
   return (
     <div className="home">
