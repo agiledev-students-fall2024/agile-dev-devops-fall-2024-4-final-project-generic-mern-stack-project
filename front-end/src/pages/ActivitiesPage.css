@@ -90,16 +90,19 @@
 
 .comments-section {
   margin-top: 12px;
+  box-sizing: border-box;
 }
 
 .comments-section input {
-  width: 80%;
+  width: calc(100% - 100px);
   padding: 8px;
   margin-right: 5px;
+  box-sizing: border-box;
 }
 
 .comments-section button {
   padding: 8px 12px;
+  margin-top: 8px;
 }
 
 .comments-list {
