@@ -45,6 +45,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
     transition: box-shadow 0.3s;
+    position: relative;
   }
   
   .activity-card:hover {
@@ -123,5 +124,18 @@
     padding: 10px;
     border-radius: 8px;
     margin-top: 8px;
+  }
+
+  .activity-card__status {
+    position: absolute;
+    top: 5px; 
+    left: 5px;
+    background-color: #FF385C;
+    color: white;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    padding: 0.25rem 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    display: inline-block;
   }
   

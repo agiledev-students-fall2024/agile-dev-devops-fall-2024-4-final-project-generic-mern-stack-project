@@ -54,6 +54,7 @@ const ActivitiesPage = () => {
               price={activity.price ? `$${activity.price}` : 'Free'}
               comments={activity.comments.map((c) => c.commentString)}
               imageUrl={activity.image}
+              isCompleted={activity.isCompleted}
             />
           ))}
         </div>
