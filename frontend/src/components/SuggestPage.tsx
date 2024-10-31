@@ -158,12 +158,15 @@ export default function SuggestPage() {
   return (
     <div className="flex">
       <nav className="w-32 bg-blue-400 overflow-y-auto h-[calc(100vh-68px)]">
-        <ul className="divide-y divide-black">
+        <ul>
           {filterNames.map((filter) => (
             <li
-              key={filter}
-              onClick={() => setCurrentFilter(filter)}
-              className={`${filter === currentFilter ? "bg-green-600 font-extrabold text-xl" : "hover:bg-blue-500 text-lg"} p-4 py-8 font-bold text-center cursor-pointer`}
+            key={filter}
+            onClick={() => setCurrentFilter(filter)}
+            className={`p-4 py-8 font-bold text-center cursor-pointer text-lg 
+                  ${filter === currentFilter ? "bg-green-600 text-black font-bold text-xl" : "hover:bg-blue-500"} 
+                  min-h-[80px] flex items-center justify-center transition duration-200`}
+            style={{ minWidth: "120px", maxHeight: "80px" }}
             >
               {filter}
             </li>
