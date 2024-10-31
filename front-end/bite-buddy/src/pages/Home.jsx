@@ -34,27 +34,40 @@ const Home = () => {
 
     useEffect(() => {
         const fetchActivitiesData = async () => {
+            try{
             const response = await axios.get('https://my.api.mockaroo.com/challenges?key=d6450400');
             const fetchedData = response.data || [];
-            console.log(fetchedData);
+            console.log('fetchedActivitesData:', fetchedData);
 
-            setActivitiesData([...fetchedData]);
+            setActivitiesData([...fetchedData]);}
+            catch(error){
+                console.error('Error fetching activitiesData:', error);
+            }
         };
 
         const fetchWeeklyData = async () => {
+            try{
             const response = await axios.get('https://my.api.mockaroo.com/home_weekly_activity.json?key=bd61d090');
             const fetchedData = response.data || [];
             console.log(fetchedData);
 
             setWeeklyData([...fetchedData]);
+            }
+            catch(error){
+                console.error('Error fetching weekly data: ', error)
+            }
         };
 
         const fetchRecipeData = async () => {
+            try{
             const response = await axios.get('https://my.api.mockaroo.com/basic_recipe.json?key=bd61d090');
             const fetchedData = response.data || [];
             console.log(fetchedData);
 
             setRecipeData([...fetchedData]);
+            }catch(error){
+                console.error('error fetching recipe data: ', error)
+            }
         };
 
         fetchWeeklyData();
@@ -80,8 +93,14 @@ const Home = () => {
                         <img src={activitiesData[0].image} alt="Activity 1" />
                     </div>
                     <h3>Weekly Activities</h3>
-                    <p><strong>Meals Recorded:</strong> {weeklyData[0].meals_recorded}</p>
-                    <p><strong>Time Spent Cooking:</strong> {weeklyData[0].time_spent_cooking_1}:{weeklyData[0].time_spent_cooking_2}:{weeklyData[0].time_spent_cooking_3}</p>
+                    {weeklyData.length > 0 ? (
+                        <>
+                            <p><strong>Meals Recorded:</strong> {weeklyData[0].meals_recorded}</p>
+                            <p><strong>Time Spent Cooking:</strong> {weeklyData[0].time_spent_cooking_1}:{weeklyData[0].time_spent_cooking_2}:{weeklyData[0].time_spent_cooking_3}</p>
+                        </>
+                    ) : (
+                        <p>Loading weekly activity data...</p>
+                    )}
                     <button onClick={goToActivityTracker}>See More</button>
                 </div>
             )}
