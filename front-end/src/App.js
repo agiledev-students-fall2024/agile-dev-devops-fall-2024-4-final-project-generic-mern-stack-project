@@ -11,7 +11,8 @@ import AddLocation from './pages/AddLocation';
 import ProfilesPage from './pages/ProfilesPage';
 import AddTrip from './pages/AddTrip';
 import JoinTrip from './pages/JoinTrip';
-
+import LogIn from './pages/LogIn';
+import SignUp from './pages/SignUp';
 const App = () => {
   const user = { name: "John Doe", profilePicture: "https://via.placeholder.com/100" };
   const isLoggedIn = !!user;
@@ -32,6 +33,8 @@ const App = () => {
           <Route path="/profile" element={<ProfilesPage />} />
           <Route path="/create-trip" element={<AddTrip />} />
           <Route path="/join-trip" element={<JoinTrip />} />
+          <Route path="/log-in" element={<LogIn />} />
+          <Route path="/sign-up" element={<SignUp />} />
           
         </Routes>
       </main>
