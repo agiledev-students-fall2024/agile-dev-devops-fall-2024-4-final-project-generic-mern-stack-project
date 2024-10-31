@@ -8,12 +8,18 @@ const Community = () => {
     const [data, setData] = useState([])
     const [input, setInput] = useState("")
     const [filteredData, setFilteredData] = useState([])
+    const [originalData, setOriginalData] = useState([])
 
     const handleSearch = (e) => {
-        console.log(e.target.value)
-        setInput(e.target.value)
+        console.log(e.target.value);
+        setInput(e.target.value);
 
+        if (input == null || input == '') {
+            setData(originalData);
+            return
+        }
         if (input.trim() === ''){
+            setData(originalData);
             return
         }
         
@@ -21,7 +27,7 @@ const Community = () => {
             return item.name.toLowerCase().includes(input.toLowerCase())
         })
 
-        setFilteredData(newData);
+        setData(newData);
     }
 
     useEffect(() => {
@@ -31,6 +37,7 @@ const Community = () => {
         axios("https://my.api.mockaroo.com/community.json?key=a42e4cd0")
          .then(response => {
             setData(response.data)
+            setOriginalData(response.data)
          })
          .catch(err => {
             console.log("We have reached the allowed number of requests. Please try again the next day!")
@@ -78,7 +85,7 @@ const Community = () => {
             <SearchBar searchInput={input} setSearchInput={setInput} handleSearch={handleSearch}/>
             
             <section className="flex flex-col justify-center w-[100%] gap-0">
-                {filteredData.map(item => (
+                {data.map(item => (
                     <div key={item.id} className="groups">
                         <TitleAndDescriptionBox
                             link={`/community/${item.id}`}

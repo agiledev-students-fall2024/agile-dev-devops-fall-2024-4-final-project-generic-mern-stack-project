@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
-import axios from "axios"
 
-// Blog post component
 const BlogPost = ({ post }) => {
   const [blogPost, setBlogPost] = useState({});
   const [liked, setLiked] = useState(false);
@@ -11,18 +9,9 @@ const BlogPost = ({ post }) => {
   const [newReply, setNewReply] = useState("");
 
   useEffect(() => {
-    // Mock data for the post
+
     setBlogPost(post);
 
-    // Fetch data only if necessary
-    axios("https://my.api.mockaroo.com/blogpost.json?key=baec6df0")
-      .then(response => {
-        // setBlogPost(response.data) // Uncomment this line if you want to fetch data
-      })
-      .catch(err => {
-        console.log(`No more requests allowed.`);
-        console.error(err);
-      });
   }, [post]); 
 
   const handleReplySubmit = () => {
@@ -51,9 +40,9 @@ const BlogPost = ({ post }) => {
   return (
     <div className="w-[100%] md:w-[95%] px-4 py-2 bg-lavender_blush-900 rounded-lg shadow-md shadow-ebony-900 m-auto">
       <div className="flex flex-row items-center">
-        <img src={post.profilePic} alt="Profile" className="w-32 h-32 rounded-md" />
-        <p className="flex flex-col justify-start items-center text-md">
-          <span className="font-bold text-ebony">{blogPost.name}</span>
+        <img src={post.profilePic} alt="Profile" className="w-20 h-20 rounded-lg my-4 mx-2" />
+        <p className="flex flex-col justify-start items-start text-md my-4">
+          <span className="font-bold text-ebony text-left">{blogPost.name}</span>
           <span className="text-rose opacity-[75%]">@{blogPost.userName}</span>
         </p>
       </div>

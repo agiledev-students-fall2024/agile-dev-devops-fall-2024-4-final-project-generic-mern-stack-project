@@ -1,71 +1,28 @@
-// Home.js
-import React, { useState } from 'react';
+import axios from 'axios'
+import React, { useState, useEffect } from 'react';
 import BlogPost from '../components/BlogPost';
 import DropdownMenu from '../components/DropdownMenu';
 import SearchBar from '../components/SearchBar';
 
 const Home = () => {
     const [searchInput, setSearchInput] = useState("");
+    const [posts, setPosts] = useState([])
 
     const handleSearch = () => {
         console.log(`Searching for: ${searchInput}`);
     };
 
-    const posts = [{
-        id: 1,
-        profilePic: "seraphim-logo.PNG",
-        name: "John Doe",
-        userName: "johndoe",
-        text: "Exploring new ideas for my latest project. Thoughts?",
-        images: [],
-        replies: ["Exciting stuff!", "Looking forward to this!"],
-        likes: 725,
-      },
-      
-      {
-        id: 2,
-        profilePic: "seraphim-logo.PNG",
-        name: "John Doe",
-        userName: "johndoe",
-        text: "Just finished a long week. Time to relax and recharge!",
-        images: ["seraphim-logo.PNG"],
-        replies: ["You deserve it!", "Enjoy your break!"],
-        likes: 350,
-      },
-      
-      {
-        id: 3,
-        profilePic: "seraphim-logo.PNG",
-        name: "John Doe",
-        userName: "johndoe",
-        text: "Sharing some highlights from the past year. Feeling grateful.",
-        images: ["seraphim-logo.PNG", "seraphim-logo.PNG"],
-        replies: ["Great moments!", "So inspiring to see this."],
-        likes: 910,
-      },
-      
-      {
-        id: 4,
-        profilePic: "seraphim-logo.PNG",
-        name: "John Doe",
-        userName: "johndoe",
-        text: "Here's a sneak peek at something I'm working on! Stay tuned.",
-        images: ["seraphim-logo.PNG", "seraphim-logo.PNG"],
-        replies: ["Can't wait!", "Looks awesome already!"],
-        likes: 630,
-      },
-      
-      {
-        id: 5,
-        profilePic: "seraphim-logo.PNG",
-        name: "John Doe",
-        userName: "johndoe",
-        text: "Appreciating the small victories. Celebrate every win!",
-        images: ["seraphim-logo.PNG"],
-        replies: ["Absolutely!", "Well said!"],
-        likes: 480,
-      }
-    ];
+    useEffect(() => { 
+        axios("https://my.api.mockaroo.com/posts.json?key=3ac6ebb0")
+        .then(response => {
+            setPosts(response.data)
+        })
+        .catch(err => {
+            console.log(`No more requests allowed.`);
+            console.error(err);
+        });
+    }, []);
+
 
     return (
         <div className="w-[100%] flex flex-col justify-center items-center gap-6 p-8 mx-auto md:w-[90%]">

@@ -51,9 +51,9 @@ const ProfileHeader = ({ user, loggedIn, onFollow, hasFollowed, toggleBlogs, tog
                     )}
 
                     <div className="w-full h-auto flex flex-col justify-evenly px-4 py-2 rounded-md shadow-md gap-1">
-                        {profileUser.about && profileUser.about.map((info, index) => (
-                            <p key={index} className="text-xs md:text-sm lg:text-md">{info}</p>
-                        ))}
+                        {profileUser.about && (
+                            <p className="text-xs md:text-sm lg:text-md">{profileUser.about}</p>
+                        )}
                     </div>
                 </div>
             </div>
