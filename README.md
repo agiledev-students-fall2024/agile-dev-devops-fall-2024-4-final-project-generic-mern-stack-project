@@ -27,4 +27,9 @@ We sincerely appreciate your contribution! To start contribute, please visit the
 ## Build and Test
 
 Please follow the instructions to run our application!
-(Content will be added in corresponding stage later)
+
+ * clone the project from your repository to your device
+ * cd into the project and use npm install to download all necessary packages
+ * use npm start to run project
+
+(testing instructions coming soon)
