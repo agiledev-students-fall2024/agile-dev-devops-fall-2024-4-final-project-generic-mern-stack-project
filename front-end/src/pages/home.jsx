@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 function Home() {
   const { progressData, overall } = BudgetProgress();
   const [showBreakdown, setShowBreakdown] = useState(false);
-  const [showCategoryBreakdown, setShowCategoryBreakdown] = useState(false); // New state for category breakdown
+  const [showCategoryBreakdown, setShowCategoryBreakdown] = useState(false); 
   const [transactions, setTransactions] = useState([...transactionData]); 
   const [showAddTransaction, setShowAddTransaction] = useState(false); 
   const [newTransaction, setNewTransaction] = useState({
@@ -20,7 +20,7 @@ function Home() {
   }); 
 
   const viewBreakdown = () => setShowBreakdown(!showBreakdown);
-  const toggleCategoryBreakdown = () => setShowCategoryBreakdown(!showCategoryBreakdown); // Toggle for category breakdown
+  const toggleCategoryBreakdown = () => setShowCategoryBreakdown(!showCategoryBreakdown); 
 
   const totalBudget = overall.totalBudget || 0;
   const totalSpent = overall.totalSpent || 0;
@@ -30,7 +30,6 @@ function Home() {
 
   const sortedProgressData = [...progressData].sort((a, b) => b.spent - a.spent);
 
-  // Calculate category-wise spending totals
   const categoryTotals = transactions.reduce((acc, transaction) => {
     const { category, amount } = transaction;
     if (!acc[category]) {
