@@ -11,9 +11,9 @@ import Signup from './Signup'; // Import the Signup component
 
 function App() {
   return (
-    <div className="h-screen overflow-hidden">
       <Router>
         <Header />
+        <main className='mt-6'>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/post" element={<Post />} />
@@ -24,8 +24,8 @@ function App() {
           <Route path="/login" element={<Login />} /> {/* Add Login route */}
           <Route path="/signup" element={<Signup />} /> {/* Add Signup route */}
         </Routes>
+        </main>
       </Router>
-    </div>
   );
 }
 
