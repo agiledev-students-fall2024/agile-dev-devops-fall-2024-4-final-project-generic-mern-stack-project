@@ -2,14 +2,12 @@ import React, { useContext, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/Navbar.css";
 import { AuthContext } from "../contexts/AuthContext";
-import { AccountInfoContext } from "../contexts/AccountInfoContext";
 import FilterPopup from "./FilterPopup";
 
 const NavBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated } = useContext(AuthContext);
-  const { setFilters } = useContext(AccountInfoContext);
   const [filterOpen, setFilterOpen] = useState(false);
 
   const handleProfileClick = () => {
