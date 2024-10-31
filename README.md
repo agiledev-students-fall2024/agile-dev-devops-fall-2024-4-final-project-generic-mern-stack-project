@@ -37,8 +37,8 @@ Cyclable was born out of a common frustration among cyclists in New York City: d
    Since we have our front-end setup, you can run our front-end by:
 
    ```bash
-   git clone <https://github.com/agiledev-students-fall2024/4-final-project-cyclists.git>
-   cd <4-final-project-cyclists>
+   git clone https://github.com/agiledev-students-fall2024/4-final-project-cyclists.git
+   cd 4-final-project-cyclists
    cd front-end
    ```
 
