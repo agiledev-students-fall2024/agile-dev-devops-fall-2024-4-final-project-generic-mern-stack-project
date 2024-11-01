@@ -21,7 +21,6 @@
   gap: 1.5rem;
 }
 
-/* Profile Styles */
 .header__profile-wrapper {
   position: relative;
   cursor: pointer;
@@ -47,7 +46,6 @@
   font-size: 1.5rem;
 }
 
-/* Auth Links for Logged-Out State */
 .header__auth {
   display: flex;
   gap: 1rem;
@@ -64,7 +62,6 @@
   border: 2px solid transparent;
 }
 
-/* Login Link */
 .header__auth-link {
   color: #FF385C;
   border: 2px solid #FF385C;
@@ -75,7 +72,6 @@
   background-color: #FF385C;
 }
 
-/* Sign Up Button */
 .header__auth-button {
   color: #fff;
   background-color: #FF385C;
