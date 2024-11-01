@@ -63,14 +63,14 @@ const Locations = () => {
       <div className="locations-header">
         <h1>Locations</h1>
         <div className="header-right">
-          <button onClick={toggleMembersList} className="toggle-members-button">
-            {showMembers ? "Hide Members" : "Show Members"}
-          </button>
           {tripStatus !== 'completed' && (
             <Link to={`/add-location/${tripId}`} className="add-location-link">
               Add Location
             </Link>
           )}
+          <button onClick={toggleMembersList} className="toggle-members-button">
+            {showMembers ? "Hide Members" : "Show Members"}
+          </button>
           <select
             className="status-dropdown"
             value={tripStatus}
