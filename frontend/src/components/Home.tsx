@@ -19,7 +19,7 @@ export default function Home() {
 
       <div className="flex flex-col gap-6">
         <div className="w-full h-[300px] border-2 border-black">
-          <SoHoMap />
+          <SoHoMap stores={sampleStores} type="Home" />
         </div>
         <Button
           className="rounded-3xl h-12 font-extrabold text-lg"

@@ -17,6 +17,7 @@ import { StoreProvider } from "./context/StoresContext";
 import HelpPage from "./components/HelpPage";
 import RouteDisplayPage from "./components/RouteDisplayPage";
 import SavedRoutesPage from "./components/SavedRoutesPage";
+import { APIProvider } from "@vis.gl/react-google-maps";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -38,9 +39,14 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById("root")!).render(
   // <StrictMode>
-  <StoreProvider>
-    <Toaster />
-    <RouterProvider router={router} />
-  </StoreProvider>,
+  <APIProvider
+    apiKey={"AIzaSyBX6VqkGXWxsNGmZ45gHz4CGWHiRSgyhzI"}
+    onLoad={() => console.log("Maps API has loaded.")}
+  >
+    <StoreProvider>
+      <Toaster />
+      <RouterProvider router={router} />
+    </StoreProvider>
+  </APIProvider>,
   // </StrictMode>,
 );
