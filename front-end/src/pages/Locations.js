@@ -10,7 +10,7 @@ const Locations = () => {
   const [tripStatus, setTripStatus] = useState("ongoing"); 
   const [loading, setLoading] = useState(true);
   const [showMembers, setShowMembers] = useState(false); //this decides whether or not to show the members list
-  const [participants, setParticipants] = useState([]); // i think i need to use state here?
+  const [participants, setParticipants] = useState([]);
   const { tripId } = useParams();
 
   const fetchLocationsAndStatus = async () => {
@@ -62,10 +62,10 @@ const Locations = () => {
     <div className="locations-page">
       <div className="locations-header">
         <h1>Locations</h1>
-        <button onClick={toggleMembersList} className="toggle-members-button">
-          {showMembers ? "Hide Members" : "Show Members"}
-        </button>
         <div className="header-right">
+          <button onClick={toggleMembersList} className="toggle-members-button">
+            {showMembers ? "Hide Members" : "Show Members"}
+          </button>
           {tripStatus !== 'completed' && (
             <Link to={`/add-location/${tripId}`} className="add-location-link">
               Add Location
