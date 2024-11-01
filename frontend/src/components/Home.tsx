@@ -4,9 +4,27 @@ import StoreSearchBar from "./StoresSearchBar";
 import MyStoresButton from "./MyStoresButton";
 import sampleStores from "@/stores";
 import SoHoMap from "./SoHoMap";
+import { useMyStores } from "@/context/StoresContext";
 
 export default function Home() {
   const navigate = useNavigate();
+  const {
+    stores: userStores,
+    allowedLocationAccess,
+    setAllowedLocationAccess,
+  } = useMyStores();
+
+  const handleClickGenerate = () => {
+    if (allowedLocationAccess) navigate("/route");
+    const allow = confirm("Allow location access?");
+    if (!allow) {
+      alert("Please allow location access to proceed.");
+    } else {
+      setAllowedLocationAccess(true);
+      navigate("/route");
+    }
+  };
+
   return (
     <main className="flex flex-col gap-10 px-5">
       <div className="flex flex-col gap-5">
@@ -24,9 +42,10 @@ export default function Home() {
         >
           Suggest Stores For Me
         </Button>
-         <Button
+        <Button
           className="rounded-3xl h-12 font-extrabold text-lg"
-          onClick={() => navigate("/route-display")}
+          onClick={handleClickGenerate}
+          disabled={userStores.length === 0}
         >
           Generate Route
         </Button>

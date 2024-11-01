@@ -24,22 +24,23 @@ const router = createBrowserRouter(
       <Route element={<ProtectedRouteWrapper requiresAuth={false} />}>
         <Route path="/login" element={<LoginForm />} />
         <Route path="/signup" element={<SignupForm />} />
-        <Route path="/route/:routeId" element={<RouteDisplayPage />} />
+        <Route path="/route/:routeId?" element={<RouteDisplayPage />} />
       </Route>
       <Route element={<ProtectedRouteWrapper requiresAuth={true} />}>
         <Route index path="/" element={<Home />} />
         <Route index path="/suggest" element={<SuggestPage />} />
         <Route path="/help" element={<HelpPage />} />
+        <Route index path="/saved-routes" element={<SavedRoutesPage />} />
       </Route>
     </>,
   ),
 );
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <StoreProvider>
-      <Toaster />
-      <RouterProvider router={router} />
-    </StoreProvider>
-  </StrictMode>,
+  // <StrictMode>
+  <StoreProvider>
+    <Toaster />
+    <RouterProvider router={router} />
+  </StoreProvider>,
+  // </StrictMode>,
 );
