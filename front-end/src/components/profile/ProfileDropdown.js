@@ -1,17 +1,27 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './ProfileDropdown.css';
 
-const ProfileDropdown = ({ onSignOut }) => {
+const ProfileDropdown = ({ onSignOut, user }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="profile-dropdown">
-      <Link to="/profile" className="profile-dropdown-item">
-        <span className="profile-dropdown-item-icon">🧑</span>
-        Profile
-      </Link>
-      <button className="profile-dropdown-item" onClick={onSignOut}>
-        <span className="profile-dropdown-item-icon">🚪</span>
-        Sign Out
+      <button
+        className="profile-dropdown-item"
+        onClick={() => navigate('/profile')}
+      >
+        <span className="profile-dropdown-item-icon">{user?.profilePicture || "👤"}</span>
+        View Profile
+      </button>
+      <button
+        className="profile-dropdown-item"
+        onClick={() => {
+          onSignOut(); 
+          setTimeout(() => navigate('/log-in'), 0); 
+        }}
+      >
+        <span className="profile-dropdown-item-icon">🚪</span> Sign Out
       </button>
     </div>
   );
