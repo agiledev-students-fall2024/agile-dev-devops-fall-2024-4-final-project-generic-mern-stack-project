@@ -1,6 +1,6 @@
 import sampleStores from "@/stores";
 import { SavedRoute } from "@/types";
-import UpdateSavedRouteButton from "./UpdateSavedRouteButton";
+import AddUpdateRouteButton from "./AddUpdateRouteButton";
 import CopyLinkButton from "./CopyLinkButton";
 import DeleteRouteButton from "./DeleteRouteButton";
 import { useState, useEffect } from "react";
@@ -12,6 +12,7 @@ const sampleSavedRoutes: SavedRoute[] = [
       "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit at alias natus nostrum quas assumenda inventore animi perferendis sequi. Quos eligendi sapiente error alias aspernatur dolores eum, voluptas possimus quaerat!",
     name: "saved route 1",
     stores: sampleStores,
+    created_by: "user",
   },
   {
     id: "2",
@@ -19,6 +20,7 @@ const sampleSavedRoutes: SavedRoute[] = [
       "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit at alias natus nostrum quas assumenda inventore animi perferendis sequi. Quos eligendi sapiente error alias aspernatur dolores eum, voluptas possimus quaerat!",
     name: "saved route 2",
     stores: sampleStores,
+    created_by: "user",
   },
 ];
 
@@ -41,7 +43,7 @@ export default function SavedRoutesPage() {
       </div>
       <div className="flex flex-col gap-4 justify-center">
         <CopyLinkButton routeId={route.id} />
-        <UpdateSavedRouteButton route={route} />
+        <AddUpdateRouteButton route={route} type="Update" />
         <DeleteRouteButton route={route} />
       </div>
     </div>
@@ -50,11 +52,19 @@ export default function SavedRoutesPage() {
   return (
     <div className="p-5 flex flex-col gap-4">
       <div className="text-3xl font-bold">Your Saved Routes</div>
-      <div className="text-md font-light">
+      <div className="text-md font-light font-poppins">
         View, edit, or share your saved shopping routes. Click any route to see
         its optimized path.
       </div>
-      <div className="flex flex-col gap-5">{savedRoutes}</div>
+      <div className="flex flex-col gap-5">
+        {savedRoutes && savedRoutes.length > 0 ? (
+          savedRoutes
+        ) : (
+          <div className="text-center mt-10 font-poppins">
+            You have no saved routes.
+          </div>
+        )}
+      </div>
     </div>
   );
 }
