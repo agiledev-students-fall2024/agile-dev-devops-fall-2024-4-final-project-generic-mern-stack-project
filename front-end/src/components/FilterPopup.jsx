@@ -2,6 +2,8 @@ import React, { useState, useContext } from "react";
 import "../styles/FilterPopup.css"; // Create this CSS file for styling
 import { AccountInfoContext } from "../contexts/AccountInfoContext";
 
+/* eslint-disable no-unused-vars */
+
 const FilterPopup = ({ open, close }) => {
   const {
     setFilteredRestaurants,

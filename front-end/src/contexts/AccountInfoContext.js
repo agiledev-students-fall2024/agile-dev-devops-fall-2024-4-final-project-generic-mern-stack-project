@@ -1,5 +1,7 @@
 import React, { createContext, useState } from "react";
 
+/* eslint-disable no-unused-vars */
+
 const fakeRestaurants = [
   {
     id: 1,

@@ -1,4 +1,7 @@
 // src/App.js
+
+/* eslint-disable no-unused-vars */
+
 import React, { useEffect, useState, useContext } from "react";
 import {
   BrowserRouter as Router,
@@ -13,6 +16,7 @@ import Login from "./Login";
 import { AuthContext } from "../src/contexts/AuthContext";
 import { AccountInfoProvider } from "./contexts/AccountInfoContext";
 import "./App.css";
+
 
 function App() {
   const { isAuthenticated } = useContext(AuthContext);

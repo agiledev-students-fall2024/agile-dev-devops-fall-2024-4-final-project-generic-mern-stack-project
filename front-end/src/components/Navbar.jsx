@@ -5,6 +5,8 @@ import { AuthContext } from "../contexts/AuthContext";
 import { AccountInfoContext } from "../contexts/AccountInfoContext";
 import FilterPopup from "./FilterPopup";
 
+/* eslint-disable no-unused-vars */
+
 const NavBar = () => {
   const navigate = useNavigate();
   const location = useLocation();

@@ -3,6 +3,8 @@ import '../styles/Profile.css';
 import { AccountInfoContext } from '../contexts/AccountInfoContext';
 import RestaurantListItem from './RestaurantListItem';
 
+/* eslint-disable no-unused-vars */
+
 const ProfilePage = () => {
   const [name, setName] = useState("");
   const [profilePic, setProfilePic] = useState("");
@@ -12,6 +14,7 @@ const ProfilePage = () => {
   const [filterNeighborhood, setFilterNeighborhood] = useState("All");
   const [filterPrice, setFilterPrice] = useState("All");
   const [filterStatus, setFilterStatus] = useState("All");
+  // eslint-disable-next-line
   const { accountInfo } = useContext(AccountInfoContext);
 
   useEffect(() => {
@@ -27,15 +30,12 @@ const ProfilePage = () => {
   }, []);
 
   const handleDelete = (id) => {
-    const confirmed = window.confirm(
-      "Are you sure that you want to delete this restaurant?"
-    );
-    if (confirmed) {
-      const updatedRestaurants = { ...savedRestaurants };
-      delete updatedRestaurants[id];
-      setSavedRestaurants(updatedRestaurants);
-    }
+    const updatedLikedRestaurants = accountInfo.likedRestaurants.filter(
+      (restaurant) => restaurant.id != id;
+    )
   };
+
+  
 
   const uniqueCuisines = Array.from(
     new Set(Object.values(savedRestaurants).map((r) => r.cuisine))
@@ -122,7 +122,28 @@ const ProfilePage = () => {
 
       {accountInfo.likedRestaurants.length > 0 ? (
         accountInfo.likedRestaurants.map((restaurant) => (
-          <RestaurantListItem key={restaurant.id} restaurant={restaurant} />
+          <>
+            <RestaurantListItem 
+              key={restaurant.id} 
+              restaurant={restaurant} 
+            />
+            {/*handleDelete={() => handleDelete(restaurant.id)}
+              handleStatus={() => handleStatus(restaurant.id)} */}
+            <div className="button-container">
+              <button className="delete-button" onClick={() => handleDelete(restaurant.id)}>Delete</button>
+              <button className="status-button" onClick={() => handleStatus(restaurant.id)}>Change Status</button>
+            </div>
+            {popupVisible && (
+              <div className="popup-screen">
+                <div className="popup">
+                  <h3>Select Visiting Status</h3>
+                  <button onClick={() => selectStatus('Want to Visit')}>Want to Visit</button>
+                  <button onClick={() => selectStatus('Previously Visited')}>Previously Visited</button>
+                  <button onClick={() => setPopupVisible(false)}>Cancel</button>
+                </div>
+              </div>
+            )}
+          </>
         ))
       ) : (
         <p className="no-liked-restaurants">
