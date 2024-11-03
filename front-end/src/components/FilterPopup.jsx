@@ -57,7 +57,12 @@ const FilterPopup = ({ open, close }) => {
   if (!open) return null;
 
   return (
-    <div className="modal-overlay" onClick={close}>
+    <div className="modal-overlay" onClick={() => {
+      setSearch('');
+      setSearchResults([]);
+      setFilters([]);
+      close();
+    }}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <h2>Filter Restaurants</h2>
         <div className="dialog-content">

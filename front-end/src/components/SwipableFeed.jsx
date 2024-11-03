@@ -8,23 +8,27 @@ import { AccountInfoContext } from '../contexts/AccountInfoContext';
 
 const SwipableFeed = () => {
   const { accountInfo } = useContext(AccountInfoContext);
-  const { setFilteredRestaurants, filteredRestaurants: restaurants, setAllRestaurants } = useContext(SwipableFeedContext);
+  const { setFilteredRestaurants, filteredRestaurants: restaurants, setAllRestaurants, allRestaurants } = useContext(SwipableFeedContext);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setCurrentIndex(0);
   }, [restaurants]);
-
+  console.log(loading)
   useEffect(() => {
     async function fetchData() {
       console.log('Fetching restaurants for user:', accountInfo?.id);
       const fetchedRestaurants = await bulkFetchRestaurants(accountInfo?.id);
       setAllRestaurants(fetchedRestaurants);
       setFilteredRestaurants(fetchedRestaurants);
+      setLoading(false); 
     }
     if(!accountInfo) return;
     fetchData();
   }, [accountInfo]);
+
+ 
 
   const handleSwipeLeft = async () => {
     try {
@@ -34,7 +38,18 @@ const SwipableFeed = () => {
     } catch (error) {
       console.error('Error in dislike API call:', error);
     } finally {
-      setCurrentIndex((prev) => prev + 1);
+      const nextIndex = currentIndex + 1;
+      if (nextIndex >= restaurants.length) {
+        // Reset to all restaurants
+        setFilteredRestaurants(allRestaurants);
+      } else {
+        const nextIndex = currentIndex + 1;
+        if (nextIndex >= restaurants.length) {
+          setFilteredRestaurants(allRestaurants);
+        } else {
+          setCurrentIndex(nextIndex);
+        }
+      }
     }
   };
 
@@ -47,7 +62,12 @@ const SwipableFeed = () => {
     } catch (error) {
       console.error('Error in like API call:', error);
     } finally {
-      setCurrentIndex((prev) => prev + 1);
+      const nextIndex = currentIndex + 1;
+        if (nextIndex >= restaurants.length) {
+          setFilteredRestaurants(allRestaurants);
+        } else {
+          setCurrentIndex(nextIndex);
+        }
     }
   };
 
