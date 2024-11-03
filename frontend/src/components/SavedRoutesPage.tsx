@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 
 const sampleSavedRoutes: SavedRoute[] = [
   {
-    id: "1",
+    _id: "1",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit at alias natus nostrum quas assumenda inventore animi perferendis sequi. Quos eligendi sapiente error alias aspernatur dolores eum, voluptas possimus quaerat!",
     name: "saved route 1",
@@ -15,7 +15,7 @@ const sampleSavedRoutes: SavedRoute[] = [
     created_by: "user",
   },
   {
-    id: "2",
+    _id: "2",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit at alias natus nostrum quas assumenda inventore animi perferendis sequi. Quos eligendi sapiente error alias aspernatur dolores eum, voluptas possimus quaerat!",
     name: "saved route 2",
@@ -27,7 +27,7 @@ const sampleSavedRoutes: SavedRoute[] = [
 export default function SavedRoutesPage() {
   const savedRoutes = sampleSavedRoutes.map((route) => (
     <div
-      key={route.id}
+      key={route._id}
       className="flex justify-between border-2 bg-green-200 hover:bg-green-300  border-green-400 rounded-sm p-2"
     >
       <div className="flex flex-col gap-2">
@@ -36,13 +36,18 @@ export default function SavedRoutesPage() {
         <div className="text-xs text-wrap">
           {route.stores.slice(0, 3).map((store, i) => (
             <span key={store._id} className=" font-light">
-              {store.name}, {i === 2 && route.stores.length > 3 ? "..." : ""}
+              {store.name}
+              {i === 2 && route.stores.length > 3
+                ? "..."
+                : i === route.stores.length - 1
+                  ? ""
+                  : ", "}
             </span>
           ))}
         </div>
       </div>
       <div className="flex flex-col gap-4 justify-center">
-        <CopyLinkButton routeId={route.id} />
+        <CopyLinkButton routeId={route._id} />
         <AddUpdateRouteButton route={route} type="Update" />
         <DeleteRouteButton route={route} />
       </div>

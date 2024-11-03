@@ -2,7 +2,6 @@ import { Button } from "./ui/button";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import SoHoMap from "./SoHoMap";
-import RouteDisplayModal from "./RouteDisplayModal";
 import { useMyStores } from "@/context/StoresContext";
 import useGeolocation from "@/hooks/useGeolocation";
 import { findOptimalRoute } from "@/lib/utils";
@@ -13,15 +12,12 @@ import AddUpdateRouteButton from "./AddUpdateRouteButton";
 export default function RouteDisplayPage() {
   const { stores } = useMyStores();
   const navigate = useNavigate();
-  const [isModalOpen, setModalOpen] = useState(false);
   const [selectedStore, setSelectedStore] = useState<null | Store>(null);
   const [route, setRoute] = useState<Store[]>([]);
   const [totalDistance, setTotalDistance] = useState(0);
   const params = useParams();
   const { coordinates, error, loading: geolocationLoading } = useGeolocation();
   const map = useMap();
-
-  console.log(coordinates);
 
   // if routeId doesnt exist in database, return to home
   //   if (params.routeId === undefined) navigate('/')
@@ -47,23 +43,6 @@ export default function RouteDisplayPage() {
       alert(`An error occurred while tracking your location: ${error}`);
     // navigate("/");
   }, [geolocationLoading, error]);
-
-  //   useEffect(() => {
-  //     if (!allowedLocationAccess) {
-  //       const allow = confirm("Allow location access?");
-  //       if (!allow) {
-  //         alert("Please allow location access to proceed.");
-  //         navigate("/");
-  //       } else {
-  //         setAllowedLocationAccess(true);
-  //       }
-  //     }
-  //   }, []);
-
-  const handleSaveList = (name: string, description: string) => {
-    console.log("saved route:", { name, description, stores: stores });
-    alert("route will be saved to database when database is connected");
-  };
 
   const routeDisplay = route?.map((store, index) => (
     <div
@@ -99,7 +78,11 @@ export default function RouteDisplayPage() {
       <div className="text-3xl font-bold text-center">Your Shopping Route</div>
 
       <div className="w-full h-[300px] border-2 border-black">
-        <SoHoMap stores={stores} type="Route Display" />
+        <SoHoMap
+          stores={stores}
+          type="Route Display"
+          userCoordinates={coordinates || undefined}
+        />
       </div>
       {totalDistance ? (
         <>
@@ -122,12 +105,6 @@ export default function RouteDisplayPage() {
         {BackButton}
         <AddUpdateRouteButton type="Add" route={stores} />
       </div>
-
-      <RouteDisplayModal
-        isOpen={isModalOpen}
-        onClose={() => setModalOpen(false)}
-        onSave={handleSaveList}
-      />
     </div>
   );
 }

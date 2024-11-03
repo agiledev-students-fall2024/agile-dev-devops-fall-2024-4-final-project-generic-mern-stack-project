@@ -6,6 +6,7 @@ export default function CopyLinkButton({ routeId }: { routeId: string }) {
 
   const handleCopy = () => {
     setIsAdding(true);
+    //TODO: change link
     navigator.clipboard.writeText(`http://localhost:5173/route/${routeId}`);
     setTimeout(() => {
       setIsAdding(false);
@@ -13,7 +14,7 @@ export default function CopyLinkButton({ routeId }: { routeId: string }) {
   };
 
   return isAdding ? (
-    <span className="text-xs w-[30px] h-[30px] relative right-2 top-2 self-center">
+    <span className="text-sm m-auto h-[30px] w-[30px] relative right-4 top-1">
       Copied!
     </span>
   ) : (
