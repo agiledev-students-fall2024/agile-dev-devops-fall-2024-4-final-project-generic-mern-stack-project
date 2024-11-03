@@ -1,3 +1,6 @@
+import axios from 'axios';
+import { BACKEND_URL } from './config';
+
 export class Restaurant {
   constructor(id, name, description, location, link, images, pills) {
     this.id = id;
@@ -25,28 +28,34 @@ export class Restaurant {
  * @returns A Restaurant object from the desired restaurant
  */
 export async function bulkFetchRestaurants(userId) {
-  if (!userId) throw new Error("Empty userId. Cannot fetch");
+  // if (!userId) throw new Error("Empty userId. Cannot fetch");
+  const fetchUrl = `${BACKEND_URL}/restaurants`;
 
-  const API_KEY = process.env.REACT_APP_API_KEY
+  const response = await axios.get(fetchUrl);
+  const data = response.data;
 
-  let fetchUrl = "";
-  if (process.env.NODE_ENV == "production")
-    fetchUrl = "http://backend/api/restaurant";
-  else fetchUrl = `https://my.api.mockaroo.com/restaurant.json?key=${API_KEY}`;
-
-
-  const response = await fetch(fetchUrl)
-    .then((response) => {
-      return response.json()
-    })
-    .then((data) => {
-      return data
-  });
-  const restaurants = new Array();
-  response.flatMap((restaurant) => {
-    restaurants.push(Restaurant.from(restaurant));
-  });
+  const restaurants = data.map((restaurantData) => Restaurant.from(restaurantData));
   return restaurants;
+}
+
+export async function searchRestaurants(query) {
+  const fetchUrl = `${BACKEND_URL}/restaurant/search?query=${encodeURIComponent(query)}`;
+
+  const response = await axios.get(fetchUrl);
+  const data = response.data;
+
+  const restaurants = data.map((restaurantData) => Restaurant.from(restaurantData));
+  return restaurants;
+}
+
+export async function likeRestaurant(restaurantId) {
+  const url = `${BACKEND_URL}/restaurant/${restaurantId}/like`;
+  await axios.post(url);
+}
+
+export async function dislikeRestaurant(restaurantId) {
+  const url = `${BACKEND_URL}/restaurant/${restaurantId}/dislike`;
+  await axios.post(url);
 }
 
 export async function fetchLikedRestaurants(userId) {

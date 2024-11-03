@@ -1,26 +1,12 @@
-import React, { useState, useContext, useEffect } from "react";
-import "../styles/FilterPopup.css"; // Create this CSS file for styling
-import { SwipableFeedContext } from "../contexts/SwipableFeedContext";
+import React, { useState, useContext } from 'react';
+import '../styles/FilterPopup.css';
+import { SwipableFeedContext } from '../contexts/SwipableFeedContext';
+import { searchRestaurants } from '../api/Restaurant';
 
 const FilterPopup = ({ open, close }) => {
   const { setFilteredRestaurants, filters, setFilters, allRestaurants } = useContext(SwipableFeedContext);
-  const [search, setSearch] = useState("");
-  const [pills, setPills] = useState([])
+  const [search, setSearch] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-
-  useEffect(() => {
-    if (allRestaurants) {
-      if (allRestaurants.length > 0) {
-        for (const restaurant of allRestaurants) {
-          restaurant.pills.flatMap((pill) =>
-          setPills((prev) => {
-            return [...prev,pill]
-          }
-          ));
-        };
-      }
-    }
-  },[allRestaurants])
 
   const handleCheckboxChange = (pill) => {
     let updatedFilters;
@@ -34,37 +20,35 @@ const FilterPopup = ({ open, close }) => {
     filterRestaurants(updatedFilters, search);
   };
 
-  const handleSearchChange = (event) => {
+  const handleSearchChange = async (event) => {
     const value = event.target.value;
     setSearch(value);
-    const results = allRestaurants.filter((r) =>
-      r.name.toLowerCase().includes(value.toLowerCase())
-    );
-    setSearchResults(results);
+
+    if (value.trim() === '') {
+      setSearchResults([]);
+      return;
+    }
+
+    try {
+      const results = await searchRestaurants(value);
+      setSearchResults(results);
+    } catch (error) {
+      console.error('Error searching for restaurants:', error);
+    }
   };
 
   const handleSearchSelect = (restaurant) => {
-    setFilteredRestaurants((prevFiltered) => {
-      const otherRestaurants = allRestaurants.filter(
-        (r) => r.id !== restaurant.id
-      );
-      return [restaurant, ...otherRestaurants];
-    });
-
-    setSearch("");
+    setFilteredRestaurants([restaurant]);
+    setSearch('');
     setSearchResults([]);
-    setFilters([]); // Reset filters after selection
-    close(); // Close the dialog
+    setFilters([]);
+    close();
   };
 
   const filterRestaurants = (pills, searchQuery) => {
     const filtered = allRestaurants.filter((restaurant) => {
-      const matchesPills =
-        pills.length === 0 ||
-        pills.every((pill) => restaurant.pills.includes(pill));
-      const matchesSearch =
-        !searchQuery ||
-        restaurant.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesPills = pills.length === 0 || pills.every((pill) => restaurant.pills.includes(pill));
+      const matchesSearch = !searchQuery || restaurant.name.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesPills && matchesSearch;
     });
     setFilteredRestaurants(filtered);
@@ -97,18 +81,7 @@ const FilterPopup = ({ open, close }) => {
               ))}
             </ul>
           )}
-          <div className="checkbox-group">
-            {pills.map((pill, index) => (
-              <label key={index} className="checkbox-label">
-                <input
-                  type="checkbox"
-                  checked={filters.includes(pill)}
-                  onChange={() => handleCheckboxChange(pill)}
-                />
-                {pill}
-              </label>
-            ))}
-          </div>
+          {/* Checkbox filters can be implemented as needed */}
         </div>
         <div className="dialog-actions">
           <button onClick={close} className="close-button">
