@@ -17,7 +17,8 @@
   "homepage": "https://github.com/agiledev-students-fall2024/4-final-project-avocado-the-study-space-tracker#readme",
   "description": "",
   "dependencies": {
-    "express": "^4.21.1"
+    "express": "^4.21.1",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.7"
