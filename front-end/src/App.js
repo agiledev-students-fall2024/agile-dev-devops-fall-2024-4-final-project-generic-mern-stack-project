@@ -10,18 +10,19 @@ import "./App.css";
 
 function App() {
   return (
+    <AccountInfoProvider>
+      <AuthProvider>
     <SwipableFeedProvider>
-      <AccountInfoProvider>
-        <AuthProvider>
           <Router>
             <Navbar />
             <div className="app-content">
               <AppRoutes />
             </div>
           </Router>
-        </AuthProvider>
-      </AccountInfoProvider>
     </SwipableFeedProvider>
+    </AuthProvider>
+    </AccountInfoProvider>
+
   );
 }
 
