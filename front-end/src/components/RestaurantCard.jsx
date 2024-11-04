@@ -7,7 +7,7 @@ const RestaurantCard = ({ restaurant }) => {
 
   if (!restaurant) return <div>No Restaurant Found</div>;
 
-  const totalImages = restaurant.imgs.length;
+  const totalImages = restaurant.images.length;
 
   const handleImageClick = (event) => {
     event.stopPropagation();

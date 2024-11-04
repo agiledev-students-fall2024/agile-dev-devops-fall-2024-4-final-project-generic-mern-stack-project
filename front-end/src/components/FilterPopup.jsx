@@ -1,21 +1,28 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "../styles/FilterPopup.css"; // Create this CSS file for styling
-import { AccountInfoContext } from "../contexts/AccountInfoContext";
+import { SwipableFeedContext } from "../contexts/SwipableFeedContext";
 
 /* eslint-disable no-unused-vars */
 
 const FilterPopup = ({ open, close }) => {
-  const {
-    setFilteredRestaurants,
-    allrestaurants,
-    accountInfo,
-    setFilters,
-    filteredRestaurants,
-  } = useContext(AccountInfoContext);
-  const { filters } = accountInfo;
+  const { setFilteredRestaurants, filters, setFilters, allRestaurants } = useContext(SwipableFeedContext);
   const [search, setSearch] = useState("");
-  const pills = [...new Set(allrestaurants.flatMap((r) => r.pills))];
+  const [pills, setPills] = useState([])
   const [searchResults, setSearchResults] = useState([]);
+
+  useEffect(() => {
+    if (allRestaurants) {
+      if (allRestaurants.length > 0) {
+        for (const restaurant of allRestaurants) {
+          restaurant.pills.flatMap((pill) =>
+          setPills((prev) => {
+            return [...prev,pill]
+          }
+          ));
+        };
+      }
+    }
+  },[allRestaurants])
 
   const handleCheckboxChange = (pill) => {
     let updatedFilters;
@@ -32,7 +39,7 @@ const FilterPopup = ({ open, close }) => {
   const handleSearchChange = (event) => {
     const value = event.target.value;
     setSearch(value);
-    const results = allrestaurants.filter((r) =>
+    const results = allRestaurants.filter((r) =>
       r.name.toLowerCase().includes(value.toLowerCase())
     );
     setSearchResults(results);
@@ -40,7 +47,7 @@ const FilterPopup = ({ open, close }) => {
 
   const handleSearchSelect = (restaurant) => {
     setFilteredRestaurants((prevFiltered) => {
-      const otherRestaurants = allrestaurants.filter(
+      const otherRestaurants = allRestaurants.filter(
         (r) => r.id !== restaurant.id
       );
       return [restaurant, ...otherRestaurants];
@@ -53,7 +60,7 @@ const FilterPopup = ({ open, close }) => {
   };
 
   const filterRestaurants = (pills, searchQuery) => {
-    const filtered = allrestaurants.filter((restaurant) => {
+    const filtered = allRestaurants.filter((restaurant) => {
       const matchesPills =
         pills.length === 0 ||
         pills.every((pill) => restaurant.pills.includes(pill));

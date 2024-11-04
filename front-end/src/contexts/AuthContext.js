@@ -1,24 +1,30 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useContext } from "react";
+import { AccountInfoContext } from "./AccountInfoContext";
+import { fetchUser } from "../api/User";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { setAccountInfo } = useContext(AccountInfoContext);
 
-  const [user, setUser] = useState(null);
-
-  const login = (userData) => {
+  const login = async (email) => {
     setIsAuthenticated(true);
-    setUser(userData);
+
+    const user = await fetchUser(email)
+    console.log(user);
+
+    // This assumes that userData has the correct fields -Eric
+    setAccountInfo(user)
   };
 
   const logout = () => {
     setIsAuthenticated(false);
-    setUser(null);
+    setAccountInfo(null);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

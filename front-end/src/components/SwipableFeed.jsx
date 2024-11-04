@@ -3,15 +3,32 @@ import SwipeableCard from "./SwipeableCard";
 import RestaurantCard from "./RestaurantCard";
 import { AccountInfoContext } from "../contexts/AccountInfoContext";
 import "../styles/SwipeableFeed.css";
+import { bulkFetchRestaurants } from "../api/Restaurant";
+import { AuthContext } from "../contexts/AuthContext";
+import { SwipableFeedContext } from "../contexts/SwipableFeedContext";
 
 const SwipableFeed = () => {
-  const { filteredRestaurants:restaurants } = useContext(AccountInfoContext);
+  const { setFilteredRestaurants, filteredRestaurants:restaurants } = useContext(SwipableFeedContext);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const { addLikedRestaurant } = useContext(AccountInfoContext);
+  const { accountInfo, addLikedRestaurant } = useContext(AccountInfoContext);
+  const { isAuthenticated } = useContext(AuthContext)
+  const { setAllRestaurants } = useContext(SwipableFeedContext)
 
   useEffect(() => {
     setCurrentIndex(0);
   }, [restaurants]);
+
+  useEffect(() => {
+    async function fetch() {
+      if (isAuthenticated) {
+        const restaurants = await bulkFetchRestaurants(accountInfo.id);
+        setAllRestaurants(restaurants);
+        console.log(restaurants);
+        setFilteredRestaurants(restaurants);
+      }
+    }
+    fetch()
+  }, [isAuthenticated]);
 
   const handleSwipeLeft = async () => {
     try {

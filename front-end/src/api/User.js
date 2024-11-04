@@ -1,47 +1,48 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext } from 'react';
 
-const UserContext = createContext();
+export class User {
+  constructor(id, email, profilePic="", likedRestaurants=[]) {
+    this.id = id;
+    this.email = email;
+    this.profilePic = profilePic
+    this.likedRestaurants = this.likedRestaurants;
+  }
 
-/*
-USAGE EXAMPLE
-
-import { useUser } from './api/User';
-
-function Profile() {
-  const user = useUser();
-
-  if (!user) return <div>Loading...</div>;
-
-  return (
-    <div>
-      <h1>Welcome, {user.name}!</h1>
-      <p>You have {user.followers} followers.</p>
-    </div>
-  );
-}
- */
-
-export function UserProvider({ children }) {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    let fetchUrl = ""
-    if (process.env.NODE_ENV == "production") fetchUrl = "http://backend/api/user";
-    else fetchUrl = "insert dummy api here";
-
-    fetch(fetchUrl)
-      .then(response => response.json())
-      .then(data => setUser(data))
-      .catch(error => console.error('Error fetching user data:', error));
-  }, []);
-
-  return (
-    <UserContext.Provider value={user}>
-      {children}
-    </UserContext.Provider>
-  );
+  /**
+   * Creates a User from a json response
+   */
+  static from(json) {
+    return Object.assign(new User(), json);
+  }
 }
 
-export function AuthenticatedUser() {
-  return useContext(UserContext);
+export async function fetchUser(email) {
+  let fetchUrl = ""
+
+  const API_KEY = process.env.REACT_APP_API_KEY
+  if (!API_KEY) {
+    console.log("UNDEFINED API_KEY");
+    throw new Error("API_KEY undefined");
+  }
+
+  if (process.env.NODE_ENV == "production") fetchUrl = `http://backend/api/user?id=${email}`;
+  else fetchUrl = `https://my.api.mockaroo.com/user.json?key=${API_KEY}`;
+
+  const user = await fetch(fetchUrl)
+    .then((response) => response.json())
+    .then((data) => {
+      return User.from(data)
+    })
+    .catch(error => console.error('Error fetching user data:', error));
+  return user;
+}
+
+export async function registerUser(email) {
+  return await fetch("http://backend/api/user", {
+    method: "POST",
+    body: {email: email}
+  })
+    .then(response => response.json())
+    .then((data) => User.from(data.json))
+    .catch(error => console.error('Error fetching user data:', error));
 }
