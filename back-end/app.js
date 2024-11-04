@@ -18,6 +18,7 @@ const main = require('./routes/main');
 const posts = require('./routes/posts');
 
 //  use routes
+app.use('/api/account', account);
 app.use('/api/friends', friends);
 app.use('/api/main', main);
 app.use('/api/posts', posts);
