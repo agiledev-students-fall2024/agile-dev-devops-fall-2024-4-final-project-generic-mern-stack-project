@@ -34,17 +34,24 @@ const JoinCreateMeetingPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">Meeting Dashboard</h1>
-          <button
-            onClick={handleLogout}
-            className="text-gray-600 hover:text-gray-900"
-          >
-            Logout
-          </button>
+      <header className="bg-white shadow-sm py-6">
+        <div className="max-w-7xl mx-auto px-8 sm:px-10 lg:px-12">
+          <div className="flex justify-between items-center">
+            <div className="flex-grow">
+              <h1 className="text-3xl font-bold text-gray-900">Meeting Dashboard</h1>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="ml-8 px-6 py-2.5 bg-gray-100 text-gray-700 font-medium rounded-lg 
+                       hover:bg-gray-200 transition-colors duration-200 
+                       focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+            >
+              Logout
+            </button>
+          </div>
         </div>
       </header>
+
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
           <ActionButton
@@ -107,9 +114,9 @@ const JoinCreateMeetingPage = () => {
 const ActionButton = ({ text, color, onClick }) => (
   <button
     onClick={onClick}
-    className={`${color} text-white p-4 rounded-lg flex items-center justify-center hover:opacity-90 transition-opacity`}
+    className={`${color} text-white p-6 rounded-lg flex items-center justify-center hover:opacity-90 transition-opacity`}
   >
-    <span className="text-sm font-medium">{text}</span>
+    <span className="text-lg font-medium">{text}</span>
   </button>
 );
 
