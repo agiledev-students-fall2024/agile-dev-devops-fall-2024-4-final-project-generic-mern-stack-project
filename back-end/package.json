@@ -1,0 +1,27 @@
+{
+  "name": "back-end",
+  "version": "1.0.0",
+  "description": "The back-end of your project will live in this directory.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "nodemon src/server.js",
+    "test": "c8 mocha tests/*.test.js"
+  },
+  "author": "Cyclable",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.7",
+    "dotenv": "^8.2.0",
+    "express": "^4.21.1",
+    "multer": "^1.4.2"
+  },
+  "devDependencies": {
+    "c8": "^10.1.2",
+    "chai": "^5.1.2",
+    "chai-http": "^5.1.1",
+    "mocha": "^10.8.2",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.7",
+    "sinon": "^19.0.2"
+  }
+}
