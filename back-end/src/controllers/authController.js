@@ -1,7 +1,7 @@
 /**
  * @module authController
  */
-// const User = require('../models/User'); // Example model import
+const User = require('../models/User');
 
 const fs = require('fs');
 const path = require('path');
@@ -35,16 +35,24 @@ const signup = async (req, res) => {
   const { email, password } = req.body;
   const users = readUsers();
 
+  // Create a new User instance
+  const newUser = new User(email, password);
+
+   // Validate user data
+  const validationErrors = User.validate(newUser);
+  if (validationErrors.length > 0) {
+    return res.status(400).json({ errors: validationErrors });
+  }
+
   // Check if user already exists
-  if (users.some(u => u.email === email)) {
+  if (users.some(u => u.email === newUser.email)) {
     return res.status(409).json({ message: 'User already exists' });
   }
 
-  // Create a new user and save it to the in-memory array
-  const newUser = { email, password };
+  // Save the new user
   users.push(newUser);
   writeUsers(users);
-
+  
   res.status(201).json({ message: 'User registered successfully' });
 };
 
