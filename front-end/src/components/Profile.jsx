@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import '../styles/Profile.css';
 import { AccountInfoContext } from '../contexts/AccountInfoContext';
-import { User } from '../contexts/AccountInfoContext';
+import { User } from '../api/User';
 import RestaurantListItem from './RestaurantListItem';
 
 const ProfilePage = () => {
