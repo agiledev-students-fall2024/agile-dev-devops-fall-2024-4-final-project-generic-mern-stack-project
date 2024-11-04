@@ -1,3 +1,5 @@
+/*eslint-disable no-unused-vars */
+
 import React, {useState, useEffect, useContext} from 'react';
 import '../styles/RestaurantListItem.css';
 
@@ -18,12 +20,13 @@ const RestaurantListItem = ({ restaurant, onDelete }) => {
 
   const handleStatus = () => {
     setPopupVisible(true);
-  }
+  };
 
   const selectStatus = (newStatus) => {
     setStatus(newStatus);
     setPopupVisible(false);
   };
+
 
   return (
     <div className="restaurant-list-item">
@@ -34,6 +37,9 @@ const RestaurantListItem = ({ restaurant, onDelete }) => {
             {pill}
           </span>
         ))}
+        <span className="pill">
+          {status}
+        </span>
       </div>
       <div className="button-container">
         <button className="delete-button" onClick={handleDelete}>Delete</button>

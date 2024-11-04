@@ -130,12 +130,26 @@ export const AccountInfoProvider = ({ children }) => {
   const [filteredRestaurants, setFilteredRestaurants] =
     useState(fakeRestaurants);
 
-  const addLikedRestaurant = (restaurant) => {
-    setAccountInfo((prev) => ({
-      ...prev,
-      likedRestaurants: [...prev.likedRestaurants, restaurant],
-    }));
-  };
+    const addLikedRestaurant = (restaurant) => {
+      setAccountInfo((prev) => {
+        // Check if the restaurant is already in the likedRestaurants array
+        const isAlreadyLiked = prev.likedRestaurants.some(
+          (likedRestaurant) => likedRestaurant.id === restaurant.id
+        );
+  
+        // If it's not already liked, add it to the array
+        if (!isAlreadyLiked) {
+          return {
+            ...prev,
+            likedRestaurants: [...prev.likedRestaurants, restaurant],
+          };
+        }
+  
+        // If it's already liked, return the previous state without changes
+        return prev;
+      });
+    };
+  
 
   const setFilters = (filters) => {
     setAccountInfo((prev) => ({
@@ -155,6 +169,7 @@ export const AccountInfoProvider = ({ children }) => {
     <AccountInfoContext.Provider
       value={{
         accountInfo,
+        setAccountInfo,
         addLikedRestaurant,
         setFilters,
         setSearch,

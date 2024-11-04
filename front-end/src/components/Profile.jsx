@@ -1,9 +1,10 @@
+/* eslint-disable no-unused-vars */
+
 import React, { useState, useEffect, useContext } from 'react';
 import '../styles/Profile.css';
 import { AccountInfoContext } from '../contexts/AccountInfoContext';
 import RestaurantListItem from './RestaurantListItem';
 
-/* eslint-disable no-unused-vars */
 
 const ProfilePage = () => {
   const [name, setName] = useState("");
@@ -14,35 +15,17 @@ const ProfilePage = () => {
   const [filterNeighborhood, setFilterNeighborhood] = useState("All");
   const [filterPrice, setFilterPrice] = useState("All");
   const [filterStatus, setFilterStatus] = useState("All");
-  // eslint-disable-next-line
-  const { accountInfo } = useContext(AccountInfoContext);
+  const { accountInfo, setAccountInfo  } = useContext(AccountInfoContext);
 
-  useEffect(() => {
-    const fetchRestaurants = async () => {
-      const data = {}; // Placeholder for the backend data of the restaurants
-
-      setTimeout(() => {
-        setSavedRestaurants(data);
-      }, 1000);
-    };
-
-    fetchRestaurants();
-  }, []);
-
-  const handleDelete = (id) => {
-    const updatedLikedRestaurants = accountInfo.likedRestaurants.filter(
-      (restaurant) => restaurant.id != id;
-    )
+  const handleDelete = (restaurantToDelete) => {
+    setAccountInfo(prevState => ({
+      ...prevState,
+      likedRestaurants: prevState.likedRestaurants.filter(
+        restaurant => restaurant.id !== restaurantToDelete.id
+      )
+    }));
   };
 
-  
-
-  const uniqueCuisines = Array.from(
-    new Set(Object.values(savedRestaurants).map((r) => r.cuisine))
-  );
-  const uniqueNeighborhoods = Array.from(
-    new Set(Object.values(savedRestaurants).map((r) => r.neighborhood))
-  );
 
   const filteredRestaurants = Object.keys(savedRestaurants).filter((id) => {
     const restaurant = savedRestaurants[id];
@@ -70,80 +53,26 @@ const ProfilePage = () => {
 
   return (
     <div className="profile-page">
-      <h2>Profile Page</h2>
-      <div className="header">
-        <div className="profile-elements">
-          <img
-            src={profilePic}
-            alt={`${name}'s profile`}
-            className="profile-pic"
-          />
-          <div className="profile-info">
-            <h2>{name}</h2>
-            <p>{phoneNumber}</p>
-          </div>
+      <h1>Profile Page</h1>
+      <div className="profile-card">
+        <div className="profile-photo">
+          <img src={profilePic || "default-profile-pic.jpg"} alt="Profile" />
+        </div>
+        <div className="profile-info">
+          <h2 className="profile-name">{name || "User's Name"}</h2>
+          <p className="profile-phone">{phoneNumber || "Phone Yet to be Set"}</p>
         </div>
       </div>
 
       <h2>Saved Restaurants</h2>
-
-      <div className="filters">
-        {/* ... (filter controls remain the same) */}
-      </div>
-
-      <div className="body">
-        {filteredRestaurants.length > 0 ? (
-          filteredRestaurants.map((id) => {
-            const restaurant = savedRestaurants[id];
-            return (
-              <div className="restaurant-card" key={id}>
-                <img
-                  src={restaurant.photo}
-                  alt={`${restaurant.name}`}
-                  className="restaurant-photo"
-                />
-                <div className="restaurant-info">
-                  <h2>{restaurant.name}</h2>
-                  <div className="restaurant-tags">
-                    <span className="tag">{restaurant.cuisine}</span>
-                    <span className="tag">{restaurant.neighborhood}</span>
-                    <span className="tag">{restaurant.priceRange}</span>
-                    <span className="tag">{restaurant.status}</span>
-                  </div>
-                  <button onClick={() => handleDelete(id)}>Delete</button>
-                </div>
-              </div>
-            );
-          })
-        ) : (
-          <p>No restaurants saved.</p>
-        )}
-      </div>
-
+      
       {accountInfo.likedRestaurants.length > 0 ? (
         accountInfo.likedRestaurants.map((restaurant) => (
-          <>
-            <RestaurantListItem 
-              key={restaurant.id} 
-              restaurant={restaurant} 
-            />
-            {/*handleDelete={() => handleDelete(restaurant.id)}
-              handleStatus={() => handleStatus(restaurant.id)} */}
-            <div className="button-container">
-              <button className="delete-button" onClick={() => handleDelete(restaurant.id)}>Delete</button>
-              <button className="status-button" onClick={() => handleStatus(restaurant.id)}>Change Status</button>
-            </div>
-            {popupVisible && (
-              <div className="popup-screen">
-                <div className="popup">
-                  <h3>Select Visiting Status</h3>
-                  <button onClick={() => selectStatus('Want to Visit')}>Want to Visit</button>
-                  <button onClick={() => selectStatus('Previously Visited')}>Previously Visited</button>
-                  <button onClick={() => setPopupVisible(false)}>Cancel</button>
-                </div>
-              </div>
-            )}
-          </>
+          <RestaurantListItem 
+            key={restaurant.id} 
+            restaurant={restaurant} 
+            onDelete={() => handleDelete(restaurant)}
+          />
         ))
       ) : (
         <p className="no-liked-restaurants">
