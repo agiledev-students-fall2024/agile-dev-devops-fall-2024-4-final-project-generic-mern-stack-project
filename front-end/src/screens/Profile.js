@@ -1,12 +1,9 @@
 import '../styles/Profile.css'
 import '../styles/main.css'
 import React from 'react'
-import { Navigate } from 'react-router-dom'
-import { useParams, Link } from 'react-router-dom'
-import userData from '../fillerData/users.json'
-import loggedInData from '../fillerData/loggedIn.json'
-import postData from '../fillerData/posts.json'
-import blockedData from '../fillerData/blocked.json'
+import axios from 'axios';
+import { useParams, Link, Navigate } from 'react-router-dom'
+
 
 const Profile = () => {
     const { username } = useParams()
@@ -20,39 +17,18 @@ const Profile = () => {
     )
 
     React.useEffect(() => {
-        const fetchUser = () => {
-            const foundUser = userData.find(user => user.username === username)
-            if (!foundUser) {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`http://localhost:5002/api/account/user/${username}`);
+                setBelongsToLoggedIn(response.data.belongsToLoggedIn)
+                setUser(response.data.user)
+                setPosts(response.data.posts)
+            } catch (error) {
                 setRedirect(true)
-            } else {
-                setUser(foundUser)
-                setBelongsToLoggedIn(loggedInData[0].id === foundUser.id)
-
-                const getBlockedUsers = () => {
-                    const blockedUsers = []
-            
-                    blockedData.forEach(item => {
-                        if (item.blocked_id === loggedInData[0].id) {
-                            blockedUsers.push(item.blocker_id)
-                        } else if (item.blocker_id === loggedInData[0].id){
-                            blockedUsers.push(item.blocked_id)
-                        }
-                    })
-
-                    return blockedUsers
-                }
-
-                const foundBlockedUsers = getBlockedUsers()
-                console.log(foundBlockedUsers)
-                if (foundBlockedUsers.includes(foundUser.id)){
-                    setRedirect(true) 
-                }
-
-                setPosts(postData.filter(post => post.author_id === foundUser.id).sort((a, b) => new Date(b.date) - new Date(a.date)))
             }
-        }
+        };
+        fetchData();
 
-        fetchUser()
     }, [username])
 
     if (redirect) {
