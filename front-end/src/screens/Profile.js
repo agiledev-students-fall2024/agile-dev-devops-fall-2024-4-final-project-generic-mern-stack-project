@@ -32,10 +32,10 @@ const Profile = () => {
                     const blockedUsers = []
             
                     blockedData.forEach(item => {
-                        if (item.blocked_id_1 === loggedInData[0].id) {
-                            blockedUsers.push(item.blocked_id_2)
-                        } else if (item.blocked_id_2 === loggedInData[0].id){
-                            blockedUsers.push(item.blocked_id_1)
+                        if (item.blocked_id === loggedInData[0].id) {
+                            blockedUsers.push(item.blocker_id)
+                        } else if (item.blocker_id === loggedInData[0].id){
+                            blockedUsers.push(item.blocked_id)
                         }
                     })
 
