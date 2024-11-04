@@ -12,3 +12,7 @@ npm run dev
 cd back-end
 node server.js
 ```
+
+#### Testing login
+Username: username
+Password: password
