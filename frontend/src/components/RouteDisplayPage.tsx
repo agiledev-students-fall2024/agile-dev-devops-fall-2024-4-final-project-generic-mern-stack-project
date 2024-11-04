@@ -8,17 +8,20 @@ import { findOptimalRoute } from "@/lib/utils";
 import type { Store } from "@/types";
 import { useMap } from "@vis.gl/react-google-maps";
 import AddUpdateRouteButton from "./AddUpdateRouteButton";
+import DirectionsMap from "./DirectionsMap";
 
 export default function RouteDisplayPage() {
   const { stores } = useMyStores();
   const navigate = useNavigate();
+  const [initialRouteCalculated, setInitialRouteCalculated] = useState(false);
   const [selectedStore, setSelectedStore] = useState<null | Store>(null);
   const [route, setRoute] = useState<Store[]>([]);
   const [totalDistance, setTotalDistance] = useState(0);
   const params = useParams();
-  const { coordinates, error, loading: geolocationLoading } = useGeolocation();
+  const { coordinates, error } = useGeolocation(30000);
   const map = useMap();
-
+  const [directionResult, setDirectionResult] =
+    useState<google.maps.DirectionsResult | null>(null);
   // if routeId doesnt exist in database, return to home
   //   if (params.routeId === undefined) navigate('/')
 
@@ -28,9 +31,27 @@ export default function RouteDisplayPage() {
     setSelectedStore(store);
   };
 
+  const getDirections = async (destination: string) => {
+    console.log("getting new dircetions from google");
+    const directionsService = new google.maps.DirectionsService();
+
+    try {
+      const result = await directionsService.route({
+        origin: new google.maps.LatLng(coordinates?.lat, coordinates?.lng),
+        destination: { placeId: destination },
+        travelMode: google.maps.TravelMode.DRIVING,
+      });
+
+      console.log(result);
+      setDirectionResult(result);
+    } catch (error) {
+      console.error("Error fetching directions: ", error);
+    }
+  };
+
+  // calculate optimal route on initial render with initial coordinates
   useEffect(() => {
-    if (coordinates) {
-      // calculate optimal route
+    if (coordinates && !initialRouteCalculated) {
       const result = findOptimalRoute(coordinates.lat, coordinates.lng, stores);
       console.log("Optimal route:");
       result.path.forEach((store, index) => {
@@ -39,10 +60,18 @@ export default function RouteDisplayPage() {
       setRoute(result.path);
       setTotalDistance(result.totalDistance);
       setSelectedStore(result.path[0]);
-    } else if (error)
+      setInitialRouteCalculated(true);
+    } else if (error) {
       alert(`An error occurred while tracking your location: ${error}`);
-    // navigate("/");
-  }, [geolocationLoading, error]);
+    }
+  }, [coordinates, error, initialRouteCalculated]);
+
+  // update directions whenever coordinates change
+  useEffect(() => {
+    if (coordinates && route.length > 0) {
+      getDirections(route[0]._id as string);
+    }
+  }, [coordinates, route]);
 
   const routeDisplay = route?.map((store, index) => (
     <div
@@ -78,19 +107,27 @@ export default function RouteDisplayPage() {
       <div className="text-3xl font-bold text-center">Your Shopping Route</div>
 
       <div className="w-full h-[300px] border-2 border-black">
-        <SoHoMap
+        {/* <SoHoMap
           stores={stores}
           type="Route Display"
           userCoordinates={coordinates || undefined}
-        />
+          defaultCenter={route.length > 0 ? {lat: route[0].lat, lng: route[0].lng} : undefined}
+        /> */}
+        {directionResult && (
+          <DirectionsMap
+            directionResult={directionResult}
+            center={{ lat: route[0].lat, lng: route[0].lng }}
+            zoom={10}
+          />
+        )}
       </div>
-      {totalDistance ? (
+      {route.length > 0 ? (
         <>
           <div className="font-poppins">
             Total walking distance:{" "}
             <span className="font-bold">{totalDistance.toFixed(0)} miles</span>
           </div>
-          <div className="mb-6 overflow-auto h-[150px] flex gap-[1px]">
+          <div className="overflow-auto h-[150px] flex gap-[1px]">
             {routeDisplay}
           </div>
         </>
@@ -100,6 +137,8 @@ export default function RouteDisplayPage() {
           <span className="dots overflow-hidden align-baseline"></span>
         </div>
       )}
+
+      <div>directions</div>
 
       <div className="flex justify-between">
         {BackButton}
