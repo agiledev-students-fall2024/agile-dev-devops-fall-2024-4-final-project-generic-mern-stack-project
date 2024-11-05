@@ -5,7 +5,7 @@
       "password": "password123",
       "email": "john@example.com",
       "name": "John Doe",
-      "profilePicture": "😎",
+      "profileAvatar": "😎",
       "bio": "Travel enthusiast and food lover.",
       "trips": ["trip_456", "trip_789"]
     },
@@ -15,7 +15,7 @@
       "password": "password456",
       "email": "jane@example.com",
       "name": "Jane Smith",
-      "profilePicture": "🌍",
+      "profileAvatar": "🌍",
       "bio": "Explorer and photographer.",
       "trips": ["trip_456"]
     },
@@ -25,7 +25,7 @@
       "password": "password789",
       "email": "alex@example.com",
       "name": "Alex Wanderer",
-      "profilePicture": "🧳",
+      "profileAvatar": "🧳",
       "bio": "Always on the move.",
       "trips": ["trip_789"]
     }
