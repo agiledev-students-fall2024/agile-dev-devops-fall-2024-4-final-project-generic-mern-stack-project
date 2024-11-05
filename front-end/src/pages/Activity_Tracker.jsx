@@ -8,11 +8,12 @@ function Activity_Tracker(){
 
     useEffect(() => {
         const fetchActivitiesData = async () => {
-            const response = await axios.get('https://my.api.mockaroo.com/activities_tracker?key=594b4990');
-            const fetchedData = response.data || [];
-            console.log(fetchedData)
-
-            setActivitiesData([...fetchedData]);
+            try {  //fetch all activities
+                const response = await axios.get('/api/activity-tracker');
+                setActivitiesData([...response.data])
+            }catch(error){
+                console.error('Error fetching activities')
+            }
         };
 
         fetchActivitiesData();
