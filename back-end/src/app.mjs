@@ -66,6 +66,24 @@ app.post('/api/signup', async (req, res) => {
   }
 });
 
+const tempRecipeShareStorage = []
+
+app.post('/api/shareRecipe', async (req, res) => {
+  const { foodName, story, recipe } = req.body;
+  try {
+    const shareRecipe = {
+      foodName,
+      story,
+      recipe
+    };
+    tempRecipeShareStorage.push(shareRecipe)
+    console.log(tempRecipeShareStorage)
+    res.status(200).json({ message: 'Share Successful', shareRecipe });
+  } catch (error) {
+    console.log("does not try")
+    res.status(401).json({ message: error.message });
+  }
+});
 
 
 
