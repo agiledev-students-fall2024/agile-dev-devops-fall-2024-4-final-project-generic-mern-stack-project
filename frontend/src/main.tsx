@@ -15,7 +15,7 @@ import Home from "./components/Home";
 import SuggestPage from "./components/SuggestPage";
 import { StoreProvider } from "./context/StoresContext";
 import HelpPage from "./components/HelpPage";
-import RouteDisplayPage from "./components/RouteDisplayPage";
+import RouteDisplayPage from "./components/RouteDisplay/RouteDisplayPage.tsx";
 import SavedRoutesPage from "./components/SavedRoutesPage";
 import { APIProvider } from "@vis.gl/react-google-maps";
 
