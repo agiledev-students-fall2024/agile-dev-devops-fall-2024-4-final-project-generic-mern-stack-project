@@ -1,6 +1,6 @@
 import '../index.css';
 import React, { useState, useEffect } from "react";
-import axios from 'axios';
+import axios from '../axiosConfig';
 // import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import './Challenges.css';
@@ -13,11 +13,18 @@ const Challenges = () => {
 
     useEffect(() => {
         const fetchChallengesData = async () => {
-            const response = await axios.get('https://my.api.mockaroo.com/challenges?key=594b4990');
-            const fetchedData = response.data || [];
-            console.log(fetchedData)
+            // const response = await axios.get('https://my.api.mockaroo.com/challenges?key=594b4990');
+            // const fetchedData = response.data || [];
+            // console.log(fetchedData)
 
-            setChallengesData([...fetchedData]);
+            // setChallengesData([...fetchedData]);
+
+            try{
+                const response = await axios.get('/api/challenges');
+                setChallengesData([...response.data])
+            } catch (error){
+                console.log('Error fetching activities')
+            }
         };
 
         fetchChallengesData();
