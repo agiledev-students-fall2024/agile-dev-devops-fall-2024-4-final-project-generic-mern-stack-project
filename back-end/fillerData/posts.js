@@ -1,4 +1,4 @@
-[
+const posts = [
     {
         "id": 1,
         "title": "The Secret to Bikini Bottom’s Best Burgers",
@@ -99,3 +99,5 @@
         "comments": []
     }    
 ]
+
+module.exports = posts

@@ -1,4 +1,4 @@
-[
+const blocked = [
     {
         "id": 1,
         "blocker_id": 3,
@@ -13,4 +13,5 @@
         "created_at": "2024-10-01T12:00:00Z"
     }
 ]
-  
+
+module.exports = blocked
