@@ -5,12 +5,15 @@ import axios from 'axios';
 import { useParams, Link, Navigate } from 'react-router-dom'
 
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 const Profile = () => {
     const { username } = useParams()
     const [user, setUser] = React.useState(null)
     const [redirect, setRedirect] = React.useState(false)
     const [belongsToLoggedIn, setBelongsToLoggedIn] = React.useState(null)
     const [posts, setPosts] = React.useState([])
+    const [friends, setFriends] = React.useState(false)
 
     const generateRandomList = (min, max, count) => (
         Array.from({ length: count }, () => Math.floor(Math.random() * (max - min + 1)) + min)
@@ -19,10 +22,11 @@ const Profile = () => {
     React.useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:5002/api/account/user/${username}`);
+                const response = await axios.get(`${apiUrl}/api/account/user/${username}`);
                 setBelongsToLoggedIn(response.data.belongsToLoggedIn)
                 setUser(response.data.user)
                 setPosts(response.data.posts)
+                setFriends(response.data.friends)
             } catch (error) {
                 setRedirect(true)
             }
@@ -173,7 +177,10 @@ const Profile = () => {
                         <path fillRule='evenodd' d='M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5'/>
                     </svg>
                 </Link>
+                
                 { belongsToLoggedIn && <Link to={`/createnewblogpost/${user.username}`} className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>New Post</Link> }
+                { !belongsToLoggedIn && friends && <button className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>Remove Friend</button> }
+                { !belongsToLoggedIn && !friends && <button className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>Add Friend</button> }
             </header>
 
             { user && <>

@@ -4,6 +4,9 @@ import axios from 'axios';
 import { Link, Navigate } from 'react-router-dom'
 import EditProfileForm from '../components/EditProfileForm'
 
+
+const apiUrl = process.env.REACT_APP_API_URL;
+
 const EditProfile = () => {
     const [user, setUser] = React.useState(null)
     const [redirect, setRedirect] = React.useState(false)
@@ -11,7 +14,7 @@ const EditProfile = () => {
     React.useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await axios.get(`http://localhost:5002/api/account/loggedIn`);
+                const response = await axios.get(`${apiUrl}/api/account/authUser`);
                 setUser(response.data)
             } catch (error) {
                 setRedirect(true)
