@@ -1,0 +1,51 @@
+[
+    {
+      "id": "location_001",
+      "tripId": "trip_456",
+      "name": "Central Park",
+      "address": "New York, NY 10024, USA",
+      "activities": ["activity_001", "activity_002"],
+      "image": "https://picsum.photos/200/304"
+    },
+    {
+      "id": "location_002",
+      "tripId": "trip_456",
+      "name": "Empire State Building",
+      "address": "New York, NY 10118, USA",
+      "activities": ["activity_003"],
+      "image": "https://picsum.photos/200/305"
+    },
+    {
+      "id": "location_003",
+      "tripId": "trip_789",
+      "name": "Golden Gate Bridge",
+      "address": "San Francisco, CA 94129, USA",
+      "activities": ["activity_004"],
+      "image": "https://picsum.photos/200/306"
+    },
+    {
+      "id": "location_004",
+      "tripId": "trip_789",
+      "name": "Yosemite National Park",
+      "address": "Yosemite Valley, CA 95389, USA",
+      "activities": ["activity_005"],
+      "image": "https://picsum.photos/200/307"
+    },
+    {
+      "id": "location_005",
+      "tripId": "trip_123",
+      "name": "Napa Valley",
+      "address": "Napa County, CA, USA",
+      "activities": ["activity_006"],
+      "image": "https://picsum.photos/200/308"
+    },
+    {
+      "id": "location_006",
+      "tripId": "trip_101",
+      "name": "Santa Monica Beach",
+      "address": "Santa Monica, CA 90401, USA",
+      "activities": ["activity_007", "activity_008"],
+      "image": "https://picsum.photos/200/309"
+    }
+  ]
+  
