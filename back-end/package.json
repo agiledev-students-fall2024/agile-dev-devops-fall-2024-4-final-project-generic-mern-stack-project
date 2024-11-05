@@ -1,12 +1,12 @@
 {
   "name": "back-end",
   "version": "1.0.0",
-  "main": "src/server.mjs",
+  "main": "src/app.mjs",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/server.mjs",
-    "dev": "nodemon src/server.mjs"
+    "start": "node src/app.mjs",
+    "dev": "nodemon src/app.mjs"
   },
   "keywords": [],
   "author": "",
