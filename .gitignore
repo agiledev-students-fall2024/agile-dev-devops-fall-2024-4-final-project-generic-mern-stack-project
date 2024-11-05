@@ -95,6 +95,7 @@ build/
 .env.development.local
 .env.test.local
 .env.production.local
+.env
 
 # TypeScript v1 declaration files
 typings/
