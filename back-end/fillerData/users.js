@@ -1,4 +1,4 @@
-[
+const users = [
     {
         "id": 1,
         "username": "spongebob",
@@ -73,3 +73,5 @@
         "layout": "list"
     }
 ]
+
+module.exports = users

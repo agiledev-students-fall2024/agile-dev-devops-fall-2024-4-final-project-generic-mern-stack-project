@@ -1,4 +1,4 @@
-[
+const friendships = [
     {
         "id": 1,
         "user_id_1": 1,
@@ -18,4 +18,5 @@
         "created_at": "2024-10-01T12:00:00Z"
     }
 ]
-  
+
+module.exports = friendships
