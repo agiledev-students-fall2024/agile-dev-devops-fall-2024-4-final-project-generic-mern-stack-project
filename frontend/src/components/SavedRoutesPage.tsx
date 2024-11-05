@@ -4,7 +4,7 @@ import AddUpdateRouteButton from "./AddUpdateRouteButton";
 import CopyLinkButton from "./CopyLinkButton";
 import DeleteRouteButton from "./DeleteRouteButton";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const sampleSavedRoutes: SavedRoute[] = [
   {
@@ -26,35 +26,37 @@ const sampleSavedRoutes: SavedRoute[] = [
 ];
 
 export default function SavedRoutesPage() {
+  const navigate = useNavigate();
   const savedRoutes = sampleSavedRoutes.map((route) => (
-    <Link to={`/route/${route._id}`}>
+    <div
+      key={route._id}
+      className="flex justify-between border-2 bg-green-200 hover:bg-green-300  border-green-400 rounded-sm p-2"
+    >
       <div
-        key={route._id}
-        className="flex justify-between border-2 bg-green-200 hover:bg-green-300  border-green-400 rounded-sm p-2"
+        className="flex flex-col gap-2 min-w-[90%]"
+        onClick={() => navigate(`/route/${route._id}`)}
       >
-        <div className="flex flex-col gap-2">
-          <span className="text-2xl font-semibold">{route.name}</span>
-          <div className="text-sm">{route.description}</div>
-          <div className="text-xs text-wrap">
-            {route.stores.slice(0, 3).map((store, i) => (
-              <span key={store._id} className=" font-light">
-                {store.name}
-                {i === 2 && route.stores.length > 3
-                  ? "..."
-                  : i === route.stores.length - 1
-                    ? ""
-                    : ", "}
-              </span>
-            ))}
-          </div>
-        </div>
-        <div className="flex flex-col gap-4 justify-center">
-          <CopyLinkButton routeId={route._id} />
-          <AddUpdateRouteButton route={route} type="Update" />
-          <DeleteRouteButton route={route} />
+        <span className="text-2xl font-semibold">{route.name}</span>
+        <div className="text-sm">{route.description}</div>
+        <div className="text-xs text-wrap">
+          {route.stores.slice(0, 3).map((store, i) => (
+            <span key={store._id} className=" font-light">
+              {store.name}
+              {i === 2 && route.stores.length > 3
+                ? "..."
+                : i === route.stores.length - 1
+                  ? ""
+                  : ", "}
+            </span>
+          ))}
         </div>
       </div>
-    </Link>
+      <div className="flex flex-col gap-4 justify-center">
+        <CopyLinkButton routeId={route._id} />
+        <AddUpdateRouteButton route={route} type="Update" />
+        <DeleteRouteButton route={route} />
+      </div>
+    </div>
   ));
 
   return (
