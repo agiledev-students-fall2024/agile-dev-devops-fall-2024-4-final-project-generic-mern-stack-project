@@ -4,6 +4,7 @@
   "description": "The back-end of your project will live in this directory.",
   "main": "aiFeatures.js",
   "scripts": {
+    "start": "nodemon  app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -14,7 +15,13 @@
     "assemblyai": "^4.7.1",
     "axios": "^1.7.7",
     "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.7.3",
     "multer": "^1.4.5-lts.1",
     "openai": "^4.68.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
   }
 }
