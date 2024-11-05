@@ -26,6 +26,7 @@ const RegisterForm = () => {
     e.preventDefault()
     try {
         const response = await axios.post(`${apiUrl}/api/account/register`, formData)
+        setError(null)
         console.log(response.data.message)
     } catch (error) {
       if (error.response) {

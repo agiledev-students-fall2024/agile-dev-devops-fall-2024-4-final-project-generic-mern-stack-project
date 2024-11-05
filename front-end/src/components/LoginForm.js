@@ -27,6 +27,8 @@ const LoginForm = () => {
     e.preventDefault()
     try {
         const response = await axios.post(`${apiUrl}/api/account/login`, formData);
+        setError(null)
+        setLogIn(true)
         console.log(response.data.message)
     } catch (error) {
       if (error.response) {

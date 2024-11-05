@@ -42,6 +42,7 @@ const EditProfileForm = () => {
         e.preventDefault()
         try {
             const response = await axios.post(`${apiUrl}/api/account/edit`, formData);
+            setError(null)
             setSuccess(response.data.username)
         } catch (error) {
           if (error.response) {
