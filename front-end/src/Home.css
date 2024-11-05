@@ -167,12 +167,11 @@
 form {
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Adds space between the form elements */
-    max-width: 500px; /* Optional: restricts the form width */
-    margin: 0 auto; /* Centers the form on the page */
+    gap: 15px;
+    max-width: 500px; 
+    margin: 0 auto;
 }
 
-/* Style for the input fields */
 input, textarea {
     padding: 10px;
     border-radius: 4px;
@@ -180,8 +179,7 @@ input, textarea {
     width: 100%;
 }
 
-/* Specific style for the textareas (larger size) */
 textarea {
-    min-height: 120px; /* Makes the textarea taller */
-    resize: vertical; /* Allows the user to resize the textarea vertically */
+    min-height: 120px;
+    resize: vertical; 
 }
