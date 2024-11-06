@@ -15,8 +15,9 @@ import Home from "./components/Home";
 import SuggestPage from "./components/SuggestPage";
 import { StoreProvider } from "./context/StoresContext";
 import HelpPage from "./components/HelpPage";
-import RouteDisplayPage from "./components/RouteDisplayPage";
+import RouteDisplayPage from "./components/RouteDisplay/RouteDisplayPage.tsx";
 import SavedRoutesPage from "./components/SavedRoutesPage";
+import { APIProvider } from "@vis.gl/react-google-maps";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,12 +25,12 @@ const router = createBrowserRouter(
       <Route element={<ProtectedRouteWrapper requiresAuth={false} />}>
         <Route path="/login" element={<LoginForm />} />
         <Route path="/signup" element={<SignupForm />} />
+        <Route path="/route/:routeId?" element={<RouteDisplayPage />} />
       </Route>
       <Route element={<ProtectedRouteWrapper requiresAuth={true} />}>
         <Route index path="/" element={<Home />} />
         <Route index path="/suggest" element={<SuggestPage />} />
         <Route path="/help" element={<HelpPage />} />
-        <Route path="/route-display" element={<RouteDisplayPage />} />
         <Route index path="/saved-routes" element={<SavedRoutesPage />} />
       </Route>
     </>,
@@ -37,10 +38,15 @@ const router = createBrowserRouter(
 );
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
+  // <StrictMode>
+  <APIProvider
+    apiKey={"AIzaSyBX6VqkGXWxsNGmZ45gHz4CGWHiRSgyhzI"}
+    onLoad={() => console.log("Maps API has loaded.")}
+  >
     <StoreProvider>
       <Toaster />
       <RouterProvider router={router} />
     </StoreProvider>
-  </StrictMode>,
+  </APIProvider>,
+  // </StrictMode>,
 );

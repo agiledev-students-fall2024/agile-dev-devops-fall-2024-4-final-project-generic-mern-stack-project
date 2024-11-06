@@ -1,28 +1,26 @@
 import { Navigate, Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
+import { Loader } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
-export default function ProtectedRouteWrapper({
-  requiresAuth,
-}: {
-  requiresAuth: boolean;
-}) {
+const ProtectedRoute = ({ requiresAuth }: { requiresAuth: boolean }) => {
+  const location = useLocation();
+
   // unauthenticated user attempting to access protected route
-  // if (requiresAuth && isAuthenticated) {
+  // if (requiresAuth && !isAuthenticated) {
   //   return <Navigate to="/login" replace />;
   // }
   // logged in user attempting to go back to auth page
-  // else if (!requiresAuth && isAuthenticated) {
+  // else if (isAuthenticated && (location.pathname === '/login' || location.pathname === '/signup')) {
   //   return <Navigate to="/" replace />;
   // }
-  // logged in user on a protected route
-  if (requiresAuth) {
-    return (
-      <>
-        <Navbar />
-        <Outlet />
-      </>
-    );
-  }
 
-  return <Outlet />;
-}
+  return (
+    <>
+      <Navbar />
+      <Outlet />
+    </>
+  );
+};
+
+export default ProtectedRoute;

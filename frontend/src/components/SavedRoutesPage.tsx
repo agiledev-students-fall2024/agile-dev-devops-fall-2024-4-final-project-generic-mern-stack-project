@@ -1,47 +1,59 @@
 import sampleStores from "@/stores";
 import { SavedRoute } from "@/types";
-import UpdateSavedRouteButton from "./UpdateSavedRouteButton";
+import AddUpdateRouteButton from "./AddUpdateRouteButton";
 import CopyLinkButton from "./CopyLinkButton";
 import DeleteRouteButton from "./DeleteRouteButton";
 import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const sampleSavedRoutes: SavedRoute[] = [
   {
-    id: "1",
+    _id: "1",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit at alias natus nostrum quas assumenda inventore animi perferendis sequi. Quos eligendi sapiente error alias aspernatur dolores eum, voluptas possimus quaerat!",
     name: "saved route 1",
     stores: sampleStores,
+    created_by: "user",
   },
   {
-    id: "2",
+    _id: "2",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit at alias natus nostrum quas assumenda inventore animi perferendis sequi. Quos eligendi sapiente error alias aspernatur dolores eum, voluptas possimus quaerat!",
     name: "saved route 2",
     stores: sampleStores,
+    created_by: "user",
   },
 ];
 
 export default function SavedRoutesPage() {
+  const navigate = useNavigate();
   const savedRoutes = sampleSavedRoutes.map((route) => (
     <div
-      key={route.id}
+      key={route._id}
       className="flex justify-between border-2 bg-green-200 hover:bg-green-300  border-green-400 rounded-sm p-2"
     >
-      <div className="flex flex-col gap-2">
+      <div
+        className="flex flex-col gap-2 min-w-[90%]"
+        onClick={() => navigate(`/route/${route._id}`)}
+      >
         <span className="text-2xl font-semibold">{route.name}</span>
         <div className="text-sm">{route.description}</div>
         <div className="text-xs text-wrap">
           {route.stores.slice(0, 3).map((store, i) => (
             <span key={store._id} className=" font-light">
-              {store.name}, {i === 2 && route.stores.length > 3 ? "..." : ""}
+              {store.name}
+              {i === 2 && route.stores.length > 3
+                ? "..."
+                : i === route.stores.length - 1
+                  ? ""
+                  : ", "}
             </span>
           ))}
         </div>
       </div>
       <div className="flex flex-col gap-4 justify-center">
-        <CopyLinkButton routeId={route.id} />
-        <UpdateSavedRouteButton route={route} />
+        <CopyLinkButton routeId={route._id} />
+        <AddUpdateRouteButton route={route} type="Update" />
         <DeleteRouteButton route={route} />
       </div>
     </div>
@@ -50,11 +62,19 @@ export default function SavedRoutesPage() {
   return (
     <div className="p-5 flex flex-col gap-4">
       <div className="text-3xl font-bold">Your Saved Routes</div>
-      <div className="text-md font-light">
+      <div className="text-md font-light font-poppins">
         View, edit, or share your saved shopping routes. Click any route to see
         its optimized path.
       </div>
-      <div className="flex flex-col gap-5">{savedRoutes}</div>
+      <div className="flex flex-col gap-5">
+        {savedRoutes && savedRoutes.length > 0 ? (
+          savedRoutes
+        ) : (
+          <div className="text-center mt-10 font-poppins">
+            You have no saved routes.
+          </div>
+        )}
+      </div>
     </div>
   );
 }

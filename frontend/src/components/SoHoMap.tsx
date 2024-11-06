@@ -1,36 +1,73 @@
 import { useEffect, useState, useRef } from "react";
 import {
-  APIProvider,
   Map,
   AdvancedMarker,
   useMap,
   Pin,
+  MapCameraChangedEvent,
 } from "@vis.gl/react-google-maps";
 import { Dialog } from "./ui/dialog";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
+import { Circle } from "./circle";
 import type { Marker } from "@googlemaps/markerclusterer";
 import StoreDialog from "./StoreDialog";
 import type { Store } from "@/types";
-import sampleStores from "@/stores";
 
-export default function SoHoMap() {
+export default function SoHoMap({
+  stores,
+  type,
+  userCoordinates,
+  defaultCenter,
+}: {
+  stores: Store[];
+  type: "Route Display" | "Home";
+  userCoordinates?: { lat: number; lng: number };
+  defaultCenter?: { lat: number; lng: number };
+}) {
+  const [zoom, setZoom] = useState(16);
+  // base values
+  const baseZoom = 16;
+  const baseRadius = 20;
+
+  // Calculate radius based on zoom
+  const radius = baseRadius * Math.pow(1.9, baseZoom - zoom);
+
+  const initialCenter = defaultCenter || {
+    lat: 40.723115351278075,
+    lng: -73.99867417832154,
+  };
+  const mapKey = `map-${initialCenter.lat}-${initialCenter.lng}`;
+
   return (
-    <APIProvider
-      apiKey={"AIzaSyBX6VqkGXWxsNGmZ45gHz4CGWHiRSgyhzI"}
-      onLoad={() => console.log("Maps API has loaded.")}
+    <Map
+      key={mapKey}
+      defaultZoom={16}
+      defaultCenter={initialCenter}
+      mapId="b9b9aae2738373ca"
+      onCameraChanged={(ev: MapCameraChangedEvent) => setZoom(ev.detail.zoom)}
     >
-      <Map
-        defaultZoom={16}
-        defaultCenter={{ lat: 40.723115351278075, lng: -73.99867417832154 }}
-        mapId="b9b9aae2738373ca"
-      >
-        <PoiMarkers stores={sampleStores} />
-      </Map>
-    </APIProvider>
+      <PoiMarkers stores={stores} type={type} />
+      {userCoordinates && (
+        <Circle
+          radius={radius}
+          center={userCoordinates}
+          strokeColor={"#0c4cb3"}
+          strokeOpacity={1}
+          strokeWeight={3}
+          fillColor={"#3b82f6"}
+          fillOpacity={0.3}
+          enablePing={true}
+          zoom={zoom}
+        />
+      )}
+    </Map>
   );
 }
 
-const PoiMarkers = (props: { stores: Store[] }) => {
+const PoiMarkers = (props: {
+  stores: Store[];
+  type: "Route Display" | "Home";
+}) => {
   const map = useMap();
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
 
@@ -91,7 +128,12 @@ const PoiMarkers = (props: { stores: Store[] }) => {
         open={!!selectedStore}
         onOpenChange={(open) => !open && setSelectedStore(null)}
       >
-        {selectedStore && <StoreDialog store={selectedStore} />}
+        {selectedStore && (
+          <StoreDialog
+            store={selectedStore}
+            allowAddRemove={props.type === "Home"}
+          />
+        )}
       </Dialog>
     </>
   );

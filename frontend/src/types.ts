@@ -38,8 +38,22 @@ export type FilterStringTypes = "Brand" | "Price Range" | "Category" | "Rating";
 export type PriceRange = "Budget" | "Mid-Range" | "Premium" | "Luxury";
 
 export type SavedRoute = {
-  id: string;
+  _id: string;
   description: string;
   name: string;
   stores: Store[];
+  created_by: string;
+};
+
+export type User = {
+  _id: string;
+  username: string;
+  saved_routes: SavedRoute[];
+};
+
+export type TravelMode = "DRIVING" | "WALKING" | "BICYCLING";
+
+export type SelectedStore = {
+  store: Store;
+  index: number;
 };
