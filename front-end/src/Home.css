@@ -164,7 +164,7 @@
     background-color: red;
 }
 
-form {
+.share-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -172,14 +172,18 @@ form {
     margin: 0 auto;
 }
 
-input, textarea {
+.input-text-area-share{
     padding: 10px;
     border-radius: 4px;
     border: 1px solid #ccc;
     width: 100%;
 }
 
-textarea {
+.share-text-area {
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 100%;
     min-height: 120px;
     resize: vertical; 
 }
