@@ -1,0 +1,1 @@
+this folder will contain the JS files of the app pages
