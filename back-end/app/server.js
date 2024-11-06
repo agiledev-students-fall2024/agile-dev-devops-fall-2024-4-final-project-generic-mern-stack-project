@@ -1,7 +1,6 @@
+import { server } from "./app/app";
 
-const server = require("./app")
-
-const port = 8000
+const port = process.env.PORT ?? 8000
 
 const listener = server.listen(port, function () {
   console.log(`Server running on port: ${port}`)

@@ -1,16 +1,4 @@
-const restaurants = require('./restaurants');
-const express = require("express");
-require("dotenv").config({ silent: true });
-const cors = require('cors');
-const app = express();
-
-app.use(cors({
-  origin: 'http://localhost:3000'
-}));
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
+import { app } from "../app";
 
 app.get('/restaurants', async (req, res) => {
   try {
@@ -89,4 +77,3 @@ app.get('/restaurant/search', async (req, res) => {
   }
 });
 
-module.exports = app;
