@@ -12,6 +12,7 @@ function Record() {
   const navigate = useNavigate();
   const location = useLocation();
   const { recipeId } = location.state || {};
+  const [error, setError] = useState(null); 
 
   const [completedSteps, setCompletedSteps] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -66,10 +67,12 @@ function Record() {
         console.log('Upload successful:', response.data);
         setSelectedFiles(null)
         closeModal();
+        setError(null);
       } else {
         console.error('Upload failed:', response.data.message);
       }
     } catch (error) {
+      setError(`Upload failed - ${error.response?.data?.message}`);
       console.error('Error uploading image:', error);
     }
   };
@@ -183,6 +186,7 @@ function Record() {
             <label>Upload an image of your finished dish!
               <input type='file' name='my_files' accept="image/*" onChange={handleFileChange}></input>
             </label>
+            {error && <div style={{ color: 'red' }}>{error}</div>}
             <button type='submit' className='upload-image-button'>Upload image</button>
           </form>
           <button onClick={closeModal} className="close-modal-button">
