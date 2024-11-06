@@ -145,15 +145,15 @@ const Home = () => {
             {share && (
                 <div className="full-page-card">
                     <button className="share-close-button" onClick={closeShare}>X</button>
-                    <form onSubmit={submitShareRecipe}>
+                    <form className = "share-form" onSubmit={submitShareRecipe}>
                         <label>Enter Food Name:
-                            <input type="text" placeholder="Food Name" value={foodName} onChange={(e) => setFoodName(e.target.value)} />
+                            <input className="input-text-area-share" type="text" placeholder="Food Name" value={foodName} onChange={(e) => setFoodName(e.target.value)} />
                         </label>
                         <label>Enter Story:
-                            <textarea placeholder="Optional" value={story} onChange={(e) => setStory(e.target.value)} />
+                            <textarea className="share-text-area" placeholder="Optional" value={story} onChange={(e) => setStory(e.target.value)} />
                         </label>
                         <label>Enter Recipe:
-                            <textarea placeholder="Recipe" value={recipe} onChange={(e) => setRecipe(e.target.value)} />
+                            <textarea className="share-text-area" placeholder="Recipe" value={recipe} onChange={(e) => setRecipe(e.target.value)} />
                         </label>
                         <button type="submit" className="share-button">Share</button>
                     </form>
