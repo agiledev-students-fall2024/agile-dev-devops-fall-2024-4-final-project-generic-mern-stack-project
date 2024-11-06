@@ -22,7 +22,14 @@ router.get('/:userId', (req, res) => {
 });
 
 // TODO: Get trips associated with a user (GET) - Retrieve and respond with a list of trips for a specific user by userId
-
+router.get('/:userId/trips', (req, res) => {
+    const userTrips = trips.filter(trip => trip.participants.includes(req.params.userId));
+    if (userTrips.length > 0) {
+      res.json(userTrips);
+    } else {
+      res.status(404).json({ error: 'Trips not found for this user' });
+    }
+  });
 
 // TODO: Create a new user (POST) - Add a new user to the system and respond with the newly created user data
 

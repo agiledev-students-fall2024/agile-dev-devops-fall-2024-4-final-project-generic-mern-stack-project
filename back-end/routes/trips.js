@@ -21,6 +21,18 @@ router.get('/:tripId', (req, res) => {
   }
 });
 
+// Get Trip info (locations) for a specific trip by tripId
+router.get('/:tripId/locations', (req, res) => {
+    const tripId = req.params.tripId;
+    const tripLocations = locations.filter(location => location.tripId === tripId);
+  
+    if (tripLocations.length > 0) {
+      res.json(tripLocations);
+    } else {
+      res.status(404).json({ error: 'No locations found for this trip' });
+    }
+  });
+
 // TODO: Create a new trip (POST) - Add a new trip to the system and respond with the newly created trip data
 
 

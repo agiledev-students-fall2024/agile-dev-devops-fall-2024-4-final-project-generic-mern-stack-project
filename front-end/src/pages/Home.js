@@ -1,15 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import TripTabs from '../components/trip/TripTabs';
 import TripList from '../components/trip/TripList';
+import axios from 'axios';
 import './Home.css';
 
 const Home = ({ isLoggedIn }) => {
   const [activeTab, setActiveTab] = useState('current');
+  const [user, setUser] = useState(null);
 
-  // if (!isLoggedIn) {
-  //   return <Navigate to="/log-in" replace />;
-  // }
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        // we will assume the current user ID is hardcoded or fetched from a global state or context (like logged in)
+        const userId = 'user_123'; // This will be Replaced with actual logic for fetching current user
+        const response = await axios.get(`/users/${userId}`);
+        setUser(response.data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  if (!isLoggedIn) {
+    return <Navigate to="/log-in" replace />;
+  }
 
   return (
     <div className="home">
@@ -23,7 +40,7 @@ const Home = ({ isLoggedIn }) => {
           </div>
         </div>
         <TripTabs activeTab={activeTab} setActiveTab={setActiveTab} />
-        <TripList activeTab={activeTab} />
+        {user && <TripList userId={user.id} activeTab={activeTab} />}
       </div>
     </div>
   );
