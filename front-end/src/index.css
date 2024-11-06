@@ -495,7 +495,7 @@ button:focus-visible {
   justify-content: space-around;
 }
 
-.step-card {
+.steps-card {
   border: 1px solid #e0e0e0;
   padding: 1rem;
   border-radius: 8px;
@@ -506,20 +506,24 @@ button:focus-visible {
   transition: transform 0.2s;
 }
 
-.step-card:hover {
+.steps-card:hover {
   transform: scale(1.03);
 }
 
-.step-card h4 {
+.steps-card h4 {
   margin-top: 0;
   font-size: 1.1rem;
   color: #333;
 }
 
-.step-card p {
+.steps-card p {
   margin-bottom: 1rem;
   font-size: 1rem;
   color: #555;
+}
+
+.steps-card.completed{
+  filter: blur(2px);
 }
 
 /* Button styling for steps */
@@ -532,17 +536,112 @@ button:focus-visible {
   font-size: 0.9rem;
   color: white;
   transition: background-color 0.2s;
-}
-
-.steps-button.default {
   background-color: #28a745;
 }
 
-.steps-button.default:hover {
+.steps-button:hover {
   background-color: #218838;
 }
 
 .steps-button.completed {
   background-color: #6c757d;
   cursor: not-allowed;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it’s on top */
+}
+
+/* Modal Content */
+.modal-content {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 75%;
+  max-width: 500px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease; 
+}
+.modal-content h2{
+  color: black;
+}
+.modal-content p{
+  color: black;
+}
+.modal-content label{
+  color: black;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Close Modal Button */
+.close-modal-button {
+  background-color: #a73728; 
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.close-modal-button:hover {
+  background-color: #45a049;
+}
+
+/* Finish Activity Button */
+.upload-image-button{
+  background-color: #007bff; 
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.finish-activity-button.default{
+  visibility: hidden;
+}
+
+.finish-activity-button.finished {
+  background-color: #007bff; 
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  animation: pulse 0.6s ease-in-out forwards infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1); /* Start at normal size */
+  }
+  50% {
+    transform: scale(1.03); /* Grow slightly larger */
+  }
+  100% {
+    transform: scale(1); /* Return to normal size */
+  }
 }
