@@ -30,6 +30,17 @@ const Home = () => {
     const [activitiesData, setActivitiesData] = useState([]);
     const [weeklyData, setWeeklyData] = useState([]);
     const [recipeData, setRecipeData] = useState([]);
+
+    //share recipe states
+    const [recipe, setRecipe] = useState("");
+    const [story, setStory] = useState("");
+    const [foodName, setFoodName] = useState("");
+    const [share, setShare] = useState(false);
+
+    const [error, setError] = useState('');
+
+    
+    
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -75,6 +86,18 @@ const Home = () => {
         fetchRecipeData();
     }, []);
 
+    async function submitShareRecipe(e){
+        // e.preventDefault();
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_BACK_PORT}/api/shareRecipe`, { foodName, story, recipe });
+            console.log(response.data.message);
+            navigate('/home');
+        } catch (err) {
+            setError(err.response?.data.message || 'Login failed');
+            console.error(err);
+        }
+    }
+
     const goToActivityTracker = () => {
         navigate('/activity-tracker');
     };
@@ -82,6 +105,14 @@ const Home = () => {
     const goToRecipePage = () => {
         navigate('/recipes');
     };
+
+    const handleShareRecipe = () => {
+        setShare(true);
+    }
+
+    const closeShare = () => {
+        setShare(false);
+    }
 
     return (
         <div className="home-container">
@@ -103,7 +134,32 @@ const Home = () => {
                     )}
                     <button onClick={goToActivityTracker}>See More</button>
                 </div>
+                
             )}
+            <div className="recipe-card">
+                <h2>Share A Recipe </h2>
+                <p>Sharing a recipe in our app is more than just providing a list of ingredients and steps; it's an opportunity to connect with others, celebrate culinary traditions, and foster a sense of community.</p>
+                <button className="make-recipe-button" onClick={handleShareRecipe}>Share Recipe</button>
+            </div>
+
+            {share && (
+                <div className="full-page-card">
+                    <button className="share-close-button" onClick={closeShare}>X</button>
+                    <form onSubmit={submitShareRecipe}>
+                        <label>Enter Food Name:
+                            <input type="text" placeholder="Food Name" value={foodName} onChange={(e) => setFoodName(e.target.value)} />
+                        </label>
+                        <label>Enter Story:
+                            <textarea placeholder="Optional" value={story} onChange={(e) => setStory(e.target.value)} />
+                        </label>
+                        <label>Enter Recipe:
+                            <textarea placeholder="Recipe" value={recipe} onChange={(e) => setRecipe(e.target.value)} />
+                        </label>
+                        <button type="submit" className="share-button">Share</button>
+                    </form>
+                </div>
+            )}
+
             {recipeData.length > 0 && (
                 <>
                     <div className="recipe-card">
@@ -115,6 +171,7 @@ const Home = () => {
                         </div>
                         <button className="make-recipe-button" onClick={goToRecipePage}>Make Recipe</button>
                     </div>
+                    
 
                     {recipeData.length > 1 && (
                         <div className="recipe-card">

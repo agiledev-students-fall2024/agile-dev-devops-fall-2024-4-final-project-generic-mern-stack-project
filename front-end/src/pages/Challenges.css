@@ -17,6 +17,7 @@
 }
 .close-button {
     width:45px;
+    background-color: red;
     height:40px;
     position: absolute;
     top: 20px;
