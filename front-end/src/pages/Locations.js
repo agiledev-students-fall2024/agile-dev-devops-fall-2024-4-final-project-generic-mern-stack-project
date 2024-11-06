@@ -9,20 +9,16 @@ const Locations = () => {
   const [locations, setLocations] = useState([]);
   const [tripStatus, setTripStatus] = useState("ongoing"); 
   const [loading, setLoading] = useState(true);
-  const [showMembers, setShowMembers] = useState(false); //this decides whether or not to show the members list
+  const [showMembers, setShowMembers] = useState(false);
   const [participants, setParticipants] = useState([]);
   const { tripId } = useParams();
 
   const fetchLocationsAndStatus = async () => {
     try {
-      const locationsResponse = await axios.get(
-        `https://mock-api-misty-fog-1131.fly.dev/api/trips/${tripId}/locations`
-      );
+      const locationsResponse = await axios.get(`/trips/${tripId}/locations`);
       setLocations(locationsResponse.data);
 
-      const tripResponse = await axios.get(
-        `https://mock-api-misty-fog-1131.fly.dev/api/trips/${tripId}`
-      );
+      const tripResponse = await axios.get(`/trips/${tripId}`);
       setTripStatus(tripResponse.data.status);
     } catch (error) {
       console.error('Error fetching locations or trip status:', error);
@@ -33,9 +29,7 @@ const Locations = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get(
-        `https://mock-api-misty-fog-1131.fly.dev/api/trips/${tripId}`
-      );
+      const response = await axios.get(`/trips/${tripId}`);
       const participants = response.data.participants;
       setParticipants(participants);
     } catch (error) {
@@ -51,9 +45,11 @@ const Locations = () => {
     setTripStatus(e.target.value);
   };
 
-  const toggleMembersList = () => { //determines whether or not memberslist is shown
+  const toggleMembersList = () => {
     setShowMembers((prev) => !prev);
-    if (showMembers && participants.length === 0) {fetchUsers();}; //get the members if participants list not populated yet
+    if (!showMembers && participants.length === 0) {
+      fetchUsers();
+    }
   };
 
   if (loading) return <p>Loading locations...</p>;
@@ -82,7 +78,7 @@ const Locations = () => {
           </select>
         </div>
       </div>
-      {showMembers && <TripMembersList participants={participants}/>}
+      {showMembers && <TripMembersList participants={participants} />}
       <div className="locations-grid">
         {locations.map((location) => (
           <LocationCard

@@ -3,14 +3,14 @@ import TripCard from './TripCard';
 import './TripList.css';
 import axios from 'axios';
 
-const TripList = ({ activeTab }) => {
+const TripList = ({ userId, activeTab }) => {
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchTrips = async () => {
+    const fetchUserTrips = async () => {
       try {
-        const response = await axios.get('https://mock-api-misty-fog-1131.fly.dev/api/trips');
+        const response = await axios.get(`/users/${userId}/trips`);
         const filteredTrips = response.data.filter(trip =>
           activeTab === 'current' ? trip.status !== 'completed' : trip.status === 'completed'
         );
@@ -22,8 +22,8 @@ const TripList = ({ activeTab }) => {
       }
     };
 
-    fetchTrips();
-  }, [activeTab]);
+    fetchUserTrips();
+  }, [userId, activeTab]);
 
   if (loading) return <p>Loading trips...</p>;
 
