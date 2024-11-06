@@ -5,7 +5,7 @@ const router = express.Router();
 
 const mockUser = {
   _id: "123456789",
-  username: "testuser",
+  username: "test",
   saved_routes: [
     {
       _id: "route1",
@@ -75,9 +75,9 @@ router.post("/login", async (req, res) => {
     const { username, password } = req.body;
 
     // Mock authentication
-    if (username !== "testuser" || password !== "testpassword") {
-      return res.status(400).json({ message: "Invalid credentials" });
-    }
+    // if (username !== "testuser" || password !== "testpassword") {
+    //   return res.status(400).json({ message: "Invalid credentials" });
+    // }
 
     // Create and sign JWT. Store only userId and username
     const token = jwt.sign(
@@ -89,6 +89,7 @@ router.post("/login", async (req, res) => {
     // only need to return username. Client will call verifyToken to get full user object
     res.json({ token, username });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: error });
   }
 });

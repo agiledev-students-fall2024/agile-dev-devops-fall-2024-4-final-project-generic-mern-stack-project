@@ -16,6 +16,9 @@ import { Button } from "./ui/button";
 import { Loader } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import useAuth from "@/context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   username: z.string().min(1, {
@@ -28,6 +31,9 @@ const formSchema = z.object({
 
 export default function LoginForm() {
   const [pending, setPending] = useState(false);
+  const navigate = useNavigate();
+  const { login } = useAuth();
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -40,7 +46,35 @@ export default function LoginForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
     setPending(true);
-    // make call to backend and store token
+    const response = await fetch("http://localhost:3001/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: values.username,
+        password: values.password,
+      }),
+    });
+    if (response.ok) {
+      const { token, username } = await response.json();
+      console.log(token, username)
+      toast({
+        description: `Welcome back, ${username}`,
+        duration: 1000,
+      });
+      login(token);
+      // TODO: change this to navigate to last page they were on
+      navigate("/");
+    } else {
+      console.log('hi')
+      const { message } = await response.json();
+      console.log(message)
+      toast({
+        variant: "destructive",
+        title: "Log in failed",
+        description: message,
+      });
+      setPending(false);
+    }
   }
 
   return (
@@ -68,7 +102,7 @@ export default function LoginForm() {
                       <div className="relative">
                         <Input
                           {...field}
-                          className="peer block rounded-md border bg-zinc-50 px-2 py-[9px] text-sm outline-none placeholder:text-zinc-500"
+                          className="peer block w-full rounded-md border bg-zinc-50 px-2 py-[9px] text-sm outline-none placeholder:text-zinc-500"
                           id="username"
                           type="text"
                           name="username"
@@ -110,7 +144,7 @@ export default function LoginForm() {
                 )}
               />
               <Button
-                className="my-4 flex h-10 border-blue-600 w-full flex-row items-center justify-center bg-[#6366f1] px-8 text-sm font-medium text-white shadow transition-colors hover:bg-[#4f46e5] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                className="my-4 flex h-10 border-blue-600 w-full flex-row items-center justify-center rounded-md bg-[#6366f1] px-8 text-sm font-medium text-white shadow transition-colors hover:bg-[#4f46e5] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                 aria-disabled={pending}
                 disabled={pending}
               >

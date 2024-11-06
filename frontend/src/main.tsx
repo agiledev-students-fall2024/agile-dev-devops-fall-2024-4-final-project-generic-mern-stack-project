@@ -7,6 +7,7 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext.tsx";
 import { Toaster } from "@/components/ui/toaster";
 import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
@@ -39,6 +40,7 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById("root")!).render(
   // <StrictMode>
+  <AuthProvider>
   <APIProvider
     apiKey={"AIzaSyBX6VqkGXWxsNGmZ45gHz4CGWHiRSgyhzI"}
     onLoad={() => console.log("Maps API has loaded.")}
@@ -48,5 +50,7 @@ createRoot(document.getElementById("root")!).render(
       <RouterProvider router={router} />
     </StoreProvider>
   </APIProvider>,
+  </AuthProvider>,
+
   // </StrictMode>,
 );
