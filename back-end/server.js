@@ -33,7 +33,7 @@ app.use('/activities', activityRoutes);
 
 // root Route
 app.get('/', (req, res) => {
-  res.send('Welcome to the Trip Management API!');
+  res.send('This is the TripTease API!');
 });
 
 // Error Handling Middleware
