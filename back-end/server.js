@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 const server = app;
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 
 // call express's listen function to start listening to the port
 const listener = server.listen(PORT, function () {
