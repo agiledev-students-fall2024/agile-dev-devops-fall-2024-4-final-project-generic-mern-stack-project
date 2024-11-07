@@ -11,7 +11,7 @@ function Record() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { recipeId } = location.state || {};
+  const [recipeId, setRecipeId] = useState(location.state?.recipeId || null)
   const [error, setError] = useState(null); 
 
   const [completedSteps, setCompletedSteps] = useState([]);
@@ -30,6 +30,9 @@ function Record() {
   };
 
   const closeModal = () => {
+    setCompletedSteps([])
+    setCurrRecipe({})
+    setRecipeId(null)
     setIsModalOpen(false); 
     
   };
