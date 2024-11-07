@@ -19,21 +19,13 @@ const AccountSettings = (props) => {
 
     useEffect(() => {
         // fetch data
-        axios("https://my.api.mockaroo.com/user.json?key=baec6df0")
+        axios("http://localhost:8000/api/account-settings")
             .then(response => {
                 setData(response.data)
             })
             .catch(err => {
-                console.log(`No more requests allowed.`)
+                console.log(`Error fetching data.`)
                 console.error(err)
-                const mock_data = {
-                    "id": 1,
-                    "username": "jparkins0",
-                    "name": "Jeniffer Parkins",
-                    "email": "jparkins0@cornell.edu",
-                    "password": "yP6.dvW&"
-                }
-                setData(mock_data)
             })
     }, [])
 

@@ -10,13 +10,13 @@ const Blocked = (props) => {
 
         // set api url based on type of data needed
         if (props.type === "blocked_users") {
-            url = "https://my.api.mockaroo.com/blocked_users.json?key=baec6df0"
+            url = "http://localhost:8000/api/blocked-users"
         }
         if (props.type === "blocked_communities") {
-            url = "https://my.api.mockaroo.com/blocked_communities.json?key=baec6df0"
+            url = "http://localhost:8000/api/blocked-communities"
         }
         if (props.type === "muted_words") {
-            url = "https://my.api.mockaroo.com/muted_words.json?key=baec6df0"
+            url = "http://localhost:8000/api/muted-words"
         }
 
         // fetch data
@@ -25,7 +25,7 @@ const Blocked = (props) => {
                 setData(response.data)
             })
             .catch(err => {
-                console.log(`No more requests allowed.`)
+                console.log(`Could not get data.`)
                 console.error(err)
             })
     }, [])
