@@ -1,0 +1,1 @@
+This directory contains feature-specific files (e.g., authController.js, userController.js) with functions for handling requests and responses for actions like login, signup, getProfile, and reportIncident.

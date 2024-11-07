@@ -4,11 +4,11 @@ import Webcam from "react-webcam";
 
 function Post() {
   const [image, setImage] = useState(null);
-  const [caption, setCaption] = useState("");
+  const [caption, setCaption] = useState('');
   const fileInputRef = useRef(null);
   const webcamRef = useRef(null);
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = e => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -40,8 +40,8 @@ function Post() {
   };
 
   return (
-    <div className="max-w-lg mx-auto p-4">
-      <h1 className="text-center text-4xl font-bold mb-4">
+    <div className='mx-auto max-w-lg p-4'>
+      <h1 className='mb-4 text-center text-2xl font-bold'>
         Report an Incident
       </h1>
 
@@ -87,17 +87,17 @@ function Post() {
         </button>
 
         <input
-          type="file"
-          accept="image/*"
+          type='file'
+          accept='image/*'
           ref={fileInputRef}
-          style={{ display: "none" }}
+          style={{ display: 'none' }}
           onChange={handleImageUpload}
         />
       </div>
 
-      <button className="w-full bg-blue-500 hover:transition-all hover:bg-blue-700 border border-gray-300 p-2 rounded mb-4">
-        <span className="font-semibold text-white">
-          Recents <FontAwesomeIcon icon="fa-solid fa-caret-down" />
+      <button className='mb-4 w-full rounded border border-gray-300 bg-emerald-800 p-2 hover:bg-gray-600 hover:transition-all'>
+        <span className='font-semibold text-white'>
+          Recents <FontAwesomeIcon icon='fa-solid fa-caret-down' />
         </span>
       </button>
 
@@ -110,7 +110,7 @@ function Post() {
       />
 
       <button
-        className="w-full font-semibold text-white py-2 rounded bg-gray-500 hover:transition-all hover:bg-gray-700"
+        className='w-full rounded bg-gray-500 py-2 font-semibold text-white hover:bg-gray-700 hover:transition-all'
         onClick={handlePostClick}
       >
         Post

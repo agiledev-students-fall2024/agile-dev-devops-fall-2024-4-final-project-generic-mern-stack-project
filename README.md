@@ -10,7 +10,7 @@ Cyclable’s mission is to make biking in NYC more accessible and enjoyable for 
 
 ## Core Team Members
 
-- **[Nikky](https://github.com/nikkylu)**
+- **[Nikky Lu](https://github.com/nikkylu)**
 - **[Eleazar Neri](https://github.com/afknero)**
 - **[Diya Agrawal](https://github.com/diyagr)**
 - **[Hojong Shim](https://github.com/hojongshim)**
@@ -22,11 +22,46 @@ Cyclable was born out of a common frustration among cyclists in New York City: d
 
 ## Building and Testing Instructions
 
-Once the project reaches the building and testing stage, detailed instructions will be provided here on how to:
+### Setup and Installation
 
-1. Set up the development environment.
-2. Build and run the application locally.
-3. Run tests to ensure the functionality of the core features.
+1. **Prerequisites**:
+
+   - Ensure you have **Node.js** (version 14 or higher) and **npm** installed.
+   - You can verify your installations by running:
+     ```bash
+     node -v
+     npm -v
+     ```
+
+2. **Clone the Repository**:
+   Since we have our front-end setup, you can run our front-end by:
+
+   ```bash
+   git clone https://github.com/agiledev-students-fall2024/4-final-project-cyclists.git
+   cd 4-final-project-cyclists
+   cd front-end
+   ```
+
+3. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
+
+### Running the Application
+
+To start the application , run:
+
+```bash
+npm start
+```
+
+To create an optimized production build, run:
+
+```bash
+npm run build
+```
+
+The app will be accessible locally at `http://localhost:3000`.
 
 ## How to Contribute
 

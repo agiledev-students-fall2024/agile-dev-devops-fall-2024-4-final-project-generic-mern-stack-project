@@ -1,0 +1,1 @@
+This directory contain model files (e.g., User.js, Route.js, Incident.js) that define database schema and configurations for resources.
