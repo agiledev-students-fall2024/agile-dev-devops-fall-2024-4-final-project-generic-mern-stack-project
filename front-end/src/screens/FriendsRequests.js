@@ -1,17 +1,73 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/FriendsRequests.css';
-import userData from '../fillerData/users.json';
 
 const FriendRequests = () => {
   const [incomingRequests, setIncomingRequests] = useState([]);
   const [outgoingRequests, setOutgoingRequests] = useState([]);
 
   useEffect(() => {
-    const sortedUsers = [...userData].sort((a, b) => a.username.localeCompare(b.username));
-    setIncomingRequests(sortedUsers);
-    setOutgoingRequests(sortedUsers);
+    const fetchRequests = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/friends/requests');
+        if (response.ok) {
+          let { incomingRequests, outgoingRequests } = await response.json();
+
+          // ALPHABETICALLY SORTED
+          incomingRequests = incomingRequests.sort((a, b) => (a.fromUser?.name || "").localeCompare(b.fromUser?.name || ""));
+          outgoingRequests = outgoingRequests.sort((a, b) => (a.toUser?.name || "").localeCompare(b.toUser?.name || ""));
+
+          setIncomingRequests(incomingRequests);
+          setOutgoingRequests(outgoingRequests);
+        } else {
+          console.error('Failed to fetch friend requests');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    fetchRequests();
   }, []);
+
+  const handleAccept = async (requestId) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/friends/requests/accept/${requestId}`, { method: 'POST' });
+      if (response.ok) {
+        setIncomingRequests(prev => prev.filter(request => request.id !== requestId));
+      } else {
+        console.error('Failed to accept friend request');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const handleDecline = async (requestId) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/friends/requests/decline/${requestId}`, { method: 'POST' });
+      if (response.ok) {
+        setIncomingRequests(prev => prev.filter(request => request.id !== requestId));
+      } else {
+        console.error('Failed to decline friend request');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  const handleCancel = async (requestId) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/friends/requests/cancel/${requestId}`, { method: 'POST' });
+      if (response.ok) {
+        setOutgoingRequests(prev => prev.filter(request => request.id !== requestId));
+      } else {
+        console.error('Failed to cancel friend request');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   return (
     <div>
@@ -29,14 +85,24 @@ const FriendRequests = () => {
       <div className='container-friends'>
         <h6>Incoming Requests</h6>
         <div className="friends-list">
-          {incomingRequests.map(user => (
-            <div key={user.id} className="request-item">
+          {incomingRequests.map(request => (
+            <div key={request.id} className="request-item">
               <div className="username">
-                <span>{user.username}</span>
+                <span>{request.fromUser ? request.fromUser.name : "Unknown"} (@{request.fromUser ? request.fromUser.username : "Unknown"})</span>
               </div>
               <div className="request-actions">
-                <button className='border border-green-700 py-1 px-2 rounded text-sm hover:bg-green-700 focus:outline-none'>✔</button>
-                <button className='border border-red-600 py-1 px-2 rounded text-sm hover:bg-red-600 focus:outline-none'>✖</button>
+                <button 
+                  className='border border-green-700 py-1 px-2 rounded text-sm hover:bg-green-700 focus:outline-none' 
+                  onClick={() => handleAccept(request.id)}
+                >
+                  ✔
+                </button>
+                <button 
+                  className='border border-red-600 py-1 px-2 rounded text-sm hover:bg-red-600 focus:outline-none' 
+                  onClick={() => handleDecline(request.id)}
+                >
+                  ✖
+                </button>
               </div>
             </div>
           ))}
@@ -44,13 +110,18 @@ const FriendRequests = () => {
         <p></p>
         <h6>Outgoing Requests</h6>
         <div className="friends-list">
-          {outgoingRequests.map(user => (
-            <div key={user.id} className="request-item">
+          {outgoingRequests.map(request => (
+            <div key={request.id} className="request-item">
               <div className="username">
-                <span>{user.username}</span>
+                <span>{request.toUser ? request.toUser.name : "Unknown"} (@{request.toUser ? request.toUser.username : "Unknown"})</span>
               </div>
               <div className="request-actions">
-                <button className='border border-black py-1 px-2 rounded text-sm hover:bg-black hover:text-white'>Cancel</button>
+                <button 
+                  className='border border-black py-1 px-2 rounded text-sm hover:bg-black hover:text-white' 
+                  onClick={() => handleCancel(request.id)}
+                >
+                  Cancel
+                </button>
               </div>
             </div>
           ))}
@@ -61,3 +132,4 @@ const FriendRequests = () => {
 };
 
 export default FriendRequests;
+

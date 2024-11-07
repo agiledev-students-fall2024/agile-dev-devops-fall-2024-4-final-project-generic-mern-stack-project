@@ -1,20 +1,66 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/FriendsSearch.css';
-import userData from '../fillerData/users.json';
 
 const FriendsSearch = () => {
     const [searchTerm, setSearchTerm] = useState('');
+    const [friends, setFriends] = useState([]);
     const [filteredFriends, setFilteredFriends] = useState([]);
 
-    // FILTER AND SORT FRIENDS BASED ON USER INPUT
+    // FETCH FRIENDS FROM BACKEND
     useEffect(() => {
-        const filtered = userData
-            .filter(user => user.name.toLowerCase().includes(searchTerm.toLowerCase()))
-            .sort((a, b) => a.name.localeCompare(b.name)); // SORT NAMES ALPHABETICALLY
+        const fetchFriends = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/api/friends');
+                if (response.ok) {
+                    const data = await response.json();
+                    setFriends(data);
+                } else {
+                    console.error('Failed to fetch friends');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+        fetchFriends();
+    }, []);
+
+    // FILTER AND SORT BASED ON NAME
+    useEffect(() => {
+        const filtered = friends
+            .filter(friend => friend.name.toLowerCase().includes(searchTerm.toLowerCase()))
+            .sort((a, b) => a.name.localeCompare(b.name));
 
         setFilteredFriends(filtered);
-    }, [searchTerm]);
+    }, [searchTerm, friends]);
+
+    // BLOCK A USER
+    const handleBlock = async (friendId) => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/friends/block/${friendId}`, { method: 'POST' });
+            if (response.ok) {
+                setFriends(prevFriends => prevFriends.filter(friend => friend.id !== friendId));
+            } else {
+                console.error('Failed to block friend');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
+    // REMOVE A FRIEND
+    const handleRemove = async (friendId) => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/friends/remove/${friendId}`, { method: 'POST' });
+            if (response.ok) {
+                setFriends(prevFriends => prevFriends.filter(friend => friend.id !== friendId));
+            } else {
+                console.error('Failed to remove friend');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
 
     return (
         <div>
@@ -52,8 +98,8 @@ const FriendsSearch = () => {
                                 </span>
                             </div>
                             <div className="friend-actions">
-                                <button className='border border-black py-1 px-2 rounded text-sm hover:bg-black hover:text-white'>Block</button>
-                                <button className='border border-black py-1 px-2 rounded text-sm hover:bg-black hover:text-white'>Remove</button>
+                                <button className='border border-black py-1 px-2 rounded text-sm hover:bg-black hover:text-white' onClick={() => handleBlock(friend.id)}>Block</button>
+                                <button className='border border-black py-1 px-2 rounded text-sm hover:bg-black hover:text-white' onClick={() => handleRemove(friend.id)}>Remove</button>
                             </div>
                         </div>
                     ))}
@@ -64,3 +110,4 @@ const FriendsSearch = () => {
 };
 
 export default FriendsSearch;
+
