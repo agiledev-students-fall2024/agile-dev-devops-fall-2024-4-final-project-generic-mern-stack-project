@@ -23,6 +23,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Post from "./pages/Post";
 import VerifyEmail from "./pages/VerifyEmail";
 import LandingPage from "./pages/LandingPage";
+import EditProfile from "./pages/EditProfile";
 
 function App() {
   const noNavRoutes = [
@@ -49,6 +50,7 @@ function App() {
             />
             <Route path="/blog" element={<Blog />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/editprofile" element={<EditProfile />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/verifyemail" element={<VerifyEmail />} />
