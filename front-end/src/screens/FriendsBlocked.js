@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/FriendsBlocked.css';
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 const FriendsBlocked = () => {
     const [blockedUsers, setBlockedUsers] = useState([]);
 
@@ -9,10 +11,11 @@ const FriendsBlocked = () => {
     useEffect(() => {
         const fetchBlockedUsers = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/friends/blocked');
+                const response = await fetch(`${apiUrl}/api/friends/blocked`);
                 if (response.ok) {
                     const data = await response.json();
-                    setBlockedUsers(data);
+                    const sortedData = data.sort((a, b) => a.name.localeCompare(b.name));
+                    setBlockedUsers(sortedData);
                 } else {
                     console.error('Failed to fetch blocked users');
                 }
@@ -26,7 +29,7 @@ const FriendsBlocked = () => {
 
     const handleUnblock = async (userId) => {
         try {
-            const response = await fetch(`http://localhost:3000/api/friends/unblock/${userId}`, { method: 'POST' });
+            const response = await fetch(`${apiUrl}/api/friends/unblock/${userId}`, { method: 'POST' });
             if (response.ok) {
                 // REMOVE UNBLOCKED USERS FROM BLOCKED STATE
                 setBlockedUsers(prevBlocked => prevBlocked.filter(user => user.id !== userId));
@@ -80,4 +83,3 @@ const FriendsBlocked = () => {
 };
 
 export default FriendsBlocked;
-

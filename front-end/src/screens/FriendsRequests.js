@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/FriendsRequests.css';
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 const FriendRequests = () => {
   const [incomingRequests, setIncomingRequests] = useState([]);
   const [outgoingRequests, setOutgoingRequests] = useState([]);
@@ -9,7 +11,7 @@ const FriendRequests = () => {
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/friends/requests');
+        const response = await fetch(`${apiUrl}/api/friends/requests`);
         if (response.ok) {
           let { incomingRequests, outgoingRequests } = await response.json();
 
@@ -32,7 +34,7 @@ const FriendRequests = () => {
 
   const handleAccept = async (requestId) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/friends/requests/accept/${requestId}`, { method: 'POST' });
+      const response = await fetch(`${apiUrl}/api/friends/requests/accept/${requestId}`, { method: 'POST' });
       if (response.ok) {
         setIncomingRequests(prev => prev.filter(request => request.id !== requestId));
       } else {
@@ -45,7 +47,7 @@ const FriendRequests = () => {
 
   const handleDecline = async (requestId) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/friends/requests/decline/${requestId}`, { method: 'POST' });
+      const response = await fetch(`${apiUrl}/api/friends/requests/decline/${requestId}`, { method: 'POST' });
       if (response.ok) {
         setIncomingRequests(prev => prev.filter(request => request.id !== requestId));
       } else {
@@ -58,7 +60,7 @@ const FriendRequests = () => {
 
   const handleCancel = async (requestId) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/friends/requests/cancel/${requestId}`, { method: 'POST' });
+      const response = await fetch(`${apiUrl}/api/friends/requests/cancel/${requestId}`, { method: 'POST' });
       if (response.ok) {
         setOutgoingRequests(prev => prev.filter(request => request.id !== requestId));
       } else {
@@ -132,4 +134,3 @@ const FriendRequests = () => {
 };
 
 export default FriendRequests;
-
