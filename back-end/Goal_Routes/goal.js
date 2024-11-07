@@ -13,20 +13,6 @@ app.get("/goals", async (req, res) => {
 app.post("/goals/new", async (req, res) => {
     let { title, tasks, dueDate } = req.body;
     console.log(req.body);
-    // try {
-    // let newGoal = new Goal({
-    //     title,
-    //     tasks,
-    //     due_date,
-    //     completed_tasks: [],
-    //     incomplete_tasks: tasks
-    // });
-    //goes into database
-    // newGoal.save();
-    //res.json(newGoal);
-    //} catch (error) {
-    //res.status(400).json({ message: "Error creating goal" });
-    //}
     res.json({ message: "Goal created successfully" });
 })
 
