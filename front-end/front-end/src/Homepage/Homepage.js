@@ -3,7 +3,18 @@ import './Homepage.css';
 import { useNavigate } from 'react-router-dom';
 
 function Homepage(){
+  const [urgentTasks, setUrgentTasks] = useState([]);
   const nav = useNavigate()
+
+  useEffect(() => {
+    const fetchUrgentTasks = async () => {
+      const response = await fetch('/tasks/urgent');
+      const data = await response.json();
+      setUrgentTasks(data);
+    };
+    fetchUrgentTasks();
+  }, []);
+
   const handleTask = (e) => {
     nav('/Tasks')
   }
@@ -21,7 +32,12 @@ function Homepage(){
       <h1>Task Destroyer</h1>
 
       <div className="urgent-tasks">
-        <div className="task">Urgent Tasks</div>
+        <h2>Urgent Tasks</h2>
+        {urgentTasks.map((task) => (
+          <div key={task.id}>
+            {task.name}: due by {new Date(task.due).toLocaleDateString()}
+          </div>
+        ))}
       </div>
 
       <div className="menu">
