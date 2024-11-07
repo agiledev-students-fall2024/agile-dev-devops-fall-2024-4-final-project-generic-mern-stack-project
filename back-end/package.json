@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nodemon server",
     "start": "node server.js",
-    "test": "mocha"
+    "test": "mocha --recursive"
   },
   "author": "",
   "license": "ISC",
@@ -19,7 +19,8 @@
     "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
-    "chai": "^5.1.2",
+    "chai": "^3.5.0",
+    "chai-http": "^4.3.0",
     "mocha": "^10.8.2",
     "nodemon": "^3.1.7"
   }
