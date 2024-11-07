@@ -1,7 +1,10 @@
 import { Button } from "./ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
+import useAuth from "@/context/AuthContext";
+
 
 export default function Navbar() {
+  const { logout, isAuthenticated } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const isSuggestPage = location.pathname === "/suggest";
@@ -32,13 +35,13 @@ export default function Navbar() {
         </div>
 
         <div className="w-1/3 flex justify-end">
-          <Button
-            variant={"destructive"}
-            onClick={() => console.log("logging out")}
-          >
-            Log Out
-          </Button>
-        </div>
+            <Button
+              variant={isAuthenticated ? "destructive" : "default"}
+              onClick={() => (isAuthenticated ? logout() : navigate("/login"))}
+            >
+              {isAuthenticated ? "Log Out" : "Sign In"}
+            </Button>
+          </div>
       </div>
     </nav>
   );
