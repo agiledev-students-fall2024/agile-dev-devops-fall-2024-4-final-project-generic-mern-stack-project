@@ -21,6 +21,8 @@ const NewGoal = () => {
     const toggleTaskList = () => {
         setShowTaskList((prevShow) => !prevShow);
     };
+    //call actual tasks for this user and display them here and return
+    //mongoDB uuid in the array of selected tasks
     const handleTaskSelection = (task) => {
         setSelectedTasks((prevSelectedTasks) =>
             prevSelectedTasks.includes(task)
@@ -29,7 +31,7 @@ const NewGoal = () => {
         );
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const newGoal = {
             title,
@@ -39,6 +41,16 @@ const NewGoal = () => {
             incomplete_tasks: selectedTasks
         };
         console.log(newGoal); // Replace with logic to save the new goal
+        const reqOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ title, tasks: selectedTasks, dueDate })
+        };
+        let response = await fetch('http://localhost:4000/goals/new', reqOptions);
+        response = await response.json(); 
+        console.log(response);
         navigate('/Goals');
     };
 
