@@ -10,7 +10,7 @@ const Goals = () => {
     useEffect(() => {
         const collect = async () => {
             setLoading(true);
-            const response = await fetch('https://my.api.mockaroo.com/goal?key=34c59640');
+            const response = await fetch('http://localhost:4000/goals');
             const data = await response.json();
             setGoals(data);
             setLoading(false);
