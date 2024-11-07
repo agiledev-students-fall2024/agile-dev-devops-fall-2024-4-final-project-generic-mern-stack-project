@@ -1,24 +1,60 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/FriendsAdd.css';
-import userData from '../fillerData/users.json';
 
 const FriendsAdd = () => {
     const [searchTerm, setSearchTerm] = useState('');
+    const [potentialFriends, setPotentialFriends] = useState([]);
     const [filteredFriends, setFilteredFriends] = useState([]);
 
-    // FILTER FRIENDS BASED ON USERNAME MATCH
+    // FETCH ALL POTENTIAL FRIENDS
+    useEffect(() => {
+        const fetchPotentialFriends = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/api/friends/potential-friends');
+                if (response.ok) {
+                    const data = await response.json();
+                    setPotentialFriends(data);
+                } else {
+                    console.error('Failed to fetch potential friends');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+        fetchPotentialFriends();
+    }, []);
+
+    // FILTER AND SHOW FRIENDS ONLY IF USERNAME COMPLETELY MATCHES
     useEffect(() => {
         if (searchTerm.trim() === '') {
-            setFilteredFriends([]); // IF NO USER INPUT, DON'T SHOW ANYTHING
+            setFilteredFriends([]);
         } else {
-            const filtered = userData
+            const filtered = potentialFriends
                 .filter(user => user.username.toLowerCase() === searchTerm.toLowerCase())
                 .sort((a, b) => a.name.localeCompare(b.name));
-
             setFilteredFriends(filtered);
         }
-    }, [searchTerm]);
+    }, [searchTerm, potentialFriends]);
+
+    // ADD FRIEND
+    const addFriend = async (friendId) => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/friends/request/${friendId}`, { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' },
+            });
+            if (response.ok) {
+                // REMOVE FRIEND REQUEST FROM VIEW
+                setPotentialFriends(prevFriends => prevFriends.filter(friend => friend.id !== friendId));
+                setFilteredFriends(prevFriends => prevFriends.filter(friend => friend.id !== friendId));
+            } else {
+                console.error('Failed to send friend request');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
 
     return (
         <div>
@@ -52,7 +88,12 @@ const FriendsAdd = () => {
                                     <h5>{friend.name}</h5>
                                 </div>
                                 <div className="friend-actions">
-                                    <button className='border border-black py-1 px-2 rounded text-sm hover:bg-black hover:text-white'>Add Friend</button>
+                                    <button 
+                                        className='border border-black py-1 px-2 rounded text-sm hover:bg-black hover:text-white' 
+                                        onClick={() => addFriend(friend.id)}
+                                    >
+                                        Add Friend
+                                    </button>
                                 </div>
                             </div>
                         ))
@@ -66,3 +107,4 @@ const FriendsAdd = () => {
 };
 
 export default FriendsAdd;
+

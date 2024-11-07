@@ -1,21 +1,58 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/FriendsList.css';
-import userData from '../fillerData/users.json';
 
 const FriendsList = () => {
-  // FETCH USER DATA FROM USERS.JSON
-  const [userDataState, setUserDataState] = useState([]);
+  const [friends, setFriends] = useState([]);
+
+  // FETCH FRIENDS FROM BACKEND
   useEffect(() => {
-    setUserDataState(userData.map(user => ({ 
-      name: user.name, 
-      username: user.username,
-      id: user.id 
-    })));
+    const fetchFriends = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/friends'); // REMEMBER TO CHANGE IN ALL FILES
+        if (response.ok) {
+          const data = await response.json();
+          setFriends(data);
+        } else {
+          console.error('Failed to fetch friends');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+    fetchFriends();
   }, []);
 
-  // EXTRACT AND SORT ALL NAME INITIALS ALPHABETICALLY
-  const alphabet = [...new Set(userDataState.map(user => user.name[0]))].sort();
+  // HANDLE BLOCK USER
+  const handleBlock = async (friendId) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/friends/block/${friendId}`, { method: 'POST' });
+      if (response.ok) {
+        setFriends(friends.filter(friend => friend.id !== friendId)); // REMOVE BLOCKED FRIEND FROM DISPLAY
+      } else {
+        console.error('Failed to block friend');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  // HANDLE REMOVE FRIEND
+  const handleRemove = async (friendId) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/friends/remove/${friendId}`, { method: 'POST' });
+      if (response.ok) {
+        setFriends(friends.filter(friend => friend.id !== friendId)); // REMOVE DELETED FRIEND FROM DISPLAY
+      } else {
+        console.error('Failed to remove friend');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  // EXTRACT INITIALS AND SORT ALPHABETICALLY
+  const alphabet = [...new Set(friends.map(friend => friend.name[0]))].sort();
 
   return (
     <div>
@@ -32,39 +69,31 @@ const FriendsList = () => {
 
       <div className='container-friends'>
         <div className="friends-actions">
-          <Link to='/friendssearch'>
-            <button className="action-btn border border-black rounded">Search</button>
-          </Link>
-
-          <Link to='/friendsadd'>
-            <button className="action-btn border border-black rounded">Add Friend</button>
-          </Link>
-          
-          <Link to='/friendsrequests'>
-            <button className="action-btn border border-black rounded">All Request</button>
-          </Link>
+          <Link to='/friendssearch'><button className="action-btn border border-black rounded">Search</button></Link>
+          <Link to='/friendsadd'><button className="action-btn border border-black rounded">Add Friend</button></Link>
+          <Link to='/friendsrequests'><button className="action-btn border border-black rounded">All Request</button></Link>
         </div>
 
         <div className="friends-list">
           {alphabet.map(letter => (
             <div key={letter}>
               <h6 className="initials">{letter}</h6>
-              {userDataState
-                .filter(user => user.name.startsWith(letter))
-                .sort((a, b) => a.name.localeCompare(b.name)) // SORT ALPHABETICALLY WITHIN EACH INITIAL
-                .map(user => (
-                  <div key={user.id} className="friend-item">
+              {friends
+                .filter(friend => friend.name.startsWith(letter))
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map(friend => (
+                  <div key={friend.id} className="friend-item">
                     <div>
                       <span>
-                        {user.name}
+                        {friend.name}
                         <span style={{ color: 'grey', fontSize: 'smaller', fontStyle: 'italic' }}>
-                          &nbsp;({user.username})
+                          &nbsp;({friend.username})
                         </span>
                       </span>
                     </div>
                     <div className="friend-actions">
-                      <button className='border border-black py-1 px-2 rounded text-sm hover:bg-black hover:text-white'>Block</button>
-                      <button className='border border-black py-1 px-2 rounded text-sm hover:bg-black hover:text-white'>Remove</button>
+                      <button className='border border-black py-1 px-2 rounded text-sm hover:bg-black hover:text-white' onClick={() => handleBlock(friend.id)}>Block</button>
+                      <button className='border border-black py-1 px-2 rounded text-sm hover:bg-black hover:text-white' onClick={() => handleRemove(friend.id)}>Remove</button>
                     </div>
                   </div>
                 ))}
@@ -73,15 +102,14 @@ const FriendsList = () => {
         </div>
 
         <footer className="footer">
-          <p>{userDataState.length} {userDataState.length > 1 ? 'Contacts' : 'Contact'}</p>
+          <p>{friends.length} {friends.length > 1 ? 'Contacts' : 'Contact'}</p>
         </footer>
         
-        <Link to='/friendsblocked'>
-            <button className="action-btn border border-black rounded">Blocked</button>
-        </Link>
+        <Link to='/friendsblocked'><button className="action-btn border border-black rounded">Blocked</button></Link>
       </div>   
     </div>
   );
 };
 
 export default FriendsList;
+

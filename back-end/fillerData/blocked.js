@@ -11,6 +11,12 @@ const blocked = [
         "blocked_id": 2,
         "status": "friends",
         "created_at": "2024-10-01T12:00:00Z"
+    },
+    {
+        "id": 3,
+        "blocker_id": 1,
+        "blocked_id": 3,
+        "created_at": "2024-10-01T12:00:00Z"
     }
 ]
 
