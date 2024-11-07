@@ -16,12 +16,14 @@ const account = require('./routes/account');
 const friends = require('./routes/friends');
 const main = require('./routes/main');
 const posts = require('./routes/posts');
+const explore = require('./routes/explore');
 
 //  use routes
 app.use('/api/account', account);
 app.use('/api/friends', friends);
 app.use('/api/main', main);
 app.use('/api/posts', posts);
+app.use('/api/explore', explore);
 
 // export the express app we created to make it available to other modules
 module.exports = app
