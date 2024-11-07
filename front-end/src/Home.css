@@ -120,3 +120,70 @@
     align-self: flex-end;
     margin-top: auto;
 }
+
+.full-page-card {
+    position: fixed;                
+    top: 0;                        
+    left: 0;                        
+    width: 100vw;                   
+    height: 100vh;                   
+    display: flex;
+    flex-direction: column;
+    justify-content: center;        
+    align-items: center;             
+    background-color: rgba(0, 0, 0, 0.9); 
+    color: white;
+    z-index: 1000;          
+    padding: 20px;              
+    box-sizing: border-box;
+    animation: fadeIn 0.3s ease-in-out; 
+}
+
+.share-button {
+    background-color: green;
+    width: 100%;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.share-close-button {
+    width:45px;
+    height:40px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    background-color: red;
+}
+
+.share-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 500px; 
+    margin: 0 auto;
+}
+
+.input-text-area-share{
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 100%;
+}
+
+.share-text-area {
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 100%;
+    min-height: 120px;
+    resize: vertical; 
+}

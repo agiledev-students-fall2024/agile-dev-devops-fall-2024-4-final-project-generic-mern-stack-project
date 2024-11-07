@@ -1,6 +1,6 @@
 import '../index.css'
 import {useState, useEffect } from 'react'
-import axios from 'axios'
+import axios from '../axiosConfig';
 
 
 function Activity_Tracker(){
@@ -9,7 +9,7 @@ function Activity_Tracker(){
     useEffect(() => {
         const fetchActivitiesData = async () => {
             try {  //fetch all activities
-                const response = await axios.get('/api/activity-tracker');
+                const response = await axios.get(`${process.env.REACT_APP_BACK_PORT}/api/activity-tracker`);
                 setActivitiesData([...response.data])
             }catch(error){
                 console.error('Error fetching activities')

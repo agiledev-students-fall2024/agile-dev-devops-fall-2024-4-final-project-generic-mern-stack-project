@@ -13,14 +13,8 @@ const Challenges = () => {
 
     useEffect(() => {
         const fetchChallengesData = async () => {
-            // const response = await axios.get('https://my.api.mockaroo.com/challenges?key=594b4990');
-            // const fetchedData = response.data || [];
-            // console.log(fetchedData)
-
-            // setChallengesData([...fetchedData]);
-
             try{
-                const response = await axios.get('/api/challenges');
+                const response = await axios.get(`${process.env.REACT_APP_BACK_PORT}/api/challenges`);
                 setChallengesData([...response.data])
             } catch (error){
                 console.log('Error fetching activities')
