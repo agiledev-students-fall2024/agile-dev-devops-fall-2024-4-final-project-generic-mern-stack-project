@@ -1,5 +1,6 @@
+import React from 'react'
+import axios from 'axios'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import loggedInData from './fillerData/loggedIn.json'
 import ProtectedRoute from './components/ProtectedRoute'
 import Home from './screens/Home'
 import Explore from './screens/Explore'
@@ -19,9 +20,23 @@ import FriendsRequests from './screens/FriendsRequests';
 import FriendsBlocked from './screens/FriendsBlocked';
 import './styles/index.css';
 
-const isAuthenticated = (loggedInData[0].id !== null)
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const App = () => {
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false)
+
+  React.useEffect(() => {
+    const fetchAuth = async () => {
+        try {
+            const response = await axios.get(`${apiUrl}/api/account/authUser`)
+            if (response.data){
+              setIsAuthenticated(response.data.id !== null)
+            }
+        } catch (error) {}
+    }
+    fetchAuth()
+  }, [])
+
   return (
     <Router basename={process.env.PUBLIC_URL}>
       <Routes>

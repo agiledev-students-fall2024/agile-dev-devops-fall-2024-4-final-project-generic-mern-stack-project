@@ -1,10 +1,19 @@
 import React from 'react';
+import axios from 'axios';
+import { Navigate } from 'react-router-dom'
+
+
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const LoginForm = () => {
+  const [logIn, setLogIn] = React.useState(false)
+
   const [formData, setFormData] = React.useState({
-      email: '',
+      username: '',
       password: '',
   })
+
+  const [error, setError] = React.useState(null)
 
   const handleChange = (e) => {
       const { name, value } = e.target
@@ -14,20 +23,36 @@ const LoginForm = () => {
       }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('Form submitted:', formData)
+    try {
+        const response = await axios.post(`${apiUrl}/api/account/login`, formData);
+        setError(null)
+        setLogIn(true)
+        console.log(response.data.message)
+    } catch (error) {
+      if (error.response) {
+          setError(error.response.data.message)
+      } else {
+          setError(`Network error: ${error.message}`)
+      }
+    }
+  }
+
+  if (logIn){
+    return <Navigate to='/' /> 
   }
 
   return (
     <form className='m-5' onSubmit={handleSubmit}>
       <div className='grid'>
-        <label htmlFor='email' className='text-base mb-2 font-medium'>Email</label>
+        <label htmlFor='username' className='text-base mb-2 font-medium'>Username</label>
         <input 
-            name='email' 
-            type='email' 
+            name='username' 
+            type='text' 
             onChange={handleChange}
             autoComplete='username'
+            aria-hidden="true"
             required
             className='border border-gray-300 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-gray-400 text-base' />
       </div>
@@ -50,6 +75,8 @@ const LoginForm = () => {
             Sign in
         </button>
       </div>
+
+      {error && <p className='text-red-500'>{error}</p>}
     </form>
     )
 }

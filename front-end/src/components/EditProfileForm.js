@@ -1,17 +1,34 @@
 import React from 'react'
-import userData from '../fillerData/users.json'
-import loggedInData from '../fillerData/loggedIn.json'
+import axios from 'axios'
+import { Navigate } from 'react-router-dom'
+
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const EditProfileForm = () => {
-    const loggedInUser = loggedInData[0]
-    const user = userData.find(user => user.id === loggedInUser.id)
-
     const [formData, setFormData] = React.useState({
-        name: user.name,
-        bio: user.bio ? user.bio : '',
-        layout: user.layout,
+        name: '',
+        bio: '',
+        layout: '',
         file: null
     })
+
+    const [error, setError] = React.useState(null)
+    const [success, setSuccess] = React.useState(null)
+
+    React.useEffect(() => {
+        const fetchFormData = async () => {
+            try {
+                const response = await axios.get(`${apiUrl}/api/account/authUser`)
+                setFormData({
+                    name: response.data.name,
+                    bio: response.data.bio ? response.data.bio : '',
+                    layout: response.data.layout,
+                    file: null
+                })
+            } catch (error) {}
+        }
+        fetchFormData();
+    }, [])
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -21,25 +38,41 @@ const EditProfileForm = () => {
         }))
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log('Form submitted:', formData)
+        try {
+            const response = await axios.post(`${apiUrl}/api/account/edit`, formData);
+            setError(null)
+            setSuccess(response.data.username)
+        } catch (error) {
+          if (error.response) {
+              setError(error.response.data.message)
+          } else {
+              setError(`Network error: ${error.message}`)
+          }
+        }
       }
 
     const layoutChoices = [
-    { val: 'list', label: 'List'},
-    { val: 'list-title', label: 'List (title only)'},
-    { val: 'grid', label: 'Grid (image only)'},
-    { val: 'masonry', label: 'Masonry (image only)'},
-    { val: 'masonry-title', label: 'Masonry'}]
+        { val: 'list', label: 'List'},
+        { val: 'list-title', label: 'List (title only)'},
+        { val: 'grid', label: 'Grid (image only)'},
+        { val: 'masonry', label: 'Masonry (image only)'},
+        { val: 'masonry-title', label: 'Masonry'}
+    ]
+
+    if (success) {
+        return <Navigate to={`/profile/${success}`} /> 
+    }
 
     return (
         <>
             <div className='text-center'>
                 <label htmlFor='fileInput'>Edit picture</label>
                 <input
-                    type='file'
+                    name='profileImg'
                     id='fileInput'
+                    type='file'
                     accept='image/*'
                     onChange={handleChange}
                 />
@@ -91,6 +124,8 @@ const EditProfileForm = () => {
                         Update
                     </button>
                 </div>
+
+                {error && <p className='text-red-500'>{error}</p>}
             </form>
         </>
     )

@@ -1,12 +1,11 @@
 import '../styles/Profile.css'
 import '../styles/main.css'
 import React from 'react'
-import { Navigate } from 'react-router-dom'
-import { useParams, Link } from 'react-router-dom'
-import userData from '../fillerData/users.json'
-import loggedInData from '../fillerData/loggedIn.json'
-import postData from '../fillerData/posts.json'
-import blockedData from '../fillerData/blocked.json'
+import axios from 'axios';
+import { useParams, Link, Navigate } from 'react-router-dom'
+
+
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const Profile = () => {
     const { username } = useParams()
@@ -14,45 +13,26 @@ const Profile = () => {
     const [redirect, setRedirect] = React.useState(false)
     const [belongsToLoggedIn, setBelongsToLoggedIn] = React.useState(null)
     const [posts, setPosts] = React.useState([])
+    const [friends, setFriends] = React.useState(false)
 
     const generateRandomList = (min, max, count) => (
         Array.from({ length: count }, () => Math.floor(Math.random() * (max - min + 1)) + min)
     )
 
     React.useEffect(() => {
-        const fetchUser = () => {
-            const foundUser = userData.find(user => user.username === username)
-            if (!foundUser) {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`${apiUrl}/api/account/user/${username}`);
+                setBelongsToLoggedIn(response.data.belongsToLoggedIn)
+                setUser(response.data.user)
+                setPosts(response.data.posts)
+                setFriends(response.data.friends)
+            } catch (error) {
                 setRedirect(true)
-            } else {
-                setUser(foundUser)
-                setBelongsToLoggedIn(loggedInData[0].id === foundUser.id)
-
-                const getBlockedUsers = () => {
-                    const blockedUsers = []
-            
-                    blockedData.forEach(item => {
-                        if (item.blocked_id === loggedInData[0].id) {
-                            blockedUsers.push(item.blocker_id)
-                        } else if (item.blocker_id === loggedInData[0].id){
-                            blockedUsers.push(item.blocked_id)
-                        }
-                    })
-
-                    return blockedUsers
-                }
-
-                const foundBlockedUsers = getBlockedUsers()
-                console.log(foundBlockedUsers)
-                if (foundBlockedUsers.includes(foundUser.id)){
-                    setRedirect(true) 
-                }
-
-                setPosts(postData.filter(post => post.author_id === foundUser.id).sort((a, b) => new Date(b.date) - new Date(a.date)))
             }
-        }
+        };
+        fetchData();
 
-        fetchUser()
     }, [username])
 
     if (redirect) {
@@ -197,7 +177,10 @@ const Profile = () => {
                         <path fillRule='evenodd' d='M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5'/>
                     </svg>
                 </Link>
+                
                 { belongsToLoggedIn && <Link to={`/createnewblogpost/${user.username}`} className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>New Post</Link> }
+                { !belongsToLoggedIn && friends && <button className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>Remove Friend</button> }
+                { !belongsToLoggedIn && !friends && <button className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>Add Friend</button> }
             </header>
 
             { user && <>

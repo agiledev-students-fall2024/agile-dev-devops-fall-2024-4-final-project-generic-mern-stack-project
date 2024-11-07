@@ -1,15 +1,34 @@
 import '../styles/Profile.css'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import axios from 'axios';
+import { Link, Navigate } from 'react-router-dom'
 import EditProfileForm from '../components/EditProfileForm'
-import userData from '../fillerData/users.json'
-import loggedInData from '../fillerData/loggedIn.json'
+
+
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const EditProfile = () => {
-    const loggedInUser = loggedInData[0]
-    const user = userData.find(user => user.id === loggedInUser.id)
+    const [user, setUser] = React.useState(null)
+    const [redirect, setRedirect] = React.useState(false)
+
+    React.useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const response = await axios.get(`${apiUrl}/api/account/authUser`);
+                setUser(response.data)
+            } catch (error) {
+                setRedirect(true)
+            }
+        };
+        fetchUser();
+    }, [])
+
+    if (redirect) {
+        return <Navigate to='/' /> 
+    }
 
     return (
+        user? 
         <>
             <header>
                 <Link to={`/profile/${user.username}`} >
@@ -33,7 +52,8 @@ const EditProfile = () => {
 
                 <EditProfileForm />
             </div>
-        </>
+        </>:
+        <></>
     )
 }
 
