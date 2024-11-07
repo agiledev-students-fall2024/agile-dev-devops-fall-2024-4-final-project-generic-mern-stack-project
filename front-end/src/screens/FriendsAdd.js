@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/FriendsAdd.css';
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 const FriendsAdd = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [potentialFriends, setPotentialFriends] = useState([]);
@@ -11,7 +13,7 @@ const FriendsAdd = () => {
     useEffect(() => {
         const fetchPotentialFriends = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/friends/potential-friends');
+                const response = await fetch(`${apiUrl}/api/friends/potential-friends`);
                 if (response.ok) {
                     const data = await response.json();
                     setPotentialFriends(data);
@@ -40,10 +42,7 @@ const FriendsAdd = () => {
     // ADD FRIEND
     const addFriend = async (friendId) => {
         try {
-            const response = await fetch(`http://localhost:3000/api/friends/request/${friendId}`, { 
-                method: 'POST', 
-                headers: { 'Content-Type': 'application/json' },
-            });
+            const response = await fetch(`${apiUrl}/api/friends/request/${friendId}`, { method: 'POST'});            
             if (response.ok) {
                 // REMOVE FRIEND REQUEST FROM VIEW
                 setPotentialFriends(prevFriends => prevFriends.filter(friend => friend.id !== friendId));
@@ -107,4 +106,3 @@ const FriendsAdd = () => {
 };
 
 export default FriendsAdd;
-

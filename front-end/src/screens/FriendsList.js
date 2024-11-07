@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/FriendsList.css';
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 const FriendsList = () => {
   const [friends, setFriends] = useState([]);
 
@@ -9,7 +11,7 @@ const FriendsList = () => {
   useEffect(() => {
     const fetchFriends = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/friends'); // REMEMBER TO CHANGE IN ALL FILES
+        const response = await fetch(`${apiUrl}/api/friends`); // REMEMBER TO CHANGE IN ALL FILES
         if (response.ok) {
           const data = await response.json();
           setFriends(data);
@@ -26,7 +28,7 @@ const FriendsList = () => {
   // HANDLE BLOCK USER
   const handleBlock = async (friendId) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/friends/block/${friendId}`, { method: 'POST' });
+      const response = await fetch(`${apiUrl}/api/friends/block/${friendId}`, { method: 'POST' });
       if (response.ok) {
         setFriends(friends.filter(friend => friend.id !== friendId)); // REMOVE BLOCKED FRIEND FROM DISPLAY
       } else {
@@ -40,7 +42,7 @@ const FriendsList = () => {
   // HANDLE REMOVE FRIEND
   const handleRemove = async (friendId) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/friends/remove/${friendId}`, { method: 'POST' });
+      const response = await fetch(`${apiUrl}/api/friends/remove/${friendId}`, { method: 'POST' });
       if (response.ok) {
         setFriends(friends.filter(friend => friend.id !== friendId)); // REMOVE DELETED FRIEND FROM DISPLAY
       } else {
@@ -112,4 +114,3 @@ const FriendsList = () => {
 };
 
 export default FriendsList;
-

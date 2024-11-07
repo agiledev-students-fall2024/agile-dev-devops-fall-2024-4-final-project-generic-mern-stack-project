@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/FriendsSearch.css';
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 const FriendsSearch = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [friends, setFriends] = useState([]);
@@ -11,7 +13,7 @@ const FriendsSearch = () => {
     useEffect(() => {
         const fetchFriends = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/friends');
+                const response = await fetch(`${apiUrl}/api/friends`);
                 if (response.ok) {
                     const data = await response.json();
                     setFriends(data);
@@ -37,7 +39,7 @@ const FriendsSearch = () => {
     // BLOCK A USER
     const handleBlock = async (friendId) => {
         try {
-            const response = await fetch(`http://localhost:3000/api/friends/block/${friendId}`, { method: 'POST' });
+            const response = await fetch(`${apiUrl}/api/friends/block/${friendId}`, { method: 'POST' });
             if (response.ok) {
                 setFriends(prevFriends => prevFriends.filter(friend => friend.id !== friendId));
             } else {
@@ -51,7 +53,7 @@ const FriendsSearch = () => {
     // REMOVE A FRIEND
     const handleRemove = async (friendId) => {
         try {
-            const response = await fetch(`http://localhost:3000/api/friends/remove/${friendId}`, { method: 'POST' });
+            const response = await fetch(`${apiUrl}/api/friends/remove/${friendId}`, { method: 'POST' });
             if (response.ok) {
                 setFriends(prevFriends => prevFriends.filter(friend => friend.id !== friendId));
             } else {
@@ -110,4 +112,3 @@ const FriendsSearch = () => {
 };
 
 export default FriendsSearch;
-
