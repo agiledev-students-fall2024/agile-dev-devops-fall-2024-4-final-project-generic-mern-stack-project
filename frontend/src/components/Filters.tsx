@@ -3,74 +3,7 @@ import FiltersWithSearch from "./FiltersWithSearch";
 import RatingFilters from "./RatingFilters";
 import { useMyStores } from "@/context/StoresContext";
 import type { FiltersType } from "@/types";
-
-const brandFilters = [
-  "Apple",
-  "Aesop",
-  "Balenciaga",
-  "Burberry",
-  "Chanel",
-  "Celine",
-  "Diesel",
-  "Dolce & Gabbana",
-  "Gucci",
-  "Glossier",
-  "Hermès",
-  "Isabel Marant",
-  "John Varvatos",
-  "Kith",
-  "Lululemon",
-  "Louis Vuitton",
-  "Moncler",
-  "Nike",
-  "Off-White",
-  "Prada",
-  "Rag & Bone",
-  "Ralph Lauren",
-  "Saint Laurent",
-  "Stüssy",
-  "Supreme",
-  "The North Face",
-  "Tiffany & Co.",
-  "Uniqlo",
-  "Valentino",
-  "Vans",
-  "Versace",
-  "Zimmermann",
-];
-
-const categoryFilters = [
-  "Designer Boutiques",
-  "Vintage Clothing",
-  "Contemporary Art Galleries",
-  "Streetwear Shops",
-  "High-End Furniture",
-  "Trendy Accessories",
-  "Luxury Jewelry",
-  "Indie Bookstores",
-  "Artisanal Coffee Shops",
-  "Gourmet Food Markets",
-  "Concept Stores",
-  "Sustainable Fashion",
-  "Beauty & Cosmetics",
-  "Home Decor & Design",
-  "Specialty Sneaker Stores",
-  "Avant-Garde Fashion",
-  "Handcrafted Jewelry",
-  "Organic Skincare",
-  "Pop-Up Shops",
-  "Vinyl Record Stores",
-  "Athleisure Brands",
-  "Lifestyle & Gift Boutiques",
-  "Bespoke Tailors",
-  "Artisan Chocolatiers",
-  "Designer Eyewear",
-  "Craft Cocktail Bars",
-  "Niche Perfumeries",
-  "Curated Vintage Shops",
-  "Tech & Gadget Stores",
-  "Upscale Consignment Shops",
-];
+import { useState, useEffect } from "react";
 
 type Props = {
   toggleFilterURL: (filterType: string, value: string) => void;
@@ -86,6 +19,18 @@ export default function Filters({
   getFilterValuesFromURL,
 }: Props) {
   const { toggleFilter } = useMyStores();
+  const [brandFilters, setBrandFilters] = useState<string[]>([]);
+  const [categoryFilters, setCategoryFilters] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3001/filters")
+      .then((response) => response.json())
+      .then((data) => {
+        setBrandFilters(data.brands);
+        setCategoryFilters(data.categories);
+      })
+      .catch((error) => console.error("Error fetching filters:", error));
+  }, []);
 
   const handleFilterClick = (
     filter: keyof FiltersType,
@@ -115,7 +60,7 @@ export default function Filters({
   else if (currentFilter === "Category")
     return (
       <FiltersWithSearch
-        key={"category"} // needed to fix search bar being shared across filters
+        key={"category"}
         handleFilterClick={handleFilterClick}
         handleSearchURL={handleSearchOrRatingURL}
         urlFilterParam="category"
