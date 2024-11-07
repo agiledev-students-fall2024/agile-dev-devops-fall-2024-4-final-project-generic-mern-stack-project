@@ -1,15 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/FriendsBlocked.css';
-import userData from '../fillerData/users.json';
 
 const FriendsBlocked = () => {
     const [blockedUsers, setBlockedUsers] = useState([]);
-  
+
+    // FETCH ALL BLOCKED USERS
     useEffect(() => {
-      const sortedUsers = [...userData].sort((a, b) => a.username.localeCompare(b.username));
-      setBlockedUsers(sortedUsers);
+        const fetchBlockedUsers = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/api/friends/blocked');
+                if (response.ok) {
+                    const data = await response.json();
+                    setBlockedUsers(data);
+                } else {
+                    console.error('Failed to fetch blocked users');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+
+        fetchBlockedUsers();
     }, []);
+
+    const handleUnblock = async (userId) => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/friends/unblock/${userId}`, { method: 'POST' });
+            if (response.ok) {
+                // REMOVE UNBLOCKED USERS FROM BLOCKED STATE
+                setBlockedUsers(prevBlocked => prevBlocked.filter(user => user.id !== userId));
+            } else {
+                console.error('Failed to unblock user');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
 
     return (
         <div>
@@ -27,16 +54,25 @@ const FriendsBlocked = () => {
             <div className='container-friends'>
                 <h6>Users you have blocked</h6>
                 <div className="friends-list">
-                    {blockedUsers.map(user => (
-                        <div key={user.id} className="blocked-item">
-                            <div className="username">
-                                <span>{user.username}</span>
+                    {blockedUsers.length > 0 ? (
+                        blockedUsers.map(user => (
+                            <div key={user.id} className="blocked-item">
+                                <div className="username">
+                                    <span>{user.name} (@{user.username})</span>
+                                </div>
+                                <div className="blocked-actions">
+                                    <button 
+                                        className='border border-black py-1 px-2 rounded text-sm hover:bg-black hover:text-white'
+                                        onClick={() => handleUnblock(user.id)}
+                                    >
+                                        Unblock
+                                    </button>
+                                </div>
                             </div>
-                            <div className="blocked-actions">
-                                <button className='border border-black py-1 px-2 rounded text-sm hover:bg-black hover:text-white'>Unblock</button>
-                            </div>
-                        </div>
-                    ))}
+                        ))
+                    ) : (
+                        <p>No blocked users.</p>
+                    )}
                 </div>
             </div>
         </div>
@@ -44,3 +80,4 @@ const FriendsBlocked = () => {
 };
 
 export default FriendsBlocked;
+

@@ -3,7 +3,7 @@ const router = express.Router();
 
 // routes or middleware
 
-app.get('/json-example', (req, res) => {
+router.get('/json-example', (req, res) => {
     const body = {
       title: 'Hello!',
       heading: 'Hello!',
@@ -12,9 +12,6 @@ app.get('/json-example', (req, res) => {
     }
   
     res.json(body)
-  })
-
-
-
+})
 
 module.exports = router;
