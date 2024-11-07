@@ -10,31 +10,16 @@ function Recipes() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    /*const fetchRecipeData = async () => {
+    const fetchRecipeData = async () => {
       try {
-        const response = await axios.get('https://my.api.mockaroo.com/recipes.json?key=a170a060');
-        const formattedData = response.data.map((item,row_number) => ({
-          recipe_id:row_number,
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACK_PORT}/api/recipes`
+        );
+        const formattedData = response.data.map((item) => ({
           dish: item.recipe_name,
           difficulty: item.difficulty_level,
           ingredients: item.ingredients,
           steps: item.instructions ? item.instructions.split(". ") : [],
-          imgs: 'https://picsum.photos/400',
-        }));
-        setRecipeData(formattedData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };*/
-    const fetchRecipeData = async () => {
-      try {
-        const response = await fetch("http://localhost:5000/api/recipes");
-        const formattedData = response.data.map((item) => ({
-          dish: item.recipe_name,
-          difficulty: item.id,
-          ingredients: item.ingredients.item,
-          steps: item.recipe_steps.step || [],
-          id: item.id,
           imgs: "https://picsum.photos/400",
         }));
         setRecipeData(formattedData);
