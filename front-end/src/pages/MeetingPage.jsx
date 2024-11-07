@@ -2,8 +2,10 @@ import React, { useEffect, useRef } from "react";
 import { FaMicrophone, FaMicrophoneSlash, FaVideo, FaVideoSlash, FaCommentDots, FaUser, FaPen, FaCode, FaDoorClosed, FaDoorOpen, FaMeetup } from 'react-icons/fa';
 import { MdScreenShare } from 'react-icons/md';
 import VideoBox from "../components/VideoBox";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../assets/meeting.css';
+
+import { getAllMessages, listenForNewMessages } from '../services/firebaseApi';
 
 import Chat from "../components/Chat";
 import CodeEditor from "../components/CodeEditor";
@@ -11,6 +13,10 @@ import Whiteboard from "../components/Whiteboard";
 
 function MeetingPage() {
     const navgiate = useNavigate();
+
+    const [dataStreamingMessages, setDataStreamingMessages] = React.useState([]);
+
+    const { id: meetingId } = useParams();
 
     const [isMuted, setIsMuted] = React.useState(false);
     const [isCameraOff, setIsCameraOff] = React.useState(true);
@@ -88,8 +94,51 @@ function MeetingPage() {
         });
         setUserStream(stream);
     }
+
+    const initializeFirebase = async () => {
+        const existingMessages = await getAllMessages(meetingId);
+        setDataStreamingMessages(existingMessages);
+        const unsub = listenForNewMessages(meetingId, (message) => {
+            if (message) {
+                const service = message.service;
+                // switch case for different services
+                if (service === 'code') {
+                    // TODO: handle new data from remote code editor
+                } else if (service === 'chat') {
+                    // TODO: handle new chat message
+                } else if (service === 'whiteboard') {
+                    // TODO: handle new whiteboard data
+                } else if (service === 'screenshare') {
+                    // TODO: handle new screenshare data
+                } else if (service === 'video') {
+                    // TODO: handle new video data
+                }
+                setDataStreamingMessages([...dataStreamingMessages, message]);
+            }
+        }, true); // true to only get new messages vs getting all messsages
+        return unsub;
+
+    }
+
+
     useEffect(() => {
-        setSelfVideoAudioConnection();
+        let unsub = null;
+        const _initialize = async () => {
+            console.log('initializing...');
+            await setSelfVideoAudioConnection();
+            unsub = await initializeFirebase();
+        };
+        _initialize();
+        return () => {
+            if (unsub) {
+                unsub();
+            }
+            if (userStream) {
+                userStream.getTracks().forEach(track => {
+                    track.stop();
+                });
+            }
+        };
     }, []);
 
 
