@@ -2,12 +2,14 @@ import express from "express";
 import multer from "multer";
 import axios from "axios";
 import morgan from "morgan";
-import cors from 'cors';
+import cors from "cors";
 
 // import routes
-import accountSettings from './routes/account-settings.js'
-import blocked from './routes/blocked.js'
-import accessibility from './routes/accessibility.js'
+import accountSettings from "./routes/account-settings.js";
+import blocked from "./routes/blocked.js";
+import accessibility from "./routes/accessibility.js";
+import auth from "./routes/auth.js";
+import community from "./routes/community.js";
 
 const app = express(); // instantiate an Express object
 
@@ -27,6 +29,8 @@ app.use(cors());
 // use routes
 app.use(accountSettings);
 app.use(blocked);
-app.use(accessibility)
+app.use(accessibility);
 
+app.use(auth);
+app.use(community);
 export default app;
