@@ -46,7 +46,7 @@ const Home = () => {
     useEffect(() => {
         const fetchActivitiesData = async () => {
             try{
-            const response = await axios.get('https://my.api.mockaroo.com/challenges?key=d6450400');
+            const response = await axios.get(`${process.env.REACT_APP_BACK_PORT}/api/challenges`);
             const fetchedData = response.data || [];
             console.log('fetchedActivitesData:', fetchedData);
 
