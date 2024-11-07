@@ -14,7 +14,6 @@ const Home = () => {
     const fetchData = async () => {
         try {
             const response = await axios.get(`${apiUrl}/api/main`);
-            console.log(response.data)
             setUser(response.data.user)
             setPosts(response.data.posts)
         } catch (error) {
