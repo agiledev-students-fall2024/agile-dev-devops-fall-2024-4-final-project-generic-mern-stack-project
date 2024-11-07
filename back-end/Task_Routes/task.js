@@ -2,6 +2,12 @@ const express = require('express');
 const router = express.Router();
 const Task = require('./models/Task'); // Assuming Task is a Mongoose model
 
+router.get('/tasks/urgent', async (req, res) => {
+  const urgentTasks = await Task.find()
+    .sort({due: 1})
+    .limit(3); 
+  res.json(urgentTasks);
+});
 
 router.get('/tasks', async (req, res) => {
   const { status, priority, subject } = req.query;
