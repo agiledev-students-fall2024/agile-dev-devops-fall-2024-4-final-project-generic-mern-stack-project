@@ -171,8 +171,14 @@ app.get('/api/record-activity', async (req, res)=>{
   }
 });
 
+
+
 app.get("/api/challenges", async (req, res) => {
   try {
+    const mockError = process.env.MOCK_ERROR === 'true';
+    if (mockError) {
+      throw new Error("Forced error for testing");
+    }
     const { data } = await axios.get(
       "https://my.api.mockaroo.com/challenges?key=d6450400"
     );
