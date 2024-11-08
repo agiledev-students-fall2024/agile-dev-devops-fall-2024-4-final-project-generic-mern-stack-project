@@ -55,3 +55,88 @@ describe("POST /friends/remove/:id", () => {
             });
     });
 });
+
+// TESTING THE ADD FRIEND BUTTON
+describe("POST /friends/request/:id", () => {
+    it("should send a friend request and return a success message", done => {
+        const userIdToRequest = 4;
+        chai 
+            .request(server)
+            .post(`/friends/request/${userIdToRequest}`)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.be.a("object");
+                res.body.should.have.property("message").eql("Friend request sent successfully");
+                done();
+            });
+    });
+});
+
+// TESTING THE ACCEPT FRIEND REQUEST BUTTON
+describe("POST /friends/requests/accept/:id", () => {
+    it("should accept a friend request and return a success message", done => {
+        const userIdToAccept = 6;
+        chai 
+            .request(server)
+            .post(`/friends/requests/accept/${userIdToAccept}`)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.be.a("object");
+                res.body.should.have.property("message").eql("Friend request accepted");
+                done();
+            });
+    });
+});
+
+// TESTING THE DECLINE FRIEND REQUEST BUTTON
+describe("POST /friends/requests/decline/:id", () => {
+    it("should decline a friend request and return a success message", done => {
+        const userIdToDecline = 6;
+        chai 
+            .request(server)
+            .post(`/friends/requests/decline/${userIdToDecline}`)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.be.a("object");
+                res.body.should.have.property("message").eql("Friend request declined");
+                done();
+            });
+    });
+});
+
+// TESTING THE CANCEL FRIEND REQUEST BUTTON
+describe("POST /friends/requests/cancel/:id", () => {
+    it("should cancel a sent friend request and return a success message", done => {
+        const userIdToCancel = 4;
+        chai 
+            .request(server)
+            .post(`/friends/requests/cancel/${userIdToCancel}`)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.be.a("object");
+                res.body.should.have.property("message").eql("Friend request canceled");
+                done();
+            });
+    });
+});
+
+// TESTING THE UNBLOCK FRIEND BUTTON
+describe("POST /friends/unblock/:id", () => {
+    it("should unblock the specified user and return a success message", done => {
+        const userIdToUnblock = 3;
+        chai 
+            .request(server)
+            .post(`/friends/unblock/${userIdToUnblock}`)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.be.a("object");
+                res.body.should.have.property("message").eql("User unblocked successfully");
+                done();
+            });
+    });
+});
