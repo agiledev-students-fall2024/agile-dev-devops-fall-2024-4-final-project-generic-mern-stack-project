@@ -9,6 +9,7 @@ import * as auth from "./auth.mjs";
 import path from "path";
 import bodyParser from "body-parser";
 import morgan from "morgan";
+import { fileURLToPath } from 'url';
 
 const app = express();
 const PORT = process.env.backPORT || 5000;
@@ -204,8 +205,16 @@ app.get("/api/recipePics", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+export const startServer = () => {
+  app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+  });
+};
+
+
+//need to comment out if statement to start backend
+if (import.meta.url === fileURLToPath(import.meta.url)) {
+  startServer();
+}
 
 export default app;

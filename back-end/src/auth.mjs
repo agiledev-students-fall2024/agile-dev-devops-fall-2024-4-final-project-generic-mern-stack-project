@@ -1,6 +1,10 @@
 import bcrypt from 'bcryptjs';
 
-const users = [];
+export let users = [];
+
+export const clearUsers = () => {
+  users = [];
+};
 
 // const startAuthenticatedSession = (req, user) => {
 //   return new Promise((fulfill, reject) => {
