@@ -1,10 +1,12 @@
 // src/AppRoutes.js
+
 import React, { useContext } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import SwipableFeed from "./components/SwipableFeed";
 import ProfilePage from "./components/Profile";
 import Login from "./Login";
 import { AuthContext } from "../src/contexts/AuthContext";
+import Navbar from "./components/Navbar";
 
 const AppRoutes = () => {
   const { isAuthenticated } = useContext(AuthContext);
@@ -26,7 +28,10 @@ const AppRoutes = () => {
         path="/feed"
         element={
           isAuthenticated ? (
-            <SwipableFeed />
+            <>
+              <Navbar />
+              <SwipableFeed />
+            </>
           ) : (
             <Navigate to="/login" replace />
           )
@@ -36,7 +41,10 @@ const AppRoutes = () => {
         path="/profile"
         element={
           isAuthenticated ? (
-            <ProfilePage />
+            <>
+              <Navbar />
+              <ProfilePage />
+            </>
           ) : (
             <Navigate to="/login" replace />
           )
@@ -47,4 +55,3 @@ const AppRoutes = () => {
 };
 
 export default AppRoutes;
-

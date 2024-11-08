@@ -2,85 +2,113 @@ import React, { useState, useEffect, useContext } from 'react';
 import SwipeableCard from './SwipeableCard';
 import RestaurantCard from './RestaurantCard';
 import '../styles/SwipeableFeed.css';
-import { bulkFetchRestaurants, likeRestaurant, dislikeRestaurant } from '../api/Restaurant';
+import {
+  bulkFetchRestaurants,
+  likeRestaurant,
+  dislikeRestaurant,
+} from '../api/Restaurant';
 import { SwipableFeedContext } from '../contexts/SwipableFeedContext';
 import { AccountInfoContext } from '../contexts/AccountInfoContext';
+import { SelectedRestaurantContext } from '../contexts/SelectedRestaurantContext';
 
 const SwipableFeed = () => {
   const { accountInfo } = useContext(AccountInfoContext);
-  const { setFilteredRestaurants, filteredRestaurants: restaurants, setAllRestaurants, allRestaurants } = useContext(SwipableFeedContext);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const {
+    setFilteredRestaurants,
+    filteredRestaurants: restaurants,
+    setAllRestaurants,
+  } = useContext(SwipableFeedContext);
 
-  useEffect(() => {
-    setCurrentIndex(0);
-  }, [restaurants]);
-  console.log(loading)
+  const [currentIndex, setCurrentIndex] = useState(-1);
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const { selectedRestaurant, setSelectedRestaurant } = useContext(SelectedRestaurantContext);
+
   useEffect(() => {
     async function fetchData() {
-      console.log('Fetching restaurants for user:', accountInfo?.id);
-      const fetchedRestaurants = await bulkFetchRestaurants(accountInfo?.id);
-      setAllRestaurants(fetchedRestaurants);
-      setFilteredRestaurants(fetchedRestaurants);
-      setLoading(false); 
-    }
-    if(!accountInfo) return;
-    fetchData();
-  }, [accountInfo]);
-
- 
-
-  const handleSwipeLeft = async () => {
-    try {
-      const restaurant = restaurants[currentIndex];
-      await dislikeRestaurant(restaurant.id);
-      console.log('Disliked restaurant:', restaurant);
-    } catch (error) {
-      console.error('Error in dislike API call:', error);
-    } finally {
-      const nextIndex = currentIndex + 1;
-      if (nextIndex >= restaurants.length) {
-        // Reset to all restaurants
-        setFilteredRestaurants(allRestaurants);
-      } else {
-        const nextIndex = currentIndex + 1;
-        if (nextIndex >= restaurants.length) {
-          setFilteredRestaurants(allRestaurants);
+      if (!hasMore) return;
+      setIsLoading(true);
+      try {
+        const fetchedRestaurants = await bulkFetchRestaurants(accountInfo?.id, page);
+        if (fetchedRestaurants.length === 0) {
+          setHasMore(false);
         } else {
-          setCurrentIndex(nextIndex);
+          setAllRestaurants((prevRestaurants) => [
+            ...prevRestaurants,
+            ...fetchedRestaurants,
+          ]);
+          setFilteredRestaurants((prevRestaurants) => [
+            ...prevRestaurants,
+            ...fetchedRestaurants,
+          ]);
+          setCurrentIndex((prevIndex) =>
+            prevIndex + fetchedRestaurants.length
+          );
         }
+      } catch (error) {
+        console.error('Error fetching restaurants:', error);
+      } finally {
+        setIsLoading(false);
       }
     }
-  };
 
-  const handleSwipeRight = async () => {
-    try {
-      const restaurant = restaurants[currentIndex];
-      await likeRestaurant(restaurant.id);
-      console.log('Liked restaurant:', restaurant);
-      // Optionally, you can add the restaurant to a liked list in your context
-    } catch (error) {
-      console.error('Error in like API call:', error);
-    } finally {
-      const nextIndex = currentIndex + 1;
-        if (nextIndex >= restaurants.length) {
-          setFilteredRestaurants(allRestaurants);
-        } else {
-          setCurrentIndex(nextIndex);
-        }
+    if (!accountInfo) return;
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accountInfo, page]);
+
+  const handleSwipe = (dir, index) => {
+    const restaurant = restaurants[index];
+    if (dir === 'left') {
+      dislikeRestaurant(restaurant.id);
+    } else if (dir === 'right') {
+      likeRestaurant(restaurant.id);
+    }
+    setCurrentIndex(index - 1);
+
+    if (index - 1 < 5 && hasMore && !isLoading) {
+      setPage((prevPage) => prevPage + 1);
     }
   };
 
-  if (currentIndex >= restaurants.length) {
-    return <div>No more restaurants</div>;
-  }
+  const clearSelectedRestaurant = () => {
+    setSelectedRestaurant(null);
+  };
 
-  const currentRestaurant = restaurants[currentIndex];
   return (
     <div className="swipable-feed">
-      <SwipeableCard onSwipeLeft={handleSwipeLeft} onSwipeRight={handleSwipeRight} key={currentIndex}>
-        <RestaurantCard restaurant={currentRestaurant} />
-      </SwipeableCard>
+      {selectedRestaurant ? (
+        <div className="selected-restaurant">
+          <button className="back-button" onClick={clearSelectedRestaurant}>
+            ← Back to Feed
+          </button>
+          <RestaurantCard restaurant={selectedRestaurant} />
+        </div>
+      ) : (
+        <>
+          {restaurants.map(
+            (restaurant, index) =>
+              index <= currentIndex && (
+                <SwipeableCard
+                  key={restaurant.id}
+                  index={index}
+                  currentIndex={currentIndex}
+                  onSwipeLeft={() => handleSwipe('left', index)}
+                  onSwipeRight={() => handleSwipe('right', index)}
+                >
+                  <RestaurantCard restaurant={restaurant} />
+                </SwipeableCard>
+              )
+          )}
+          {isLoading && (
+            <div className="loading">Loading more restaurants...</div>
+          )}
+          {!hasMore && currentIndex < 0 && (
+            <div className="no-more-restaurants">No more restaurants</div>
+          )}
+        </>
+      )}
     </div>
   );
 };
