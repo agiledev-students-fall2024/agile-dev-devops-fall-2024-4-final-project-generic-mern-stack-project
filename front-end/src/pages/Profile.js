@@ -21,9 +21,7 @@ const Profile = (props) => {
 
     useEffect(() => {
         Promise.all([
-            axios("https://my.api.mockaroo.com/users.json?key=3ac6ebb0"),
-            axios("https://my.api.mockaroo.com/posts.json?key=3ac6ebb0"),
-            axios("https://my.api.mockaroo.com/community.json?key=a42e4cd0"),
+            axios("http://localhost:5000/
         ])
         .then(([userResponse, postsResponse, communityResponse]) => {
             const userData = userResponse.data[0]; 
