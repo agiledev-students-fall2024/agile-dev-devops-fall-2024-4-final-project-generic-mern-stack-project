@@ -5,13 +5,11 @@ import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/Navbar.css";
 import { AuthContext } from "../contexts/AuthContext";
 import FilterPopup from "./FilterPopup";
-import { SelectedRestaurantContext } from "../contexts/SelectedRestaurantContext";
 
-const Navbar = () => {
+const Navbar = ({ setSelectedRestaurant }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated } = useContext(AuthContext);
-  const { setSelectedRestaurant } = useContext(SelectedRestaurantContext);
 
   const [filterOpen, setFilterOpen] = useState(false);
 

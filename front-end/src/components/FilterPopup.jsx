@@ -2,11 +2,9 @@
 
 import React, { useState, useContext } from 'react';
 import '../styles/FilterPopup.css';
-import { SwipableFeedContext } from '../contexts/SwipableFeedContext';
 import { searchRestaurants, fetchRestaurant } from '../api/Restaurant';
 
 const FilterPopup = ({ open, close, onSelectRestaurant }) => {
-  const { filters, setFilters } = useContext(SwipableFeedContext);
   const [search, setSearch] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -37,7 +35,6 @@ const FilterPopup = ({ open, close, onSelectRestaurant }) => {
       onSelectRestaurant(restaurant);
       setSearch('');
       setSearchResults([]);
-      setFilters([]);
       close();
     } catch (error) {
       console.error('Error fetching restaurant details:', error);
@@ -47,7 +44,6 @@ const FilterPopup = ({ open, close, onSelectRestaurant }) => {
   const handleOverlayClick = () => {
     setSearch('');
     setSearchResults([]);
-    setFilters([]);
     close();
   };
 
