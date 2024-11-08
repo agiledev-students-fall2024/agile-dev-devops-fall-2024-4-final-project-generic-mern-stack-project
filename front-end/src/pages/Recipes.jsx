@@ -20,7 +20,7 @@ function Recipes() {
           difficulty: item.difficulty_level,
           ingredients: item.ingredients,
           steps: item.instructions ? item.instructions.split(". ") : [],
-          imgs: "https://picsum.photos/400",
+          imgs: `${process.env.REACT_APP_BACK_PORT}/api/recipePics`,
         }));
         setRecipeData(formattedData);
       } catch (error) {
