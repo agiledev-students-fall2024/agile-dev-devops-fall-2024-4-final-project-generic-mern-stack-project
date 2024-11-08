@@ -176,6 +176,17 @@ app.get("/api/challenges", async (req, res) => {
   }
 });
 
+app.get("/api/recipes", async (req, res) => {
+  try {
+    const { data } = await axios.get(
+      "https://my.api.mockaroo.com/recipes.json?key=a170a060"
+    );
+    res.json(data);
+  } catch (error) {
+    console.error("Error fetching data from API:", error.message);
+    res.status(500).json({ error: "Failed to fetch recipes data" });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
