@@ -33,6 +33,7 @@ function Record() {
     setCompletedSteps([])
     setCurrRecipe({})
     setRecipeId(null)
+    localStorage.removeItem('currentRecipe')
     setIsModalOpen(false); 
     
   };
@@ -84,6 +85,7 @@ function Record() {
       try {  //fetch all activities
         const response = await axios.get('/api/record-activity');
         setAllRecipes([...response.data]);
+        console.log('fetchedallrecipes')
       } catch (error) {
         console.error('Error fetching all recipes', error);
       }
@@ -92,13 +94,21 @@ function Record() {
   }, []);
 
   useEffect(() => {
-    if (recipeId) {
+    const cachedRecipe = JSON.parse(localStorage.getItem('currentRecipe'))
+    if (cachedRecipe){
+      setCurrRecipe(cachedRecipe)
+      console.log('did this', cachedRecipe)
+    }else if (recipeId) {
       const currentRecipe = allRecipes.find((ele) => ele.id === recipeId);
+      console.log('nside the else')
       if (currentRecipe) {
         setCurrRecipe(currentRecipe);
+        localStorage.setItem('currentRecipe', JSON.stringify(currentRecipe));
       } else {
         console.warn(`No recipe found for ID: ${recipeId}`);
       }
+    }else{
+      console.log("I'm in the else")
     }
   }, [recipeId, allRecipes]);
 
@@ -110,9 +120,9 @@ function Record() {
       // Scroll smoothly to the button when all steps are completed
       buttonRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
-  }, [completedSteps.length, currRecipe.recipe_steps?.step?.length]);
+  }, [completedSteps.length, currRecipe?.recipe_steps?.step?.length]);
 
-  if (!recipeId) {
+  if (!recipeId&& !currRecipe.recipe_name) {
     return (
       <div className="no-recipe-container">
         <h2>No Recipe Selected!</h2>
@@ -138,6 +148,7 @@ function Record() {
 
   return (
     <div className="record-container">
+      <h1>recipeId is : {!currRecipe}</h1>
       <h1>Current Activity: {currRecipe.recipe_name || 'N/A'}</h1>
       <h2>Description of Activity: {currRecipe.recipe_description || 'N/A'}</h2>
 

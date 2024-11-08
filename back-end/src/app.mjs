@@ -107,7 +107,7 @@ app.post('/api/shareRecipe', async (req, res) => {
 app.get("/api/activity-tracker", async (req, res) => {
   try {
     const { data } = await axios.get(
-      "https://my.api.mockaroo.com/activities_tracker?key=594b4990"
+      "https://my.api.mockaroo.com/activities_tracker?key=d6450400"
     );
     res.json(data);
   } catch (error) {
@@ -118,7 +118,7 @@ app.get("/api/activity-tracker", async (req, res) => {
 
 app.get('/api/record-activity', async (req, res)=>{
   try{
-    const {data} = await axios.get('https://my.api.mockaroo.com/recipe_steps?key=594b4990'); 
+    const {data} = await axios.get('https://my.api.mockaroo.com/recipe_steps?key=d6450400'); 
     res.json(data);
   }catch(error){
     console.error('Error fetching data from API:', error.message);
@@ -156,7 +156,7 @@ app.post('/api/upload-recipe-image', upload.array('my_files', 1), (req, res, nex
 
 app.get('/api/record-activity', async (req, res)=>{
   try{
-    const {data} = await axios.get('https://my.api.mockaroo.com/recipe_steps?key=594b4990');
+    const {data} = await axios.get('https://my.api.mockaroo.com/recipe_steps?key=d6450400');
     res.json(data);
   }catch(error){
     console.error('Error fetching data from API:', error.message);
@@ -167,7 +167,7 @@ app.get('/api/record-activity', async (req, res)=>{
 app.get("/api/challenges", async (req, res) => {
   try {
     const { data } = await axios.get(
-      "https://my.api.mockaroo.com/challenges?key=594b4990"
+      "https://my.api.mockaroo.com/challenges?key=d6450400"
     );
     res.json(data);
   } catch (error) {
