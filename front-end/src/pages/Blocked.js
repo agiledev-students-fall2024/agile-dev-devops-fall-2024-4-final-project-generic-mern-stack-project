@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
-import TextAndButton from '../components/TextAndButton'
 
 const Blocked = (props) => {
     const [data, setData] = useState([])
@@ -30,15 +29,70 @@ const Blocked = (props) => {
             })
     }, [])
 
+    const handleClick = async (e, id) => {
+        e.preventDefault();
+
+        if (props.type === "blocked_users") {
+            axios.post("http://localhost:8000/api/blocked-users/",
+                { id: id, users: data },
+                { headers: { 'Content-Type': 'application/json' } }
+            )
+                .then(response => {
+                    setData(response.data);
+                })
+                .catch(err => {
+                    console.log('Failed to unblock user')
+                    console.log(err)
+                })
+        };
+
+        if (props.type === "blocked_communities") {
+            axios.post("http://localhost:8000/api/blocked-communities/",
+                { id: id, communities: data },
+                { headers: { 'Content-Type': 'application/json' } }
+            )
+                .then(response => {
+                    setData(response.data);
+                })
+                .catch(err => {
+                    console.log('Failed to unblock community')
+                    console.log(err)
+                })
+        };
+
+        if (props.type === "muted_words") {
+            axios.post("http://localhost:8000/api/muted-words/",
+                { id: id, words: data },
+                { headers: { 'Content-Type': 'application/json' } }
+            )
+                .then(response => {
+                    setData(response.data);
+                })
+                .catch(err => {
+                    console.log('Failed to unmute word')
+                    console.log(err)
+                })
+        };
+    }
+
     // blocked users page
     if (props.type === "blocked_users") {
         return (
             <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-8 p-8">
                 <h1 className="text-xl text-ebony-700 text-center font-bold">{props.text}</h1>
                 <div>
-                    {data.map(item => (
-                        <TextAndButton key={item.id} text={item.username} button={"Unblock"} />
-                    ))}
+                    {/* if user has blocked users */}
+                    {data.length > 0 ? (
+                        data.map(item => (
+                            <div key={item.id} className="flex flex-row justify-between items-center space-x-40 bg-lavender_blush-900 py-4 px-8 border-[1px] border-rose-900 w-full">
+                                <p className="text-ebony font-bold">{item.username}</p>
+                                <button className="text-ebony-700 font-bold border border-ebony-800 py-1 px-2 rounded-md hover:border-rose hover:text-rose" onClick={(e) => handleClick(e, item.id)}>Unblock</button>
+                            </div>
+                        ))
+                    ) : (
+                        // if no blocked users
+                        <p className="text-center text-ebony-700">You have no blocked users!</p>
+                    )}
                 </div>
             </div>
         )
@@ -49,9 +103,18 @@ const Blocked = (props) => {
             <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-8 p-8">
                 <h1 className="text-xl text-ebony-700 text-center font-bold">{props.text}</h1>
                 <div>
-                    {data.map(item => (
-                        <TextAndButton key={item.id} text={item.community} button={"Unblock"} />
-                    ))}
+                    {/* if user has blocked communities */}
+                    {data.length > 0 ? (
+                        data.map(item => (
+                            <div key={item.id} className="flex flex-row justify-between items-center space-x-40 bg-lavender_blush-900 py-4 px-8 border-[1px] border-rose-900 w-full">
+                                <p className="text-ebony font-bold">{item.community}</p>
+                                <button className="text-ebony-700 font-bold border border-ebony-800 py-1 px-2 rounded-md hover:border-rose hover:text-rose" onClick={(e) => handleClick(e, item.id)}>Unblock</button>
+                            </div>
+                        ))
+                    ) : (
+                        // if no blocked communities
+                        <p className="text-center text-ebony-700">You have no blocked communities!</p>
+                    )}
                 </div>
             </div>
         )
@@ -62,9 +125,18 @@ const Blocked = (props) => {
             <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-8 p-8">
                 <h1 className="text-xl text-ebony-700 text-center font-bold">{props.text}</h1>
                 <div>
-                    {data.map(item => (
-                        <TextAndButton key={item.id} text={item.muted_word} button={"Unmute"} />
-                    ))}
+                    {/* if user has muted words */}
+                    {data.length > 0 ? (
+                        data.map(item => (
+                            <div key={item.id} className="flex flex-row justify-between items-center space-x-40 bg-lavender_blush-900 py-4 px-8 border-[1px] border-rose-900 w-full">
+                                <p className="text-ebony font-bold">{item.muted_word}</p>
+                                <button className="text-ebony-700 font-bold border border-ebony-800 py-1 px-2 rounded-md hover:border-rose hover:text-rose" onClick={(e) => handleClick(e, item.id)}>Unmute</button>
+                            </div>
+                        ))
+                    ) : (
+                        // if no muted words
+                        <p className="text-center text-ebony-700">You have no muted words!</p>
+                    )}
                 </div>
             </div>
         )
