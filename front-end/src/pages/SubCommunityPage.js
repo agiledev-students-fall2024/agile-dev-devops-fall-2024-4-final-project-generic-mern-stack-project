@@ -6,13 +6,17 @@ import SubCommunity from '../components/SubCommunity'
 const SubCommunityPage = (props) => {
     //stores the fake data into data 
     const [data, setData] = useState([])
-    const communityId = useParams()
+    const { communityId } = useParams()
 
     useEffect(() => {
         console.log("Currently getting subcommunity group's data...")
 
         //getting fake data from api 
-        axios("https://my.api.mockaroo.com/subcommunity.json?key=a42e4cd0")
+        //axios("https://my.api.mockaroo.com/subcommunity.json?key=a42e4cd0")
+
+        //getting hardcoded data from back-end
+        axios
+         .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/community/${communityId}`)
          .then(response => {
             setData(response.data)
          })
@@ -34,12 +38,12 @@ const SubCommunityPage = (props) => {
     }, [communityId])
 
     //gets a random image 
-    const image = `https://picsum.photos/200?id=${props.communityId}`
+    //const image = `https://picsum.photos/200?id=${communityId}`
 
     return (
         <div className="w-[95%] m-[auto] flex flex-col justify-center items-center gap-6 p-8 md:w-[80%] lg:w-[70%]">
             <SubCommunity 
-                image={image}
+                image={data.image}
                 name={data.name}
                 description={data.description}
             />

@@ -10,6 +10,8 @@ import blocked from "./routes/blocked.js";
 import accessibility from "./routes/accessibility.js";
 import auth from "./routes/auth.js";
 import community from "./routes/community.js";
+import searchCommunity from "./routes/search-community.js";
+import subcommunity from "./routes/subcommunity.js";
 
 const app = express(); // instantiate an Express object
 
@@ -33,4 +35,8 @@ app.use(accessibility);
 
 app.use(auth);
 app.use(community);
+
+app.use(searchCommunity);
+app.use(subcommunity);
+
 export default app;
