@@ -4,6 +4,11 @@ import { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
 
+import IngredientsList from '../components/IngredientsList'
+import NoRecipe from '../components/NoRecipes';
+import RecipeSteps from '../components/RecipeSteps'
+import CompletionModal from '../components/CompletionModal'
+
 Modal.setAppElement('#root');
 function Record() {
   const [allRecipes, setAllRecipes] = useState([]);
@@ -11,25 +16,50 @@ function Record() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { recipeId } = location.state || {};
+  const [recipeId, setRecipeId] = useState(location.state?.recipeId || null)
   const [error, setError] = useState(null); 
 
   const [completedSteps, setCompletedSteps] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedIngredients, setSelectedIngredients] = useState([]);
+
   const buttonRef = useRef(null);
   const handleStepComplete = (index) => {
-    setCompletedSteps((prev) =>
-      prev.includes(index) 
-    ? prev.filter((stepIndex) => stepIndex !== index) // Remove index if it exists
-    : [...prev, index] // Add index if it doesn't exist
-    );
+    setCompletedSteps((prev) => {
+      const updatedSteps = prev.includes(index)
+        ? prev.filter((stepIndex) => stepIndex !== index)
+        : [...prev, index];
+
+      // Save updated steps to localStorage
+      localStorage.setItem('completedSteps', JSON.stringify(updatedSteps));
+      return updatedSteps;
+    });
   };
+  const handleIngredientSelect = (index) => {
+    setSelectedIngredients((prev) => {
+      const updatedIngredients = prev.includes(index)
+        ? prev.filter((ingredientIndex) => ingredientIndex !== index)
+        : [...prev, index];
+        
+      // Save updated selected ingredients to localStorage
+      localStorage.setItem('selectedIngredients', JSON.stringify(updatedIngredients));
+      return updatedIngredients;
+    });
+  };
+
 
   const handleRecipeComplete = () => {
     setIsModalOpen(true); 
   };
 
   const closeModal = () => {
+    setCompletedSteps([])
+    setCurrRecipe({})
+    setRecipeId(null)
+    localStorage.removeItem('currentRecipe')
+    localStorage.removeItem('completedSteps');
+    localStorage.removeItem('selectedIngredients')
+
     setIsModalOpen(false); 
     
   };
@@ -81,6 +111,7 @@ function Record() {
       try {  //fetch all activities
         const response = await axios.get('/api/record-activity');
         setAllRecipes([...response.data]);
+        console.log('fetchedallrecipes')
       } catch (error) {
         console.error('Error fetching all recipes', error);
       }
@@ -89,10 +120,14 @@ function Record() {
   }, []);
 
   useEffect(() => {
-    if (recipeId) {
+    const cachedRecipe = JSON.parse(localStorage.getItem('currentRecipe'))
+    if (cachedRecipe){
+      setCurrRecipe(cachedRecipe)
+    }else if (recipeId) {
       const currentRecipe = allRecipes.find((ele) => ele.id === recipeId);
       if (currentRecipe) {
         setCurrRecipe(currentRecipe);
+        localStorage.setItem('currentRecipe', JSON.stringify(currentRecipe));
       } else {
         console.warn(`No recipe found for ID: ${recipeId}`);
       }
@@ -100,100 +135,58 @@ function Record() {
   }, [recipeId, allRecipes]);
 
   useEffect(() => {
+    const savedCompletedSteps = JSON.parse(localStorage.getItem('completedSteps'));
+    if (savedCompletedSteps) {
+      setCompletedSteps(savedCompletedSteps);
+    }
+  }, []);
+
+  useEffect(() => {
+    const savedSelectedIngredients = JSON.parse(localStorage.getItem('selectedIngredients'));
+    if (savedSelectedIngredients) {
+      setSelectedIngredients(savedSelectedIngredients);
+    }
+  }, []);
+
+  useEffect(() => {
     // Check if all steps are completed
     const allStepsCompleted = completedSteps.length === currRecipe.recipe_steps?.step?.length;
 
     if (allStepsCompleted && buttonRef.current) {
-      // Scroll smoothly to the button when all steps are completed
       buttonRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
-  }, [completedSteps.length, currRecipe.recipe_steps?.step?.length]);
+  }, [completedSteps.length, currRecipe?.recipe_steps?.step?.length]);
 
-  if (!recipeId) {
+  if (!recipeId&& !currRecipe.recipe_name) {
     return (
-      <div className="no-recipe-container">
-        <h2>No Recipe Selected!</h2>
-        <p>Please start a recipe from the Recipes or Challenges page to see details here.</p>
-
-        {/* Navigation buttons */}
-        <div className="navigation-buttons">
-          <button onClick={() => navigate('/recipes')} className="nav-button">
-            Go to Recipes
-          </button>
-          <button onClick={() => navigate('/challenges')} className="nav-button">
-            Go to Challenges
-          </button>
-        </div>
-
-        {/* Tooltip or help text */}
-        <p className="help-text">
-          <em>Once you start a recipe, it will appear here with steps and ingredients.</em>
-        </p>
-      </div>
-    );
+      <NoRecipe navigate={navigate} />)
   }
 
   return (
     <div className="record-container">
-      <h1>Current Activity: {currRecipe.recipe_name || 'N/A'}</h1>
-      <h2>Description of Activity: {currRecipe.recipe_description || 'N/A'}</h2>
+      <h1> {currRecipe.recipe_name || 'N/A'}</h1>
+      <h2> {currRecipe.recipe_description || 'N/A'}</h2>
 
-      <h3>Ingredients:</h3>
-      <ul className="ingredients-list">
-        {currRecipe.ingredients?.item?.map((ingredient, index) => (
-          <li key={index}>
-            <label>
-              <input type="checkbox" className="strikethrough" />{' '}
-              <span>{ingredient}</span>
-            </label>
-          </li>
-        ))}
-      </ul>
+      <IngredientsList 
+        ingredients={currRecipe.ingredients}
+        selectedIngredients = {selectedIngredients}
+        handleIngredientSelect = {handleIngredientSelect} />
 
-      <h3>Steps:</h3>
-      <div className="steps-container">
-        {currRecipe.recipe_steps?.step?.map((step, index) => (
-          <div key={index} className={`steps-card ${completedSteps.includes(index) ? 'completed' : 'default'}`}>
-            <h4>Step {index + 1}</h4>
-            <p>{step}</p>
-            <button
-              className={`steps-button ${completedSteps.includes(index) ? 'completed' : 'default'}`}
-              onClick={() => handleStepComplete(index)}
-            >
-              {completedSteps.includes(index) ? 'Completed' : 'Mark as Completed'}
-            </button>
-          </div>
-        ))}
-        <button
-          ref={buttonRef}
-          className={`finish-activity-button ${completedSteps.length===currRecipe.recipe_steps?.step?.length ? 'finished':'default'}`}
-          onClick={handleRecipeComplete}
-        >
-          Finish Activity
-        </button>
+      <RecipeSteps
+        steps={currRecipe.recipe_steps}
+        completedSteps={completedSteps}
+        onStepComplete={handleStepComplete}
+        buttonRef={buttonRef}
+        onComplete={handleRecipeComplete}
+      />
 
-        {/* Modal component */}
-        <Modal
-          isOpen={isModalOpen}
-          onRequestClose={closeModal}
-          contentLabel="Activity Complete"
-          className="modal-content" 
-          overlayClassName="modal-overlay"
-        >
-          <h2>Recipe Completed!</h2>
-          <p>Congratulations on finishing this recipe!</p>
-          <form onSubmit={handleSubmit}>
-            <label>Upload an image of your finished dish!
-              <input type='file' name='my_files' accept="image/*" onChange={handleFileChange}></input>
-            </label>
-            {error && <div style={{ color: 'red' }}>{error}</div>}
-            <button type='submit' className='upload-image-button'>Upload image</button>
-          </form>
-          <button onClick={closeModal} className="close-modal-button">
-            Close
-          </button>
-        </Modal>
-      </div>
+      <CompletionModal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        onFileChange={handleFileChange}
+        onSubmit={handleSubmit}
+        error={error}
+      />  
     </div>
   );
 }
