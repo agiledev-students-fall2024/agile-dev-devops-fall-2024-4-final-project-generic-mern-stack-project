@@ -9,7 +9,7 @@ const Blocked = (props) => {
 
     const handleMute = () => {
         if (input) {
-            axios.post("http://localhost:8000/api/muted-words",
+            axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/muted-words`,
                 { request: 'mute', word: input, words: data },
                 { headers: { 'Content-Type': 'application/json' } }
             )
@@ -27,7 +27,7 @@ const Blocked = (props) => {
 
     const handleBlockC = () => {
         if (input) {
-            axios.post("http://localhost:8000/api/blocked-communities",
+            axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/blocked-communities`,
                 { request: 'block', name: input, communities: data },
                 { headers: { 'Content-Type': 'application/json' } }
             )
@@ -45,7 +45,7 @@ const Blocked = (props) => {
 
     const handleBlockU = () => {
         if (input) {
-            axios.post("http://localhost:8000/api/blocked-users",
+            axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/blocked-users`,
                 { request: 'block', user: input, users: data },
                 { headers: { 'Content-Type': 'application/json' } }
             )
@@ -70,13 +70,13 @@ const Blocked = (props) => {
 
         // set api url based on type of data needed
         if (props.type === "blocked_users") {
-            url = "http://localhost:8000/api/blocked-users"
+            url = `${process.env.REACT_APP_SERVER_HOSTNAME}/api/blocked-users`
         }
         if (props.type === "blocked_communities") {
-            url = "http://localhost:8000/api/blocked-communities"
+            url = `${process.env.REACT_APP_SERVER_HOSTNAME}/api/blocked-communities`
         }
         if (props.type === "muted_words") {
-            url = "http://localhost:8000/api/muted-words"
+            url = `${process.env.REACT_APP_SERVER_HOSTNAME}/api/muted-words`
         }
 
         // fetch data
@@ -94,7 +94,7 @@ const Blocked = (props) => {
         e.preventDefault();
 
         if (props.type === "blocked_users") {
-            axios.post("http://localhost:8000/api/blocked-users/",
+            axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/blocked-users/`,
                 { request: 'unblock', id: id, users: data },
                 { headers: { 'Content-Type': 'application/json' } }
             )
@@ -108,7 +108,7 @@ const Blocked = (props) => {
         };
 
         if (props.type === "blocked_communities") {
-            axios.post("http://localhost:8000/api/blocked-communities/",
+            axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/blocked-communities/`,
                 { request: 'unblock', id: id, communities: data },
                 { headers: { 'Content-Type': 'application/json' } }
             )
@@ -122,7 +122,7 @@ const Blocked = (props) => {
         };
 
         if (props.type === "muted_words") {
-            axios.post("http://localhost:8000/api/muted-words/",
+            axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/muted-words/`,
                 { request: 'unmute', id: id, words: data },
                 { headers: { 'Content-Type': 'application/json' } }
             )

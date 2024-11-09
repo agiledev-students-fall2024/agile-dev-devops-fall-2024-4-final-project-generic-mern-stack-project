@@ -18,7 +18,7 @@ const AccountSettings = (props) => {
     }
 
     const handleClick = async () => {
-        axios.post("http://localhost:8000/api/deactivate",
+        axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/deactivate`,
             { id: 1, username: 'monalisa' },
         )
             .then(console.log('User deactivated'))
@@ -30,7 +30,9 @@ const AccountSettings = (props) => {
 
     useEffect(() => {
         // fetch data
-        axios("http://localhost:8000/api/account-settings")
+        console.log("Server hostname:", process.env.REACT_APP_SERVER_HOSTNAME);
+
+        axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/account-settings`)
             .then(response => {
                 setData(response.data)
             })

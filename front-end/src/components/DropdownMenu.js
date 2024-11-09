@@ -8,9 +8,9 @@ const DropdownMenu = (props) => {
     const handleChange = (event) => {
         setChoice(event.target.value)
 
-        if (props.request == 'color-mode') {
-            axios.post("http://localhost:8000/api/color-mode",
-                { id: 1, color: event.target.value },
+        if (props.request === 'color-mode') {
+            axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/color-mode`,
+                { id: 1, color: choice },
             )
                 .then(response => {
                     setChoice(response.data)
@@ -20,9 +20,9 @@ const DropdownMenu = (props) => {
                     console.log(err)
                 })
         }
-        if (props.request == 'image-mode') {
-            axios.post("http://localhost:8000/api/image-mode",
-                { id: 1, image: event.target.value },
+        if (props.request === 'image-mode') {
+            axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/image-mode`,
+                { id: 1, image: choice },
             )
                 .then(response => {
                     setChoice(response.data)

@@ -13,7 +13,7 @@ const Accessibility = (props) => {
         const font = parseFloat(evt.target.value);
         setSize(font)
 
-        axios.post("http://localhost:8000/api/color-mode",
+        axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/color-mode`,
             { id: 1, fontSize: font },
         )
             .then(response => {
