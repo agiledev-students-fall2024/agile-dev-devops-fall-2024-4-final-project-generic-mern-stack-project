@@ -29,5 +29,5 @@
     "server":"cd back-end && npm start",
     "client":"cd front-end && npm start",
     "build": "cd front-end && react-scripts build"
-  }
+    }
 }
