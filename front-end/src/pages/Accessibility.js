@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import TitleAndDescription from '../components/TitleAndDescription'
 import DropdownMenu from '../components/DropdownMenu'
+import axios from "axios"
 import "./Accessibility.css"
 
 const Accessibility = (props) => {
@@ -11,6 +12,17 @@ const Accessibility = (props) => {
         evt.preventDefault();
         const font = parseFloat(evt.target.value);
         setSize(font)
+
+        axios.post("http://localhost:8000/api/color-mode",
+            { id: 1, fontSize: font },
+        )
+            .then(response => {
+                setSize(response.data)
+            })
+            .catch(err => {
+                console.log('Failed to change font size')
+                console.log(err)
+            })
     }
 
     return (
@@ -27,6 +39,7 @@ const Accessibility = (props) => {
                         name={"color-mode"}
                         label={"Color Mode"}
                         options={["Light", "Dark"]}
+                        request={"color-mode"}
                     />
                 </div>
                 <div className="flex flex-row justify-between mx-10 my-5">
@@ -35,6 +48,7 @@ const Accessibility = (props) => {
                         name={"display-images"}
                         label={"Display Images"}
                         options={["Show", "Hide"]}
+                        request={"image-mode"}
                     />
                 </div>
                 <div className="flex flex-row justify-between mx-10 my-5">

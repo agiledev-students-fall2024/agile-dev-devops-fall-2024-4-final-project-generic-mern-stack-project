@@ -8,6 +8,7 @@ import cors from "cors";
 import accountSettings from "./routes/account-settings.js";
 import blocked from "./routes/blocked.js";
 import accessibility from "./routes/accessibility.js";
+import deactivate from "./routes/deactivate.js";
 import auth from "./routes/auth.js";
 import community from "./routes/community.js";
 import searchCommunity from "./routes/search-community.js";
@@ -32,6 +33,7 @@ app.use(cors());
 app.use(accountSettings);
 app.use(blocked);
 app.use(accessibility);
+app.use(deactivate);
 
 app.use(auth);
 app.use(community);

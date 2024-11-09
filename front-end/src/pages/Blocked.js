@@ -142,7 +142,7 @@ const Blocked = (props) => {
             <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-8 p-8">
                 <h1 className="text-xl text-ebony-700 text-center font-bold">{props.text}</h1>
                 {/* input bar at top */}
-                <div className="flex flex-row justify-center w-[85%]">
+                <div className="flex flex-row justify-center w-[50%]">
                     <input
                         className="h-10 px-3 py-2 grow-0 w-[90%] bg-lavender_blush-900 text-ebony font-bold rounded-md placeholder-rose-600 rounded-r-none"
                         type="text"
@@ -178,7 +178,7 @@ const Blocked = (props) => {
             <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-8 p-8">
                 <h1 className="text-xl text-ebony-700 text-center font-bold">{props.text}</h1>
                 {/* input bar at top */}
-                <div className="flex flex-row justify-center w-[85%]">
+                <div className="flex flex-row justify-center w-[50%]">
                     <input
                         className="h-10 px-3 py-2 grow-0 w-[90%] bg-lavender_blush-900 text-ebony font-bold rounded-md placeholder-rose-600 rounded-r-none"
                         type="text"
@@ -214,7 +214,7 @@ const Blocked = (props) => {
             <div className="w-[90%] m-[auto] flex flex-col justify-center items-center gap-8 p-8">
                 <h1 className="text-xl text-ebony-700 text-center font-bold">{props.text}</h1>
                 {/* input bar at top */}
-                <div className="flex flex-row justify-center w-[85%]">
+                <div className="flex flex-row justify-center w-[50%]">
                     <input
                         className="h-10 px-3 py-2 grow-0 w-[90%] bg-lavender_blush-900 text-ebony font-bold rounded-md placeholder-rose-600 rounded-r-none"
                         type="text"
