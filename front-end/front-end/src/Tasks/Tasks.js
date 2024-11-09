@@ -22,7 +22,7 @@ function Tasks() {
       setLoading(true);
       //const session = window.localStorage.getItem("session_id")
       //this is to retrieve a logged in user's object, if null no user is signed in
-      const response = await fetch('https://my.api.mockaroo.com/tasks?key=34c59640');
+      const response = await fetch('http://localhost:4000/tasks');
       const data = await response.json();
       setTasks(data);
       console.log(data)
@@ -135,7 +135,7 @@ function Tasks() {
               />
               <span className="status-icon">{getStatusIcon(task.status)}</span>
               <span className="task-name">{task.name}</span>
-              <button onClick={handleEdit(task.id)} className="edit-btn">Edit</button>
+              {/* <button onClick={handleEdit(task.id)} className="edit-btn">Edit</button> */}
               {/* Comment for the edit task: because of the restriction of mock data now, 
               this function cannot fully achieved, so the way we connect it is not exactly true.
               the page itself can be seen from http://localhost:3000/EditTask. */}
