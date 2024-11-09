@@ -34,7 +34,11 @@ const Community = () => {
         console.log("Currently getting community groups' data...")
 
         //getting fake data from api 
-        axios("https://my.api.mockaroo.com/community.json?key=a42e4cd0")
+        //axios("https://my.api.mockaroo.com/community.json?key=a42e4cd0")
+
+        //getting hardcoded data from back-end 
+        axios
+         .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/community`)
          .then(response => {
             setData(response.data)
             setOriginalData(response.data)
