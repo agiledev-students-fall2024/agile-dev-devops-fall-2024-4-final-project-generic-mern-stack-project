@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, doc, getDoc, collection, getDocs, onSnapshot } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, collection, getDocs, onSnapshot, addDoc } from 'firebase/firestore';
 
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -53,7 +53,8 @@ const listenForNewMessages = async (meetingId, callback, all = false) => {
 
 const sendDataToMeetingRoom = async (meetingId, service, data) => {
     const messagesRef = collection(db, 'meetings', meetingId, 'messages');
-    await messagesRef.add({ service, data, timestamp: Date.now() });
+    await addDoc(messagesRef, { service, data, timestamp: Date.now() });
+    // await messagesRef.add({ service, data, timestamp: Date.now() });
 }
 
 export { getMeeting, getAllMessages, listenForNewMessages, sendDataToMeetingRoom };
