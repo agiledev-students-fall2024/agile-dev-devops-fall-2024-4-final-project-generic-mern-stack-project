@@ -5,67 +5,35 @@ const usersData = require('../fillerData/users');
 const blockedData = require('../fillerData/blocked');
 const friendsData = require('../fillerData/friendships');
 const postsData = require('../fillerData/posts');
-
-
 const authUserId = loggedInData[0].id
 
-const getBlockedUsers = (user_id) => {
-    const blockedUsers = []
-
-    blockedData.forEach(item => {
-        if (item.blocked_id === user_id) {
-            blockedUsers.push(item.blocker_id)
-        } else if (item.blocker_id === user_id){
-            blockedUsers.push(item.blocked_id)
-        }
-    })
-
-    return blockedUsers
-}
-
-const getFriends = (user_id) => {
-    const friends = []
-
-    friendsData.forEach(item => {
-        if (item.user_id_1 === user_id) {
-            friends.push(item.user_id_2)
-        } else if (item.user_id_2 === user_id){
-            friends.push(item.user_id_1)
-        }
-    })
-
-    return friends
-}
-
 router.get('/authUser', (req, res) => {
-    user = usersData.find(user => user.id === authUserId)
+    const authId = loggedInData[0].id
+    user = usersData.find(user => user.id === authId)
     if (user){
-        return res.json(user)
+        return res.status(200).json(user)
     } 
-    return res.json(null)
+    return res.status(200).json(null)
 })
 
 router.post('/edit', (req, res) => {
     const { name, bio, layout, profileImg } = req.body
     const user = usersData.find(user => user.id === authUserId)
 
-    if (user) {
-        user.name = name;
-        user.bio = bio;
-        user.layout = layout;
+    user.name = name;
+    user.bio = bio;
+    user.layout = layout;
 
-        return res.status(200).json({ message: 'Your profile was successfully updated!', username: user.username });
-    }
-
-    return res.status(404).json({ error: 'User not found' });
+    return res.status(200).json({ message: 'Your profile was successfully updated', username: user.username });
 })
 
 router.post('/login', (req, res) => {
     const { username, password } = req.body;
-    const user = usersData.find(user => user.username === username && user.password === password);
-
+    const user = usersData.find(user => user.username === username && user.password === password)
+    
     if (user) {
-        return res.status(200).json({ message: 'Login successful!' });
+        loggedInData[0].id = user.id
+        return res.status(200).json({ message: 'Login successful' });
     } else {
         return res.status(401).json({ message: 'Invalid username or password.' });
     }
@@ -96,7 +64,7 @@ router.post('/register', (req, res) => {
         'layout':'list'
     })
 
-    return res.status(200).json({ message: 'Registration successful!' });
+    return res.status(200).json({ message: 'Registration successful' });
 })
 
 router.get('/user/:username', (req, res) => {
@@ -106,7 +74,10 @@ router.get('/user/:username', (req, res) => {
         return res.status(404).json({ error: 'User not found' })
     } 
 
-    const blockedUsers = getBlockedUsers(authUserId)
+    const blockedUsers =blockedData
+        .filter(item => item.blocked_id === authUserId || item.blocker_id === authUserId)
+        .map(item => item.blocked_id === authUserId ? item.blocker_id : item.blocked_id)
+
     if (blockedUsers.includes(user.id)){
         return res.status(404).json({ error: 'User not found' })
     } 
@@ -115,10 +86,13 @@ router.get('/user/:username', (req, res) => {
 
     let friends = false
     if (user.id !== authUserId){
-        friends = getFriends(authUserId).includes(user.id)
+        const getFriends = friendsData
+            .filter(item => item.user_id_1 === authUserId || item.user_id_2 === authUserId)  
+            .map(item => item.user_id_1 === authUserId ? item.user_id_2 : item.user_id_1);
+        friends = getFriends.includes(user.id)
     } 
 
-    return res.json({ belongsToLoggedIn: authUserId === user.id, user, posts, friends: friends })
+    return res.status(200).json({ belongsToLoggedIn: authUserId === user.id, user, posts, friends: friends })
 })
 
 module.exports = router;

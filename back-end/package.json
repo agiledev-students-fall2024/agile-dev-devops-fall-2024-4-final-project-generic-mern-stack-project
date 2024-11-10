@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nodemon server",
     "start": "node server.js",
-    "test": "mocha --recursive"
+    "test": "c8 --check-coverage --lines 10 mocha --recursive"
   },
   "author": "",
   "license": "ISC",
@@ -19,6 +19,7 @@
     "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
+    "c8": "^10.1.2",
     "chai": "^3.5.0",
     "chai-http": "^4.3.0",
     "mocha": "^10.8.2",
