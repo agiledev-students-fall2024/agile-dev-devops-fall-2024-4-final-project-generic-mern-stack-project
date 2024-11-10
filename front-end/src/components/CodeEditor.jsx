@@ -1,10 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
+import { useParams } from 'react-router-dom';
 
 const CodeEditor = () => {
+    const { id: meetingId } = useParams(); // Add this to get the meeting ID from URL
     const [language, setLanguage] = useState('javascript');
     const [code, setCode] = useState('// Welcome!');
     const [output, setOutput] = useState('');
+
+    const sendCodeUpdate = async (newCode) => {
+        try {
+            await fetch(`http://localhost:8080/code/${meetingId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    code: newCode,
+                    language
+                }),
+            });
+        } catch (error) {
+            console.error('Error sending code update:', error);
+        }
+    };
+
+    const handleCodeChange = (newCode) => {
+        setCode(newCode);
+        sendCodeUpdate(newCode);
+    };
+
+    useEffect(() => {
+        const fetchCodeHistory = async () => {
+            try {
+                const response = await fetch(`http://localhost:8080/code/${meetingId}`);
+                const history = await response.json();
+                if (history.length > 0) {
+                    // Get the most recent code update
+                    const lastUpdate = history[history.length - 1];
+                    setCode(lastUpdate.data.code);
+                    setLanguage(lastUpdate.data.language);
+                }
+            } catch (error) {
+                console.error('Error fetching code history:', error);
+            }
+        };
+
+        fetchCodeHistory();
+    }, [meetingId]);
 
     const runCode = () => {
         // run code locally for now
@@ -13,7 +56,6 @@ const CodeEditor = () => {
         console.log = (...args) => {
             output += args.map(String).join(' ') + '\n';
         };
-
         try {
             const wrappedCode = `(function() { ${code} })()`;
             eval(wrappedCode);
@@ -46,7 +88,7 @@ const CodeEditor = () => {
                 height="70%"
                 language={language}
                 value={code}
-                onChange={setCode}
+                onChange={handleCodeChange}
                 theme="vs-dark"
                 options={{
                     minimap: { enabled: false },

@@ -20,17 +20,37 @@ const JoinCreateMeetingPage = () => {
     return result;
   };
 
-  const handleCreateMeeting = () => {
-    const newMeetingId = generateMeetingId();
-    navigate(`/meetings/${newMeetingId}`);
-  };
-
-  const handleJoinMeeting = (e) => {
-    e.preventDefault();
-    if (meetingId.trim()) {
-      navigate(`/meetings/${meetingId}`);
+  const handleCreateMeeting = async () => {
+    try {
+        const response = await fetch('http://localhost:8080/meeting', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await response.json();
+        navigate(`/meetings/${data.id}`);
+    } catch (error) {
+        console.error('Error creating meeting:', error);
     }
-  };
+};
+
+const handleJoinMeeting = async (e) => {
+  e.preventDefault();
+  if (meetingId.trim()) {
+      try {
+          const response = await fetch(`http://localhost:8080/meeting/${meetingId}`);
+          if (response.ok) {
+              navigate(`/meetings/${meetingId}`);
+          } else {
+              // Handle meeting not found
+              alert('Meeting not found');
+          }
+      } catch (error) {
+          console.error('Error joining meeting:', error);
+      }
+  }
+};
 
   return (
     <div className="min-h-screen bg-gray-100">
