@@ -5,9 +5,12 @@ const multer = require('multer');
 const uploadMulter = multer({ dest: 'uploads/' });
 const bodyParser = require('body-parser');
 const { summarizeText } = require('./aiFeatures');
+const noteRouter = require('./routes/note');
 
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
+
+router.use('/notes', noteRouter);
 
 router.post('/transcribe', uploadMulter.single('audio'), async (req, res) => {
     try {
