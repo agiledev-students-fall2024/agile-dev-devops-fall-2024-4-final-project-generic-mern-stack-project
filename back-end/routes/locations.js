@@ -9,6 +9,18 @@ router.get('/', (req, res) => {
     res.json(locations);
   });
 
+router.get('/:locationId', (req, res) => {
+  const locationId = req.params.locationId;
+  const location = locations.find(loc => loc.id === locationId);
+
+  if (location) {
+    res.json(location);
+  } else {
+    res.status(404).json({ error: 'Location not found' });
+  }
+});
+  
+
 // Get locations by Trip ID (GET) - Retrieve all locations associated with a specific trip
 router.get('/trip/:tripId', (req, res) => {
     const tripId = req.params.tripId;

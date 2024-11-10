@@ -9,6 +9,18 @@ router.get('/', (req, res) => {
     res.json(activities);
   });  
 
+router.get('/location/:locationId', (req, res) => {
+    const locationId = req.params.locationId;
+    const filteredActivities = activities.filter(activity => activity.locationId === locationId);
+  
+    if (filteredActivities.length > 0) {
+      res.json(filteredActivities);
+    } else {
+      res.status(404).json({ error: 'No activities found for this location' });
+    }
+  });
+  
+// I think this might not need to be used, could delete @ant
 // TODO: Get a specific activity by ID (GET) - Retrieve details for the specified activity, including embedded comments
 router.get('/:activityId', (req, res) => {
     const activityId = req.params.activityId;
@@ -24,8 +36,8 @@ router.get('/:activityId', (req, res) => {
 // TODO: Create a new activity (POST) - Add a new activity within a location and respond with the newly created activity data
 router.post('/', (req, res) => {
     const newActivity = {
-      id: `activity_${Date.now()}`,
-      ...req.body
+      id: `activity_${Date.now()}`, // @ant what is the correct way for me to create activity IDs?
+      ...req.body // right now, we are getting incomplete forms so the object data is also incomplete
     };
   
     activities.push(newActivity);
@@ -33,6 +45,7 @@ router.post('/', (req, res) => {
     res.status(201).json(newActivity);
   });  
 
+// We don't have an edit functionality yet
 // TODO: Update activity information (PUT) - Modify the specified activity data and respond with the updated activity information
 router.put('/:activityId', (req, res) => {
     const activityId = req.params.activityId;
@@ -47,6 +60,7 @@ router.put('/:activityId', (req, res) => {
     }
   });  
 
+// Currently, we don't have a delete button
 // TODO: Delete an activity (DELETE) - Remove the specified activity and respond with a confirmation message
 router.delete('/:activityId', (req, res) => {
     const activityId = req.params.activityId;
