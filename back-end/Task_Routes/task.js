@@ -1,70 +1,64 @@
 const express = require('express');
+const { resource } = require('../app');
 const router = express.Router();
-const Task = require('./models/Task'); // Assuming Task is a Mongoose model
+// const Task = require('./models/Task'); // Assuming Task is a Mongoose model
 
 router.get('/tasks/urgent', async (req, res) => {
-  const urgentTasks = await Task.find()
-    .sort({due: 1})
-    .limit(3); 
+  const response = await fetch('https://my.api.mockaroo.com/tasks?key=34c59640');
+  let tasks = await response.json()
+  const urgentTasks = await tasks
+    .sort((a, b) => new Date(a.due) - new Date(b.due))
+    .slice(0, 3);
   res.json(urgentTasks);
 });
 
 router.get('/tasks', async (req, res) => {
-  const { status, priority, subject } = req.query;
-  const filter = {};
-  if (status) filter.status = status;
-  if (priority) filter.priority = priority;
-  if (subject) filter.subject = subject;
-
-  const tasks = await Task.find(filter);
+  let tasks = await fetch('https://my.api.mockaroo.com/tasks?key=34c59640');
+  tasks = await tasks.json();
+  
+  // const filterTasks = (tasks, { status, priority, subject }) => {
+  //   return tasks.filter(task => {
+  //     return (!status || task.status === status) &&
+  //            (!priority || task.priority === priority) &&
+  //            (!subject || task.subject === subject);
+  //   });
+  // };
+  // const filteredTasks = filterTasks(tasks, { status, priority, subject });
   res.json(tasks);
 });
 
 router.get('/tasks/:id', async (req, res) => {
-  const task = await Task.findById(req.params.id);
+  const tasks = await fetch('https://my.api.mockaroo.com/tasks?key=34c59640');
+  const task = tasks.find(t => t.id.$oid === req.params.id);
   res.json(task);
 });
 
 router.post('/tasks', async (req, res) => {
   const { name, due, status, priority, subject, recurring_period } = req.body;
-  
-  const newTask = new Task({
-    name,
-    due,
-    status,
-    priority,
-    subject,
-    recurring_period
-  });
-
-  const savedTask = await newTask.save();
-  res.status(201).json(savedTask);
+  const newTask = { name, due, status, priority, subject, recurring_period };
+  res.status(201).json(newTask);
 });
 
-// Update an existing task by ID
 router.put('/tasks/:id', async (req, res) => {
-  const updatedTask = await Task.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    { new: true } // Returns the updated document
-  );
+  const updatedTask = { ...req.body, id: req.params.id };
   res.json(updatedTask);
 });
 
 router.delete('/tasks/:id', async (req, res) => {
-  await Task.findByIdAndDelete(req.params.id);
-  res.status(204).send(); // No content response
+  res.status(204).send();
 });
 
 
 router.get('/tasks/due/:date', async (req, res) => {
-  const tasks = await Task.find({ due: req.params.date });
-  res.json(tasks);
+  const tasks = await fetch('https://my.api.mockaroo.com/tasks?key=34c59640');
+  const tasksDue = tasks.filter(task => task.due === req.params.date);
+  res.json(tasksDue);
 });
 
 router.get('/tasks/recurring/:period', async (req, res) => {
-  const tasks = await Task.find({ recurring_period: req.params.period });
-  res.json(tasks);
+  const tasks = await fetch('https://my.api.mockaroo.com/tasks?key=34c59640');
+  const recurringTasks = tasks.filter(task => task.recurring_period === req.params.period);
+  res.json(recurringTasks);
 });
 
 module.exports = router;

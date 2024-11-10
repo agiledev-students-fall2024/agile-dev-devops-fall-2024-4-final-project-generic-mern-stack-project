@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Homepage.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,7 +8,7 @@ function Homepage(){
 
   useEffect(() => {
     const fetchUrgentTasks = async () => {
-      const response = await fetch('/tasks/urgent');
+      const response = await fetch('http://localhost:4000/tasks/urgent');
       const data = await response.json();
       setUrgentTasks(data);
     };
@@ -32,7 +32,6 @@ function Homepage(){
       <h1>Task Destroyer</h1>
 
       <div className="urgent-tasks">
-        <h2>Urgent Tasks</h2>
         {urgentTasks.map((task) => (
           <div key={task.id}>
             {task.name}: due by {new Date(task.due).toLocaleDateString()}
