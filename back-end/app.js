@@ -10,7 +10,7 @@ const app = express() // instantiate an Express object
 // we will put some server logic here later...
 app.use(
     cors({
-        origin: process.env.FRONTEND,
+        origin: 'http://localhost:3000',
         methods: ["GET", "POST", "DELETE", "PUT"]
     })
 )

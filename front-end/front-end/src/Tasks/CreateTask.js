@@ -53,22 +53,36 @@ function CreateTask() {
         setRecurringPeriod(e.target.value)
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         if (!title || !subject || !due_date || !priority || (recurring === "Yes" && !recurringPeriod)) {
-            alert("Please fill out all required fields.");
-            return;
+          alert("Please fill out all required fields.");
+          return;
         }
-        e.preventDefault()
-        task.current.title = title
-        task.current.description = description
-        task.current.subject = subject
-        task.current.due_date = new Date(due_date)
-        task.current.priority = priority
-        task.current.recurring = recurring
-        task.current.recurringPeriod = recurring === "Yes" ? recurringPeriod : "";
-        //send task to backend
-        nav("/Tasks")
-    }
+      
+        const newTask = {
+          title,
+          description,
+          subject,
+          due_date,
+          priority,
+          recurring,
+          recurring_period: recurring === "Yes" ? recurringPeriod : "",
+        };
+      
+        fetch('http://localhost:4000/tasks', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newTask),
+        })
+        .then(response => {
+          if (response.ok) {
+            nav("/Tasks");
+          } else {
+            console.error("Failed to create task");
+          }
+        });
+      };
 
     return (
         <div className="create-task-container">
