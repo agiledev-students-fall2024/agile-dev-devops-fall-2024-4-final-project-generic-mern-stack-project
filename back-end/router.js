@@ -4,7 +4,7 @@ const {transcribe} = require('./transcriberAI')
 const multer = require('multer');
 const uploadMulter = multer({ dest: 'uploads/' });
 const bodyParser = require('body-parser');
-const { summarizeText } = require('./aiFeatures');
+const { summarizeText } = require('./routes/aiFeatures');
 const noteRouter = require('./routes/note');
 
 router.use(bodyParser.json());
