@@ -13,6 +13,8 @@ import auth from "./routes/auth.js";
 import community from "./routes/community.js";
 import searchCommunity from "./routes/search-community.js";
 import subcommunity from "./routes/subcommunity.js";
+import home from "./routes/home.js";
+import post from "./routes/post.js";
 
 const app = express(); // instantiate an Express object
 
@@ -40,6 +42,11 @@ app.use(community);
 
 app.use(searchCommunity);
 app.use(subcommunity);
+
+app.use(home);
+app.use(post);
+
+
 
 export default app;
 

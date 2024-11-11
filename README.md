@@ -28,7 +28,17 @@ Seraphim is a creative social platform designed to foster authentic self-express
 6. Go to a new tab in terminal where you should be at the front-end directory. Run `npx tailwindcss -i ./src/index.css -o ./src/output.css --watch` to view real-time changes in tailwind (styling) whenever the file is saved. 
 7. The front-end is all set to code and view by now. 
 
-**Note:** Instructions for testing will be added later on.
+### How to run the back-end of the project:
+1. Move to the back-end directory of the project. 
+2. Run `npm install` to install the dependencies listed in the `package.json` configuration file. 
+3. Run `npm start` to start up the server. Once it completes, the server should be running on port 8000 by default where the URL is [http://localhost:8000](http://localhost:8000). Since the command already calls `nodemon server`, there is no need to install `nodemon` to run it to view changes in the server whenever the code changes.
+
+### How to test the back-end with unit testing: 
+1. Move to the back-end directory of the project. 
+2. Make sure to install the mocha, chai, and supertest dependencies with `npm install --save-dev mocha chai supertest`. 
+3. Run `npm test` to run all of the tests and show their outcomes in the terminal. 
+
+**Note:** The supertest module is used for our back-end unit testing. 
 
 ## Team Members
 
