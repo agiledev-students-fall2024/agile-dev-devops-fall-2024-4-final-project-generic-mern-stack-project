@@ -13,11 +13,11 @@ const ActivitiesPage = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3002/locations/${locationId}`)
+      .get(`/locations/${locationId}`)
       .then((locationResponse) => {
         setLocationName(locationResponse.data.name);
   
-        return axios.get(`http://localhost:3002/activities/location/${locationId}`);
+        return axios.get(`/activities/location/${locationId}`);
       })
       .then((activitiesResponse) => {
         setActivities(activitiesResponse.data);
