@@ -49,15 +49,20 @@ function StoreList({
   );
 }
 
-export default function StoreSearchBar() {
+interface StoreSearchBarProps {
+
+  stores: Store[];
+}
+
+export default function StoreSearchBar({ stores: initialStores }: StoreSearchBarProps) {
   const [open, setOpen] = useState(false);
-  const [stores, setStores] = useState<Store[]>([]);
+  const [stores, setStores] = useState<Store[]>(initialStores);
   const [suggestedStores, setSuggestedStores] = useState<Store[]>([]);
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {  // <-- useEffect to fetch stores from backend
-    fetch("http://localhost:3001/stores")
+    fetch("http://localhost:3002/stores")
       .then((response) => response.json())
       .then((data) => setStores(data))
       .catch((error) => console.error("Error fetching stores:", error));

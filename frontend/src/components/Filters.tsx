@@ -23,7 +23,7 @@ export default function Filters({
   const [categoryFilters, setCategoryFilters] = useState<string[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:3001/filters")
+    fetch("http://localhost:3002/filters")
       .then((response) => response.json())
       .then((data) => {
         setBrandFilters(data.brands);
