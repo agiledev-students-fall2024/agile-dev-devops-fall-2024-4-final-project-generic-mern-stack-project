@@ -14,6 +14,7 @@ app.use(express.json());
 
 // routes
 app.use("/auth", authRoutes);
+app.use("/route", savedRoutes);
 app.use("/filters", filtersRoutes);
 app.use("/stores", storesRoutes);
 
