@@ -55,21 +55,30 @@ function Tasks() {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
-  const toggleStatus = (index) => {
-    const taskIndex = (currentPage - 1) * TASKS_PER_PAGE + index;
-    setTasks(tasks.map((task, i) => {
-      if (i === taskIndex) {
-        if (task.status === 'not_started') {
-          return { ...task, status: 'ongoing' };
-        } else if (task.status === 'ongoing') {
-          return { ...task, status: 'finished' };
-        } else {
-          return { ...task, status: 'not_started' };
-        }
-      }
-      return task;
-    }));
+  const updateTaskStatus = async (taskId, newStatus) => {
+    await fetch(`http://localhost:4000/tasks/${taskId}/status`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ status: newStatus }),
+    });
+    setTasks(prevTasks =>
+      prevTasks.map(task =>
+        task.id.$oid === taskId ? { ...task, status: newStatus } : task
+      )
+    );
   };
+
+  const toggleStatus = (task, index) => {
+    const newStatus = task.status === 'not_started'
+      ? 'ongoing'
+      : task.status === 'ongoing'
+      ? 'finished'
+      : 'not_started';
+    updateTaskStatus(task.id.$oid, newStatus);
+  };
+
 
   const getStatusIcon = (status) => {
     if (status === 'finished') return '✓';
@@ -131,11 +140,11 @@ function Tasks() {
                 type="checkbox"
                 checked={task.status === 'finished'}
                 readOnly
-                onClick={() => toggleStatus(index)}
+                onClick={() => toggleStatus(task,index)}
               />
               <span className="status-icon">{getStatusIcon(task.status)}</span>
               <span className="task-name">{task.name}</span>
-              {/* <button onClick={handleEdit(task.id)} className="edit-btn">Edit</button> */}
+              <button onClick={() => handleEdit(task.id)} className="edit-btn">Edit</button>
               {/* Comment for the edit task: because of the restriction of mock data now, 
               this function cannot fully achieved, so the way we connect it is not exactly true.
               the page itself can be seen from http://localhost:3000/EditTask. */}

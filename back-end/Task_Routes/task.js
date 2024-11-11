@@ -44,6 +44,22 @@ router.put('/tasks/:id', async (req, res) => {
   res.json(updatedTask);
 });
 
+router.put('/tasks/:id/status', async (req, res) => {
+  const { status } = req.body;
+  const taskId = req.params.id;
+
+  const tasks = await fetch('https://my.api.mockaroo.com/tasks?key=34c59640');
+  const taskList = await tasks.json();
+  const task = taskList.find(t => t.id.$oid === taskId);
+  if (task) {
+    task.status = status;
+    res.json(task);
+  } else {
+    res.status(404).json({ message: 'Task not found' });
+  }
+});
+
+
 router.delete('/tasks/:id', async (req, res) => {
   res.status(204).send();
 });
@@ -60,5 +76,10 @@ router.get('/tasks/recurring/:period', async (req, res) => {
   const recurringTasks = tasks.filter(task => task.recurring_period === req.params.period);
   res.json(recurringTasks);
 });
-
+router.get('/tasks/subjects', async (req, res) => {
+  const response = await fetch('https://my.api.mockaroo.com/tasks?key=34c59640');
+  const tasks = await response.json();
+  const subjects = [...new Set(tasks.map(task => task.subject))];
+  res.json(subjects);
+});
 module.exports = router;
