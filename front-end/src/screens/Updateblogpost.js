@@ -64,28 +64,154 @@
 
 
 
+// import '../styles/Updateblogpost.css';
+// import React, { useState, useEffect } from 'react';
+// import { useParams, Link } from 'react-router-dom';
+// import postData from '../fillerData/posts.json';
+// import userData from '../fillerData/users.json';
+
+// const UpdateBlogPost = () => {
+//   const { postId } = useParams(); // Extract the post ID from the URL
+//   const [post, setPost] = useState(null);
+//   const [author, setAuthor] = useState(null);
+
+//   useEffect(() => {
+//     // Find the post by ID
+//     const foundPost = postData.find((post) => post.id === parseInt(postId));
+//     setPost(foundPost);
+
+//     // Find the author of the post using author_id
+//     if (foundPost) {
+//       const foundAuthor = userData.find((user) => user.id === foundPost.author_id);
+//       setAuthor(foundAuthor);
+//     }
+//   }, [postId]);
+
+//   if (!post) {
+//     return <p>Post not found</p>;
+//   }
+
+//   return (
+//     <div className="update-blog-post-container">
+//       <header className="update-blog-post-header">
+//         <Link to={`/blogpostloggedin/${postId}`}>
+//           <svg
+//             xmlns="http://www.w3.org/2000/svg"
+//             width="32"
+//             height="32"
+//             fill="currentColor"
+//             className="bi bi-arrow-left-short"
+//             viewBox="0 0 16 16"
+//           >
+//             <path
+//               fillRule="evenodd"
+//               d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"
+//             />
+//           </svg>
+//         </Link>
+        
+//       </header>
+
+//       <form className="update-blog-post-form">
+//         <div className="form-group">
+//           <label htmlFor="postTitle">Title:</label>
+//           <input
+//             type="text"
+//             id="postTitle"
+//             value={post.title}
+//             onChange={(e) => setPost({ ...post, title: e.target.value })}
+//           />
+//         </div>
+
+//         <div className="form-group">
+//           <label htmlFor="postAuthor">Author:</label>
+//           <input
+//             type="text"
+//             id="postAuthor"
+//             value={author ? author.name : "Unknown Author"}
+//             disabled
+//           />
+//         </div>
+
+//         <div className="form-group">
+//           <label htmlFor="postContent">Content:</label>
+//           <textarea
+//             id="postContent"
+//             value={post.content}
+//             onChange={(e) => setPost({ ...post, content: e.target.value })}
+//           />
+//         </div>
+
+//         <div className="form-group">
+//           <label htmlFor="postDate">Date:</label>
+//           <input
+//             type="text"
+//             id="postDate"
+//             value={new Date(post.date).toLocaleDateString('en-US')}
+//             disabled
+//           />
+//         </div>
+
+//         <div className="form-group">
+//           <label htmlFor="postImageUrl">Image URL:</label>
+//           <input
+//             type="text"
+//             id="postImageUrl"
+//             value={post.imageUrl}
+//             onChange={(e) => setPost({ ...post, imageUrl: e.target.value })}
+//           />
+//         </div>
+
+//         <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">Save Changes</button>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default UpdateBlogPost;
+
+
+
+
+
+
+
 import '../styles/Updateblogpost.css';
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import postData from '../fillerData/posts.json';
-import userData from '../fillerData/users.json';
+import axios from 'axios'; // Import axios
 
 const UpdateBlogPost = () => {
   const { postId } = useParams(); // Extract the post ID from the URL
   const [post, setPost] = useState(null);
-  const [author, setAuthor] = useState(null);
 
   useEffect(() => {
-    // Find the post by ID
-    const foundPost = postData.find((post) => post.id === parseInt(postId));
-    setPost(foundPost);
-
-    // Find the author of the post using author_id
-    if (foundPost) {
-      const foundAuthor = userData.find((user) => user.id === foundPost.author_id);
-      setAuthor(foundAuthor);
-    }
+    // Fetch the post by ID from the backend
+    const fetchPost = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/api/posts/${postId}`);
+        setPost(response.data);
+      } catch (error) {
+        console.error('Error fetching post:', error);
+      }
+    };
+    fetchPost();
   }, [postId]);
+
+  const handleUpdateBlog = async () => {
+    try {
+      const updatedData = {
+        title: post.title,
+        content: post.content,
+        imageUrl: post.imageUrl
+      };
+
+      const response = await axios.put(`http://localhost:3000/api/posts/edit/${postId}`, updatedData);
+      console.log('Post updated successfully:', response.data);
+    } catch (error) {
+      console.error('Error updating post:', error);
+    }
+  };
 
   if (!post) {
     return <p>Post not found</p>;
@@ -109,10 +235,12 @@ const UpdateBlogPost = () => {
             />
           </svg>
         </Link>
-        
       </header>
 
-      <form className="update-blog-post-form">
+      <form className="update-blog-post-form" onSubmit={(e) => {
+        e.preventDefault();
+        handleUpdateBlog();
+      }}>
         <div className="form-group">
           <label htmlFor="postTitle">Title:</label>
           <input
@@ -124,31 +252,11 @@ const UpdateBlogPost = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="postAuthor">Author:</label>
-          <input
-            type="text"
-            id="postAuthor"
-            value={author ? author.name : "Unknown Author"}
-            disabled
-          />
-        </div>
-
-        <div className="form-group">
           <label htmlFor="postContent">Content:</label>
           <textarea
             id="postContent"
             value={post.content}
             onChange={(e) => setPost({ ...post, content: e.target.value })}
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="postDate">Date:</label>
-          <input
-            type="text"
-            id="postDate"
-            value={new Date(post.date).toLocaleDateString('en-US')}
-            disabled
           />
         </div>
 
