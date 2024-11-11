@@ -1,5 +1,5 @@
 import express from "express";
-import multer from "multer";
+// import multer from "multer";
 import axios from "axios";
 import morgan from "morgan";
 import cors from "cors";
@@ -12,6 +12,9 @@ import auth from "./routes/auth.js";
 import community from "./routes/community.js";
 import searchCommunity from "./routes/search-community.js";
 import subcommunity from "./routes/subcommunity.js";
+import home from "./routes/home.js";
+import post from "./routes/post.js";
+import multer from "./lib/multer.js";
 
 const app = express(); // instantiate an Express object
 
@@ -35,9 +38,12 @@ app.use(accessibility);
 
 app.use(auth);
 app.use(community);
+app.use(multer);
 
 app.use(searchCommunity);
 app.use(subcommunity);
 
-export default app;
+app.use(home);
+app.use(post);
 
+export default app;
