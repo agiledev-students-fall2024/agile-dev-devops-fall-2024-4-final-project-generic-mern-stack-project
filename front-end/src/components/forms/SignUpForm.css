@@ -62,7 +62,11 @@
 
 .signup-form .avatar-selection {
     display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
     gap: 10px;
+    max-width: 300px;
+    margin: 0 auto;
 }
 
 .signup-form .avatar-button {
