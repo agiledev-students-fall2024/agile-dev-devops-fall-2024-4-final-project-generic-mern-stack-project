@@ -5,6 +5,7 @@ const router = express.Router();
 router.get("/api/color-mode", async (req, res) => {
     // get user's current color-mode
     console.log('color mode')
+    res.status(200)
 });
 
 router.post("/api/color-mode", async (req, res) => {
@@ -21,6 +22,7 @@ router.post("/api/color-mode", async (req, res) => {
 router.get("/api/image-mode", async (req, res) => {
     // get user's current image mode
     console.log('image mode')
+    res.status(200)
 });
 
 router.post("/api/image-mode", async (req, res) => {
