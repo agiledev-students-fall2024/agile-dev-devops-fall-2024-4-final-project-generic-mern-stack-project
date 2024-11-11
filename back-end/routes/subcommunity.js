@@ -74,7 +74,15 @@ router.get("/api/community/:communityId", async (req, res) => {
         ]
         //searches for specific community based on id and sends that back 
         const subcommunity = data.find(community => community.id === Number(req.params.communityId))
-        res.json(subcommunity)
+        if (subcommunity){
+            res.status(200).json(subcommunity)
+        }
+        else{
+            res.status(404).json({
+                error: "subcommunity not found",
+                status: "failed to find subcommunity"
+            })
+        }
 
     } catch (err) {
         console.error(err)
