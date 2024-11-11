@@ -24,6 +24,7 @@ import Post from "./pages/Post";
 import VerifyEmail from "./pages/VerifyEmail";
 import LandingPage from "./pages/LandingPage";
 import EditProfile from "./pages/EditProfile";
+import CreateCommunity from "./pages/CreateCommunity";
 import { Toaster } from "react-hot-toast";
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
           <Routes>
             <Route path="/landing" element={<LandingPage />} />
             <Route path="/" element={<Home />} />
+            <Route path="/create-community" element={<CreateCommunity />} />
             <Route path="/community" element={<Community />} />
             <Route
               path="/community/:communityId"

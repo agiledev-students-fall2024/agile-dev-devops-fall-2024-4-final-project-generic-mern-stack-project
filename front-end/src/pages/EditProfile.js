@@ -40,7 +40,7 @@ function EditProfile() {
       formData.append("file", selectedFile);
 
       axiosInstance
-        .post("/upload-profile-pic", formData)
+        .post("/upload-pic", formData)
         .then((response) => {
           toast.success("Profile picture uploaded successfully!");
           setUser((prevUser) => ({
@@ -128,6 +128,7 @@ function EditProfile() {
   function handleSaveChanges(e) {
     e.preventDefault();
     console.log("Save changes: ", user);
+    toast.success("Profile updated successfully!");
     navigate("/profile");
   }
 

@@ -25,10 +25,10 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.post("/api/upload-profile-pic", upload.single("file"), (req, res) => {
+router.post("/api/upload-pic", upload.single("file"), (req, res) => {
   const data = {
     status: "all good",
-    message: "profile picture is uploaded!!!",
+    message: "picture is uploaded!!!",
     file: req.file,
   };
   res.json(data);
