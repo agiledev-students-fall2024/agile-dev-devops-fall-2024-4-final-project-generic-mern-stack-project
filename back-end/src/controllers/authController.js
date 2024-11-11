@@ -2,28 +2,8 @@
  * @module authController
  */
 const User = require('../models/User');
-
-const fs = require('fs');
-const path = require('path');
-const usersPath = path.join(__dirname, '../data/users.json');
-
-/**
- * Reads users from the JSON file.
- * @returns {Promise<Object[]>} - A promise that resolves to the array of users.
- */
-const readUsers = () => {
-  const usersData = fs.readFileSync(usersPath);
-  return JSON.parse(usersData);
-};
-
-/**
- * Writes users to the JSON file.
- * @param {Object[]} users - An array of user objects to be saved.
- * @returns {Promise<void>} - A promise that resolves when the write is complete.
- */
-const writeUsers = (users) => {
-  fs.writeFileSync(usersPath, JSON.stringify(users, null, 2));
-};
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 /**
  * Signs up a new user.
@@ -33,27 +13,35 @@ const writeUsers = (users) => {
  */
 const signup = async (req, res) => {
   const { email, password } = req.body;
-  const users = readUsers();
 
-  // Create a new User instance
-  const newUser = new User(email, password);
-
-   // Validate user data
-  const validationErrors = User.validate(newUser);
+  // Validate user input using the validateUser function
+  const validationErrors = validateUser({ email, password });
   if (validationErrors.length > 0) {
     return res.status(400).json({ errors: validationErrors });
   }
 
   // Check if user already exists
-  if (users.some(u => u.email === newUser.email)) {
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
     return res.status(409).json({ message: 'User already exists' });
   }
 
-  // Save the new user
-  users.push(newUser);
-  writeUsers(users);
-  
-  res.status(201).json({ message: 'User registered successfully' });
+  // Hash the password before saving
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  // Create a new User document in MongoDB
+  const newUser = new User({
+    email,
+    password: hashedPassword,
+  });
+
+  try {
+    await newUser.save();
+    res.status(201).json({ message: 'User registered successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 };
 
 
@@ -64,19 +52,37 @@ const signup = async (req, res) => {
  * @param {Object} res - Response object for sending the response.
  */
 const login = async (req, res) => {
-  const { email, password } = req.body
-  const users = readUsers();
+  const { email, password } = req.body;
 
-  //Validate Input 
-  const user = users.find(u => u.email === email);
-  if (!user || user.password !== password) {
-    return res.status(401).json({ message: 'Invalid credentials' });
-  }
 
-  res.json({ message: 'Login successful', user });
+ // Validate user input using the validateUser function
+ const validationErrors = validateUser({ email, password });
+ if (validationErrors.length > 0) {
+   return res.status(400).json({ errors: validationErrors });
+ }
+
+ // Find user by email
+ const user = await User.findOne({ email });
+ if (!user) {
+   return res.status(401).json({ message: 'Invalid credentials' });
+ }
+
+ // Compare the provided password with the stored hashed password
+ const isPasswordValid = await bcrypt.compare(password, user.password);
+ if (!isPasswordValid) {
+   return res.status(401).json({ message: 'Invalid credentials' });
+ }
+
+ // Generate a JWT token for the user (optional but recommended for API authentication)
+ const token = jwt.sign({ userId: user._id }, 'your_jwt_secret', { expiresIn: '1h' });
+
+ res.json({
+   message: 'Login successful',
+   user: { email: user.email, token }, // Send back the user details and token
+ });
 };
 
 module.exports = {
-  login,
   signup,
+  login,
 };
