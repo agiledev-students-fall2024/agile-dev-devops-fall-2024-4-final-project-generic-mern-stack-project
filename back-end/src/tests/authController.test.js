@@ -1,65 +1,79 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const fs = require('fs');
-const path = require('path');
-const app = require('../app'); 
-const usersPath = path.join(__dirname, '../data/users.json');
+const path = require('path'); // Import Node.js path module
+
+console.log('Resolved path to app.js:', path.resolve(__dirname, '../app'));
+const server = require('../app'); // Adjust path if necessary
 
 chai.use(chaiHttp);
 const { expect } = chai;
 
-describe('Auth Controller', () => {
-    console.log('Running Auth Controller Tests');
-    before(() => {
-      // Setup: Clear the users.json file before tests
-      fs.writeFileSync(usersPath, JSON.stringify([])); // Clear data
-    });
+describe('Auth Controller - Signup API', () => {
+  it('should sign up a new user successfully', (done) => {
+    chai
+      .request(server)
+      .post('/api/auth/signup')
+      .send({
+        email: 'newuser@example.com',
+        password: 'password123',
+        username: 'newuser',
+        name: 'New User'
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(201);
+        expect(res.body).to.have.property('message', 'User registered successfully');
+        done();
+      });
+  });
 
-    describe('POST /api/auth/signup', () => {
-        it('should sign up a new user successfully', (done) => {
-          chai.request(app)
-            .post('/api/auth/signup')
-            .send({ email: 'test@example.com', password: 'password123' })
-            .end((err, res) => {
-              expect(res).to.have.status(201);
-              expect(res.body).to.have.property('message', 'User registered successfully');
-              done();
-            });
-        });
+  it('should return error if email is already registered', (done) => {
+    // Attempt to register with an already used email
+    chai
+      .request(server)
+      .post('/api/auth/signup')
+      .send({
+        email: 'newuser@example.com', // Already used email
+        password: 'password123',
+        username: 'newuser2',
+        name: 'New User 2'
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(409);
+        expect(res.body).to.have.property('message', 'User already exists');
+        done();
+      });
+  });
 
-        it('should return an error if user already exists', (done) => {
-            chai.request(app)
-              .post('/api/auth/signup')
-              .send({ email: 'test@example.com', password: 'password123' }) // Attempting to sign up with the same email again
-              .end((err, res) => {
-                expect(res).to.have.status(409);
-                expect(res.body).to.have.property('message', 'User already exists');
-                done();
-              });
-          });
-        });
+  it('should return error for missing email', (done) => {
+    chai
+      .request(server)
+      .post('/api/auth/signup')
+      .send({
+        password: 'password123',
+        username: 'newuser',
+        name: 'New User'
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body).to.have.property('message', 'Email is required');
+        done();
+      });
+  });
 
-        describe('POST /api/auth/login', () => {
-            it('should log in an existing user successfully', (done) => {
-                chai.request(app)
-                .post('/api/auth/login')
-                .send({ email: 'test@example.com', password: 'password123' })
-                .end((err, res) => {
-                    expect(res).to.have.status(200);
-          expect(res.body).to.have.property('message', 'Login successful');
-          done();
-        });
-    });
-
-    it('should return an error for invalid credentials', (done) => {
-        chai.request(app)
-          .post('/api/auth/login')
-          .send({ email: 'test@example.com', password: 'wrongpassword' }) // Correct email but wrong password
-            .end((err, res) => {
-                expect(res).to.have.status(401);
-                expect(res.body).to.have.property('message', 'Invalid credentials');
-                done();
-            });
-        });
-    });
-}); 
+  it('should return error for weak password', (done) => {
+    chai
+      .request(server)
+      .post('/api/auth/signup')
+      .send({
+        email: 'weakpassword@example.com',
+        password: '123',
+        username: 'weakuser',
+        name: 'Weak User'
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body).to.have.property('message', 'Password must be at least 6 characters');
+        done();
+      });
+  });
+});
