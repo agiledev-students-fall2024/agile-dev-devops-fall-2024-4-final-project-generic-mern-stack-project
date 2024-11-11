@@ -40,10 +40,11 @@ router.post('/', (req, res) => {
       ...req.body // right now, we are getting incomplete forms so the object data is also incomplete
     };
   
-    activities.push(newActivity);
-    fs.writeFileSync('./mock-data/activities.json', JSON.stringify(activities, null, 2), 'utf-8');
+    console.log(newActivity);
+    // activities.push(newActivity);
+    // fs.writeFileSync('./mock-data/activities.json', JSON.stringify(activities, null, 2), 'utf-8');
     res.status(201).json(newActivity);
-  });  
+  });
 
 // We don't have an edit functionality yet
 // TODO: Update activity information (PUT) - Modify the specified activity data and respond with the updated activity information
