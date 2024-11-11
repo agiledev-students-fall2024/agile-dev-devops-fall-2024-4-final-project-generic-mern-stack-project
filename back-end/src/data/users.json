@@ -1,6 +1,28 @@
-[
-  {
-    "email": "test@example.com",
-    "password": "password123"
-  }
-]
+{
+  "users": [
+    {
+      "id": "1",
+      "email": "johndoe@test.com",
+      "password": "hashed_password1",
+      "name": "John Doe"
+    },
+    {
+      "id": "2",
+      "email": "janesmith@test.com",
+      "password": "hashed_password2",
+      "name": "Jane Smith"
+    },
+    {
+      "id": "3",
+      "email": "bobjohnson@test.com",
+      "password": "hashed_password3",
+      "name": "Bob Johnson"
+    },
+    {
+      "id": "4",
+      "email": "alicewilliams@test.com",
+      "password": "hashed_password4",
+      "name": "Alice Williams"
+    }
+  ]
+}
