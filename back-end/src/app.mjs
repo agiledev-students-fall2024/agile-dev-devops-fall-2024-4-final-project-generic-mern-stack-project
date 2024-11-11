@@ -54,10 +54,6 @@ app.use(morgan("dev"));
 //   }
 // }));
 
-app.get("/", (req, res) => {
-  res.send("Hi");
-});
-
 //APIs for backend
 
 app.post("/api/login", async (req, res) => {
@@ -132,7 +128,7 @@ app.get('/api/record-activity', async (req, res)=>{
 
 app.post(
   "/api/upload-recipe-image",
-  upload.array("my_files", 1),
+  upload.array("my_files", 2),
   (req, res, next) => {
     if (!req.files || req.files.length === 0) {
       // No files uploaded
@@ -218,9 +214,7 @@ export const startServer = () => {
 };
 
 
-//need to comment out if statement to start backend
-if (import.meta.url === fileURLToPath(import.meta.url)) {
-  startServer();
-}
+startServer();
+
 
 export default app;

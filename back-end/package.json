@@ -4,7 +4,7 @@
   "main": "src/app.mjs",
   "type": "module",
   "scripts": {
-    "test": "c8 mocha 'tests/**/*.mjs' 'src/**/*.mjs'",
+    "test": "c8 mocha 'tests/**/*.mjs' 'src/**/*.mjs' --exit",
     "start": "node src/app.mjs",
     "dev": "nodemon src/app.mjs"
   },
@@ -20,6 +20,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "express-session": "^1.18.1",
+    "mocha": "^10.8.2",
     "mongo-sanitize": "^1.1.0",
     "mongodb": "^6.10.0",
     "mongoose": "^8.8.0",
