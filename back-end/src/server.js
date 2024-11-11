@@ -5,6 +5,8 @@
  * @description Initializes and starts the web server.
  */
 
+require('dotenv').config();  // Load environment variables from .env
+
 const server = require('./app'); // load the web server
 
 const port = process.env.PORT || 3001; // the port to listen to for incoming requests
