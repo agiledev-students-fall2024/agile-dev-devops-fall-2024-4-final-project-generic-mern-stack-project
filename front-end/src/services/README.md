@@ -1,7 +1,7 @@
 ## Firebase Usage
 
 ### how do I get it running locally
-You need a `.env` file in the `src` folder with the following content:
+You need a `.env` file in the `frontend` folder with the following content:
 
 ```bash
 VITE_API_URL=http://localhost:8080
