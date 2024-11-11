@@ -3,11 +3,21 @@ import { useParams, Link } from 'react-router-dom';
 import './DailyView.css';
 
 const DailyView = () => {
-    const { day } = useParams(); // Get the day from the URL
+    const { month, day, year } = useParams(); // Get the day from the URL
     const [tasks, setTasks] = useState([]);
     //uses params to search for object ids but nothing is stored in the database yet
     //mockaroo api also randomizes data, including ids, so populating the daily view accurately
     //based on task id is impossible without a database
+
+    useEffect(() => {
+        const fetchTasks = async () => {
+            const response = await fetch(`http://localhost:4000/calendar/${month}/${day}/${year}`);
+            //const response = await fetch('http://localhost:4000/');
+            const data = await response.json();
+            setTasks(data);
+        };
+        fetchTasks();
+    }, [])
 
     const handleStatusChange = (taskId) => {
         setTasks(tasks.map(task =>

@@ -39,7 +39,7 @@ function App() {
             <Route path="/Homepage" element={<Homepage />} />
             {/* Rena's part : monthly Calendar */}
             <Route path="/Calendar_monthly" element={<Calendar_monthly/>} />
-            <Route path="/day/:day" element={<DailyView />} /> 
+            <Route path=":month/:day/:year" element={<DailyView />} /> 
           </Routes>
         </BrowserRouter>
       </div>
