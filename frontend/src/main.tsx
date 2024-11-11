@@ -28,7 +28,7 @@ const router = createBrowserRouter(
         <Route path="/signup" element={<SignupForm />} />
         <Route path="/route/:routeId?" element={<RouteDisplayPage />} />
       </Route>
-      <Route element={<ProtectedRouteWrapper requiresAuth={true} />}>
+      <Route element={<ProtectedRouteWrapper requiresAuth={false} />}>
         <Route index path="/" element={<Home />} />
         <Route index path="/suggest" element={<SuggestPage />} />
         <Route path="/help" element={<HelpPage />} />
