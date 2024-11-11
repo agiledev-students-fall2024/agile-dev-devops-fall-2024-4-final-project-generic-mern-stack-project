@@ -48,8 +48,23 @@ const verifyToken = (req, res, next) => {
     });
 };
 
+// Get all saved routes for a user, given the userId
+router.get("/saved", verifyToken, (req, res) => {
+    try {
+        const userRoutes = savedRoutes.filter(route => route.userId === req.user.userId)
+
+        if (!userRoutes.length) {
+            return res.status(404).json({ message: "No route found for this user!"})
+        }
+
+        res.json(userRoutes)
+    } catch (error) {
+        res.status(500).json({message: "Error fetching user routes", error})
+    }
+})
+
 // Get specific route by routeId
-router.get("/route/:routeId", verifyToken, (req, res) => {
+router.get("/:routeId", verifyToken, (req, res) => {
     try {
         const { routeId } = req.params
         const route = savedRoutes.find(route => route._id === routeId)
@@ -61,21 +76,6 @@ router.get("/route/:routeId", verifyToken, (req, res) => {
         res.json(route)
     } catch (error) {
         res.status(500).json({ message: "Error fetching route", error})
-    }
-})
-
-// Get all saved routes for a user, given the userId
-router.get("/saved-routes", verifyToken, (req, res) => {
-    try {
-        const userRoutes = savedRoutes.filter(route => route.userId === req.user.userId)
-
-        if (!userRoutes.length) {
-            return res.status(404).json({ message: "No route found for this user!"})
-        }
-
-        res.json(userRoutes)
-    } catch (error) {
-        res.status(500).json({message: "Error fetching user routes", error})
     }
 })
 
