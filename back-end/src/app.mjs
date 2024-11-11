@@ -167,7 +167,18 @@ app.get('/api/record-activity', async (req, res)=>{
   }
 });
 
-
+app.get("/api/progress-tracker", async(req, res) => {
+    try {
+        console.log("werty")
+        const {data} = await axios.get('https://my.api.mockaroo.com/users.json?key=66da8e80');
+        res.json(data);
+        console.log("qwerty")
+    }
+    catch(error) {
+        console.error("Error fetching data from API:", error.message);
+        res.status(500).json({error: "Failed to fetch progress data"});
+    }
+});
 
 app.get("/api/challenges", async (req, res) => {
   try {
