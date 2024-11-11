@@ -20,10 +20,10 @@ const ProfileHeader = ({
   return (
     <div className="flex flex-col justify-center items-center border-none rounded-xl p-4 w-full md:w-4/5 m-auto bg-lavender_blush-900 shadow-md shadow-[#fedae7] min-h-[300px]">
       <div className="w-full flex flex-col md:flex-row justify-evenly items-center">
-        {profileUser.profilePic && (
+        {profileUser.profile_pic && (
           <img
             className="w-[35%] md:w-[30%] border-none rounded-full shadow-sm shadow-[#fedae7] bg-ebony-800"
-            src={profileUser.profilePic}
+            src={profileUser.profile_pic}
             alt="Profile"
           />
         )}
@@ -31,8 +31,8 @@ const ProfileHeader = ({
           {profileLoggedIn ? (
             <div className="w-full flex justify-between items-center">
               <p className="flex gap-2 text-xs sm:text-sm md:text-md pl-2">
-                <span className="font-bold text-ebony">{user.name}</span>
-                <span className="text-rose opacity-75">@{user.userName}</span>
+                <span className="font-bold text-ebony">{user.display_name}</span>
+                <span className="text-rose opacity-75">@{user.username}</span>
               </p>
               <div>
                 <Link to="/settings">
@@ -50,8 +50,8 @@ const ProfileHeader = ({
           ) : (
             <div className="w-full flex justify-between items-center">
               <p className="flex gap-2 text-xs sm:text-sm md:text-md pl-2">
-                <span className="font-bold text-ebony">{user.name}</span>
-                <span className="text-rose opacity-75">@{user.userName}</span>
+                <span className="font-bold text-ebony">{user.display_name}</span>
+                <span className="text-rose opacity-75">@{user.username}</span>
               </p>
               <button
                 className={`py-1 px-2 mb-1 border rounded-md text-xs md:text-sm ${

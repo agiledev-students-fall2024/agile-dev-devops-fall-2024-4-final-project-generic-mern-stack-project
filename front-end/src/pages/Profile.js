@@ -20,23 +20,15 @@ const Profile = (props) => {
     const [onBlogs, setOnBlogs] = useState(false);
 
     useEffect(() => {
-        Promise.all([
-            axios("http://localhost:5000/
-        ])
-        .then(([userResponse, postsResponse, communityResponse]) => {
-            const userData = userResponse.data[0]; 
-
-            const updatedPosts = postsResponse.data.map(post => ({
-                ...post,
-                name: userData.name,           
-                userName: userData.userName,   
-                profilePic: userData.profilePic 
-            }));
-            setUser({ ...userData, posts: updatedPosts, communities: communityResponse.data, signedIn: true });
-        })
-        .catch(err => {
-            console.error("Error fetching data:", err);
-        });
+        // `${process.env.REACT_APP_SERVER_HOSTNAME}/api/profile`
+        axios("http://localhost:8000/api/profile")
+            .then(response => {
+                setUser(response.data)
+            })
+            .catch(err => {
+                console.log(`Error fetching data.`)
+                console.error(err)
+            })
     }, []);
 
     const handleFollow = () => {
@@ -69,15 +61,21 @@ const Profile = (props) => {
             />
             {onCommunities && (
                 <section className="flex flex-col justify-center w-[100%] sm:w-[95%] gap-0">
-                    {user.communities.map(item => (
-                        <div key={item.id}>
-                            <TitleAndDescriptionBox
-                                link={`/community/${item.id}`}
-                                title={item.name}
-                                description={item.description}
-                            />
+                    {user.communities.length > 0 ? (
+                        user.communities.map(item => (
+                            <div key={item.id}>
+                                <TitleAndDescriptionBox
+                                    link={`/community/${item.id}`}
+                                    title={item.name}
+                                    description={item.description}
+                                />
+                            </div>
+                        ))
+                    ) : (
+                        <div className="p-4 text-center border border-dashed border-ebony-500 bg-rose-50 rounded-md">
+                            <p className="text-ebony font-semibold">Explore some new communities to join!</p>
                         </div>
-                    ))}
+                    )}
                 </section>
             )}
             {onBlogs && (
