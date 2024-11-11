@@ -52,7 +52,7 @@ const Calendar_monthly = () => {
                                 <div className="day" key={dayIndex}>
                                     {/* Day number with Link */}
                                     {day ? (
-                                        <Link to={`/day/${day}`} className="day-link">
+                                        <Link to={`/${month}/${day}/${year}`} className="day-link">
                                             {day}
                                         </Link>
                                     ) : ' '}
