@@ -29,4 +29,26 @@ Visit the following link to see the requirements you must follow to contribute t
 
 ## Building & Testing
 
-Once the project reaches the appropriate stage, this section will be updated with detailed instructions for building and testing the application.
+### Clone Repo
+Start by cloning the project repository to your local machine:
+`git clone https://github.com/agiledev-students-fall2024/4-final-project-trip-tease.git`
+
+### How to Run the Application (Frontend & Backend Integrated Together)
+
+To run the application locally, start by setting up both the backend and frontend. First, navigate to the `backend` directory, install the dependencies by running `npm install` (only required once), and then start the backend server using `npm start`. This will launch the backend server on port 3002. 
+
+Next, move to the `frontend` directory, install its dependencies by running `npm install`, and start the frontend server with `npm start`. This will launch the frontend server on port 3000. 
+
+Once both servers are running, you can access the application by visiting `http://localhost:3000` for the frontend and `http://localhost:3002` for the backend.
+
+### Important Notes
+
+- The frontend is configured to proxy API requests to the backend server running on port 3002. This proxy configuration, specified in the `frontend/package.json` file, routes requests from the frontend at `http://localhost:3000` to the backend on `http://localhost:3002`. This setup helps handle API requests seamlessly without requiring additional CORS configurations.
+
+- Ensure that the `backend` directory contains a `.env` with environment variable `PORT=3002`
+
+### Testing
+
+Instructions for testing will be provided once the testing framework setup is complete.
+
+
