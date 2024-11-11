@@ -29,8 +29,32 @@ function EditProfile() {
     password: currentUser.password,
     email: currentUser.email,
   });
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const navigate = useNavigate();
+
+  // UseEffect for handling file upload
+  useEffect(() => {
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+
+      axiosInstance
+        .post("/upload-profile-pic", formData)
+        .then((response) => {
+          toast.success("Profile picture uploaded successfully!");
+          setUser((prevUser) => ({
+            ...prevUser,
+            profilePic: `${process.env.REACT_APP_SERVER_HOSTNAME}/${response.data.file.path}`,
+          }));
+          console.log(response.data.file.path);
+        })
+        .catch((error) => {
+          console.error("Upload error:", error);
+          toast.error("Failed to upload profile picture.");
+        });
+    }
+  }, [selectedFile]); // Dependency array includes selectedFile only
 
   function handleNameChange(e) {
     setUser((prevUser) => ({
@@ -51,44 +75,50 @@ function EditProfile() {
     }));
   }
   function handleProfilePicInput(e) {
-    const file = e.target.files[0]; // Get the file from input
+    const file = e.target.files[0];
     if (file) {
-      const formData = new FormData();
-      formData.append("file", file);
-
-      axiosInstance
-        .post("/upload-profile-pic", formData)
-        .then((response) => {
-          console.log(response.data.file);
-          console.log(response);
-          toast.success("Profile picture uploaded successfully!");
-          // Optionally update user state with new image URL/path
-          setUser((prevUser) => ({
-            ...prevUser,
-            profilePic: response.data.file.path, // Assuming this is how you access the path
-          }));
-        })
-        .catch((error) => {
-          console.log(error);
-          toast.error("Failed to upload profile picture.");
-        });
+      setSelectedFile(file); // Update selectedFile state
     }
   }
-  function handleProfilePicChange(e) {
-    const formData = new FormData();
-    formData.append("file", user.profilePic);
-    axiosInstance
-      .post("/upload-profile-pic", user.profilePic)
-      .then((response) => {
-        console.log(response);
-        toast.success("Profile picture uploaded successfully!");
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error("Failed to upload profile picture.");
-      });
-    console.log(user);
-  }
+  // function handleProfilePicInput(e) {
+  //   const file = e.target.files[0]; // Get the file from input
+  //   if (file) {
+  //     const formData = new FormData();
+  //     formData.append("file", file);
+
+  //     axiosInstance
+  //       .post("/upload-profile-pic", formData)
+  //       .then((response) => {
+  //         console.log(response.data.file);
+  //         console.log(response);
+  //         toast.success("Profile picture uploaded successfully!");
+  //         // Optionally update user state with new image URL/path
+  //         setUser((prevUser) => ({
+  //           ...prevUser,
+  //           profilePic: response.data.file.path, // Assuming this is how you access the path
+  //         }));
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //         toast.error("Failed to upload profile picture.");
+  //       });
+  //   }
+  // }
+  // function handleProfilePicChange(e) {
+  //   const formData = new FormData();
+  //   formData.append("file", user.profilePic);
+  //   axiosInstance
+  //     .post("/upload-profile-pic", user.profilePic)
+  //     .then((response) => {
+  //       console.log(response);
+  //       toast.success("Profile picture uploaded successfully!");
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       toast.error("Failed to upload profile picture.");
+  //     });
+  //   console.log(user);
+  // }
   function handleEmailChange(e) {
     setUser((prevUser) => ({
       ...prevUser,
@@ -115,14 +145,15 @@ function EditProfile() {
             src={user.profilePic}
             alt="profile pic"
           />
-          <input type="file" onChange={handleProfilePicInput}></input>
-          <button
+
+          {/* <button
             className="text-sm font-semibold mt-2 w-[60%] p-1 bg-ebony border-ebony rounded-lg text-rose-700 hover:bg-rose-700 hover:text-ebony hover:border-rose-700 "
-            onClick={handleProfilePicChange}
+            onClick={handleProfilePicInput}
           >
             select image
-          </button>
+          </button> */}
         </h2>
+        <input type="file" onChange={handleProfilePicInput}></input>
         <div className="w-[80%] flex flex-col gap-4">
           {/* <InputField
             inputfieldName="Profile Picture"

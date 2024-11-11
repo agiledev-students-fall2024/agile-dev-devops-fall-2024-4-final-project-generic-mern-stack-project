@@ -59,7 +59,7 @@ router.get("/api/community", async (req, res) => {
                 description: "A group focused on providing mentorship, leadership training, and educational resources for young people to build their future and make an impact in their community. We offer internships, skill-building workshops, and opportunities to connect with role models in various fields."
             }   
         ]
-        res.json(data)
+        res.status(200).json(data)
         
     } catch (err) {
         console.error(err)

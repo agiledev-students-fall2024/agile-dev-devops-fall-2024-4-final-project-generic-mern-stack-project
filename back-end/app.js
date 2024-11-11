@@ -26,7 +26,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // make 'public' directory publicly readable with static content
-app.use("/static", express.static("public"));
+app.use("/public", express.static("public"));
 
 // adding CORS middleware
 app.use(cors());
