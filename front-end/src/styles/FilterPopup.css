@@ -1,3 +1,4 @@
+/* src/styles/FilterPopup.css */
 
 .modal-overlay {
   position: fixed;
@@ -50,16 +51,14 @@
   background-color: #f0f0f0;
 }
 
-.checkbox-group {
-  margin-top: 16px;
-  max-height: 300px;
-  overflow-y: auto;
-  color: #000;;
+.loading {
+  margin-top: 8px;
+  color: #555;
 }
 
-.checkbox-label {
-  display: block;
-  margin-bottom: 8px;
+.no-results {
+  margin-top: 8px;
+  color: #555;
 }
 
 .dialog-actions {
