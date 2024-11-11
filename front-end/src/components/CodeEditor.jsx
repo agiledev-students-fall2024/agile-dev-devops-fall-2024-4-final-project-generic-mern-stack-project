@@ -1,12 +1,66 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Editor from '@monaco-editor/react';
 import { useParams } from 'react-router-dom';
 
 const CodeEditor = () => {
-    const { id: meetingId } = useParams(); // Add this to get the meeting ID from URL
+    const { id: meetingId } = useParams();
     const [language, setLanguage] = useState('javascript');
     const [code, setCode] = useState('// Welcome!');
     const [output, setOutput] = useState('');
+    const editorRef = useRef(null);
+    const eventSourceRef = useRef(null);
+
+    useEffect(() => {
+        // Initial code fetch
+        const fetchCodeHistory = async () => {
+            try {
+                const response = await fetch(`http://localhost:8080/code/${meetingId}`);
+                const history = await response.json();
+                if (history.length > 0) {
+                    const lastUpdate = history[history.length - 1];
+                    setCode(lastUpdate.data.code);
+                    setLanguage(lastUpdate.data.language);
+                }
+            } catch (error) {
+                console.error('Error fetching code history:', error);
+            }
+        };
+
+        // Set up SSE connection
+        const setupSSE = () => {
+            const eventSource = new EventSource(`http://localhost:8080/code/${meetingId}/stream`);
+            
+            eventSource.onmessage = (event) => {
+                try {
+                    const data = JSON.parse(event.data);
+                    if (data.service === 'code') {
+                        setCode(data.data.code);
+                        setLanguage(data.data.language);
+                    }
+                } catch (error) {
+                    console.error('Error processing SSE message:', error);
+                }
+            };
+
+            eventSource.onerror = (error) => {
+                console.error('SSE Error:', error);
+                eventSource.close();
+            };
+
+            // Store the eventSource in ref for cleanup
+            eventSourceRef.current = eventSource;
+        };
+
+        fetchCodeHistory();
+        setupSSE();
+
+        // Cleanup function
+        return () => {
+            if (eventSourceRef.current) {
+                eventSourceRef.current.close();
+            }
+        };
+    }, [meetingId]);
 
     const sendCodeUpdate = async (newCode) => {
         try {
@@ -25,32 +79,27 @@ const CodeEditor = () => {
         }
     };
 
-    const handleCodeChange = (newCode) => {
-        setCode(newCode);
-        sendCodeUpdate(newCode);
+    // Handle editor mount
+    const handleEditorDidMount = (editor) => {
+        editorRef.current = editor;
     };
 
-    useEffect(() => {
-        const fetchCodeHistory = async () => {
-            try {
-                const response = await fetch(`http://localhost:8080/code/${meetingId}`);
-                const history = await response.json();
-                if (history.length > 0) {
-                    // Get the most recent code update
-                    const lastUpdate = history[history.length - 1];
-                    setCode(lastUpdate.data.code);
-                    setLanguage(lastUpdate.data.language);
-                }
-            } catch (error) {
-                console.error('Error fetching code history:', error);
-            }
-        };
+    // Debounce code updates
+    const debouncedCodeUpdate = (newCode) => {
+        if (window.codeUpdateTimeout) {
+            clearTimeout(window.codeUpdateTimeout);
+        }
+        window.codeUpdateTimeout = setTimeout(() => {
+            sendCodeUpdate(newCode);
+        }, 500);
+    };
 
-        fetchCodeHistory();
-    }, [meetingId]);
+    const handleCodeChange = (newCode) => {
+        setCode(newCode);
+        debouncedCodeUpdate(newCode);
+    };
 
     const runCode = () => {
-        // run code locally for now
         let output = '';
         const originalLog = console.log;
         console.log = (...args) => {
@@ -76,6 +125,9 @@ const CodeEditor = () => {
                     className="bg-gray-700 text-white p-2 rounded"
                 >
                     <option value="javascript">JavaScript</option>
+                    <option value="typescript">TypeScript</option>
+                    <option value="python">Python</option>
+                    <option value="java">Java</option>
                 </select>
                 <button
                     onClick={runCode}
@@ -89,6 +141,7 @@ const CodeEditor = () => {
                 language={language}
                 value={code}
                 onChange={handleCodeChange}
+                onMount={handleEditorDidMount}
                 theme="vs-dark"
                 options={{
                     minimap: { enabled: false },

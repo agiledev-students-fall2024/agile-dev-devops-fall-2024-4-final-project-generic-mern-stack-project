@@ -13,15 +13,39 @@ const firebaseConfig = {
     measurementId: process.env.FIREBASE_MEASUREMENT_ID
 };
 
+// Initialize Firebase immediately
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+console.log('Initializing Firebase with config:', {
+    projectId: firebaseConfig.projectId,
+    authDomain: firebaseConfig.authDomain
+});
+
 const codeService = {
-    // Send code updates to Firebase
+    // Make db accessible
+    db,
+
+    async testConnection() {
+        try {
+            const testRef = collection(db, 'test_connection');
+            const testDoc = await addDoc(testRef, {
+                test: 'Connection test',
+                timestamp: Date.now()
+            });
+            console.log('Test document written with ID:', testDoc.id);
+            return true;
+        } catch (error) {
+            console.error('Connection test failed:', error);
+            return false;
+        }
+    },
+
     async sendCodeUpdate(meetingId, code, language, timestamp) {
         try {
+            console.log(`Sending code update for meeting ${meetingId}`);
             const codeRef = collection(db, 'meetings', meetingId, 'messages');
-            await addDoc(codeRef, {
+            const docRef = await addDoc(codeRef, {
                 service: 'code',
                 data: {
                     code,
@@ -29,6 +53,7 @@ const codeService = {
                     timestamp
                 }
             });
+            console.log('Code update sent successfully, doc ID:', docRef.id);
             return true;
         } catch (error) {
             console.error('Error sending code update:', error);
@@ -36,9 +61,9 @@ const codeService = {
         }
     },
 
-    // Get all code updates for a meeting
     async getCodeHistory(meetingId) {
         try {
+            console.log(`Getting code history for meeting ${meetingId}`);
             const codeRef = collection(db, 'meetings', meetingId, 'messages');
             const q = query(codeRef, orderBy('timestamp'));
             
@@ -50,6 +75,7 @@ const codeService = {
                             updates.push(doc.data());
                         }
                     });
+                    console.log(`Retrieved ${updates.length} code updates`);
                     resolve(updates);
                 }, reject);
             });

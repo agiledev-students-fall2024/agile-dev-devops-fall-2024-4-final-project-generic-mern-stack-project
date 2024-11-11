@@ -11,15 +11,6 @@ const JoinCreateMeetingPage = () => {
     navigate('/login');
   };
 
-  const generateMeetingId = () => {
-    const characters = '0123456789';
-    let result = '';
-    for (let i = 0; i < 10; i++) {
-      result += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    return result;
-  };
-
   const handleCreateMeeting = async () => {
     try {
         const response = await fetch('http://localhost:8080/meeting', {
