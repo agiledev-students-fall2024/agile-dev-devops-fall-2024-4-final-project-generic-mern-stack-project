@@ -13,20 +13,21 @@ const ActivitiesPage = () => {
 
   useEffect(() => {
     axios
-      .get(`https://mock-api-misty-fog-1131.fly.dev/api/locations/${locationId}`)
+      .get(`/locations/${locationId}`)
       .then((locationResponse) => {
         setLocationName(locationResponse.data.name);
-
-        return axios.get(`https://mock-api-misty-fog-1131.fly.dev/api/locations/${locationId}/activities`);
+  
+        return axios.get(`/activities/location/${locationId}`);
       })
       .then((activitiesResponse) => {
-        setActivities(activitiesResponse.data); 
+        setActivities(activitiesResponse.data);
       })
       .catch((error) => {
-        console.error('Error fetching data:', error); 
-        setError('Failed to fetch activities'); 
+        console.error('Error fetching data:', error);
+        setError('Failed to fetch activities or location details');
       });
   }, [locationId]);
+  
 
   return (
     <div className="activities-page">

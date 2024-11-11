@@ -1,199 +1,198 @@
 [
-    {
-      "id": "activity_001",
-      "name": "Picnic in Central Park",
-      "description": "A relaxing picnic in the park.",
-      "locationId": "location_001",
-      "tripId": "trip_456",
-      "createdBy": "user_123",
-      "votes": 5,
-      "price": 0,
-      "image": "https://picsum.photos/200/300",
-      "comments": [
-        {
-          "id": "comment_001",
-          "userId": "user_123",
-          "commentString": "Great spot for a picnic!",
-          "activityId": "activity_001"
-        },
-        {
-          "id": "comment_002",
-          "userId": "user_456",
-          "commentString": "Loved the shade under the trees!",
-          "activityId": "activity_001"
-        }
-      ],
-      "isCompleted": false
-    },
-    {
-      "id": "activity_002",
-      "name": "Jogging around Central Park",
-      "description": "Morning jog with a beautiful view.",
-      "locationId": "location_001",
-      "tripId": "trip_456",
-      "createdBy": "user_456",
-      "votes": 3,
-      "price": 0,
-      "image": "https://picsum.photos/200/301",
-      "comments": [
-        {
-          "id": "comment_003",
-          "userId": "user_789",
-          "commentString": "Perfect way to start the day!",
-          "activityId": "activity_002"
-        }
-      ],
-      "isCompleted": false
-    },
-    {
-      "id": "activity_003",
-      "name": "Empire State Observation Deck",
-      "description": "Get a stunning view of New York City from above.",
-      "locationId": "location_002",
-      "tripId": "trip_456",
-      "createdBy": "user_123",
-      "votes": 8,
-      "price": 3,
-      "image": "https://picsum.photos/200/302",
-      "comments": [
-        {
-          "id": "comment_004",
-          "userId": "user_123",
-          "commentString": "The view was breathtaking!",
-          "activityId": "activity_003"
-        },
-        {
-          "id": "comment_005",
-          "userId": "user_456",
-          "commentString": "Loved seeing the city from above!",
-          "activityId": "activity_003"
-        },
-        {
-          "id": "comment_006",
-          "userId": "user_789",
-          "commentString": "A bit crowded but worth it.",
-          "activityId": "activity_003"
-        }
-      ],
-      "isCompleted": true
-    },
-    {
-      "id": "activity_004",
-      "name": "Photo Shoot at Golden Gate Bridge",
-      "description": "Capture stunning shots of the iconic bridge.",
-      "locationId": "location_003",
-      "tripId": "trip_789",
-      "createdBy": "user_789",
-      "votes": 10,
-      "price": 0,
-      "image": "https://picsum.photos/200/303",
-      "comments": [
-        {
-          "id": "comment_007",
-          "userId": "user_123",
-          "commentString": "Amazing photos!",
-          "activityId": "activity_004"
-        },
-        {
-          "id": "comment_008",
-          "userId": "user_456",
-          "commentString": "Perfect lighting in the morning!",
-          "activityId": "activity_004"
-        }
-      ],
-      "isCompleted": false
-    },
-    {
-      "id": "activity_005",
-      "name": "Hiking at Yosemite",
-      "description": "Experience the beauty of Yosemite National Park.",
-      "locationId": "location_004",
-      "tripId": "trip_789",
-      "createdBy": "user_123",
-      "votes": 12,
-      "price": 2,
-      "image": "https://picsum.photos/200/304",
-      "comments": [
-        {
-          "id": "comment_009",
-          "userId": "user_456",
-          "commentString": "Challenging hike but worth it!",
-          "activityId": "activity_005"
-        },
-        {
-          "id": "comment_010",
-          "userId": "user_789",
-          "commentString": "The views are stunning!",
-          "activityId": "activity_005"
-        }
-      ],
-      "isCompleted": true
-    },
-    {
-      "id": "activity_006",
-      "name": "Wine Tasting in Napa Valley",
-      "description": "Sample world-class wines.",
-      "locationId": "location_005",
-      "tripId": "trip_123",
-      "createdBy": "user_456",
-      "votes": 15,
-      "price": 4,
-      "image": "https://picsum.photos/200/305",
-      "comments": [
-        {
-          "id": "comment_011",
-          "userId": "user_123",
-          "commentString": "Loved the selection!",
-          "activityId": "activity_006"
-        }
-      ],
-      "isCompleted": true
-    },
-    {
-      "id": "activity_007",
-      "name": "Beach Volleyball",
-      "description": "Enjoy a game of volleyball by the beach.",
-      "locationId": "location_006",
-      "tripId": "trip_101",
-      "createdBy": "user_456",
-      "votes": 7,
-      "price": 0,
-      "image": "https://picsum.photos/200/306",
-      "comments": [
-        {
-          "id": "comment_012",
-          "userId": "user_789",
-          "commentString": "Great fun with friends!",
-          "activityId": "activity_007"
-        }
-      ],
-      "isCompleted": false
-    },
-    {
-      "id": "activity_008",
-      "name": "Surfing Lessons",
-      "description": "Learn to surf in the Pacific waves.",
-      "locationId": "location_006",
-      "tripId": "trip_101",
-      "createdBy": "user_789",
-      "votes": 15,
-      "price": 3,
-      "image": "https://picsum.photos/200/307",
-      "comments": [
-        {
-          "id": "comment_013",
-          "userId": "user_456",
-          "commentString": "Exciting and challenging!",
-          "activityId": "activity_008"
-        },
-        {
-          "id": "comment_014",
-          "userId": "user_123",
-          "commentString": "A must-do on the coast!",
-          "activityId": "activity_008"
-        }
-      ],
-      "isCompleted": false
-    }
-  ]
-  
+  {
+    "id": "activity_001",
+    "name": "Picnic in Central Park",
+    "description": "A relaxing picnic in the park.",
+    "locationId": "location_001",
+    "tripId": "trip_456",
+    "createdBy": "user_123",
+    "votes": 5,
+    "price": 0,
+    "image": "https://picsum.photos/200/300",
+    "comments": [
+      {
+        "id": "comment_001",
+        "userId": "user_123",
+        "commentString": "Great spot for a picnic!",
+        "activityId": "activity_001"
+      },
+      {
+        "id": "comment_002",
+        "userId": "user_456",
+        "commentString": "Loved the shade under the trees!",
+        "activityId": "activity_001"
+      }
+    ],
+    "isCompleted": false
+  },
+  {
+    "id": "activity_002",
+    "name": "Jogging around Central Park",
+    "description": "Morning jog with a beautiful view.",
+    "locationId": "location_001",
+    "tripId": "trip_456",
+    "createdBy": "user_456",
+    "votes": 3,
+    "price": 0,
+    "image": "https://picsum.photos/200/301",
+    "comments": [
+      {
+        "id": "comment_003",
+        "userId": "user_789",
+        "commentString": "Perfect way to start the day!",
+        "activityId": "activity_002"
+      }
+    ],
+    "isCompleted": false
+  },
+  {
+    "id": "activity_003",
+    "name": "Empire State Observation Deck",
+    "description": "Get a stunning view of New York City from above.",
+    "locationId": "location_002",
+    "tripId": "trip_456",
+    "createdBy": "user_123",
+    "votes": 8,
+    "price": 3,
+    "image": "https://picsum.photos/200/302",
+    "comments": [
+      {
+        "id": "comment_004",
+        "userId": "user_123",
+        "commentString": "The view was breathtaking!",
+        "activityId": "activity_003"
+      },
+      {
+        "id": "comment_005",
+        "userId": "user_456",
+        "commentString": "Loved seeing the city from above!",
+        "activityId": "activity_003"
+      },
+      {
+        "id": "comment_006",
+        "userId": "user_789",
+        "commentString": "A bit crowded but worth it.",
+        "activityId": "activity_003"
+      }
+    ],
+    "isCompleted": true
+  },
+  {
+    "id": "activity_004",
+    "name": "Photo Shoot at Golden Gate Bridge",
+    "description": "Capture stunning shots of the iconic bridge.",
+    "locationId": "location_003",
+    "tripId": "trip_789",
+    "createdBy": "user_789",
+    "votes": 10,
+    "price": 0,
+    "image": "https://picsum.photos/200/303",
+    "comments": [
+      {
+        "id": "comment_007",
+        "userId": "user_123",
+        "commentString": "Amazing photos!",
+        "activityId": "activity_004"
+      },
+      {
+        "id": "comment_008",
+        "userId": "user_456",
+        "commentString": "Perfect lighting in the morning!",
+        "activityId": "activity_004"
+      }
+    ],
+    "isCompleted": false
+  },
+  {
+    "id": "activity_005",
+    "name": "Hiking at Yosemite",
+    "description": "Experience the beauty of Yosemite National Park.",
+    "locationId": "location_004",
+    "tripId": "trip_789",
+    "createdBy": "user_123",
+    "votes": 12,
+    "price": 2,
+    "image": "https://picsum.photos/200/304",
+    "comments": [
+      {
+        "id": "comment_009",
+        "userId": "user_456",
+        "commentString": "Challenging hike but worth it!",
+        "activityId": "activity_005"
+      },
+      {
+        "id": "comment_010",
+        "userId": "user_789",
+        "commentString": "The views are stunning!",
+        "activityId": "activity_005"
+      }
+    ],
+    "isCompleted": true
+  },
+  {
+    "id": "activity_006",
+    "name": "Wine Tasting in Napa Valley",
+    "description": "Sample world-class wines.",
+    "locationId": "location_005",
+    "tripId": "trip_123",
+    "createdBy": "user_456",
+    "votes": 15,
+    "price": 4,
+    "image": "https://picsum.photos/200/305",
+    "comments": [
+      {
+        "id": "comment_011",
+        "userId": "user_123",
+        "commentString": "Loved the selection!",
+        "activityId": "activity_006"
+      }
+    ],
+    "isCompleted": true
+  },
+  {
+    "id": "activity_007",
+    "name": "Beach Volleyball",
+    "description": "Enjoy a game of volleyball by the beach.",
+    "locationId": "location_006",
+    "tripId": "trip_101",
+    "createdBy": "user_456",
+    "votes": 7,
+    "price": 0,
+    "image": "https://picsum.photos/200/306",
+    "comments": [
+      {
+        "id": "comment_012",
+        "userId": "user_789",
+        "commentString": "Great fun with friends!",
+        "activityId": "activity_007"
+      }
+    ],
+    "isCompleted": false
+  },
+  {
+    "id": "activity_008",
+    "name": "Surfing Lessons",
+    "description": "Learn to surf in the Pacific waves.",
+    "locationId": "location_006",
+    "tripId": "trip_101",
+    "createdBy": "user_789",
+    "votes": 15,
+    "price": 3,
+    "image": "https://picsum.photos/200/307",
+    "comments": [
+      {
+        "id": "comment_013",
+        "userId": "user_456",
+        "commentString": "Exciting and challenging!",
+        "activityId": "activity_008"
+      },
+      {
+        "id": "comment_014",
+        "userId": "user_123",
+        "commentString": "A must-do on the coast!",
+        "activityId": "activity_008"
+      }
+    ],
+    "isCompleted": false
+  }
+]

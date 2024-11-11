@@ -16,7 +16,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // middleware
-// app.use(cors()); 
+// app.use(cors()); // previously commented out, request to back-end doesn't work without it: @ant1 why was this commented out? (@harrison)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'))
