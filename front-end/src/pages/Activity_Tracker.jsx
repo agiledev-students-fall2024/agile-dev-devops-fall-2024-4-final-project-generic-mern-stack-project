@@ -10,7 +10,7 @@ function Activity_Tracker(){
         const fetchActivitiesData = async () => {
             try {  //fetch all activities
                 const response = await axios.get(`${process.env.REACT_APP_BACK_PORT}/api/activity-tracker`);
-                setActivitiesData([...response.data])
+               setActivitiesData([...response.data])
             }catch(error){
                 console.error('Error fetching activities')
             }
