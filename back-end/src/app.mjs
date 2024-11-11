@@ -214,9 +214,7 @@ export const startServer = () => {
 };
 
 
-//need to comment out if statement to start backend
-if (import.meta.url === fileURLToPath(import.meta.url)) {
-  startServer();
-}
+startServer();
+
 
 export default app;
