@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {
   getProfile,
+  saveProfile,
   getSavedRoutes,
   addSavedRoute,
   deleteSavedRoute,
@@ -12,6 +13,12 @@ const {
  * @description Retrieves the profile information for a specified user.
  */
 router.get('/:userId/profile', getProfile);
+
+/**
+ * @route POST /api/users/:userId/profile
+ * @description Saves the profile information for a specified user.
+ */
+ router.post('/:userId/profile', saveProfile); 
 
 /**
  * @route GET /api/users/:userId/saved-routes

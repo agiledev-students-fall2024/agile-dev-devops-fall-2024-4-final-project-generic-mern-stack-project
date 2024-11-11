@@ -5,7 +5,7 @@
   "main": "src/server.js",
   "scripts": {
     "start": "nodemon src/server.js",
-    "test": "c8 mocha tests/*.test.js",
+    "test": "c8 mocha src/tests/**/*.test.js",
     "format": "prettier --write '**/*.js'",
     "format:check": "prettier --check '**/*.js'"
   },
