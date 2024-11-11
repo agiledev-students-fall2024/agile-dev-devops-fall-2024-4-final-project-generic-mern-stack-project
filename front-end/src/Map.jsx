@@ -4,7 +4,8 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions';
 import '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css';
-import {FaSave } from 'react-icons/fa';
+import { FaSave } from 'react-icons/fa';
+import { FaExclamationTriangle } from 'react-icons/fa';
 import { API_URL } from './config/api';
 
 
@@ -23,6 +24,10 @@ function Map() {
   const [isSaving, setIsSaving] = useState(false);
   const [mapError, setMapError] = useState(null);
   const [isLoadingSavedRoute, setIsLoadingSavedRoute] = useState(false);
+
+  const reportIncident = () => {
+    navigate('/post');
+  };
 
   const saveRoute = async () => {
     if (!routeData) {
@@ -99,9 +104,9 @@ function Map() {
 
       const savedRoute = await response.json();
       console.log('Route saved successfully:', savedRoute);
-      
+
       setSaveStatus('Route saved successfully!');
-      
+
       // Clear success message after 3 seconds
       setTimeout(() => setSaveStatus(''), 3000);
     } catch (error) {
@@ -116,20 +121,20 @@ function Map() {
   const loadSavedRoute = async (route) => {
     try {
       setIsLoadingSavedRoute(true);
-      
+
       if (directionsRef.current) {
         // Set origin and destination using the coordinates from the saved route
         directionsRef.current.setOrigin(route.origin.geometry.coordinates);
         directionsRef.current.setDestination(route.destination.geometry.coordinates);
-        
+
         // Fit the map to show the full route
         if (mapInstanceRef.current && route.geometry) {
           const bounds = new mapboxgl.LngLatBounds();
-          
+
           // Add origin and destination to bounds
           bounds.extend(route.origin.geometry.coordinates);
           bounds.extend(route.destination.geometry.coordinates);
-          
+
           // Add all step locations to bounds
           if (route.steps) {
             route.steps.forEach(step => {
@@ -138,7 +143,7 @@ function Map() {
               }
             });
           }
-          
+
           mapInstanceRef.current.fitBounds(bounds, {
             padding: 100,
             duration: 1000
@@ -236,19 +241,19 @@ function Map() {
       ) : (
         <>
           <div id='map-container' className='h-94 w-full' ref={mapContainerRef} />
-          
+
           {/* Controls */}
           {/* <div className='absolute top-4 right-12 bg-white p-4 rounded shadow-lg space-y-2'> */}
           <div className='absolute bottom-16 left-12 bg-white p-4 rounded shadow-lg space-y-2 max-w-md'>
             {routeData && (
-              <button 
+              <button
                 onClick={saveRoute}
                 disabled={isSaving || isLoadingSavedRoute}
                 className={`w-full ${
                   isSaving || isLoadingSavedRoute
-                    ? 'bg-gray-400' 
+                    ? 'bg-gray-400'
                     : 'bg-green-500 hover:bg-green-600'
-                } text-white px-4 py-2 rounded flex items-center justify-center gap-2`}
+                  } text-white px-4 py-2 rounded flex items-center justify-center gap-2`}
               >
                 <FaSave />
                 {isSaving ? 'Saving...' : 'Save Route'}
@@ -257,24 +262,33 @@ function Map() {
             {saveStatus && (
               <div className={`text-center p-2 rounded ${
                 saveStatus.includes('Error') ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'
-              }`}>
+                }`}>
                 {saveStatus}
               </div>
             )}
           </div>
 
+          <div className='absolute bottom-16 right-12 bg-white p-4 rounded shadow-lg'>
+            <button
+              onClick={reportIncident}
+              className='bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded flex items-center justify-center gap-2'
+            >
+              <FaExclamationTriangle />
+              Report Incident
+            </button>
+          </div>
 
           {/* Route info */}
-          
+
           {/* {routeData && (
             <div className='absolute bottom-16 left-12 bg-white p-4 rounded shadow-lg max-w-md'>
               <h3 className='font-bold mb-2'>Route Information:</h3>
               <p>Distance: {(routeData.distance / 1000).toFixed(2)} km</p>
               <p>Duration: {Math.round(routeData.duration / 60)} minutes</p>
               <p className="mb-2">Steps: {routeData.legs[0].steps.length}</p> */}
-              
-              {/* Directions list */}
-              {/* <div className="mt-4 max-h-48 overflow-y-auto">
+
+          {/* Directions list */}
+          {/* <div className="mt-4 max-h-48 overflow-y-auto">
                 <h4 className="font-semibold mb-2">Turn-by-turn directions:</h4>
                 <ol className="list-decimal list-inside space-y-2">
                   {routeData.legs[0].steps.map((step, index) => (
