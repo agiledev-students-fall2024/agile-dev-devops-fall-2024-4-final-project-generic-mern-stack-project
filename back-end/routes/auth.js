@@ -47,7 +47,9 @@ export const login = async (req, res) => {
     // find a user by username
     // compare the password and hash
     // create a cookie
-    res.status(200).json({ message: "Logged in successfully" });
+    res
+      .status(200)
+      .json({ message: "Logged in successfully", username, password });
   } catch (error) {
     console.error("Error in login", error.message);
     res.status(500).json({ message: "Internal server error" });

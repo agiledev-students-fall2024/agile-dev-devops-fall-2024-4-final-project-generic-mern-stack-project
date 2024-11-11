@@ -3,17 +3,34 @@ import LogoPageTitle from "../components/LogoPageTitle";
 import InputField from "../components/InputField";
 import SubmitButton from "../components/SubmitButton";
 import { Link, useNavigate } from "react-router-dom";
+import { axiosInstance } from "../axios";
+import toast from "react-hot-toast";
 
 export default function Signup() {
   const [name, setName] = useState("");
-  const [userName, setUsername] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   function handleBtnClick() {
-    console.log("signup as: ", name, userName, email, password);
-    navigate(`/verifyemail?email=${email}`);
+    console.log("signup as: ", name, username, email, password);
+    axiosInstance
+      .post("/signup", {
+        name,
+        username,
+        email,
+        password,
+      })
+      .then((response) => {
+        console.log(response.data);
+        toast.success("User created successfully");
+        navigate(`/verifyemail?email=${email}`);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("User creation failed");
+      });
   }
   function handleNameChange(e) {
     setName(e.target.value);
