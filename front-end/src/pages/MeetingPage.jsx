@@ -30,6 +30,8 @@ function MeetingPage() {
     const [screenshareVisible, setScreenshareVisible] = React.useState(false);
     const [videoVisible, setVideoVisible] = React.useState(true);
 
+    const chatRef = useRef(null);
+
     const toggleAudio = () => {
         setIsMuted(!isMuted);
     };
@@ -101,11 +103,15 @@ function MeetingPage() {
         const unsub = listenForNewMessages(meetingId, (message) => {
             if (message) {
                 const service = message.service;
+                const lastMessage = message[message.length - 1];
                 // switch case for different services
                 if (service === 'code') {
                     // TODO: handle new data from remote code editor
-                } else if (service === 'chat') {
-                    // TODO: handle new chat message
+                } else if (lastMessage.service == 'chat') {
+                    console.log(lastMessage);
+                    if (chatRef.current) {
+                        chatRef.current.loadMessages(message);
+                    }
                 } else if (service === 'whiteboard') {
                     // TODO: handle new whiteboard data
                 } else if (service === 'screenshare') {
@@ -213,7 +219,7 @@ function MeetingPage() {
                 </div>
             </div>
             <div className={`transition-all duration-300 ${chatVisible ? 'w-3/10' : 'w-0'} h-full bg-gray-900 overflow-y-auto`}>
-                {chatVisible && <Chat />}
+                {chatVisible && <Chat meetingId={meetingId} ref={chatRef}/>}
             </div>
         </div>
     );

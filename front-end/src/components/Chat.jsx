@@ -3,20 +3,32 @@ import { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import EmojiPicker from 'emoji-picker-react';
 import Message from "./Message.jsx";
+import { sendDataToMeetingRoom } from '../services/firebaseApi.js';
 
-const Chat = () => {
+const Chat = React.forwardRef((props, ref) => {
     const [messages, setMessages] = useState([]);
+    const [meetingId, setMeetingId] = useState(props.meetingId);
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const textElement = useRef();
+
+    const loadMessages = (loadedData) => {
+        loadedData = loadedData.filter((message) => message.service === "chat").sort(
+            (a, b) => a.timestamp - b.timestamp
+        );
+        const messageList = loadedData.map((message) => {return {user: "user1", text: message.data, timestamp: new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}});
+        setMessages(messageList);
+    }
 
     const sendMessage = () => {
         const newMessage = textElement.current.value;
         if (newMessage.trim() == "") {
             return;
         }
+        const newMessageData = { user: "user1", text: newMessage, timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }
         setMessages(
-            [...messages, { user: "user1", text: newMessage, timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }]
+            [...messages, newMessageData]
         )
+        sendDataToMeetingRoom(meetingId, "chat", newMessage);
         textElement.current.value = "";
         setShowEmojiPicker(false);
     }
@@ -31,6 +43,10 @@ const Chat = () => {
     const onEmojiClick = (emojiData) => {
         textElement.current.value += emojiData.emoji;
     };
+
+    React.useImperativeHandle(ref, () => ({
+        loadMessages,
+    }));
 
     return (
         <div className="flex flex-col justify-between w-full h-screen max-w-xl border border-gray-700 rounded-lg shadow-lg bg-gray-900">
@@ -78,6 +94,6 @@ const Chat = () => {
             </div>
         </div>
     );
-};
+});
 
 export default Chat;
