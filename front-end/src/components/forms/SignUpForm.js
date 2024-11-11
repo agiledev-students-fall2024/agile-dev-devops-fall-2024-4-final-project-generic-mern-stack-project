@@ -1,10 +1,9 @@
-// SignUpForm.js
 import React, { useState } from 'react';
 import './SignUpForm.css';
 
 const SignUpForm = ({ onSubmit }) => {
   const [username, setUsername] = useState('');
-  const [avatar, setAvatar] = useState('😃'); 
+  const [avatar, setAvatar] = useState('😊'); // Default emoji
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -15,7 +14,7 @@ const SignUpForm = ({ onSubmit }) => {
     e.preventDefault();
     onSubmit({ username, avatar, firstName, lastName, email, password, bio });
     setUsername('');
-    setAvatar('😃'); 
+    setAvatar('😊'); // Reset to default emoji
     setFirstName('');
     setLastName('');
     setEmail('');
@@ -40,20 +39,16 @@ const SignUpForm = ({ onSubmit }) => {
       <label>
         Profile Avatar:
         <div className="avatar-selection">
-          <button
-            type="button"
-            className={`avatar-button ${avatar === '😃' ? 'selected' : ''}`}
-            onClick={() => setAvatar('😃')}
-          >
-            😃
-          </button>
-          <button
-            type="button"
-            className={`avatar-button ${avatar === '✈️' ? 'selected' : ''}`}
-            onClick={() => setAvatar('✈️')}
-          >
-            ✈️
-          </button>
+          {['😊', '😎', '🌎', '🧳', '🎒', '✈️', '🏞️', '🌄'].map((emoji) => (
+            <button
+              key={emoji}
+              type="button"
+              className={`avatar-button ${avatar === emoji ? 'selected' : ''}`}
+              onClick={() => setAvatar(emoji)}
+            >
+              {emoji}
+            </button>
+          ))}
         </div>
       </label>
 
