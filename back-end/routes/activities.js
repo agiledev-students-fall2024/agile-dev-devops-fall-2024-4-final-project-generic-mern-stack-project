@@ -4,7 +4,7 @@ import fs from 'fs';
 const router = express.Router();
 const activities = JSON.parse(fs.readFileSync('./mock-data/activities.json', 'utf-8'));
 
-// TODO: Get all activities (GET) - Retrieve and respond with a list of all activities in the system
+// Get all activities (GET) - Retrieve and respond with a list of all activities in the system
 router.get('/', (req, res) => {
     res.json(activities);
   });  
@@ -21,7 +21,7 @@ router.get('/location/:locationId', (req, res) => {
   });
   
 // I think this might not need to be used, could delete @ant
-// TODO: Get a specific activity by ID (GET) - Retrieve details for the specified activity, including embedded comments
+// Get a specific activity by ID (GET) - Retrieve details for the specified activity, including embedded comments
 router.get('/:activityId', (req, res) => {
     const activityId = req.params.activityId;
     const activity = activities.find(a => a.id === activityId);
@@ -33,7 +33,7 @@ router.get('/:activityId', (req, res) => {
     }
   });
 
-// TODO: Create a new activity (POST) - Add a new activity within a location and respond with the newly created activity data
+// Create a new activity (POST) - Add a new activity within a location and respond with the newly created activity data
 router.post('/', (req, res) => {
     const newActivity = {
       id: `activity_${Date.now()}`, // @ant what is the correct way for me to create activity IDs?
@@ -47,7 +47,7 @@ router.post('/', (req, res) => {
   });
 
 // We don't have an edit functionality yet
-// TODO: Update activity information (PUT) - Modify the specified activity data and respond with the updated activity information
+// Update activity information (PUT) - Modify the specified activity data and respond with the updated activity information
 router.put('/:activityId', (req, res) => {
     const activityId = req.params.activityId;
     const activityIndex = activities.findIndex(a => a.id === activityId);
@@ -62,7 +62,7 @@ router.put('/:activityId', (req, res) => {
   });  
 
 // Currently, we don't have a delete button
-// TODO: Delete an activity (DELETE) - Remove the specified activity and respond with a confirmation message
+// Delete an activity (DELETE) - Remove the specified activity and respond with a confirmation message
 router.delete('/:activityId', (req, res) => {
     const activityId = req.params.activityId;
     const activityIndex = activities.findIndex(a => a.id === activityId);
@@ -76,11 +76,35 @@ router.delete('/:activityId', (req, res) => {
     }
   });  
 
-// TODO: Upvote an activity (POST) - Increment the vote count for an activity and respond with the updated vote count
+// Upvote an activity (POST) - Increment the vote count for an activity and respond with the updated vote count
+router.post('/:activityId/upvote', (req, res) => {
+  const activityId = req.params.activityId;
+  const activity = activities.find(a => a.id === activityId);
 
+  if (activity) {
+    activity.votes = (activity.votes || 0) + 1;
+    activities.sort((a, b) => b.votes - a.votes); // Sort activities by votes
+    saveActivitiesToFile();
+    res.json({ votes: activity.votes });
+  } else {
+    res.status(404).json({ error: 'Activity not found' });
+  }
+});
 
-// TODO: Downvote an activity (POST) - Decrement the vote count for an activity and respond with the updated vote count
+// Downvote an activity (POST) - Decrement the vote count for an activity and respond with the updated vote count
+router.post('/:activityId/downvote', (req, res) => {
+  const activityId = req.params.activityId;
+  const activity = activities.find(a => a.id === activityId);
 
+  if (activity) {
+    activity.votes = (activity.votes || 0) - 1;
+    activities.sort((a, b) => b.votes - a.votes); // Sort activities by votes
+    saveActivitiesToFile();
+    res.json({ votes: activity.votes });
+  } else {
+    res.status(404).json({ error: 'Activity not found' });
+  }
+});
 
 // TODO: Add a comment to an activity (POST) - Add a new comment to the activity and respond with the created comment data
 

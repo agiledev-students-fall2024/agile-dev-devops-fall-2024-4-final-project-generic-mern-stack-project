@@ -1,12 +1,12 @@
+// ActivityCard.js
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './ActivityCard.css';
 
-const ActivityCard = ({ id, title, votes, description, price, comments, imageUrl, isCompleted }) => {
+const ActivityCard = ({ id, title, votes, description, price, comments, imageUrl, isCompleted, onUpvote, onDownvote }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [newComment, setNewComment] = useState('');
   const [commentList, setCommentList] = useState(comments || []);
-  const [voteCount, setVoteCount] = useState(votes);
 
   const toggleDetails = () => setIsExpanded((prev) => !prev);
 
@@ -17,26 +17,15 @@ const ActivityCard = ({ id, title, votes, description, price, comments, imageUrl
     }
   };
 
-  const handleUpvote = (e) => {
-    e.stopPropagation(); // this is to stop the whole expansion/retraction of the whole card
-    setVoteCount((prev) => prev + 1);
-  };
-
-  const handleDownvote = (e) => {
-    e.stopPropagation(); // this is to stop the whole expansion/retraction of the whole card too, lol
-    setVoteCount((prev) => prev - 1);
-  };
-
   return (
     <div className="activity-card">
-      {isCompleted && 
-      <span className="activity-card__status">completed</span>}
+      {isCompleted && <span className="activity-card__status">completed</span>}
       <div className="activity-header" onClick={toggleDetails}>
         <h3>{title}</h3>
         <div className="vote-section">
-          <button onClick={handleUpvote}>↑</button>
-          <span>{voteCount}</span>
-          <button onClick={handleDownvote}>↓</button>
+          <button onClick={(e) => { e.stopPropagation(); onUpvote(); }}>↑</button>
+          <span>{votes}</span>
+          <button onClick={(e) => { e.stopPropagation(); onDownvote(); }}>↓</button>
         </div>
       </div>
 
@@ -75,18 +64,16 @@ const ActivityCard = ({ id, title, votes, description, price, comments, imageUrl
 };
 
 ActivityCard.propTypes = {
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   votes: PropTypes.number.isRequired,
   description: PropTypes.string,
   price: PropTypes.string,
   comments: PropTypes.arrayOf(PropTypes.string),
-};
-
-ActivityCard.defaultProps = {
-  description: 'No description available',
-  price: '$',
-  comments: [],
+  imageUrl: PropTypes.string,
+  isCompleted: PropTypes.bool,
+  onUpvote: PropTypes.func.isRequired,
+  onDownvote: PropTypes.func.isRequired,
 };
 
 export default ActivityCard;
