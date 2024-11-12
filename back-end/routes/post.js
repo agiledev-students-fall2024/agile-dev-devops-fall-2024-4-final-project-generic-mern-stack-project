@@ -1,10 +1,19 @@
-// import and instantiate express
+// Import and instantiate express
 import express from 'express';
 const router = express.Router();
 
 router.post("/api/post", async (req, res) => {
     try {
         const { postContent, selectedOption } = req.body;
+
+        // Check for missing required fields
+        if (!postContent || !selectedOption) {
+            return res.status(400).json({
+                error: "Missing required fields: postContent and selectedOption",
+                status: "Failed to handle post submission"
+            });
+        }
+
         // Log the received data for debugging
         console.log("Post Content:", postContent);
         console.log("Selected Community:", selectedOption);

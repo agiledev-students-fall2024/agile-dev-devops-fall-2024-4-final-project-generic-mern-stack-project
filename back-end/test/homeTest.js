@@ -2,27 +2,34 @@ import { expect } from "chai";
 import request from "supertest";
 import server from "../app.js";
 
-describe("GET /api/home", () => {
-  it("should return an array of posts and have a status code of 200", (done) => {
-    request(server)
-      .get("/api/home")
-      .end((err, res) => {
-        expect(res.statusCode).to.equal(200);
-        expect(res.body).to.be.an("array");
-        expect(res.body).to.have.lengthOf(2);
-        expect(res.body[0]).to.have.all.keys([
-          "id",
-          "profilePic",
-          "name",
-          "userName",
-          "text",
-          "likes",
-          "images",
-        ]);
-        expect(res.body[0].images).to.be.an("array");
-        expect(res.body[0].images).to.have.lengthOf(1);
+// Test suite for the /api/home route
+describe("GET request to /api/home route", () => {
+    it("should respond with HTTP 200 status code", async () => {
+        const res = await request(server).get("/api/home");
+        expect(res.status).to.equal(200);
+    });
 
-        done();
-      });
-  });
+    it("should respond with JSON data in the body", async () => {
+        const res = await request(server).get("/api/home");
+        expect(res.headers["content-type"]).to.include("application/json");
+        expect(res.body).to.be.an("array").with.length.above(0);
+    });
+
+    it("should contain posts with expected properties", async () => {
+        const res = await request(server).get("/api/home");
+        
+        res.body.forEach(post => {
+            expect(post).to.be.an("object");
+            expect(post).to.have.property("id").that.is.a("number");
+            expect(post).to.have.property("profilePic").that.is.a("string").and.is.not.empty;
+            expect(post).to.have.property("name").that.is.a("string").and.is.not.empty;
+            expect(post).to.have.property("userName").that.is.a("string").and.is.not.empty;
+            expect(post).to.have.property("text").that.is.a("string").and.is.not.empty;
+            expect(post).to.have.property("likes").that.is.a("number");
+            expect(post).to.have.property("images").that.is.an("array");
+        });
+    });
 });
+
+
+
