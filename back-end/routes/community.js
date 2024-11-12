@@ -18,7 +18,7 @@ const joinCommunity = async (req, res) => {
       username: "john_doe",
       email: "jd@gmail.com",
       password: "jd1234",
-      communities: [],
+      communities: [5],
     };
     const community = {
       name: "community1",
@@ -26,18 +26,25 @@ const joinCommunity = async (req, res) => {
       members: [],
     };
 
-    if (user.communities.includes(community.communityId)) {
+    if (isNaN(parseInt(community.communityId, 10))) {
+      // return res.json({ message: typeof community.communityId });
+      return res.status(404).json({
+        message: "Invalid community ID",
+        // type: typeof community.communityId,
+      });
+    } else if (user.communities.includes(parseInt(community.communityId, 10))) {
       return res.status(400).json({
         message: "You have already joined this community",
       });
     }
-    user.communities.push(community.communityId);
+    user.communities.push(parseInt(community.communityId, 10));
     community.members.push(userId);
     // todo: save user and community
     res.status(200).json({
       message: "You have successfully joined the community",
       user,
       community,
+      // type: typeof parseInt(community.communityId, 10),
     });
   } catch (error) {
     console.error("Error in joinCommunity", error.message);
