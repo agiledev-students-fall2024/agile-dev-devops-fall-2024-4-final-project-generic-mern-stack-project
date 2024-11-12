@@ -58,7 +58,7 @@ const Home = () => {
 
         const fetchWeeklyData = async () => {
             try{
-            const response = await axios.get('https://my.api.mockaroo.com/home_weekly_activity.json?key=786e37d0');
+            const response = await axios.get(`${process.env.REACT_APP_BACK_PORT}/api/homeWeeklyActivity`);
             const fetchedData = response.data || [];
             console.log(fetchedData);
 
