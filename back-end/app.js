@@ -1,19 +1,26 @@
-require('dotenv').config({ silent: true }) // load environmental variables from a hidden file named .env
-const express = require('express') // CommonJS import style!
+require('dotenv').config({ silent: true }) // load env variables from .env
+const express = require('express') 
 const morgan = require('morgan') // middleware for nice logging of incoming HTTP requests
-const cors = require('cors') // middleware for enabling CORS (Cross-Origin Resource Sharing) requests.
+const cors = require('cors') // enabling CORS requests
 const mongoose = require('mongoose')
 const path = require('path');
 
-const app = express() // instantiate an Express object
+/* Importing mock data */
+const budgetLimits = require('./mocks/budgetLimits.js');
+const recurringBills = require('./mocks/recurringBills.js');
+
+const { getNotifications } = require('./notifications'); // import notification logic
+
+
+const app = express() 
 app.use(morgan('dev', { skip: (req, res) => process.env.NODE_ENV === 'test' })) // log all incoming requests, except when in unit test mode.  morgan has a few logging default styles - dev is a nice concise color-coded style
-app.use(cors()) // allow cross-origin resource sharing
+app.use(cors()) 
 
-// use express's builtin body-parser middleware to parse any data included in a request
-app.use(express.json()) // decode JSON-formatted incoming POST data
-app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming POST data
+// parse incoming requests
+app.use(express.json()) 
+app.use(express.urlencoded({ extended: true }))
 
-// Temporary in-memory storage for accounts and debts since no DB yet
+// temp in-memory storage for accounts and debts since no DB yet
 const accounts = [];
 const debts = [];
 
@@ -104,10 +111,19 @@ app.get("/api/debts", (req, res) => {
   res.json(debts);
 });
 
+
+
+/* Routes for Notifications/Reminders */
+app.get('/api/notifications', (req, res) => { 
+    const notifications = getNotifications();
+    res.json(notifications);
+});
+
+
 // Serve the frontend (React app)
 app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../front-end/build", "index.html"));
-  });
+    res.sendFile(path.join(__dirname, "../front-end/", "index.html"));
+});
 
 
 // export the express app we created to make it available to other modules

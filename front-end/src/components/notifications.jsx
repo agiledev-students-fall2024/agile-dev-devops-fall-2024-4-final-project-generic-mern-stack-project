@@ -1,46 +1,71 @@
-import React from 'react';
-import recurringBills from '../mocks/recurringBills';
+import React, { useEffect, useState } from 'react';
 
 function Notifications() {
-  const today = new Date();
-  const currentDay = today.getDate();
+  const [notifications, setNotifications] = useState({
+    budgetLimits: [],
+    subscriptions: [],
+    upcomingBills: []
+  });
+  const [expandedSections, setExpandedSections] = useState({
+    budgetLimits: false,
+    subscriptions: false,
+    upcomingBills: false
+  });
 
-  const calculateDaysUntilDue = (dueDay) => {
-    if (dueDay >= currentDay) {
-      return dueDay - currentDay;
-    } else {
-      const daysInCurrentMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
-      return daysInCurrentMonth - currentDay + dueDay;
-    }
+  useEffect(() => {
+    fetch("http://localhost:3001/api/notifications")
+      .then((response) => response.json())
+      .then((data) => setNotifications(data))
+      .catch((error) => console.error("Failed to fetch notifications:", error));
+  }, []);
+
+  const toggleSection = (section) => {
+    setExpandedSections((prevSections) => ({
+      ...prevSections,
+      [section]: !prevSections[section]
+    }));
   };
-
-  const extractDueDay = (dueDate) => {
-    const match = dueDate.match(/\d+/); 
-    return match ? parseInt(match[0], 10) : null;
-  };
-
-  const upcomingBills = recurringBills
-    .map((bill) => {
-      const dueDay = extractDueDay(bill.dueDate);
-      if (dueDay === null) return null;
-      const daysUntilDue = calculateDaysUntilDue(dueDay);
-      return { ...bill, daysUntilDue };
-    })
-    .filter((bill) => bill && bill.daysUntilDue > 0 && bill.daysUntilDue <= 5);
 
   return (
     <section className="notifications">
       <h2>Notifications</h2>
       <ul>
-        {upcomingBills.length > 0 ? (
-          upcomingBills.map((bill) => (
-            <li key={bill.id}>
-              💡 Upcoming {bill.category}: {bill.name} - Due in {bill.daysUntilDue} {bill.daysUntilDue === 1 ? "day" : "days"}
-            </li>
-          ))
-        ) : (
-          <li>No upcoming bills or subscriptions within the next 5 days.</li>
-        )}
+        <li onClick={() => toggleSection('budgetLimits')}>
+          Budget Limits: {notifications.budgetLimits.length} updates
+          {expandedSections.budgetLimits && (
+            <ul className="expanded-section">
+              {notifications.budgetLimits.map((limit, index) => (
+                <li key={index} className="expanded-section-item">
+                  • {limit.description || limit.name}
+                </li>
+              ))}
+            </ul>
+          )}
+        </li>
+        <li onClick={() => toggleSection('subscriptions')}>
+          Subscriptions: {notifications.subscriptions.length} updates
+          {expandedSections.subscriptions && (
+            <ul className="expanded-section">
+              {notifications.subscriptions.map((subscription) => (
+                <ul key={subscription.id} className="expanded-section-item">
+                  {subscription.name} - Due in {subscription.daysUntilDue} {subscription.daysUntilDue === 1 ? 'day' : 'days'}
+                </ul>
+              ))}
+            </ul>
+          )}
+        </li>
+        <li onClick={() => toggleSection('upcomingBills')}>
+          Upcoming Bills: {notifications.upcomingBills.length} updates
+          {expandedSections.upcomingBills && (
+            <ul className="expanded-section">
+              {notifications.upcomingBills.map((bill) => (
+                <ul key={bill.id} className="expanded-section-item">
+                  {bill.name} - Due in {bill.daysUntilDue} {bill.daysUntilDue === 1 ? 'day' : 'days'}
+                </ul>
+              ))}
+            </ul>
+          )}
+        </li>
       </ul>
     </section>
   );

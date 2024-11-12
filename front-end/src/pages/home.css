@@ -145,6 +145,25 @@ h2 {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
+/* expanded section container */
+.expanded-section {
+  background-color: #fff3cd;
+  padding: 10px;
+  margin-top: 8px;
+  animation: fadeIn 0.3s ease-in-out;
+  border-left: 2px solid #487bf1;
+}
+
+/* expanded item */
+.expanded-section-item {
+  background-color: #fff3cd;
+  padding: 8px;
+  margin: 10px 0 0 15px;
+  border-radius: 3px;
+  padding-right: 40px;
+  
+}
+
 /* Transactions */
 .transactions-link {
   color: #487bf1;
