@@ -1,3 +1,4 @@
+/*  
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
@@ -20,7 +21,6 @@ const routeSchema = new mongoose.Schema({
     }
   });
 
-// User Schema with email and password
 const userSchema = new mongoose.Schema({
     username: {
       type: String,
@@ -77,3 +77,4 @@ const userSchema = new mongoose.Schema({
   const User = mongoose.model('User', userSchema);
   
   export { User };
+  */
