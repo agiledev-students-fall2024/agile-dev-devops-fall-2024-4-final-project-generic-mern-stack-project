@@ -9,7 +9,6 @@ import AddTransaction from '../components/AddTransaction';
 import './home.css';
 import { Link } from 'react-router-dom';
 
-
 function Home() {
   const { overall } = BudgetProgress();
   const [showBreakdown, setShowBreakdown] = useState(false);
@@ -97,7 +96,7 @@ function Home() {
           />
         )}
       </section>
-      
+
       <Notifications />
 
       <section className="transactions">
@@ -116,11 +115,11 @@ function Home() {
             <span>Amount</span>
             <span>Date</span>
           </li>
-          {transactionData.slice(0, 5).map((transaction) => (
+          {transactions.slice(0, 5).map((transaction) => (
             <li key={transaction.id} className="transaction-item">
               <span>{transaction.merchant}</span>
               <span>{transaction.category}</span>
-              <span>${transaction.amount}</span>
+              <span>${transaction.amount.toFixed(2)}</span>
               <span>{transaction.date}</span>
             </li>
           ))}

@@ -7,7 +7,7 @@
 }
 
 h2 {
-    font-size: 1.2em;
+  font-size: 1.2em;
 }
 
 /* Sections */
@@ -46,46 +46,46 @@ h2 {
 
 /* Total Budget */
 .progress-bar-container {
-    border-radius: 10px;
-    overflow: hidden;
-    height: 30px;
-    margin-bottom: 15px;
-    border: 1px solid #d3d3d3; 
+  border-radius: 10px;
+  overflow: hidden;
+  height: 30px;
+  margin-bottom: 15px;
+  border: 1px solid #d3d3d3;
 }
 
 .progress-bar {
-    height: 100%;
-    line-height: 30px;
-    color: white;
-    text-align: center;
-    font-weight: bold;
-    min-width: 0;
-    background-color: #487bf1;
+  height: 100%;
+  line-height: 30px;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  min-width: 0;
+  background-color: #487bf1;
 }
 
 .under-limit {
-    background-color: #4caf50; 
+  background-color: #4caf50;
 }
 
 .over-limit {
-    background-color: #f44336;
+  background-color: #f44336;
 }
 
 /* Category Progress Bars */
 .budget-details {
-    margin-top: 0px;
+  margin-top: 0px;
 }
 
 .category-progress {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 8px; 
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
 }
 
 .category-progress p {
-    margin: 0 0 4px; 
-    font-size: 0.9em; 
-    font-weight: bold;
+  margin: 0 0 4px;
+  font-size: 0.9em;
+  font-weight: bold;
 }
 
 .category-progress .progress-bar {
@@ -124,25 +124,25 @@ h2 {
 }
 
 .view-all-btn:hover {
-    background-color: rgb(186, 184, 184);
+  background-color: rgb(186, 184, 184);
 }
 
 .all-categories {
-    margin-top: 15px;
+  margin-top: 15px;
 }
 
 /* Notifications */
 .notifications ul {
-    list-style-type: none;
-    padding: 0;
+  list-style-type: none;
+  padding: 0;
 }
 
 .notifications li {
-    background-color: #fff3cd;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: #fff3cd;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 /* Transactions */
@@ -152,47 +152,55 @@ h2 {
 }
 
 .transactions-link:hover {
-    color: #345e9a; 
+  color: #345e9a;
 }
 
-
 .transaction-list {
-    list-style: none;
-    padding: 0;
+  list-style: none;
+  padding: 0;
 }
 
 .transaction-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .transaction-item.header {
-    font-weight: bold;
-    background-color: #f2f2f2;
-    border-top: 1px solid #e0e0e0;
+  font-weight: bold;
+  background-color: #f2f2f2;
+  border-top: 1px solid #e0e0e0;
 }
 
 /* Columns */
 .transaction-item span {
-    flex: 1;
-    text-align: left;
+  flex: 1;
+  text-align: left;
 }
 
 .transaction-item span:nth-child(3),
 .transaction-item span:nth-child(4) {
-    text-align: right;
-    font-weight: bold;
+  text-align: right;
+  font-weight: bold;
 }
 
 .transaction-item:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 .transaction-item:hover {
-    background-color: #f0f0f0;
+  background-color: #f0f0f0;
 }
+.button {
+    background-color: rgb(40, 125, 222);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
 
 #add-transaction-button {
   font-size: 20px;
@@ -207,12 +215,12 @@ h2 {
 
 /* Responsive Styles */
 @media screen and (max-width: 768px) {
-    .budget-overview,
-    .notifications,
-    .transactions {
-        margin: 10px 0;
-        padding: 15px;
-    }
+  .budget-overview,
+  .notifications,
+  .transactions {
+    margin: 10px 0;
+    padding: 15px;
+  }
 
   .budget-details p,
   .notifications li,
@@ -228,11 +236,11 @@ h2 {
 }
 
 @media screen and (max-width: 480px) {
-    .budget-details p,
-    .notifications li,
-    .transaction-item span {
-        font-size: 14px;
-    }
+  .budget-details p,
+  .notifications li,
+  .transaction-item span {
+    font-size: 14px;
+  }
 
   .progress-bar-container {
     height: 25px;

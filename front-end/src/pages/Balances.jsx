@@ -11,14 +11,12 @@ const Balances = () => {
   // Modal state
   const [showModal, setShowModal] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
-  const [currentItemIndex, setCurrentItemIndex] = useState(null) // Index for editing
+  const [currentItemIndex, setCurrentItemIndex] = useState(null)
 
-  // To distinguish between adding/editing accounts or debts
   const [isDebtModal, setIsDebtModal] = useState(false)
 
   const [newItem, setNewItem] = useState({ type: '', amount: '', number: '', dueDate: '', paymentSchedule: '' }) // Temp account or debt info
 
-  // Function to add or edit accounts/debts
   const handleAddOrEditItem = () => {
     if (isEditing) {
       if (isDebtModal) {
@@ -44,7 +42,6 @@ const Balances = () => {
     setIsDebtModal(false)
   }
 
-  // Function to delete account or debt
   const handleDeleteItem = (index, isDebt) => {
     if (isDebt) {
       const updatedDebts = debts.filter((_, i) => i !== index)
@@ -55,7 +52,6 @@ const Balances = () => {
     }
   }
 
-  // Open modal to edit account or debt
   const handleEditItem = (index, isDebt) => {
     if (isDebt) {
       setNewItem(debts[index])
