@@ -1,0 +1,47 @@
+.category-breakdown-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.category-card {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding-top: 15px;
+}
+
+.category-name {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.progress-circle {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: conic-gradient(#487bf1 var(--progress, 0%), #e0e7ff var(--progress, 0%));
+  margin: 0 auto;
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+.category-limit-input {
+  width: 40%;
+  text-align: center;
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}

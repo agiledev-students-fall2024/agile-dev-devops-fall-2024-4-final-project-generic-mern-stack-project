@@ -2,151 +2,112 @@ import React, { useState } from 'react';
 import Header from '../components/header';
 import BudgetProgress from '../mocks/BudgetProgress.jsx';
 import Notifications from '../components/notifications.jsx';
-import transactionData from '../mocks/transactionData'; 
+import transactionData from '../mocks/transactionData';
+import budgetLimits from '../mocks/budgetLimits';
+import Categories from '../components/categories.jsx';
+import AddTransaction from '../components/AddTransaction';
 import './home.css';
 import { Link } from 'react-router-dom';
 
 function Home() {
-  const { progressData, overall } = BudgetProgress();
+  const { overall } = BudgetProgress();
   const [showBreakdown, setShowBreakdown] = useState(false);
-  const [isEditingBudget, setIsEditingBudget] = useState(false); // Tracks edit mode
-  const [monthlyBudget, setMonthlyBudget] = useState(overall.totalBudget || 0); // Stores budget input
-  const [showCategoryBreakdown, setShowCategoryBreakdown] = useState(false); 
-  const [transactions, setTransactions] = useState([...transactionData]); 
-  const [showAddTransaction, setShowAddTransaction] = useState(false); 
-  const [newTransaction, setNewTransaction] = useState({
-    merchant: '',
-    category: '',
-    amount: '',
-    date: ''
-  }); 
+  const [isEditing, setIsEditing] = useState(false);
+  const [categoryLimits, setCategoryLimits] = useState(budgetLimits);
+  const [showAddTransaction, setShowAddTransaction] = useState(false);
+  const [transactions, setTransactions] = useState(transactionData);
 
-  const viewBreakdown = () => setShowBreakdown(!showBreakdown);
-  const toggleCategoryBreakdown = () => setShowCategoryBreakdown(!showCategoryBreakdown); 
-
-  const totalBudget = overall.totalBudget || 0;
+  const totalBudget = categoryLimits.MonthlyBudget || 0;
   const totalSpent = overall.totalSpent || 0;
-  const remainingBudget = monthlyBudget - totalSpent;
-  const overallSpent = overall.overallSpent || 0;
-
-  const handleBudgetEdit = () => setIsEditingBudget(!isEditingBudget);
-  const handleBudgetChange = (e) => setMonthlyBudget(Number(e.target.value));
-  const saveBudget = () => setIsEditingBudget(false);
-
-  const sortedProgressData = [...progressData].sort(
-    (a, b) => b.spent - a.spent
-  );
 
   const categoryTotals = transactions.reduce((acc, transaction) => {
     const { category, amount } = transaction;
-    if (!acc[category]) {
-      acc[category] = 0;
+    if (categoryLimits[category]) {
+      acc[category] = (acc[category] || 0) + amount;
+    } else {
+      acc['Other'] = (acc['Other'] || 0) + amount;
     }
-    acc[category] += amount;
     return acc;
   }, {});
 
-  const handleAddTransaction = () => {
-    if (newTransaction.merchant && newTransaction.category && newTransaction.amount && newTransaction.date) {
-      const newTransactionWithId = { 
-        ...newTransaction, 
-        id: transactions.length + 1, 
-        amount: parseFloat(newTransaction.amount) 
-      };
-      setTransactions(prevTransactions => [newTransactionWithId, ...prevTransactions]); 
-      setShowAddTransaction(false); 
-      setNewTransaction({ merchant: '', category: '', amount: '', date: '' });
-    }
+  const handleAddTransaction = (transaction) => {
+    setTransactions([transaction, ...transactions]);
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewTransaction({ ...newTransaction, [name]: value });
+  const toggleEdit = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const handleLimitChange = (category, value) => {
+    setCategoryLimits((prevLimits) => ({
+      ...prevLimits,
+      [category]: Number(value),
+    }));
+  };
+
+  const saveBudgetLimits = () => {
+    setIsEditing(false);
   };
 
   return (
     <div className="home-container">
       <Header />
-      <section className="budget-overview">
-        <h2>Monthly Spending Progress</h2>
-        <p>
-          <strong>Total Budget:</strong> ${totalSpent} / ${monthlyBudget}
-        </p>
 
+      <section className="budget-overview">
+        <div className="budget-header">
+          <h2>Monthly Spending Progress</h2>
+          {showBreakdown && (
+            <button className="edit-button" onClick={isEditing ? saveBudgetLimits : toggleEdit}>
+              {isEditing ? 'Save' : 'Edit'}
+            </button>
+          )}
+        </div>
+
+        <p>
+          <strong>Total Budget:</strong> 
+          {isEditing ? (
+            <input
+              type="number"
+              value={categoryLimits.MonthlyBudget}
+              onChange={(e) => handleLimitChange('MonthlyBudget', e.target.value)}
+              className="total-budget-input"
+            />
+          ) : (
+            ` $${totalSpent} / $${totalBudget}`
+          )}
+        </p>
+        
         <div className="progress-bar-container">
-          <div
-            className="progress-bar"
-            style={{ width: `${Math.min(overallSpent, 100)}%` }}
-          >
-            {Math.round(overallSpent)}% Spent
+          <div className="progress-bar" style={{ width: `${Math.min((totalSpent / totalBudget) * 100, 100)}%` }}>
+            {Math.round((totalSpent / totalBudget) * 100)}% Spent
           </div>
         </div>
 
-        <div className="budget-details">
-          {isEditingBudget ? (
-            <div className="edit-budget">
-              <input
-                type="number"
-                value={monthlyBudget}
-                onChange={handleBudgetChange}
-                min="0"
-                placeholder="Enter your budget"
-              />
-              <button onClick={saveBudget}>Save</button>
-            </div>
-          ) : (
-            <button className="edit-budget-btn" onClick={handleBudgetEdit}>
-              Edit Monthly Budget
-            </button>
-          )}
+        <button className="view-breakdown" onClick={() => setShowBreakdown(!showBreakdown)}>
+          {showBreakdown ? 'Hide Breakdown' : 'View Breakdown'}
+        </button>
 
-          <button className="view-breakdown" onClick={viewBreakdown}>
-            {showBreakdown ? 'Hide Breakdown' : 'View Breakdown'}
-          </button>
-
-          {showBreakdown && (
-            <div className="budget-breakdown">
-              <p>
-                <strong>Total Budget:</strong> ${monthlyBudget}
-              </p>
-              <p>
-                <strong>Spent:</strong> ${totalSpent}
-              </p>
-              <p>
-                <strong>Remaining:</strong> $
-                {remainingBudget > 0 ? remainingBudget : 0}
-              </p>
-            </div>
-          )}
-          
-          <button className="view-breakdown" onClick={toggleCategoryBreakdown}>
-            {showCategoryBreakdown ? 'Hide Category Breakdown' : 'View Category Breakdown'}
-          </button>
-
-          {showCategoryBreakdown && (
-            <div className="category-breakdown">
-              <h3>Category Breakdown</h3>
-              <ul>
-                {Object.keys(categoryTotals).map(category => (
-                  <li key={category}>
-                    <strong>{category}:</strong> ${categoryTotals[category].toFixed(2)}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
+        {showBreakdown && (
+          <Categories
+            categoryTotals={categoryTotals}
+            categoryLimits={categoryLimits}
+            isEditing={isEditing}
+            handleLimitChange={handleLimitChange}
+          />
+        )}
       </section>
 
       <Notifications />
 
       <section className="transactions">
-        <Link to="/transactions" className="transactions-link">
-          <h2 style={{ cursor: 'pointer', color: '#487bf1' }}>Transactions</h2>
-        </Link>
-        <button className="button" onClick={() => setShowAddTransaction(true)}>
-          Add Transaction
-        </button>
+        <div className="transactions-header">
+          <Link to="/transactions" className="transactions-link">
+            <h2>Transactions</h2>
+          </Link>
+          <button id="add-transaction-button" onClick={() => setShowAddTransaction(true)}>
+            +
+          </button>
+        </div>
         <ul className="transaction-list">
           <li className="transaction-item header">
             <span>Merchant</span>
@@ -165,51 +126,11 @@ function Home() {
         </ul>
       </section>
 
-      {/* Modal for Adding a New Transaction */}
       {showAddTransaction && (
-        <div className="modal">
-          <div className="modal-content">
-            <h2>Add New Transaction</h2>
-            <label>
-              Merchant:
-              <input
-                type="text"
-                name="merchant"
-                value={newTransaction.merchant}
-                onChange={handleInputChange}
-              />
-            </label>
-            <label>
-              Category:
-              <input
-                type="text"
-                name="category"
-                value={newTransaction.category}
-                onChange={handleInputChange}
-              />
-            </label>
-            <label>
-              Amount:
-              <input
-                type="number"
-                name="amount"
-                value={newTransaction.amount}
-                onChange={handleInputChange}
-              />
-            </label>
-            <label>
-              Date:
-              <input
-                type="date"
-                name="date"
-                value={newTransaction.date}
-                onChange={handleInputChange}
-              />
-            </label>
-            <button className="button" onClick={handleAddTransaction}>Add Transaction</button>
-            <button className="button" onClick={() => setShowAddTransaction(false)}>Cancel</button>
-          </div>
-        </div>
+        <AddTransaction 
+          onAddTransaction={handleAddTransaction} 
+          onClose={() => setShowAddTransaction(false)} 
+        />
       )}
     </div>
   );
