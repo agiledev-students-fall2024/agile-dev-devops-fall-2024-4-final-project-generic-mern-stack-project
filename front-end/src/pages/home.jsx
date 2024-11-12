@@ -7,7 +7,6 @@ import budgetLimits from '../mocks/budgetLimits';
 import Categories from '../components/categories.jsx';
 import AddTransaction from '../components/AddTransaction';
 import './home.css';
-import transactionData from '../mocks/transactionData';
 import { Link } from 'react-router-dom';
 
 
