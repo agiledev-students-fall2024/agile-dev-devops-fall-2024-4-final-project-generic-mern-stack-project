@@ -76,11 +76,35 @@ router.delete('/:activityId', (req, res) => {
     }
   });  
 
-// TODO: Upvote an activity (POST) - Increment the vote count for an activity and respond with the updated vote count
+// Upvote an activity (POST) - Increment the vote count for an activity and respond with the updated vote count
+router.post('/:activityId/upvote', (req, res) => {
+  const activityId = req.params.activityId;
+  const activity = activities.find(a => a.id === activityId);
 
+  if (activity) {
+    activity.votes = (activity.votes || 0) + 1;
+    activities.sort((a, b) => b.votes - a.votes); // Sort activities by votes
+    saveActivitiesToFile();
+    res.json({ votes: activity.votes });
+  } else {
+    res.status(404).json({ error: 'Activity not found' });
+  }
+});
 
-// TODO: Downvote an activity (POST) - Decrement the vote count for an activity and respond with the updated vote count
+// Downvote an activity (POST) - Decrement the vote count for an activity and respond with the updated vote count
+router.post('/:activityId/downvote', (req, res) => {
+  const activityId = req.params.activityId;
+  const activity = activities.find(a => a.id === activityId);
 
+  if (activity) {
+    activity.votes = (activity.votes || 0) - 1;
+    activities.sort((a, b) => b.votes - a.votes); // Sort activities by votes
+    saveActivitiesToFile();
+    res.json({ votes: activity.votes });
+  } else {
+    res.status(404).json({ error: 'Activity not found' });
+  }
+});
 
 // TODO: Add a comment to an activity (POST) - Add a new comment to the activity and respond with the created comment data
 
