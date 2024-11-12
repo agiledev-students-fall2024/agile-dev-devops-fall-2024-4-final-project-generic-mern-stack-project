@@ -1,5 +1,5 @@
 # EasyNote
-
+[![Lint Backend JavaScript](https://github.com/agiledev-students-fall2024/4-final-project-easynote/actions/workflows/lint-backend.yml/badge.svg)](https://github.com/agiledev-students-fall2024/4-final-project-easynote/actions/workflows/lint-backend.yml)
 ## Product Vision Statement
 
 Our vision is to empower students with an AI-driven note-taking app that transforms how they capture and manage academic content. By integrating deadline tracking and to-do functionalities, alongside advanced AI features like lecture transcription and automated note organization, we aim to streamline the learning process. This app will help students stay on top of their academic responsibilities, keep track of all due dates, and efficiently organize their study materials, ultimately enhancing their educational success.
