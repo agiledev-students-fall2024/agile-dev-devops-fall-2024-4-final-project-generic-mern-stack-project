@@ -6,7 +6,7 @@ const budgetLimits = {
     Shopping: 250,
     Subscription: 100,
     Transportation: 100,
-    Restaurants: 150,
+    Restaurant: 150,
     MonthlyBudget: 3000,
 };
 

@@ -16,7 +16,7 @@ import BottomNav from './components/bottomNav';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true); //change it back
+  const [isLoggedIn, setIsLoggedIn] = useState(false); //change it back
   const handleLogin = () => {
     setIsLoggedIn(true);
   };

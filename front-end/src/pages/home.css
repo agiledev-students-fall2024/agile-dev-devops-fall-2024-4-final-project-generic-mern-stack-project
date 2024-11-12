@@ -1,17 +1,20 @@
 .home-container {
+  min-height: 100vh;
   padding: 20px;
   padding-bottom: 70px;
   font-family: Arial, sans-serif;
+  overflow-y: auto;
 }
 
 h2 {
   font-size: 1.2em;
 }
 
-/* sections */
+/* Sections */
 .budget-overview,
 .notifications,
 .transactions {
+  position: relative;
   margin: 20px 0;
   padding: 20px;
   background-color: #f9f9f9;
@@ -19,7 +22,29 @@ h2 {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* total budget */
+.budget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.transactions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-transaction-button {
+  background-color: rgb(40, 125, 222);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Total Budget */
 .progress-bar-container {
   border-radius: 10px;
   overflow: hidden;
@@ -46,7 +71,7 @@ h2 {
   background-color: #f44336;
 }
 
-/* category progress bars */
+/* Category Progress Bars */
 .budget-details {
   margin-top: 0px;
 }
@@ -71,7 +96,8 @@ h2 {
   border: 1px solid #d3d3d3;
   width: 100%;
 }
-/* edit budget*/
+
+/* Edit Budget */
 .edit-budget {
   display: flex;
   gap: 10px;
@@ -83,19 +109,11 @@ h2 {
   padding: 5px;
 }
 
-.edit-budget-btn {
-  margin-top: 10px;
-  color: #487bf1;
-  cursor: pointer;
-  background-color: transparent;
-  border: none;
-  font-size: 0.9em;
-}
-/* view breakdown */
+/* View Breakdown */
 .view-breakdown {
   display: flex;
   justify-content: center;
-  margin: 0px auto;
+  margin: 0 auto;
   color: #487bf1;
   border: none;
   border-radius: 5px;
@@ -127,9 +145,9 @@ h2 {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* transactions */
+/* Transactions */
 .transactions-link {
-  color: inherit;
+  color: #487bf1;
   text-decoration: none;
 }
 
@@ -155,7 +173,7 @@ h2 {
   border-top: 1px solid #e0e0e0;
 }
 
-/* columns */
+/* Columns */
 .transaction-item span {
   flex: 1;
   text-align: left;
@@ -184,6 +202,18 @@ h2 {
     margin-right: 10px;
   }
 
+#add-transaction-button {
+  font-size: 20px;
+  color: #487bf1;
+  background-color: white;
+  border: 2px solid  #487bf1;
+  border-radius: 50%;
+  width: 40px; 
+  height: 40px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Styles */
 @media screen and (max-width: 768px) {
   .budget-overview,
   .notifications,
@@ -196,6 +226,12 @@ h2 {
   .notifications li,
   .transaction-item span {
     font-size: 16px;
+    
+  }
+
+  .home-container {
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
@@ -208,5 +244,9 @@ h2 {
 
   .progress-bar-container {
     height: 25px;
+  }
+  .home-container {
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
   }
 }
