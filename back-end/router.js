@@ -38,7 +38,7 @@ router.post('/summarize', async (req, res) => {
         const summary = await summarizeText(text);
         res.json({ summary });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to summarize text' });
+        res.status(500).json({ error: 'Failed to summarize text', message: error.message });
     }
 });
 
