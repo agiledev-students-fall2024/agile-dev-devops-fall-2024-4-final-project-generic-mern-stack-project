@@ -108,11 +108,14 @@ function Record() {
       console.error("Error uploading image:", error);
     }
   };
+
   useEffect(() => {
     const fetchAllRecipes = async () => {
       try {
         //fetch all activities
-        const response = await axios.get("/api/record-activity");
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACK_PORT}/api/record-activity`
+        );
         setAllRecipes([...response.data]);
         console.log("fetchedallrecipes");
       } catch (error) {
@@ -168,12 +171,12 @@ function Record() {
   if (!recipeId && !currRecipe.recipe_name) {
     return <NoRecipe navigate={navigate} />;
   }
-
+  //<Timer duration={currRecipe.duration} />
   return (
     <div className="record-container">
       <h1> {currRecipe.recipe_name || "N/A"}</h1>
       <h2> {currRecipe.recipe_description || "N/A"}</h2>
-      <Timer duration={currRecipe.duration_in_seconds} />
+
       <IngredientsList
         ingredients={currRecipe.ingredients}
         selectedIngredients={selectedIngredients}
@@ -187,6 +190,8 @@ function Record() {
         buttonRef={buttonRef}
         onComplete={handleRecipeComplete}
       />
+
+      <div>{currRecipe.duration}</div>
 
       <CompletionModal
         isOpen={isModalOpen}
