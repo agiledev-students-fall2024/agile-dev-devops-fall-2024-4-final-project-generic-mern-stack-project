@@ -9,7 +9,7 @@ import * as auth from "./auth.mjs";
 import path from "path";
 import bodyParser from "body-parser";
 import morgan from "morgan";
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from "url";
 
 const app = express();
 const PORT = process.env.backPORT || 5000;
@@ -116,13 +116,15 @@ app.get("/api/activity-tracker", async (req, res) => {
   }
 });
 
-app.get('/api/record-activity', async (req, res)=>{
-  try{
-    const {data} = await axios.get('https://my.api.mockaroo.com/recipe_steps?key=d6450400'); 
+app.get("/api/record-activity", async (req, res) => {
+  try {
+    const { data } = await axios.get(
+      "https://my.api.mockaroo.com/recipe_steps?key=594b4990"
+    );
     res.json(data);
   } catch (error) {
     console.error("Error fetching data from API:", error.message);
-    res.status(500).json({ error: "Failed to fetch activity tracker data" });
+    res.status(500).json({ error: "Failed to fetch recipe_steps data" });
   }
 });
 
@@ -157,30 +159,21 @@ app.post(
   }
 );
 
-app.get('/api/record-activity', async (req, res)=>{
-  try{
-    const {data} = await axios.get('https://my.api.mockaroo.com/recipe_steps?key=d6450400');
+app.get("/api/progress-tracker", async (req, res) => {
+  try {
+    const { data } = await axios.get(
+      "https://my.api.mockaroo.com/users.json?key=66da8e80"
+    );
     res.json(data);
   } catch (error) {
     console.error("Error fetching data from API:", error.message);
-    res.status(500).json({ error: "Failed to fetch activity tracker data" });
+    res.status(500).json({ error: "Failed to fetch progress data" });
   }
-});
-
-app.get("/api/progress-tracker", async(req, res) => {
-    try {
-        const {data} = await axios.get('https://my.api.mockaroo.com/users.json?key=66da8e80');
-        res.json(data);
-    }
-    catch(error) {
-        console.error("Error fetching data from API:", error.message);
-        res.status(500).json({error: "Failed to fetch progress data"});
-    }
 });
 
 app.get("/api/challenges", async (req, res) => {
   try {
-    const mockError = process.env.MOCK_ERROR === 'true';
+    const mockError = process.env.MOCK_ERROR === "true";
     if (mockError) {
       throw new Error("Forced error for testing");
     }
@@ -206,24 +199,12 @@ app.get("/api/recipes", async (req, res) => {
   }
 });
 
-app.get("/api/recipePics", async (req, res) => {
-  try {
-    const { data } = await axios.get("https://picsum.photos/400");
-    res.json(data);
-  } catch (error) {
-    console.error("Error fetching data from API:", error.message);
-    res.status(500).json({ error: "Failed to fetch recipes data" });
-  }
-});
-
 export const startServer = () => {
   app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
   });
 };
 
-
 startServer();
-
 
 export default app;
