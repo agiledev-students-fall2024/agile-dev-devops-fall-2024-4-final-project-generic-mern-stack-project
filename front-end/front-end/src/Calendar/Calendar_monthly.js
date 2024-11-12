@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Calendar_monthly.css';
 //import './index.css'
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const Calendar_monthly = () => {
     const monthNames = [
@@ -15,9 +16,9 @@ const Calendar_monthly = () => {
     const year = currentDate.getFullYear();
 
     // get the first date of the current month
-    const firstDay = new Date(year, month, 1).getDay();
+    const firstDay = new Date(year, month-1, 1).getDay();
     // get the total days in the month
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const daysInMonth = new Date(year, month, 0).getDate();
     // generate an array of all the days in the month
     const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1);
 
@@ -32,6 +33,26 @@ const Calendar_monthly = () => {
 
     const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
+    const [taskCounts, setTaskCounts] = useState({});
+
+    // Fetch task counts for each day in the current month
+    useEffect(() => {
+        const fetchTaskCounts = async () => {
+            try {
+                const response = await axios.get(`http://localhost:4000/calendar/month/${year}/${month}/tasks`);
+                const taskData = response.data.reduce((acc, { day, count }) => {
+                    acc[day] = count;
+                    return acc;
+                }, {});
+                setTaskCounts(taskData);
+            } catch (error) {
+                console.error("Error fetching task counts", error);
+            }
+        };
+        fetchTaskCounts();
+    }, [year, month]);
+
+
     return (
         <main>
             <div className="calendar-container">
@@ -40,6 +61,7 @@ const Calendar_monthly = () => {
                 </div>
 
                 <div className="month">
+                    
                     <div className='header'>
                         {dayNames.map((dayName, index) => (
                             <div className="dayName" key={index}>{dayName}</div>
@@ -61,7 +83,7 @@ const Calendar_monthly = () => {
                                     <div className='task_calendar'>
                                         {day !== null ? <p>Tasks:</p> : null} 
                                         {/* Placeholder for task count or actual data */}
-                                        {day !== null ? <p>3</p> : null} 
+                                        {day !== null ?  <p>{taskCounts[day] || 0}</p>: null }
                                     </div>
                                 </div>
                             ))}
