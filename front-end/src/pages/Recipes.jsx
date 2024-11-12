@@ -22,7 +22,8 @@ function Recipes() {
           ingredients: item.ingredients,
           steps: item.instructions ? item.instructions.split(". ") : [],
           duration: item.total_time,
-          imgs: `${process.env.REACT_APP_BACK_PORT}/api/recipePics`,
+          //imgs: `${process.env.REACT_APP_BACK_PORT}/api/recipePics`,
+          imgs: "https://picsum.photos/400",
         }));
         setRecipeData(formattedData);
       } catch (error) {

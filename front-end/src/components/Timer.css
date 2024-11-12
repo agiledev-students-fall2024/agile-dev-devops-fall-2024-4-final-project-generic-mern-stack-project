@@ -7,7 +7,8 @@
 
 .timer-bar {
   height: 20px;
-  background-color: #4caf50;
+  color: black;
+  background-color: white;
   transition: width 1s linear;
   border-radius: 5px;
   margin: 10px 0;
