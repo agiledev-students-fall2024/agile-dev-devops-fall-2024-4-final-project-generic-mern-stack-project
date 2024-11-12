@@ -57,7 +57,7 @@ export default function StoreSearchBar() {
   const navigate = useNavigate();
 
   useEffect(() => {  // <-- useEffect to fetch stores from backend
-    fetch("http://localhost:3001/stores")
+    fetch("http://localhost:3002/stores")
       .then((response) => response.json())
       .then((data) => setStores(data))
       .catch((error) => console.error("Error fetching stores:", error));
