@@ -86,6 +86,18 @@ export default function Filters({
   getFilterValuesFromURL,
 }: Props) {
   const { toggleFilter } = useMyStores();
+  const [brandFilters, setBrandFilters] = useState<string[]>([]);
+  const [categoryFilters, setCategoryFilters] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3002/filters")
+      .then((response) => response.json())
+      .then((data) => {
+        setBrandFilters(data.brands);
+        setCategoryFilters(data.categories);
+      })
+      .catch((error) => console.error("Error fetching filters:", error));
+  }, []);
 
   const handleFilterClick = (
     filter: keyof FiltersType,
