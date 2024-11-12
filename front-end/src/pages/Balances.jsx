@@ -1,81 +1,116 @@
-import './Balances.css'
-import { useState } from 'react'
+import './Balances.css';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const Balances = () => {
-  // State for managing accounts
-  const [accounts, setAccounts] = useState([])
+  const [accounts, setAccounts] = useState([]);
+  const [debts, setDebts] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentItemIndex, setCurrentItemIndex] = useState(null);
+  const [isDebtModal, setIsDebtModal] = useState(false);
+  const [newItem, setNewItem] = useState({
+    type: '',
+    amount: '',
+    number: '',
+    dueDate: '',
+    paymentSchedule: ''
+  });
 
-  // State for managing debts
-  const [debts, setDebts] = useState([])
+  // Base URL from environment variable
+  const BASE_URL = process.env.REACT_APP_SERVER_HOSTNAME;
 
-  // Modal state
-  const [showModal, setShowModal] = useState(false)
-  const [isEditing, setIsEditing] = useState(false)
-  const [currentItemIndex, setCurrentItemIndex] = useState(null)
-
-  const [isDebtModal, setIsDebtModal] = useState(false)
-
-  const [newItem, setNewItem] = useState({ type: '', amount: '', number: '', dueDate: '', paymentSchedule: '' }) // Temp account or debt info
+  // Fetch accounts and debts on initial load
+  useEffect(() => {
+    axios.get(`${BASE_URL}/api/accounts`)
+      .then(res => setAccounts(res.data))
+      .catch(err => console.error("Error fetching accounts:", err));
+      
+    axios.get(`${BASE_URL}/api/debts`)
+      .then(res => setDebts(res.data))
+      .catch(err => console.error("Error fetching debts:", err));
+  }, [BASE_URL]);
 
   const handleAddOrEditItem = () => {
+    const route = isDebtModal ? `${BASE_URL}/api/debts` : `${BASE_URL}/api/accounts`;
+    const payload = { ...newItem, amount: Number(newItem.amount) };
+
     if (isEditing) {
-      if (isDebtModal) {
-        const updatedDebts = [...debts]
-        updatedDebts[currentItemIndex] = { ...newItem, amount: Number(newItem.amount) }
-        setDebts(updatedDebts)
-      } else {
-        const updatedAccounts = [...accounts]
-        updatedAccounts[currentItemIndex] = { ...newItem, amount: Number(newItem.amount) }
-        setAccounts(updatedAccounts)
-      }
+      // Editing existing item
+      const id = isDebtModal ? debts[currentItemIndex].id : accounts[currentItemIndex].id;
+      axios.put(`${route}/${id}`, payload)
+        .then(response => {
+          if (isDebtModal) {
+            const updatedDebts = [...debts];
+            updatedDebts[currentItemIndex] = response.data;
+            setDebts(updatedDebts);
+          } else {
+            const updatedAccounts = [...accounts];
+            updatedAccounts[currentItemIndex] = response.data;
+            setAccounts(updatedAccounts);
+          }
+        })
+        .catch(err => console.error("Error updating item:", err));
     } else {
-      if (isDebtModal) {
-        setDebts([...debts, { ...newItem, amount: Number(newItem.amount) }])
-      } else {
-        setAccounts([...accounts, { ...newItem, amount: Number(newItem.amount) }])
-      }
+      // Adding new item
+      axios.post(route, payload)
+        .then(response => {
+          if (isDebtModal) {
+            setDebts([...debts, response.data]);
+          } else {
+            setAccounts([...accounts, response.data]);
+          }
+        })
+        .catch(err => console.error("Error adding item:", err));
     }
 
-    setNewItem({ type: '', amount: '', number: '', dueDate: '', paymentSchedule: '' })
-    setShowModal(false)
-    setIsEditing(false)
-    setIsDebtModal(false)
-  }
+    resetForm();
+  };
 
   const handleDeleteItem = (index, isDebt) => {
-    if (isDebt) {
-      const updatedDebts = debts.filter((_, i) => i !== index)
-      setDebts(updatedDebts)
-    } else {
-      const updatedAccounts = accounts.filter((_, i) => i !== index)
-      setAccounts(updatedAccounts)
-    }
-  }
+    const route = isDebt ? `${BASE_URL}/api/debts` : `${BASE_URL}/api/accounts`;
+    const id = isDebt ? debts[index].id : accounts[index].id;
+    axios.delete(`${route}/${id}`)
+      .then(() => {
+        if (isDebt) {
+          const updatedDebts = debts.filter((_, i) => i !== index);
+          setDebts(updatedDebts);
+        } else {
+          const updatedAccounts = accounts.filter((_, i) => i !== index);
+          setAccounts(updatedAccounts);
+        }
+      })
+      .catch(err => console.error("Error deleting item:", err));
+  };
 
   const handleEditItem = (index, isDebt) => {
     if (isDebt) {
-      setNewItem(debts[index])
-      setCurrentItemIndex(index)
-      setIsDebtModal(true)
+      setNewItem(debts[index]);
+      setCurrentItemIndex(index);
+      setIsDebtModal(true);
     } else {
-      setNewItem(accounts[index])
-      setCurrentItemIndex(index)
-      setIsDebtModal(false)
+      setNewItem(accounts[index]);
+      setCurrentItemIndex(index);
+      setIsDebtModal(false);
     }
-    setIsEditing(true)
-    setShowModal(true)
-  }
+    setIsEditing(true);
+    setShowModal(true);
+  };
 
-  // Function to handle the Plaid button click... doesn't work yet
+  const resetForm = () => {
+    setNewItem({ type: '', amount: '', number: '', dueDate: '', paymentSchedule: '' });
+    setShowModal(false);
+    setIsEditing(false);
+    setIsDebtModal(false);
+  };
+
   const handlePlaidButtonClick = () => {
-    alert("This button doesn't work yet!")
-  }
+    alert("This button doesn't work yet!");
+  };
 
   return (
     <main className="Home">
-      {/* Flexbox container for Accounts and Debt sections */}
       <div className="container">
-        {/* Accounts Section */}
         <section className="accounts-section">
           <h1>Account Balances</h1>
           <p>View and edit all bank account information below</p>
@@ -99,14 +134,12 @@ const Balances = () => {
             <button className="add-more-button" onClick={() => { setShowModal(true); setIsDebtModal(false) }}>
               Add More Accounts
             </button>
-            {/* New Link Account with Plaid Button */}
             <button className="plaid-button" onClick={handlePlaidButtonClick}>
               Link Account with Plaid
             </button>
           </div>
         </section>
 
-        {/* Debt Management Section */}
         <section className="debt-section">
           <h1>Debt Management</h1>
           <p>View and edit all debt you have below</p>
@@ -135,7 +168,6 @@ const Balances = () => {
         </section>
       </div>
 
-      {/* Modal for Adding/Editing Accounts or Debts */}
       {showModal && (
         <div className="modal">
           <div className="modal-content">
@@ -185,20 +217,20 @@ const Balances = () => {
                     type="text"
                     value={newItem.paymentSchedule}
                     onChange={(e) => setNewItem({ ...newItem, paymentSchedule: e.target.value })}
-                    placeholder="e.g., Monthly"
-                  />
+                  placeholder="e.g., Monthly"
+                />
                 </label>
               </>
             )}
             <div className="modal-buttons">
               <button onClick={handleAddOrEditItem}>{isEditing ? 'Save Changes' : 'Add'}</button>
-              <button onClick={() => setShowModal(false)}>Cancel</button>
+              <button onClick={resetForm}>Cancel</button>
             </div>
           </div>
         </div>
       )}
     </main>
-  )
-}
+  );
+};
 
-export default Balances
+export default Balances;
