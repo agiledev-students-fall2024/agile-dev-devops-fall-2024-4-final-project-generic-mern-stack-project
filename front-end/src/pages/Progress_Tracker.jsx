@@ -8,7 +8,7 @@ function Progress_Tracker(){
     useEffect(() => {
         const fetchProgressData = async () => {
 
-            const response = await axios.get('https://my.api.mockaroo.com/users.json?key=66da8e80');
+            const response = await axios.get(`${process.env.REACT_APP_BACK_PORT}/api/progress-tracker`);
             const fetchedData = response.data || [];
             console.log(fetchedData)
             
