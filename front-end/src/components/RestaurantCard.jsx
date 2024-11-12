@@ -6,7 +6,7 @@ const RestaurantCard = ({ restaurant }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   if (!restaurant) return <div>No Restaurant Found</div>;
-
+  // || !restaurant.imgs || restaurant.imgs.length === 0
   const totalImages = restaurant.images.length;
 
   const handleImageClick = (event) => {
