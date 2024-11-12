@@ -3,11 +3,17 @@ import fs from 'fs';
 
 const router = express.Router();
 const activities = JSON.parse(fs.readFileSync('./mock-data/activities.json', 'utf-8'));
+const activitiesPath = './mock-data/activities.json'; // Define activitiesPath globally
 
 // Get all activities (GET) - Retrieve and respond with a list of all activities in the system
 router.get('/', (req, res) => {
     res.json(activities);
   });  
+
+  const saveActivitiesToFile = () => {
+    fs.writeFileSync(activitiesPath, JSON.stringify(activities, null, 2), 'utf-8');
+  };
+
 
 router.get('/location/:locationId', (req, res) => {
     const locationId = req.params.locationId;
