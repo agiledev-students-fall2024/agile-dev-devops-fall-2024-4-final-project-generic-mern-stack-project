@@ -39,10 +39,15 @@ router.post('/tasks', async (req, res) => {
   res.status(201).json(newTask);
 });
 
+
+//Edit task
 router.put('/tasks/:id', async (req, res) => {
   const updatedTask = { ...req.body, id: req.params.id };
+
+  // Where to save the updatedTask to a database.
   res.json(updatedTask);
 });
+
 
 router.put('/tasks/:id/status', async (req, res) => {
   const { status } = req.body;
