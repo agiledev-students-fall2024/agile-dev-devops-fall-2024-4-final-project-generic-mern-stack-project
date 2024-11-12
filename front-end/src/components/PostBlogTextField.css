@@ -13,6 +13,7 @@
     flex-direction: column;
 
     min-height: 400px;
+    color: brown;
 }
 
 textarea {
@@ -23,6 +24,7 @@ textarea {
     padding: 8px;
     font-size: 14px;
     resize: none;
+    color: brown;
 }
 
 .header {

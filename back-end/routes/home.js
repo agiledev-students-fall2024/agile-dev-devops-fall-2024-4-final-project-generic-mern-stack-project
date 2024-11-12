@@ -1,37 +1,24 @@
-// import and instantiate express
+// Import express and axios
 import express from 'express';
+import axios from 'axios';
+
 const router = express.Router();
 
 router.get("/api/home", async (req, res) => {
     try {
-        // Mock data structured to match the BlogPost component
-        const posts = [
-            {
-                id: 1,
-                profilePic: "https://via.placeholder.com/150",
-                name: "Jane Doe",
-                userName: "jane_doe",
-                text: "Exploring ways to live sustainably in urban environments.",
-                likes: 152,
-                images: ["https://via.placeholder.com/400"]
-            },
-            {
-                id: 2,
-                profilePic: "https://via.placeholder.com/150",
-                name: "John Smith",
-                userName: "john_smith",
-                text: "Building trust and support within your local community.",
-                likes: 89,
-                images: ["https://via.placeholder.com/400", "https://via.placeholder.com/400"]
-            },
-            // Add more mock posts?
-        ];
-        res.json(posts);
+        
+        const mockAPIUrl = 'https://my.api.mockaroo.com/posts.json?key=3ac6ebb0';
+
+        // Fetch data from Mockaroo
+        const response = await axios.get(mockAPIUrl);
+
+        // Send the data as a JSON response
+        res.json(response.data);
     } catch (err) {
         console.error(err);
         res.status(500).json({
             error: err.message,
-            status: "Failed to retrieve posts for the home page."
+            status: "Failed to retrieve posts from Mockaroo."
         });
     }
 });
