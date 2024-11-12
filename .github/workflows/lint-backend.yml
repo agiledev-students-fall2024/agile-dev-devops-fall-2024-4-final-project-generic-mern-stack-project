@@ -2,29 +2,29 @@ name: Lint Backend JavaScript
 
 on:
   push:
-    paths:
-      - 'back-end/**/*.js'
+    branches:
+      - master
   pull_request:
-    paths:
-      - 'back-end/**/*.js'
+    branches:
+      - master
 
 jobs:
   lint:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
 
-    - name: Install dependencies
-      run: npm install
-      working-directory: back-end
+      - name: Install dependencies
+        run: npm ci
+        working-directory: back-end
 
-    - name: Run ESLint
-      run: npx eslint '**/*.js'
-      working-directory: back-end 
+      - name: Run ESLint
+        run: npx eslint .
+        working-directory: back-end
