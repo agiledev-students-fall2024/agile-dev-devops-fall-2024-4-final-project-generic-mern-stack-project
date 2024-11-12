@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, doc, getDoc, collection, getDocs, onSnapshot, addDoc } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, collection, getDocs, onSnapshot, addDoc, query, orderBy } from 'firebase/firestore';
 
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -37,13 +37,13 @@ const getAllMessages = async (meetingId) => {
 
 const listenForNewMessages = async (meetingId, callback, all = false) => {
     const messagesRef = collection(db, 'meetings', meetingId, 'messages');
-    const unsub = onSnapshot(messagesRef, (snapshot) => {
+    const unsub = onSnapshot(query(messagesRef, orderBy('timestamp')), (snapshot) => {
         if (all) {
-            callback(snapshot.docs.map(doc => doc.data()));
+            callback(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
         } else {
             snapshot.docChanges().forEach(change => {
                 if (change.type === 'added') {
-                    callback(change.doc.data());
+                    callback({ ...change.doc.data(), id: change.doc.id });
                 }
             });
         }
@@ -53,11 +53,15 @@ const listenForNewMessages = async (meetingId, callback, all = false) => {
 
 const sendDataToMeetingRoom = async (meetingId, service, data) => {
     const messagesRef = collection(db, 'meetings', meetingId, 'messages');
-    await addDoc(messagesRef, { service, data, timestamp: Date.now() });
-    // await messagesRef.add({ service, data, timestamp: Date.now() });
+    const res = await addDoc(messagesRef, { service, data, timestamp: Date.now() });
 }
 
-export { getMeeting, getAllMessages, listenForNewMessages, sendDataToMeetingRoom };
+const partialEditMessage = async (meetingId, data) => {
+    const docRef = doc(db, 'meetings', meetingId);
+    await docRef.update(data);
+}
+
+export { getMeeting, getAllMessages, listenForNewMessages, sendDataToMeetingRoom, partialEditMessage };
 
 // test
 // (async () => {

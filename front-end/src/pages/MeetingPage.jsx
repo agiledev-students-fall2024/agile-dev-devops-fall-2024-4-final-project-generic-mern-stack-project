@@ -5,7 +5,9 @@ import VideoBox from "../components/VideoBox";
 import { useNavigate, useParams } from 'react-router-dom';
 import '../assets/meeting.css';
 
-import { getAllMessages, listenForNewMessages } from '../services/firebaseApi';
+import { v4 as uuidv4 } from 'uuid';
+
+import { getAllMessages, listenForNewMessages, partialEditMessage, sendDataToMeetingRoom } from '../services/firebaseApi';
 
 import Chat from "../components/Chat";
 import CodeEditor from "../components/CodeEditor";
@@ -18,10 +20,22 @@ function MeetingPage() {
 
     const { id: meetingId } = useParams();
 
-    const [isMuted, setIsMuted] = React.useState(false);
-    const [isCameraOff, setIsCameraOff] = React.useState(true);
+    const generatedUUID = uuidv4();
+    const [RTCClientId, setRTCClientId] = React.useState(generatedUUID);
+
+    const [isAudioOn, setIsAudioOn] = React.useState(false);
+    const [isCameraOn, setIsCameraOn] = React.useState(false);
+
+    // other
+    const [isOtherAudioOn, setIsOtherAudioOn] = React.useState(false);
+    const [isOtherCameraOn, setIsOtherCameraOn] = React.useState(false);
 
     const [userStream, setUserStream] = React.useState(null);
+    const [remoteStream, setRemoteStream] = React.useState(null);
+    const peerConnection = useRef(null);
+    const offerSentRef = useRef(false);
+
+    const [connected, setConnected] = React.useState(false);
 
     const [chatVisible, setChatVisible] = React.useState(true);
 
@@ -33,20 +47,42 @@ function MeetingPage() {
     const chatRef = useRef(null);
 
     const toggleAudio = () => {
-        setIsMuted(!isMuted);
+        if (userStream) {
+            const audioTracks = userStream.getAudioTracks();
+            console.log('Audio tracks:', audioTracks);
+            console.log('audio on previously:', isAudioOn);
+            audioTracks.forEach(track => {
+                track.enabled = !isAudioOn;
+                console.log(`Track ${track.label} enabled: ${track.enabled}`);
+            });
+
+            sendDataToMeetingRoom(meetingId, 'video', {
+                type: 'audio-visibility',
+                newVisibility: !isAudioOn,
+                clientId: RTCClientId
+            });
+        }
+        setIsAudioOn(!isAudioOn);
     };
 
     const toggleVideo = () => {
         if (userStream) {
             const videoTracks = userStream.getVideoTracks();
             console.log('Video tracks:', videoTracks);
-            console.log('camera off previously:', isCameraOff);
+            console.log('camera on previously:', isCameraOn);
             videoTracks.forEach(track => {
-                track.enabled = isCameraOff;
+                track.enabled = !isCameraOn;
                 console.log(`Track ${track.label} enabled: ${track.enabled}`);
             });
+
+            sendDataToMeetingRoom(meetingId, 'video', {
+                type: 'video-visibility',
+                newVisibility: !isCameraOn,
+                clientId: RTCClientId,
+            });
         }
-        setIsCameraOff(!isCameraOff);
+
+        setIsCameraOn(!isCameraOn);
     };
 
     const toggleChat = () => {
@@ -82,69 +118,220 @@ function MeetingPage() {
     };
 
     const handleLeave = () => {
+        userStream.getTracks().forEach(track => {
+            track.stop();
+        });
         navgiate('/joincreatemeeting');
+
     };
 
-    const setSelfVideoAudioConnection = async () => {
+
+
+
+    const initializeVideoConnection = async (messages) => {
+
+        // create a new RTCPeerConnection
+        const configuration = {
+            iceServers: [
+                {
+                    urls: [
+                        'stun:stun1.l.google.com:19302',
+                        'stun:stun2.l.google.com:19302'
+                    ]
+                }
+            ],
+            iceCandidatePoolSize: 10
+        };
+
+        const pc = new RTCPeerConnection(configuration);
+        peerConnection.current = pc;
+
+        // Get user media stream first
         const stream = await navigator.mediaDevices.getUserMedia({
             video: true,
-            audio: false,
+            audio: true,
         });
+
+        // Important: Add tracks BEFORE creating offer/answer
         stream.getTracks().forEach(track => {
-            track.enabled = !isCameraOff
-            console.log(`Track ${track.label} enabled: ${track.enabled}`);
+            track.enabled = !isCameraOn;
+            const sender = peerConnection.current.addTrack(track, stream);
+            console.log('Added track to peer connection:', track.kind, sender);
         });
+
         setUserStream(stream);
-    }
+
+        // Set up remote stream handling
+        const _remoteStream = new MediaStream();
+        peerConnection.current.ontrack = (event) => {
+            console.log('Received remote track:', event.track.kind);
+            _remoteStream.addTrack(event.track);
+            setRemoteStream(_remoteStream);
+        };
+
+
+        peerConnection.current.onicecandidate = (event) => {
+            console.log('onicecandidate event:', event);
+            if (event.candidate) {
+                sendDataToMeetingRoom(meetingId, 'video', {
+                    type: 'candidate',
+                    candidate: event.candidate.toJSON(),
+                    clientId: RTCClientId,
+                });
+            }
+        };
+
+        // TODO: handle if drop
+        peerConnection.current.oniceconnectionstatechange = () => {
+            console.log(`ICE connection state: ${peerConnection.current?.iceConnectionState}`);
+        };
+
+
+    };
+
+    // useEffect(() => {
+    //     if (peerConnection.current && remoteStream) {
+    //         peerConnection.current.ontrack = (event) => {
+    //             console.log('ontrack event:', event);
+    //             event.streams[0].getTracks().forEach(track => {
+    //                 remoteStream.addTrack(track);
+    //             });
+    //         };
+    //     }
+    // }, [remoteStream]);
+
+
 
     const initializeFirebase = async () => {
         const existingMessages = await getAllMessages(meetingId);
         setDataStreamingMessages(existingMessages);
-        const unsub = listenForNewMessages(meetingId, (message) => {
+        const unsub = listenForNewMessages(meetingId, async (message) => {
             if (message) {
-                const service = message.service;
                 const lastMessage = message[message.length - 1];
                 // switch case for different services
-                if (service === 'code') {
+                if (lastMessage.service === 'code') {
                     // TODO: handle new data from remote code editor
                 } else if (lastMessage.service == 'chat') {
                     console.log(lastMessage);
                     if (chatRef.current) {
                         chatRef.current.loadMessages(message);
                     }
-                } else if (service === 'whiteboard') {
+                } else if (lastMessage.service === 'whiteboard') {
                     // TODO: handle new whiteboard data
-                } else if (service === 'screenshare') {
+                } else if (lastMessage.service === 'screenshare') {
                     // TODO: handle new screenshare data
-                } else if (service === 'video') {
-                    // TODO: handle new video data
                 }
-                setDataStreamingMessages([...dataStreamingMessages, message]);
+                if (lastMessage.service === 'video') {
+                    if (lastMessage.data.type === 'candidate') {
+                        await peerConnection.current.addIceCandidate(lastMessage.data.candidate);
+                    } else if (lastMessage.data.type === 'offer') {
+                        if (lastMessage.data.clientId !== RTCClientId) {
+                            console.log('received offer');
+                            if (peerConnection.current.signalingState === "stable") {
+                                await peerConnection.current.setRemoteDescription(lastMessage.data.offer);
+                                const answer = await peerConnection.current.createAnswer();
+                                await peerConnection.current.setLocalDescription(answer);
+                                sendDataToMeetingRoom(meetingId, 'video', {
+                                    type: 'answer',
+                                    answer: answer,
+                                    clientId: RTCClientId,
+                                });
+                            } else {
+                                console.error("Unexpected signaling state:", peerConnection.current.signalingState);
+                            }
+
+                            // also send audio and video visibility
+                            sendDataToMeetingRoom(meetingId, 'video', {
+                                type: 'video-visibility',
+                                newVisibility: !isCameraOn,
+                                clientId: RTCClientId,
+                            });
+
+                            sendDataToMeetingRoom(meetingId, 'video', {
+                                type: 'audio-visibility',
+                                newVisibility: !isAudioOn,
+                                clientId: RTCClientId,
+                            });
+
+                        }
+                    } else if (lastMessage.data.type === 'answer' && peerConnection.current.signalingState !== "stable") {
+                        console.log('received answer');
+                        await peerConnection.current.setRemoteDescription(lastMessage.data.answer);
+                        console.log('set remote description');
+                    } else if (lastMessage.data.type === 'video-visibility' && lastMessage.data.clientId !== RTCClientId) {
+                        console.log('received video visibility change');
+                        if (remoteStream) {
+                            const videoTracks = remoteStream.getVideoTracks();
+                            videoTracks.forEach(track => {
+                                track.enabled = message.data.newVisibility;
+                                console.log(`Remote track ${track.label} enabled: ${track.enabled}`);
+                            });
+                        }
+                        setIsOtherCameraOn(lastMessage.data.newVisibility);
+                    } else if (lastMessage.data.type === 'audio-visibility' && lastMessage.data.clientId !== RTCClientId) {
+                        console.log('received audio visibility change');
+                        if (remoteStream) {
+                            const audioTracks = remoteStream.getAudioTracks();
+                            audioTracks.forEach(track => {
+                                track.enabled = message.data.newVisibility;
+                                console.log(`Remote track ${track.label} enabled: ${track.enabled}`);
+                            });
+                        }
+                        setIsOtherAudioOn(lastMessage.data.newVisibility);
+                    }
+                }
+                setDataStreamingMessages(prevMessages => [...prevMessages, message]);
             }
         }, true); // true to only get new messages vs getting all messsages
-        return unsub;
+        return [unsub, existingMessages];
 
     }
 
 
+
     useEffect(() => {
-        let unsub = null;
-        const _initialize = async () => {
+        (async () => {
+            let unsub = null;
+            let closePeerConnection = null;
             console.log('initializing...');
-            await setSelfVideoAudioConnection();
-            unsub = await initializeFirebase();
-        };
-        _initialize();
-        return () => {
-            if (unsub) {
-                unsub();
-            }
-            if (userStream) {
-                userStream.getTracks().forEach(track => {
-                    track.stop();
+
+            const [u, messages] = await initializeFirebase();
+            unsub = u;
+            closePeerConnection = await initializeVideoConnection(messages);
+            await sendDataToMeetingRoom(meetingId, 'video', {
+                type: 'join',
+                clientId: RTCClientId,
+            });
+            const newMessages = await getAllMessages(meetingId)
+            const joinMsgs = newMessages.filter((message) => message.service === 'video' && message.data.type === 'join' && message.data.clientId !== RTCClientId)
+            if (joinMsgs.length > 0 && peerConnection.current.signalingState === "stable" && !offerSentRef.current) {
+                console.log('sending offer');
+                const offer = await peerConnection.current.createOffer();
+                await peerConnection.current.setLocalDescription(offer);
+
+                sendDataToMeetingRoom(meetingId, 'video', {
+                    type: 'offer',
+                    offer: offer,
+                    clientId: RTCClientId,
                 });
+                offerSentRef.current = true;
             }
-        };
+
+
+            return () => {
+                if (peerConnection.current) {
+                    peerConnection.current.close();
+                    peerConnection.current = null;
+                }
+                if (unsub) {
+                    unsub();
+                }
+                if (userStream) {
+                    userStream.getTracks().forEach(track => track.stop());
+                }
+            };
+
+        })()
     }, []);
 
 
@@ -163,10 +350,10 @@ function MeetingPage() {
                         {
                             videoVisible &&
                             <VideoBox
-                                mediaSource={userStream}
-                                displayName={"You"}
-                                videoOn={!isCameraOff}
-                                audioOn={!isMuted}
+                                mediaSource={remoteStream}
+                                displayName={"Other guy"}
+                                videoOn={isOtherCameraOn}
+                                audioOn={isOtherAudioOn}
                                 flipHorizontal={true}
                             />
                         }
@@ -181,10 +368,10 @@ function MeetingPage() {
                     </div>
                     <div className="absolute top-20 right-4 w-64 h-48">
                         <VideoBox
-                            mediaSource={userStream}
-                            displayName={"other guy"}
-                            videoOn={!isCameraOff}
-                            audioOn={false}
+                            mediaSource={videoVisible ? userStream : remoteStream}
+                            displayName={videoVisible ? "You" : "Other guy"}
+                            videoOn={videoVisible ? isCameraOn : isOtherCameraOn}
+                            audioOn={videoVisible ? false : isOtherAudioOn}
                             flipHorizontal={true}
                             collapsible={true}
                         />
@@ -195,12 +382,12 @@ function MeetingPage() {
                 <div className="bg-gray-700 rounded-xl px-4 flex self-end justify-between items-center w-full shadow-md">
                     <div className="flex">
                         <NavBarButton
-                            icon={isMuted ? FaMicrophoneSlash : FaMicrophone}
+                            icon={!isAudioOn ? FaMicrophoneSlash : FaMicrophone}
                             text={"Audio"}
                             onClick={toggleAudio}
                         />
                         <NavBarButton
-                            icon={isCameraOff ? FaVideoSlash : FaVideo}
+                            icon={!isCameraOn ? FaVideoSlash : FaVideo}
                             text={"Video"}
                             onClick={toggleVideo}
                         />
@@ -219,7 +406,7 @@ function MeetingPage() {
                 </div>
             </div>
             <div className={`transition-all duration-300 ${chatVisible ? 'w-3/10' : 'w-0'} h-full bg-gray-900 overflow-y-auto`}>
-                {chatVisible && <Chat meetingId={meetingId} ref={chatRef}/>}
+                {chatVisible && <Chat meetingId={meetingId} ref={chatRef} />}
             </div>
         </div>
     );

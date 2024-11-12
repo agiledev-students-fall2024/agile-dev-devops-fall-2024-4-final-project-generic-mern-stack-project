@@ -39,7 +39,7 @@ function VideoBox({ mediaSource, displayName, audioOn, videoOn, flipHorizontal, 
                             className={`w-full h-full object-cover ${flipHorizontal ? 'transform -scale-x-100' : ''}`}
                             autoPlay
                             playsInline
-                            muted={audioOn}
+                            muted={!audioOn}
                         ></video>
                     ) : (
                         <div className="flex align-center bg-black items-center justify-center h-full">
