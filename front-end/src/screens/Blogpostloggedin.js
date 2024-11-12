@@ -4,6 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import postData from '../fillerData/posts.json';
 import userData from '../fillerData/users.json';
 import loggedInData from '../fillerData/loggedIn.json'; // Import logged-in user data
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const BlogPostLoggedIn = () => {
   const { postId } = useParams(); // Use post ID from URL to get specific post data
