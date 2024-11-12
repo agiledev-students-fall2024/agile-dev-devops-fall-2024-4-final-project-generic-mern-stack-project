@@ -129,9 +129,6 @@ function Hamburger({ activeTab }) {
                         <li>
                             <Link to="/profile" onClick={() => { setIsOpen(false); }}><div className="navigation-icon"><CgProfile /> Profile</div></Link>
                         </li>
-                        <li>
-                            <Link to="/login">Sign Out</Link>
-                        </li>
                     </ul>
                 </div>
             )}

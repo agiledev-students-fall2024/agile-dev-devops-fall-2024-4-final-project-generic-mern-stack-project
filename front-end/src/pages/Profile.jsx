@@ -59,6 +59,10 @@ function Profile() {
         navigate('/signup-profile');
     }
 
+    function signOut() {
+        navigate('/login');
+    }
+
     if (!profileData) {
         return <div>Loading...</div>;
     }
@@ -81,6 +85,8 @@ function Profile() {
                 </div>
 
                 <button type="button" onClick={goToSignupProfile}>Edit Profile</button>
+                <div style={{ margin: '10px 0' }}></div>
+                <button type="button" onClick={signOut}>Sign Out</button>
             </div>
         </>
     );
