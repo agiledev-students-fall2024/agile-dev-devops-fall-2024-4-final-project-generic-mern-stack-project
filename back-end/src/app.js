@@ -11,16 +11,19 @@ const morgan = require('morgan'); // middleware for logging HTTP requests
 const app = express(); // instantiate an Express object
 
 app.use((req, res, next) => {
-    // Allow requests from your React app
-    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  // Allow requests from your React app
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+  );
 
-    // Handle preflight requests
-    if (req.method === 'OPTIONS') {
-        return res.sendStatus(200);
-    }
-    next();
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
 });
 
 // Use Middleware
@@ -40,12 +43,18 @@ app.use('/api/users', userRoutes);
 app.use('/api/incidents', incidentRoutes);
 app.use('/api/routes', routeRoutes);
 
+// Route that triggers an internal error (500)
+app.get('/error-route', (req, res, next) => {
+  const error = new Error();
+  next(error); // pass the error to the error handling middleware
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
-    console.error('Error:', err);
-    res.status(err.status || 500).json({
-        error: err.message || 'Internal Server Error'
-    });
+  console.error('Error:', err);
+  res.status(err.status || 500).json({
+    error: err.message || 'Internal Server Error',
+  });
 });
 
 /**
@@ -57,7 +66,7 @@ app.use((err, req, res, next) => {
  * @returns {void}
  */
 app.get('/', (req, res) => {
-    res.send('Goodbye world!');
+  res.send('Goodbye world!');
 });
 
 // export the express app we created to make it available to other modules
