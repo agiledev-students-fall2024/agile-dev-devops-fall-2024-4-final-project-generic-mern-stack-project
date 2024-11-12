@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha",
+    "test:coverage": "c8 mocha"
   },
   "author": "",
   "license": "ISC",
@@ -14,6 +15,13 @@
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "mongoose": "^8.8.0",
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.7",
+    "chai": "^5.1.2"
+  },
+  "devDependencies": {
+    "@types/chai-http": "^4.2.4",
+    "c8": "^10.1.2",
+    "chai-http": "^5.1.1",
+    "mocha": "^10.8.2"
   }
 }

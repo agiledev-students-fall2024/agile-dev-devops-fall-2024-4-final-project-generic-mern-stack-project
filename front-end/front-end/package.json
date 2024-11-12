@@ -36,5 +36,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "c8": "^10.1.2",
+    "chai": "^5.1.2",
+    "mocha": "^10.8.2"
   }
 }
