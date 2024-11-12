@@ -3,6 +3,8 @@ import InputField from "../components/InputField";
 import LogoPageTitle from "../components/LogoPageTitle";
 import SubmitButton from "../components/SubmitButton";
 import { Link, useNavigate } from "react-router-dom";
+import { axiosInstance } from "../axios";
+import toast from "react-hot-toast";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -18,8 +20,19 @@ export default function Login() {
 
   function handleBtnClick(e) {
     e.preventDefault();
-    console.log("Login as: ", username, password);
-    navigate("/");
+    axiosInstance
+      .post("/login", { username, password })
+      .then((response) => {
+        console.log(response.data);
+        toast.success("Logged in successfully");
+      })
+      .then(() => {
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("Error in login", error.message);
+        toast.error("Invalid credentials");
+      });
   }
 
   return (

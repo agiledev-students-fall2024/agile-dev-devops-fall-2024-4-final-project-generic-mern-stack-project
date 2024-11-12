@@ -1,5 +1,5 @@
 import express from "express";
-import multer from "multer";
+// import multer from "multer";
 import axios from "axios";
 import morgan from "morgan";
 import cors from "cors";
@@ -14,7 +14,11 @@ import searchCommunity from "./routes/search-community.js";
 import subcommunity from "./routes/subcommunity.js";
 import home from "./routes/home.js";
 import post from "./routes/post.js";
+<<<<<<< HEAD
 import profile from "./routes/profile.js";
+=======
+import multer from "./lib/multer.js";
+>>>>>>> 15719031670db0d47327621f5dc77acea4408d7e
 
 const app = express(); // instantiate an Express object
 
@@ -26,7 +30,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // make 'public' directory publicly readable with static content
-app.use("/static", express.static("public"));
+app.use("/public", express.static("public"));
 
 // adding CORS middleware
 app.use(cors());
@@ -38,13 +42,16 @@ app.use(accessibility);
 
 app.use(auth);
 app.use(community);
+app.use(multer);
 
 app.use(searchCommunity);
 app.use(subcommunity);
 
 app.use(home);
 app.use(post);
+<<<<<<< HEAD
 app.use(profile)
+=======
+>>>>>>> 15719031670db0d47327621f5dc77acea4408d7e
 
 export default app;
-

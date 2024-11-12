@@ -5,13 +5,14 @@
   "type": "module",
   "scripts": {
     "start": "nodemon server",
-    "test": "mocha --recursive test/**/*.js"
+    "test": "c8 mocha --timeout=3000"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
     "axios": "^1.7.7",
+    "c8": "^10.1.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
@@ -21,7 +22,10 @@
   },
   "devDependencies": {
     "chai": "^5.1.2",
+    "chai-http": "^5.1.1",
     "mocha": "^10.8.2",
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.7",
+    "nyc": "^17.1.0",
+    "supertest": "^7.0.0"
   }
 }

@@ -20,8 +20,7 @@ const Profile = (props) => {
     const [onBlogs, setOnBlogs] = useState(false);
 
     useEffect(() => {
-        // `${process.env.REACT_APP_SERVER_HOSTNAME}/api/profile`
-        axios("http://localhost:8000/api/profile")
+        axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/profile`)
             .then(response => {
                 setUser(response.data)
             })
