@@ -1,6 +1,7 @@
 const loggedIn = [
     {
         "id": 1
+        
     }
 ]
 

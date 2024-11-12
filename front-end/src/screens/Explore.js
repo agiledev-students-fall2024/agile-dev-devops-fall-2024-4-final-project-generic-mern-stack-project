@@ -13,7 +13,7 @@ const Explore = () => {
   React.useEffect(() => {
     const fetchData = async () => {
         try {
-            const response = await axios.get(`${apiUrl}/api/explore`);
+            const response = await axios.get(`${apiUrl}/api/main/explore`);
             setUser(response.data.user)
             setPosts(response.data.posts)
         } catch (error) {
