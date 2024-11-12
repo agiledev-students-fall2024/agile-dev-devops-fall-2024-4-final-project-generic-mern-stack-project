@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+// Comment out or remove the problematic import
+// import { useMediaQuery } from "@/hooks/use-media-query";
 import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { cn } from "@/lib/utils";
 import { Search } from "lucide-react";
 import { Store } from "@/types";
@@ -21,7 +28,7 @@ function StoreList({
 }: {
   stores: Store[];
   highlightedStores?: Store[];
-  heading?: string;
+  heading?: string | undefined;
 }) {
   return (
     <Command>
@@ -49,10 +56,11 @@ function StoreList({
   );
 }
 
-export default function StoreSearchBar() {
+export default function StoreSearchBar({ stores = [] }: { stores: Store[] }) {
   const [open, setOpen] = useState(false);
-  const [stores, setStores] = useState<Store[]>([]);
   const [suggestedStores, setSuggestedStores] = useState<Store[]>([]);
+  const isDesktop =
+    typeof window !== "undefined" ? window.innerWidth >= 768 : true;
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -88,12 +96,26 @@ export default function StoreSearchBar() {
             <Search className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[300px] p-0">
-          <StoreList
-            stores={stores}
-            highlightedStores={suggestedStores}
-            heading="Suggested Stores"
-          />
+        <PopoverContent className="w-[200px] p-0">
+          {isDesktop ? (
+            <StoreList
+              stores={stores}
+              highlightedStores={suggestedStores}
+              heading="Suggested Stores"
+            />
+          ) : (
+            <Drawer open={open} onOpenChange={setOpen}>
+              <DrawerContent>
+                <div className="mt-4 border-t">
+                  <StoreList
+                    stores={stores}
+                    highlightedStores={suggestedStores}
+                    heading="Suggested Stores"
+                  />
+                </div>
+              </DrawerContent>
+            </Drawer>
+          )}
         </PopoverContent>
       </Popover>
     </>
