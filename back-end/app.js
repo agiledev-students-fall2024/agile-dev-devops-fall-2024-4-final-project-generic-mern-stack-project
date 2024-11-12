@@ -33,6 +33,60 @@ app.post("/api/accounts", (req, res) => {
   res.status(201).json(newAccount);
 });
 
+// Route to update an account by ID
+app.put("/api/accounts/:id", (req, res) => {
+  const { id } = req.params;
+  const { type, amount, number } = req.body;
+  const accountIndex = accounts.findIndex((account) => account.id === parseInt(id));
+
+  if (accountIndex === -1) {
+    return res.status(404).json({ error: "Account not found" });
+  }
+
+  accounts[accountIndex] = { ...accounts[accountIndex], type, amount, number };
+  res.json(accounts[accountIndex]);
+});
+
+// Route to delete an account by ID
+app.delete("/api/accounts/:id", (req, res) => {
+  const { id } = req.params;
+  const accountIndex = accounts.findIndex((account) => account.id === parseInt(id));
+
+  if (accountIndex === -1) {
+    return res.status(404).json({ error: "Account not found" });
+  }
+
+  accounts.splice(accountIndex, 1);
+  res.status(204).send();
+});
+
+// Route to update a debt by ID
+app.put("/api/debts/:id", (req, res) => {
+  const { id } = req.params;
+  const { type, amount, dueDate, paymentSchedule } = req.body;
+  const debtIndex = debts.findIndex((debt) => debt.id === parseInt(id));
+
+  if (debtIndex === -1) {
+    return res.status(404).json({ error: "Debt not found" });
+  }
+
+  debts[debtIndex] = { ...debts[debtIndex], type, amount, dueDate, paymentSchedule };
+  res.json(debts[debtIndex]);
+});
+
+// Route to delete a debt by ID
+app.delete("/api/debts/:id", (req, res) => {
+  const { id } = req.params;
+  const debtIndex = debts.findIndex((debt) => debt.id === parseInt(id));
+
+  if (debtIndex === -1) {
+    return res.status(404).json({ error: "Debt not found" });
+  }
+
+  debts.splice(debtIndex, 1);
+  res.status(204).send();
+});
+
 // Route to add a new debt
 app.post("/api/debts", (req, res) => {
   console.log("Received debt:", req.body);
