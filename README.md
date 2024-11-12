@@ -23,7 +23,7 @@ One of our teammates has always loved playing volleyball. The first idea was to 
 
 ### Building and Testing the Project
 
-Releasing beta products to test users, then refine the product.
+Releasing beta products to test users, then refine the product. In order to run the application, 
 
 ### Links to relevant documents
 A detailed breakdown of our app map and wireframes, as well as a Figma prototype: [UX Design](./UX-DESIGN.md)
