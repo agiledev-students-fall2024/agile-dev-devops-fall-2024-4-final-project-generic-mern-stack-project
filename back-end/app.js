@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken');
 
 const noteRoutes = require('./routes/note'); 
 const userRoutes = require('./routes/user'); 

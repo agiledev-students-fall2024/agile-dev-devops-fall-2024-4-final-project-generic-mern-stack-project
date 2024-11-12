@@ -4,7 +4,7 @@ const {transcribe} = require('./transcriberAI')
 const multer = require('multer');
 const uploadMulter = multer({ dest: 'uploads/' });
 const bodyParser = require('body-parser');
-const { summarizeText } = require('./aiFeatures');
+const { summarizeText } = require('./routes/aiFeatures');
 const noteRouter = require('./routes/note');
 
 
@@ -42,7 +42,7 @@ router.post('/summarize', async (req, res) => {
         const summary = await summarizeText(text);
         res.json({ summary });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to summarize text' });
+        res.status(500).json({ error: 'Failed to summarize text', message: error.message });
     }
 });
 
