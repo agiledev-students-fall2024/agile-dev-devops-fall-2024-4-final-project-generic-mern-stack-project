@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nodemon server",
     "start": "node server.js",
-    "test": "c8 --check-coverage --lines 10 mocha --recursive"
+    "test": "c8 --check-coverage --lines 40 mocha --recursive"
   },
   "author": "",
   "license": "ISC",
