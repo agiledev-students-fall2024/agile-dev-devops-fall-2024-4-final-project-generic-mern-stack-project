@@ -35,17 +35,27 @@ const SwipableFeed = ({ selectedRestaurant }) => {
         if (fetchedRestaurants.length === 0) {
           setHasMore(false);
         } else {
-          setAllRestaurants((prevRestaurants) => [
-            ...prevRestaurants,
-            ...fetchedRestaurants,
-          ]);
-          setFilteredRestaurants((prevRestaurants) => [
-            ...prevRestaurants,
-            ...fetchedRestaurants,
-          ]);
-          setCurrentIndex((prevIndex) =>
-            prevIndex + fetchedRestaurants.length
-          );
+          setAllRestaurants((prevRestaurants) => {
+            // Filter out restaurants that are already in the array
+            const newRestaurants = fetchedRestaurants.filter(
+              (newRestaurant) =>
+                !prevRestaurants.some(
+                  (existingRestaurant) => existingRestaurant.id === newRestaurant.id
+                )
+            );
+            return [...prevRestaurants, ...newRestaurants];
+          });
+          setFilteredRestaurants((prevRestaurants) => {
+            // Filter out restaurants that are already in the array
+            const newRestaurants = fetchedRestaurants.filter(
+              (newRestaurant) =>
+                !prevRestaurants.some(
+                  (existingRestaurant) => existingRestaurant.id === newRestaurant.id
+                )
+            );
+            return [...prevRestaurants, ...newRestaurants];
+          });
+          setCurrentIndex((prevIndex) => prevIndex + fetchedRestaurants.length);
         }
       } catch (error) {
         console.error('Error fetching restaurants:', error);
@@ -53,8 +63,8 @@ const SwipableFeed = ({ selectedRestaurant }) => {
         setIsLoading(false);
       }
     }
-
-    if (!accountInfo) return;
+  
+    if (!accountInfo || isLoading) return;
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountInfo, page]);
