@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const { summarizeText } = require('./routes/aiFeatures');
 const noteRouter = require('./routes/note');
 
+
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
