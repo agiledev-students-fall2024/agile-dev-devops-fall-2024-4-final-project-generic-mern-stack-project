@@ -2,7 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const fs = require('fs');
 const path = require('path');
-const app = require('../app'); // Adjust the path according to your project structure
+const app = require('../app');
 const usersPath = path.join(__dirname, '../data/users.json');
 
 chai.use(chaiHttp);
