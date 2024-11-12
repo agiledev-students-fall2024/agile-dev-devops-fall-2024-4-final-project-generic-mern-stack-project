@@ -43,16 +43,20 @@ function Profile() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const mockarooUrl = 'https://my.api.mockaroo.com/bite_buddy_profile.json?key=786e37d0';
+        const fetchBiteBuddyProfileData = async () => {
+            try{
+            const response = await axios.get(`${process.env.REACT_APP_BACK_PORT}/api/biteBuddyProfile`);
+            const fetchedData = response.data[0];
+            console.log("fetched data console log:" + fetchedData);
+            console.log("fetched age:" + fetchedData.age);
 
-        axios.get(mockarooUrl)
-            .then(response => {
-                console.log('API Response:', response.data);
-                setProfileData(response.data[0]);
-            })
-            .catch(error => {
-                console.error('Error fetching mock data:', error);
-            });
+            setProfileData(fetchedData);
+            }
+            catch(error){
+                console.error('Error bite buddy profile data: ', error)
+            }
+        };
+        fetchBiteBuddyProfileData();
     }, []);
 
     function goToSignupProfile() {
