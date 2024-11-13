@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useProfile } from './ProfileContext';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
+import { useCallback } from 'react';
+import axios from 'axios';
 
 const Delta = Quill.import('delta');
 
@@ -71,7 +73,30 @@ const NewNote = () => {
     };
   }, []);
 
+
+  const triggerAPI = useCallback(async (notes) => {
+    try {
+      const res = await axios.post(`http://localhost:${process.env.EXPRESS_SERVER_PORT || 5000}/api/notes/`, notes);
+      console.log('Success', res);
+    } catch (error) {
+      console.error('Error occurred:', error); 
+    }
+  }, []);
+
+  // function that will call triggerAPI
+  // function will be called when user clicks on saveButton
+  const handleSubmit = useCallback(
+    (e, notes) => {
+      e.preventDefault();
+      triggerAPI(notes);
+    },
+    [triggerAPI]
+  );
+
+  const handleSave = (e) => {
+
   const handleSave = () => {
+
     if (!title || !category || !quillRef.current) {
       alert('Please fill in all required fields (title, category, and content)');
       return;
@@ -82,6 +107,16 @@ const NewNote = () => {
     
     const newNote = {
       id: Date.now(), // In production, this would come from the backend
+      user,
+      title,
+      preview,
+      category,
+      updatedAt: new Date().toISOString(),
+      tags: tags.split(',').map(tag => tag.trim()).filter(tag => tag),
+      author: user?._id,
+      content
+    };
+    handleSubmit(e, newNote)
       title,
       preview,
       category,
@@ -90,7 +125,6 @@ const NewNote = () => {
       author: user?.email,
       content
     };
-
     // In production, this would be an API call
     console.log('Saving note:', newNote);
     navigate('/existing-notes');

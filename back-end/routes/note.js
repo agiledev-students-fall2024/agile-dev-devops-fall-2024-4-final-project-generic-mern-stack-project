@@ -5,12 +5,25 @@ const router = express.Router();
 
 
 router.post('/', verifyToken, async (req, res) => {
+    // console.log('Body', req.body); debugging
+
+    const { title, content, tags, category, preview, updatedAt, user} = req.body;
+    console.log("Create new note post");
     const { title, content, tags } = req.body;
-    console.log("   prepare to insert new post ...");
+    console.log("Create new note post request");
     const newNote = new Note({
         title,
         content,
         tags,
+        author: req.userId,
+        category,
+        preview,
+        updatedAt,
+        user,
+    });
+
+    try {
+        await newNote.save(); // for the database part
         author: req.userId 
     });
 
@@ -24,6 +37,7 @@ router.post('/', verifyToken, async (req, res) => {
 
 router.get('/', verifyToken, async (req, res) => {
     try {
+        console.log('testing');
         const notes = await Note.find({ author: req.userId }).populate('author', 'username email');
         res.status(200).json(notes);
     } catch (error) {
