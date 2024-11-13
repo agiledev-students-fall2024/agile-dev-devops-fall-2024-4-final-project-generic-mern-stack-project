@@ -22,15 +22,23 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  occupation: {
+    type: String, 
+    required: false
+  },
+  studying: {
+    type: String, 
+    required: false
+  },
   name: {
     firstName: {
       type: String,
-      required: true,
+      required: false,
       trim: true
     },
     lastName: {
       type: String,
-      required: true,
+      required: false,
       trim: true
     }
   }
