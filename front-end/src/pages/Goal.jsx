@@ -1,5 +1,5 @@
 import GoalForm from './GoalForm';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Goal.css';
 import { FacebookShareButton, EmailShareButton, LinkedinShareButton } from 'react-share';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,6 +11,14 @@ const Goal = () => {
     const [showShareOptions, setShowShareOptions] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [currentGoalIndex, setCurrentGoalIndex] = useState(null); // Track which goal is being edited
+
+    // Fetch goals from backend on component mount
+    useEffect(() => {
+        fetch("http://localhost:3001/goal") 
+            .then(response => response.json())
+            .then(data => setGoals(data))  
+            .catch(error => console.error('Error fetching goals:', error));
+    }, []); 
 
     const handleClick = () => {
         setShowShareOptions(!showShareOptions);
@@ -81,8 +89,6 @@ const Goal = () => {
                         </div>
                     )}
                 </div>
-
-               
 
                 <div className="grid-item3">
                     <h2>{isEditing ? "Edit Goal" : "Create New Goal"}</h2>
