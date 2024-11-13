@@ -23,20 +23,30 @@ const ChartsPage = () => {
   const [loading, setLoading] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
+  // Define month labels
+  const monthLabels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
   // Fetch data from back-end API
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const monthResponse = await fetch("http://localhost:3001/charts/January");
-        const monthData = await monthResponse.json();
+        const expenses = [];
+        const incomes = [];
 
-        // Set income and expense data based on fetched data for January
-        setExpenseData([monthData.expenses]); // Example with January, you can make this dynamic
-        setIncomeData([monthData.income]);
+        for (let month of monthLabels) {
+          const monthResponse = await fetch(`http://localhost:3001/charts/${month}`);
+          const monthData = await monthResponse.json();
+          
+          expenses.push(monthData.expenses || 0); // Store each month’s expenses
+          incomes.push(monthData.income || 0); // Store each month’s income
+        }
+
+        setExpenseData(expenses);
+        setIncomeData(incomes);
 
         const categoryResponse = await fetch("http://localhost:3001/charts/spending-categories");
         const categories = await categoryResponse.json();
-
+        
         // Extract amounts for the pie chart
         const categoriesData = categories.map(category => category.amount);
         setCategoryData(categoriesData);
@@ -65,7 +75,7 @@ const ChartsPage = () => {
   const totalSavings = totalIncome - totalExpense;
 
   const lineChartData = {
-    labels: ['Jan'],
+    labels: monthLabels,
     datasets: [
       {
         label: 'Monthly Expenses',
@@ -85,11 +95,11 @@ const ChartsPage = () => {
   };
 
   const barChartData = {
-    labels: ['Jan'],
+    labels: monthLabels,
     datasets: [
       {
         label: 'Net Balance (Income - Expenses)',
-        data: expenseData.map((expense, index) => incomeData[index] - expense),
+        data: incomeData.map((income, index) => income - (expenseData[index] || 0)),
         backgroundColor: 'rgba(75, 192, 192, 0.6)',
       },
     ],
