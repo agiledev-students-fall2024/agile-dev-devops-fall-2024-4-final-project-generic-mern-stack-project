@@ -86,7 +86,14 @@ function Tasks() {
     return '';
   };
   const handleEdit = (taskId) => {
-    nav('/EditTask/${taskId}');
+    // nav('/EditTask/${taskId}');
+
+    //This is modified for sprint 2 only.
+    // Impossible to use fake data for this page since mockaroo randomly generates data instead of storing it
+    // Comment for the edit task: because of the restriction of mock data now, 
+    // this function cannot fully achieved, so the way we connect it is not exactly true.
+    // We are directly connecting the edit to http://localhost:3000/EditTask.
+     nav('/EditTask');
   };
 
   const toggleFilterVisibility = () => setShowFilters(!showFilters);
