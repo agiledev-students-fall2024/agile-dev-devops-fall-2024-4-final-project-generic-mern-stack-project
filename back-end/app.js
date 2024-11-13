@@ -1,5 +1,5 @@
 require('dotenv').config({ silent: true }) // load env variables from .env
-const express = require('express') 
+const express = require('express')
 const morgan = require('morgan') // middleware for nice logging of incoming HTTP requests
 const cors = require('cors') // enabling CORS requests
 const mongoose = require('mongoose')
@@ -8,16 +8,17 @@ const path = require('path');
 /* Importing mock data */
 const budgetLimits = require('./mocks/budgetLimits.js');
 const recurringBills = require('./mocks/recurringBills.js');
+const transactionData = require('./mocks/transactionData');
 
 const { getNotifications } = require('./notifications'); // import notification logic
 
 
-const app = express() 
+const app = express()
 app.use(morgan('dev', { skip: (req, res) => process.env.NODE_ENV === 'test' })) // log all incoming requests, except when in unit test mode.  morgan has a few logging default styles - dev is a nice concise color-coded style
-app.use(cors()) 
+app.use(cors())
 
 // parse incoming requests
-app.use(express.json()) 
+app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 // temp in-memory storage for accounts and debts since no DB yet
@@ -114,24 +115,14 @@ app.get("/api/debts", (req, res) => {
 
 
 /* Routes for Notifications/Reminders */
-app.get('/api/notifications', (req, res) => { 
-    const notifications = getNotifications();
-    res.json(notifications);
+app.get('/api/notifications', (req, res) => {
+  const notifications = getNotifications();
+  res.json(notifications);
 });
 
 const goals = [
-  { 
-    id: 1, 
-    username: 'Traveling Fund', 
-    spending: 'Monthly', 
-    spendingDetails: 'Saving $100 per month for travel expenses.' 
-  },
-  { 
-    id: 2, 
-    username: 'Credit Card Payment', 
-    spending: 'Monthly', 
-    spendingDetails: 'Paying down credit card debt monthly to reach $500 target.' 
-  }
+  { id: 1, name: 'Traveling Fund', target: 1000, current: 200 },
+  { id: 2, name: 'Credit Card Payment', target: 500, current: 100 }
 ];
 
 app.get('/goal', (req, res) => {
@@ -140,14 +131,20 @@ app.get('/goal', (req, res) => {
 
 app.post('/goal', (req, res) => {
   const newGoal = req.body;
+  newGoal.id = goals.length + 1; 
+  newGoal.current = 0; 
   goals.push(newGoal);
   res.status(201).json({ message: 'Goal added', goal: newGoal });
+});
+
+app.get('/api/transactions', (req, res) => {
+  res.json(transactionData);
 });
 
 
 // Serve the frontend (React app)
 app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../front-end/", "index.html"));
+  res.sendFile(path.join(__dirname, "../front-end/", "index.html"));
 });
 
 
