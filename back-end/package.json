@@ -11,17 +11,18 @@
   "description": "",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "chai": "^5.1.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "mongoose": "^8.8.0",
-    "nodemon": "^3.1.7",
-    "chai": "^5.1.2"
+    "nodemon": "^3.1.7"
   },
   "devDependencies": {
     "@types/chai-http": "^4.2.4",
     "c8": "^10.1.2",
     "chai-http": "^5.1.1",
-    "mocha": "^10.8.2"
+    "mocha": "^10.8.2",
+    "supertest": "^7.0.0"
   }
 }
