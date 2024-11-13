@@ -40,8 +40,9 @@ describe("GET request to /api/community/:communityId route", () => {
       const res = await request(server).get(`/api/community/${communityId}`)
       expect(res.body).to.have.property("image").that.is.a("string").and.is.not.empty
       
-      // const url = res.body.image
-      // expect(url).to.match(/^https?:\/\/.+\.(jpg|jpeg|png|gif|bmp|webp|svg)(\?.*)?$/i)
+      const url = res.body.image
+      const regex = /^(https?:\/\/)([\w-]+\.)+[\w-]+(\/[\w-]*)*(\?[a-zA-Z0-9=&]*)?$/i;
+      expect(url).to.match(regex)
     })
 
     it("it should throw an error for an invalid community id", async () => {
