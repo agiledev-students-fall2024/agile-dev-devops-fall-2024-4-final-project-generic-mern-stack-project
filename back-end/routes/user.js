@@ -1,24 +1,35 @@
 const express = require('express');
+const bcrypt = require('bcrypt');
 const User = require('../models/user');
 
 const router = express.Router();
 
 router.post('/', async (req, res) => {
-  const { username, email, password } = req.body;
+  
+  const { name, email, password, occupation, studying } = req.body;
+  username = name;
+  console.log("DBG: user registration: ");
+  console.log(req.body);
 
-  try {
-    const hashedPassword = password;  //TODO
-    const newUser = new User({
+  const saltRounds = 10;
+  bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
+    if (err) {
+      return res.status(500).send('Error hashing password');
+    }
+
+    const user = new User({ 
       username,
       email,
-      password: hashedPassword,
+      password: hashedPassword,  
+      occupation, 
+      studying
     });
+    
+    user.save()
+    .then(() => res.status(201).send('User registered successfully'))
+    .catch(err => res.status(500).send('Error saving user to database'));
+  });
 
-    await newUser.save();
-    res.status(201).json(newUser);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
 });
 
 
