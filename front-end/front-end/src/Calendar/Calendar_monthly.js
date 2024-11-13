@@ -39,7 +39,7 @@ const Calendar_monthly = () => {
     useEffect(() => {
         const fetchTaskCounts = async () => {
             try {
-                const response = await axios.get(`http://localhost:4000/calendar/month/${year}/${month}/tasks`);
+                const response = await fetch(`http://localhost:4000/calendar/month/${year}/${month}/tasks`);
                 const taskData = response.data.reduce((acc, { day, count }) => {
                     acc[day] = count;
                     return acc;

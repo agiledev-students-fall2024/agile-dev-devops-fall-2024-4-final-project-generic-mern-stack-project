@@ -1,7 +1,7 @@
 const express = require('express');
 const { resource } = require('../app');
 const router = express.Router();
-// const Task = require('./models/Task'); // Assuming Task is a Mongoose model
+// const Task = require('./models/Task'); 
 
 router.get('/tasks/urgent', async (req, res) => {
   const response = await fetch('https://my.api.mockaroo.com/tasks?key=34c59640');
@@ -66,7 +66,7 @@ router.put('/tasks/:id/status', async (req, res) => {
 
 
 router.delete('/tasks/:id', async (req, res) => {
-  res.status(204).send();
+  res.status(204).send(); // Mock now cause no way to store task ID
 });
 
 
