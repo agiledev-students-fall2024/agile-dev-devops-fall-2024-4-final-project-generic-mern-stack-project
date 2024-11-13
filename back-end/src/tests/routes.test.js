@@ -111,7 +111,6 @@ describe('Routes Tests', () => {
         end_location: 'End Location',
       };
 
-      // Set up your mock return values if necessary
       fsReadStub.resolves(JSON.stringify(mockRoutes)); // simulate reading existing routes
       fsWriteStub.resolves(); // simulate a successful file write
 
@@ -121,11 +120,11 @@ describe('Routes Tests', () => {
         .send(newRoute)
         .end((err, res) => {
           expect(res).to.have.status(201);
-          expect(res.body).to.include(newRoute); // Ensure new route is included in the response
+          expect(res.body).to.include(newRoute);
           expect(res.body).to.have.property('id');
           expect(res.body).to.have.property('date');
-          expect(fsMkdirStub.called).to.be.true; // Ensure directory creation was called
-          expect(fsWriteStub.called).to.be.true; // Ensure file write was called
+          expect(fsMkdirStub.called).to.be.true;
+          expect(fsWriteStub.called).to.be.true;
           expect(consoleStub.calledWith('Route saved successfully:')).to.be
             .true;
           done();
@@ -164,8 +163,7 @@ describe('Routes Tests', () => {
     it('should delete existing route', done => {
       const updatedRoutes = mockRoutes.routes.filter(route => route.id !== '1');
 
-      // Simulate file write with the updated routes
-      fsWriteStub.resolves(JSON.stringify({ routes: updatedRoutes }));
+      fsWriteStub.resolves(JSON.stringify({ routes: updatedRoutes })); // simulate file write with the updated routes
 
       chai
         .request(app)
@@ -173,7 +171,6 @@ describe('Routes Tests', () => {
         .end((err, res) => {
           expect(res).to.have.status(200);
           expect(res.body.message).to.equal('Route deleted successfully');
-          // expect(fsWriteStub.calledOnce).to.be.true;
           expect(fsWriteStub.called).to.be.true;
           expect(consoleStub.calledWith('Route deleted successfully:')).to.be
             .true;
