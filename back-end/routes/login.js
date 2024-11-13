@@ -9,7 +9,7 @@ const USER_SECRET = 'test_jwt_secret';
 router.post('/', async (req, res) => {
     const { username, password } = req.body;
     
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ email: username });
     console.log("come into login, generate token, user:",req.body, username, password);
 
     if (!user || user.password !== password) {

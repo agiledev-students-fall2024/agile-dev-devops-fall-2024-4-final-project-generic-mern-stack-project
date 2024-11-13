@@ -19,6 +19,12 @@ app.use('/api/notes', noteRoutes);
 app.use('/api/users', userRoutes); 
 app.use('/api/auth/login', loginRoutes); 
 
+app.use(cors({
+    origin: 'http://localhost:3000', 
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+    credentials: true 
+}));
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
