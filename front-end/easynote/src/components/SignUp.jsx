@@ -42,8 +42,12 @@ const SignUp = () => {
     e.preventDefault();
   
     try {
-      const response = await axios.post("http://localhost:5000/api/users", formData);
-
+      const response = await axios.post("http://localhost:5000/api/users", formData, {
+      headers: {
+        "Content-Type": "application/json" // Ensure correct content type
+      }
+    });
+      console.log(response);
       const loginResponse = await handleLogin(formData.email, formData.password);
       
       if (loginResponse.success) {
@@ -56,6 +60,8 @@ const SignUp = () => {
       console.error('Registration failed:', error);
       alert('Registration failed');
     }
+    setUser(formData);
+    navigate('/')
   };
 
   return (
