@@ -22,7 +22,8 @@ const noteSchema = new mongoose.Schema({
     type: String
   }],
   author: {
-    type: mongoose.Schema.Types.ObjectId,
+    // type: mongoose.Schema.Types.ObjectId, for sprint 3s
+    type: String,
     ref: 'User',
     required: true
   },
