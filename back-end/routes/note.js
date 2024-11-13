@@ -9,7 +9,7 @@ router.post('/', verifyToken, async (req, res) => {
 
     const { title, content, tags, category, preview, updatedAt, user} = req.body;
     console.log("Create new note post");
-    const { title, content, tags } = req.body;
+    //const { title, content, tags } = req.body;
     console.log("Create new note post request");
     const newNote = new Note({
         title,
@@ -22,10 +22,10 @@ router.post('/', verifyToken, async (req, res) => {
         user,
     });
 
-    try {
-        await newNote.save(); // for the database part
-        author: req.userId 
-    });
+    //try {
+    //    await newNote.save(); // for the database part
+    //    author: req.userId 
+    //});
 
     try {
         await newNote.save();

@@ -8,11 +8,36 @@ const Login = () => {
   const { setUser } = useProfile();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setUser({ email });
-    navigate('/');
+
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: email,
+          password: password,
+        }),
+      });
+      const resp = await response.json();
+
+      if (resp.token) {
+        localStorage.setItem('token', resp.token);
+        setUser({ email: email });
+        navigate('/');
+      } else {
+        alert('Login failed');
+        throw new Error("Login failed");
+      }
+
+    } catch (error) {
+      console.error("Error during login:", error);
+    }
   };
+
 
   return (
     <div className="auth-container">

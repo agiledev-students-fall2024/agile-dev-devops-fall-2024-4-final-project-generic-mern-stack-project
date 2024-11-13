@@ -96,7 +96,6 @@ const NewNote = () => {
   const handleSave = (e) => {
 
   const handleSave = () => {
-
     if (!title || !category || !quillRef.current) {
       alert('Please fill in all required fields (title, category, and content)');
       return;
@@ -104,7 +103,7 @@ const NewNote = () => {
 
     const content = quillRef.current.root.innerHTML;
     const preview = quillRef.current.getText().slice(0, 150) + '...';
-    
+
     const newNote = {
       id: Date.now(), // In production, this would come from the backend
       user,
@@ -116,15 +115,10 @@ const NewNote = () => {
       author: user?._id,
       content
     };
-    handleSubmit(e, newNote)
-      title,
-      preview,
-      category,
-      lastModified: new Date().toISOString(),
-      tags: tags.split(',').map(tag => tag.trim()).filter(tag => tag),
-      author: user?.email,
-      content
-    };
+
+    // This line assumes handleSubmit requires an event 'e' and the 'newNote' object
+    handleSubmit(null, newNote);
+
     // In production, this would be an API call
     console.log('Saving note:', newNote);
     navigate('/existing-notes');
@@ -203,5 +197,6 @@ const NewNote = () => {
     </section>
   );
 };
+}
 
 export default NewNote;
