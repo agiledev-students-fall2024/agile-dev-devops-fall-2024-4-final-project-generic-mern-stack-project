@@ -41,21 +41,6 @@ router.post('/:meetingId', async (req, res) => {
     }
 });
 
-// Test connection route
-router.get('/test-connection', async (req, res) => {
-    try {
-        const isConnected = await codeService.testConnection();
-        if (isConnected) {
-            res.json({ message: 'Firebase connection successful!' });
-        } else {
-            res.status(500).json({ error: 'Firebase connection failed' });
-        }
-    } catch (error) {
-        console.error('Test connection error:', error);
-        res.status(500).json({ error: 'Firebase connection test failed' });
-    }
-});
-
 // Stream updates route
 router.get('/:meetingId/stream', (req, res) => {
     const { meetingId } = req.params;
