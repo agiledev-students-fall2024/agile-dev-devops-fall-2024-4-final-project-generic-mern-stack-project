@@ -77,14 +77,14 @@ const ActivitiesPage = () => {
       ) : (
         <div className="activity-list">
           {activities.map((activity) => (
-            <ActivityCard
+              <ActivityCard
               key={activity.id}
               id={activity.id}
               title={activity.name}
               votes={activity.votes}
               description={activity.description}
               price={activity.price ? `$${activity.price}` : 'Free'}
-              comments={activity.comments.map((c) => c.commentString)}
+              comments={activity.comments} 
               imageUrl={activity.image}
               isCompleted={activity.isCompleted}
               onUpvote={() => handleUpvote(activity.id)}

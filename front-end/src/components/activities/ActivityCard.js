@@ -1,20 +1,41 @@
 // ActivityCard.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import './ActivityCard.css';
 
 const ActivityCard = ({ id, title, votes, description, price, comments, imageUrl, isCompleted, onUpvote, onDownvote }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [newComment, setNewComment] = useState('');
-  const [commentList, setCommentList] = useState(comments || []);
+  const [commentList, setCommentList] = useState([]);
+
+  useEffect(() => {
+    setCommentList(comments || []);
+  }, [comments]);
 
   const toggleDetails = () => setIsExpanded((prev) => !prev);
 
   const addComment = () => {
     if (newComment.trim()) {
-      setCommentList([...commentList, newComment]);
-      setNewComment('');
+      axios.post(`/activities/${id}/comments`, { commentString: newComment })
+        .then(response => {
+          setCommentList([...commentList, response.data]); // Add full comment object
+          setNewComment(''); // Clear the input field
+        })
+        .catch(error => {
+          console.error('Error adding comment:', error);
+        });
     }
+  };
+
+  const deleteComment = (commentId) => {
+    axios.delete(`/activities/${id}/comments/${commentId}`)
+      .then(() => {
+        setCommentList(commentList.filter(comment => comment.id !== commentId)); 
+      })
+      .catch(error => {
+        console.error('Error deleting comment:', error);
+      });
   };
 
   return (
@@ -52,8 +73,11 @@ const ActivityCard = ({ id, title, votes, description, price, comments, imageUrl
             <button onClick={addComment}>Add Comment</button>
 
             <div className="comments-list">
-              {commentList.map((comment, index) => (
-                <p key={index}>{comment}</p>
+              {commentList.map((comment) => (
+                <p key={comment.id}>
+                  {comment.commentString}
+                  <button onClick={() => deleteComment(comment.id)}>Delete</button>
+                </p>
               ))}
             </div>
           </div>
@@ -69,7 +93,10 @@ ActivityCard.propTypes = {
   votes: PropTypes.number.isRequired,
   description: PropTypes.string,
   price: PropTypes.string,
-  comments: PropTypes.arrayOf(PropTypes.string),
+  comments: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    commentString: PropTypes.string.isRequired
+  })),
   imageUrl: PropTypes.string,
   isCompleted: PropTypes.bool,
   onUpvote: PropTypes.func.isRequired,
