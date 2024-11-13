@@ -73,6 +73,7 @@ const NewNote = () => {
     };
   }, []);
 
+
   const triggerAPI = useCallback(async (notes) => {
     try {
       const res = await axios.post(`http://localhost:${process.env.EXPRESS_SERVER_PORT || 5000}/api/notes/`, notes);
@@ -93,6 +94,9 @@ const NewNote = () => {
   );
 
   const handleSave = (e) => {
+
+  const handleSave = () => {
+
     if (!title || !category || !quillRef.current) {
       alert('Please fill in all required fields (title, category, and content)');
       return;
@@ -113,6 +117,14 @@ const NewNote = () => {
       content
     };
     handleSubmit(e, newNote)
+      title,
+      preview,
+      category,
+      lastModified: new Date().toISOString(),
+      tags: tags.split(',').map(tag => tag.trim()).filter(tag => tag),
+      author: user?.email,
+      content
+    };
     // In production, this would be an API call
     console.log('Saving note:', newNote);
     navigate('/existing-notes');

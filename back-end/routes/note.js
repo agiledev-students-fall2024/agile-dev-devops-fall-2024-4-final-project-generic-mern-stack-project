@@ -5,11 +5,12 @@ const router = express.Router();
 
 
 router.post('/', verifyToken, async (req, res) => {
-
-    console.log('Body', req.body);
+    // console.log('Body', req.body); debugging
 
     const { title, content, tags, category, preview, updatedAt, user} = req.body;
     console.log("Create new note post");
+    const { title, content, tags } = req.body;
+    console.log("Create new note post request");
     const newNote = new Note({
         title,
         content,
@@ -23,6 +24,11 @@ router.post('/', verifyToken, async (req, res) => {
 
     try {
         await newNote.save(); // for the database part
+        author: req.userId 
+    });
+
+    try {
+        await newNote.save();
         res.status(201).json(newNote);
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -31,16 +37,13 @@ router.post('/', verifyToken, async (req, res) => {
 
 router.get('/', verifyToken, async (req, res) => {
     try {
-        console.log('hello');
-        res.status(200);
-        // const notes = await Note.find({ author: req.userId }).populate('author', 'username email');
-        // res.status(200).json(notes);
+        console.log('testing');
+        const notes = await Note.find({ author: req.userId }).populate('author', 'username email');
+        res.status(200).json(notes);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
-
-
 
 router.get('/:id', verifyToken, async (req, res) => {
     try {
