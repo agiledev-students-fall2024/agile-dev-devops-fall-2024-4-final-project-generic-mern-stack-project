@@ -139,3 +139,27 @@
     display: inline-block;
   }
   
+
+  .comments-list p {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 8px;
+  }
+  
+  .comments-list p button {
+    background-color: transparent;
+    border: none;
+    color: #e91e63; 
+    cursor: pointer;
+    font-size: 0.9em;
+    margin-left: 10px; 
+    transition: color 0.3s;
+  }
+  
+  .comments-list p button:hover {
+    color: #ff4081; 
+  }

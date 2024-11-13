@@ -89,7 +89,7 @@ router.post('/:activityId/upvote', (req, res) => {
 
   if (activity) {
     activity.votes = (activity.votes || 0) + 1;
-    activities.sort((a, b) => b.votes - a.votes); // Sort activities by votes
+    activities.sort((a, b) => b.votes - a.votes); 
     saveActivitiesToFile();
     res.json({ votes: activity.votes });
   } else {
@@ -104,7 +104,7 @@ router.post('/:activityId/downvote', (req, res) => {
 
   if (activity) {
     activity.votes = (activity.votes || 0) - 1;
-    activities.sort((a, b) => b.votes - a.votes); // Sort activities by votes
+    activities.sort((a, b) => b.votes - a.votes); 
     saveActivitiesToFile();
     res.json({ votes: activity.votes });
   } else {
@@ -112,13 +112,45 @@ router.post('/:activityId/downvote', (req, res) => {
   }
 });
 
-// TODO: Add a comment to an activity (POST) - Add a new comment to the activity and respond with the created comment data
+// Add a comment to an activity (POST) - Add a new comment to the activity and respond with the created comment data
+router.post('/:activityId/comments', (req, res) => {
+  const activityId = req.params.activityId;
+  const activity = activities.find(a => a.id === activityId);
 
+  if (activity) {
+    const newComment = {
+      id: `comment_${Date.now()}`,
+      userId: req.body.userId,
+      commentString: req.body.commentString
+    };
+    activity.comments.push(newComment);
+    saveActivitiesToFile();
+    res.status(201).json(newComment);
+  } else {
+    res.status(404).json({ error: 'Activity not found' });
+  }
+});
 
-// TODO: Update a comment (PUT) - Modify the specified comment on an activity and respond with updated comment information
+//I removed update bc it seem redundant and not needed for now we can implement later if wanted
 
+// Delete a comment (DELETE) - Remove the specified comment and respond with a confirmation message
+router.delete('/:activityId/comments/:commentId', (req, res) => {
+  const activityId = req.params.activityId;
+  const commentId = req.params.commentId;
+  const activity = activities.find(a => a.id === activityId);
 
-// TODO: Delete a comment (DELETE) - Remove the specified comment and respond with a confirmation message
-
+  if (activity) {
+    const commentIndex = activity.comments.findIndex(c => c.id === commentId);
+    if (commentIndex !== -1) {
+      activity.comments.splice(commentIndex, 1);
+      saveActivitiesToFile();
+      res.json({ message: 'Comment deleted successfully' });
+    } else {
+      res.status(404).json({ error: 'Comment not found' });
+    }
+  } else {
+    res.status(404).json({ error: 'Activity not found' });
+  }
+});
 
 export default router;
