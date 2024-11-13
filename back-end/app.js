@@ -119,6 +119,31 @@ app.get('/api/notifications', (req, res) => {
     res.json(notifications);
 });
 
+const goals = [
+  { 
+    id: 1, 
+    username: 'Traveling Fund', 
+    spending: 'Monthly', 
+    spendingDetails: 'Saving $100 per month for travel expenses.' 
+  },
+  { 
+    id: 2, 
+    username: 'Credit Card Payment', 
+    spending: 'Monthly', 
+    spendingDetails: 'Paying down credit card debt monthly to reach $500 target.' 
+  }
+];
+
+app.get('/goal', (req, res) => {
+  res.json(goals);
+});
+
+app.post('/goal', (req, res) => {
+  const newGoal = req.body;
+  goals.push(newGoal);
+  res.status(201).json({ message: 'Goal added', goal: newGoal });
+});
+
 
 // Serve the frontend (React app)
 app.get("*", (req, res) => {
