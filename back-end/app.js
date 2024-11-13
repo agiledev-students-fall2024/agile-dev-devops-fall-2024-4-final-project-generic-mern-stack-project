@@ -12,6 +12,8 @@ const transactionData = require('./mocks/transactionData');
 
 const { getNotifications } = require('./notifications'); // import notification logic
 
+const { monthlyData, categoryData, calculateMonthlyBalance } = require('./mocks/charts');
+
 
 const app = express()
 app.use(morgan('dev', { skip: (req, res) => process.env.NODE_ENV === 'test' })) // log all incoming requests, except when in unit test mode.  morgan has a few logging default styles - dev is a nice concise color-coded style
@@ -140,6 +142,23 @@ app.post('/goal', (req, res) => {
 app.get('/api/transactions', (req, res) => {
   res.json(transactionData);
 });
+
+// Route to get data for a specific month
+app.get('/charts/:month', (req, res) => {
+  const month = req.params.month;
+  const data = calculateMonthlyBalance(month);
+  if (data.error) {
+    res.status(404).json({ error: data.error });
+  } else {
+    res.json(data);
+  }
+});
+
+// Route to get spending categories
+app.get('/charts/spending-categories', (req, res) => {
+  res.json(categoryData);
+});
+
 
 
 // Serve the frontend (React app)
