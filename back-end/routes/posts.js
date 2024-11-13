@@ -1,15 +1,3 @@
-// const express = require('express');
-// const router = express.Router();
-
-// // routes or middleware
-
-
-
-
-
-
-// module.exports = router;
-
 
 
 const express = require('express');
@@ -83,3 +71,51 @@ router.get('/:id', (req, res) => {
 });
 
 module.exports = router;
+
+
+
+// // Corrected version of routes/posts.js
+
+// // Importing necessary modules for backend use only
+// const express = require('express');
+// const router = express.Router();
+
+// // Assuming there's a data file named posts.js in a 'data' directory
+// const posts = require('../data/posts');
+
+// // Route to get all posts
+// router.get('/', (req, res) => {
+//   try {
+//     res.status(200).json(posts);
+//   } catch (err) {
+//     res.status(500).send('Server Error');
+//   }
+// });
+
+// // Route to get a single post by id
+// router.get('/:id', (req, res) => {
+//   try {
+//     const postId = req.params.id;
+//     const post = posts.find((p) => p.id === postId);
+//     if (post) {
+//       res.status(200).json(post);
+//     } else {
+//       res.status(404).send('Post not found');
+//     }
+//   } catch (err) {
+//     res.status(500).send('Server Error');
+//   }
+// });
+
+// // Route to create a new post
+// router.post('/create', (req, res) => {
+//   try {
+//     const newPost = req.body;
+//     posts.push(newPost);
+//     res.status(201).json(newPost);
+//   } catch (err) {
+//     res.status(500).send('Server Error');
+//   }
+// });
+
+// module.exports = router;
