@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 require('./config.js')
 const server = require("./app") // load up the web server
 // the port to listen to for incoming requests
