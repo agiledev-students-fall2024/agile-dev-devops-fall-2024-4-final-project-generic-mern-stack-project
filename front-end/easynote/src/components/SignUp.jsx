@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
 import { useProfile } from './ProfileContext';
+import { handleLogin } from './authUtils';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -36,12 +38,24 @@ const SignUp = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you would typically send the data to a backend
-    // For now, we'll simulate a successful signup
-    setUser(formData);
-    navigate('/');
+  
+    try {
+      const response = await axios.post("http://localhost:5000/api/users", formData);
+
+      const loginResponse = await handleLogin(formData.email, formData.password);
+      
+      if (loginResponse.success) {
+          setUser({ email: loginResponse.email });
+          navigate('/');
+      } else {
+          alert('Login failed');
+      }
+    } catch (error) {
+      console.error('Registration failed:', error);
+      alert('Registration failed');
+    }
   };
 
   return (

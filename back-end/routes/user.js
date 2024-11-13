@@ -5,7 +5,11 @@ const User = require('../models/user');
 const router = express.Router();
 
 router.post('/', async (req, res) => {
-  const { username, email, password, occupation, studying } = req.body;
+  
+  const { name, email, password, occupation, studying } = req.body;
+  username = name;
+  console.log("DBG: user registration: ");
+  console.log(req.body);
 
   const saltRounds = 10;
   bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
@@ -22,7 +26,7 @@ router.post('/', async (req, res) => {
     });
     
     user.save()
-    .then(() => res.send('User registered successfully'))
+    .then(() => res.status(201).send('User registered successfully'))
     .catch(err => res.status(500).send('Error saving user to database'));
   });
 
