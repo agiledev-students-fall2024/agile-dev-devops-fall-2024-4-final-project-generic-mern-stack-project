@@ -41,6 +41,44 @@ const NewNote = () => {
   const quillRef = useRef(null);
   const editorRef = useRef(null);
   const navigate = useNavigate();
+  const [change, setChange] = useState(new Delta());
+  const [isTyping, setIsTyping] = useState(false);
+  const typingTimeoutRef = useRef(null); 
+  const changeRef = useRef(new Delta());
+
+  const triggerAPI = useCallback(async (notes) => {
+    try {
+      // const fakeToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXIxMjMiLCJpYXQiOjE3MzE1MTAxNjV9.L4OTK2ffTbq0AkL8ulSr4iDytu58puNtnI_9LxUXV5s";
+      // localStorage.setItem("token", fakeToken); generate fake token
+      const token = localStorage.getItem('token');  // for database setup: sprint 3
+      if (!token) {
+      alert('Please log in again');
+      return;
+      }
+      const res = await axios.post(
+        `http://localhost:${
+          process.env.EXPRESS_SERVER_PORT || 5000
+        }/api/notes/`,
+        notes,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Success", res);
+    } catch (error) {
+      alert(
+        "Failed to save note: " + error.response?.data?.message ||
+          error.response?.message ||
+          "Unknown error"
+      );
+      console.error("Error occurred:", error);
+    }
+  }, []);
+
+
 
   useEffect(() => {
     if (!quillRef.current && editorRef.current) {
@@ -62,7 +100,39 @@ const NewNote = () => {
         },
         placeholder: "Write something...",
       });
+
+    quillRef.current.on('text-change', (delta, oldDelta, source) => {
+      console.log("Delta (change made):", delta);
+      console.log("Old Delta:", oldDelta);
+      console.log("Source of change:", source);
+      setChange((prevChange) => prevChange.compose(delta));
+
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
     }
+
+    setIsTyping(true);
+
+    typingTimeoutRef.current = setTimeout(() => {
+      setIsTyping(false); 
+    }, 500); 
+  });
+}
+    
+const saveInterval = setInterval(() => {
+  if (change.length() > 0) {
+    console.log('Saving changes', change);
+
+    const content = {content: quillRef.current.root.innerHTML};
+
+    triggerAPI(content)
+    
+    changeRef.current = new Delta();
+    console.log('Changes reset after save');
+  }
+}, 5000); 
+
+
 
     return () => {
       if (quillRef.current) {
@@ -72,39 +142,12 @@ const NewNote = () => {
         }
         quillRef.current = null;
       }
+      clearInterval(saveInterval);
+      window.onbeforeunload = null;
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current); // Clear typing timeout
+      }
     };
-  }, []);
-
-  const triggerAPI = useCallback(async (notes) => {
-    try {
-      const fakeToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXIxMjMiLCJpYXQiOjE3MzE1MTAxNjV9.L4OTK2ffTbq0AkL8ulSr4iDytu58puNtnI_9LxUXV5s";
-      localStorage.setItem("token", fakeToken);
-      // const token = localStorage.getItem('token'); for database setup: sprint 3
-      // if (!token) {
-      // alert('Please log in again');
-      // return;
-      // }
-      const res = await axios.post(
-        `http://localhost:${
-          process.env.EXPRESS_SERVER_PORT || 5000
-        }/api/notes/`,
-        notes,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${fakeToken}`,
-          },
-        }
-      );
-      console.log("Success", res);
-    } catch (error) {
-      alert(
-        "Failed to save note: " + error.response?.data?.message ||
-          error.response?.message ||
-          "Unknown error"
-      );
-      console.error("Error occurred:", error);
-    }
   }, []);
 
   // function that will call triggerAPI
@@ -116,6 +159,7 @@ const NewNote = () => {
     },
     [triggerAPI]
   );
+
   const handleSave = (e) => {
     if (!title || !category || !quillRef.current) {
       alert(
