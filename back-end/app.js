@@ -143,6 +143,12 @@ app.get('/api/transactions', (req, res) => {
   res.json(transactionData);
 });
 
+// Route to get spending categories
+app.get('/charts/spending-categories', (req, res) => {
+  res.json(categoryData);
+});
+
+
 // Route to get data for a specific month
 app.get('/charts/:month', (req, res) => {
   const month = req.params.month;
@@ -154,13 +160,6 @@ app.get('/charts/:month', (req, res) => {
   }
 });
 
-// Route to get spending categories
-app.get('/charts/spending-categories', (req, res) => {
-  res.json(categoryData);
-});
-
-
-
 // Serve the frontend (React app)
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../front-end/", "index.html"));
@@ -168,4 +167,4 @@ app.get("*", (req, res) => {
 
 
 // export the express app we created to make it available to other modules
-module.exports = app
+module.exports = app;
