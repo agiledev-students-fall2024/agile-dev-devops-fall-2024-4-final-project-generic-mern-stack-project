@@ -8,10 +8,10 @@ const router = express.Router();
 const USER_SECRET = 'test_jwt_secret'; 
 
 router.post('/', async (req, res) => {
-    const { username, password } = req.body;
-    console.log("DBG: come into login, generate token, user:",req.body, username, password);
+    const { email, password } = req.body;
+    console.log("DBG: come into login, generate token, user:",req.body, email, password);
     
-    const user = await User.findOne({ email: username })
+    const user = await User.findOne({ email })
     .then(user => {
         if (!user) {
             res.json({ 'Error': 'User not found'}); 
