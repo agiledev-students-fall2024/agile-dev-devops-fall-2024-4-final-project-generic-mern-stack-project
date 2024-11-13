@@ -22,16 +22,16 @@ describe('Routes Tests', () => {
         name: 'Test Route 1',
         start_location: 'Start 1',
         end_location: 'End 1',
-        date: '2024-03-08T10:00:00.000Z'
+        date: '2024-03-08T10:00:00.000Z',
       },
       {
         id: '2',
         name: 'Test Route 2',
         start_location: 'Start 2',
         end_location: 'End 2',
-        date: '2024-03-08T11:00:00.000Z'
-      }
-    ]
+        date: '2024-03-08T11:00:00.000Z',
+      },
+    ],
   };
 
   before(() => {
@@ -52,7 +52,7 @@ describe('Routes Tests', () => {
   });
 
   describe('GET /api/routes', () => {
-    it('should return all routes', (done) => {
+    it('should return all routes', done => {
       chai
         .request(app)
         .get('/api/routes')
@@ -66,9 +66,9 @@ describe('Routes Tests', () => {
         });
     });
 
-    it('should return empty array when file does not exist', (done) => {
+    it('should return empty array when file does not exist', done => {
       fsReadStub.rejects({ code: 'ENOENT' });
-      
+
       chai
         .request(app)
         .get('/api/routes')
@@ -79,9 +79,9 @@ describe('Routes Tests', () => {
         });
     });
 
-    it('should handle server errors', (done) => {
+    it('should handle server errors', done => {
       fsReadStub.rejects(new Error('Read error'));
-      
+
       chai
         .request(app)
         .get('/api/routes')
@@ -104,12 +104,15 @@ describe('Routes Tests', () => {
       consoleStub.restore();
     });
 
-    it('should create new route successfully', (done) => {
+    it('should create new route successfully', done => {
       const newRoute = {
         name: 'New Route',
         start_location: 'Start Location',
-        end_location: 'End Location'
+        end_location: 'End Location',
       };
+
+      fsReadStub.resolves(JSON.stringify(mockRoutes)); // simulate reading existing routes
+      fsWriteStub.resolves(); // simulate a successful file write
 
       chai
         .request(app)
@@ -122,12 +125,13 @@ describe('Routes Tests', () => {
           expect(res.body).to.have.property('date');
           expect(fsMkdirStub.called).to.be.true;
           expect(fsWriteStub.called).to.be.true;
-          expect(consoleStub.calledWith('Route saved successfully:')).to.be.true;
+          expect(consoleStub.calledWith('Route saved successfully:')).to.be
+            .true;
           done();
         });
     });
 
-    it('should handle write errors', (done) => {
+    it('should handle write errors', done => {
       const consoleErrorStub = sinon.stub(console, 'error');
       fsWriteStub.rejects(new Error('Write error'));
 
@@ -156,20 +160,25 @@ describe('Routes Tests', () => {
       consoleStub.restore();
     });
 
-    it('should delete existing route', (done) => {
+    it('should delete existing route', done => {
+      const updatedRoutes = mockRoutes.routes.filter(route => route.id !== '1');
+
+      fsWriteStub.resolves(JSON.stringify({ routes: updatedRoutes })); // simulate file write with the updated routes
+
       chai
         .request(app)
         .delete('/api/routes/1')
         .end((err, res) => {
           expect(res).to.have.status(200);
-          expect(res.body).to.have.property('message', 'Route deleted successfully');
+          expect(res.body.message).to.equal('Route deleted successfully');
           expect(fsWriteStub.called).to.be.true;
-          expect(consoleStub.calledWith('Route deleted successfully:')).to.be.true;
+          expect(consoleStub.calledWith('Route deleted successfully:')).to.be
+            .true;
           done();
         });
     });
 
-    it('should return 404 for non-existent route', (done) => {
+    it('should return 404 for non-existent route', done => {
       chai
         .request(app)
         .delete('/api/routes/999')
@@ -181,7 +190,7 @@ describe('Routes Tests', () => {
         });
     });
 
-    it('should handle delete errors', (done) => {
+    it('should handle delete errors', done => {
       const consoleErrorStub = sinon.stub(console, 'error');
       fsWriteStub.rejects(new Error('Delete error'));
 
@@ -191,7 +200,8 @@ describe('Routes Tests', () => {
         .end((err, res) => {
           expect(res).to.have.status(500);
           expect(res.body).to.have.property('error', 'Failed to delete route');
-          expect(consoleErrorStub.calledWith('Error deleting route:')).to.be.true;
+          expect(consoleErrorStub.calledWith('Error deleting route:')).to.be
+            .true;
           consoleErrorStub.restore();
           done();
         });
@@ -209,7 +219,7 @@ describe('Routes Tests', () => {
       consoleErrorStub.restore();
     });
 
-    it('should handle file system errors properly', (done) => {
+    it('should handle file system errors properly', done => {
       fsMkdirStub.rejects(new Error('Permission denied'));
 
       chai
@@ -224,7 +234,7 @@ describe('Routes Tests', () => {
         });
     });
 
-    it('should handle invalid JSON data', (done) => {
+    it('should handle invalid JSON data', done => {
       fsReadStub.resolves('invalid json');
 
       chai
