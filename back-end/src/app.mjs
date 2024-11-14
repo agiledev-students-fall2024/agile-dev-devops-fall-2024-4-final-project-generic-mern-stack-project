@@ -104,18 +104,6 @@ app.post("/api/shareRecipe", async (req, res) => {
   }
 });
 
-app.get("/api/activity-tracker", async (req, res) => {
-  try {
-    const { data } = await axios.get(
-      "https://my.api.mockaroo.com/activities_tracker?key=d6450400"
-    );
-    res.json(data);
-  } catch (error) {
-    console.error("Error fetching data from API:", error.message);
-    res.status(500).json({ error: "Failed to fetch activity tracker data" });
-  }
-});
-
 app.get("/api/record-activity", async (req, res) => {
   try {
     const mockError = process.env.MOCK_ERROR === "true";
@@ -163,17 +151,20 @@ app.post(
   }
 );
 
-app.get("/api/progress-tracker", async (req, res) => {
-  try {
-    const { data } = await axios.get(
-      "https://my.api.mockaroo.com/users.json?key=66da8e80"
-    );
-    res.json(data);
-  } catch (error) {
-    console.error("Error fetching data from API:", error.message);
-    res.status(500).json({ error: "Failed to fetch progress data" });
-  }
-});
+app.get("/api/users", async (req, res) => {
+    try {
+      if (process.env.MOCK_ERROR === "true") {
+          throw new Error("Mocked error");
+      }
+      const { data } = await axios.get(
+        "https://my.api.mockaroo.com/users.json?key=66da8e80"
+      );
+      res.json(data);
+    } catch (error) {
+      console.error("Error fetching data from API:", error.message);
+      res.status(500).json({ error: "Failed to fetch user data" });
+    }
+  });
 
 app.get("/api/challenges", async (req, res) => {
   try {
@@ -188,20 +179,6 @@ app.get("/api/challenges", async (req, res) => {
   } catch (error) {
     console.error("Error fetching data from API:", error.message);
     res.status(500).json({ error: "Failed to fetch activity tracker data" });
-  }
-});
-
-app.get("/api/homeWeeklyActivity", async (req, res) => {
-  try {
-    const { data } = await axios.get(
-      "https://my.api.mockaroo.com/home_weekly_activity.json?key=786e37d0"
-    );
-    res.json(data);
-  } catch (error) {
-    console.error("Error fetching data from API:", error.message);
-    res
-      .status(500)
-      .json({ error: "Failed to fetch home weekly activity data" });
   }
 });
 
