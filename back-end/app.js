@@ -1,16 +1,29 @@
-require('dotenv').config({ silent: true }) // load env variables from .env
-const express = require('express')
-const morgan = require('morgan') // middleware for nice logging of incoming HTTP requests
-const cors = require('cors') // enabling CORS requests
-const mongoose = require('mongoose')
-const path = require('path');
+// require('dotenv').config({ silent: true }) // load env variables from .env
+// const express = require('express')
+// const morgan = require('morgan') // middleware for nice logging of incoming HTTP requests
+// const cors = require('cors') // enabling CORS requests
+// const mongoose = require('mongoose')
+// const path = require('path');
+import express from 'express';
+import morgan from 'morgan';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import path from 'path';
+import budgetLimits from './mocks/budgetLimits.js';
+import recurringBills from './mocks/recurringBills.js';
+import transactionData from './mocks/transactionData.js';
+import goals from './mocks/goals.js';
+import { getNotifications } from './notifications.js'; 
+
+dotenv.config({ silent: true });
 
 /* Importing mock data */
-const budgetLimits = require('./mocks/budgetLimits.js');
-const recurringBills = require('./mocks/recurringBills.js');
-const transactionData = require('./mocks/transactionData');
+// const budgetLimits = require('./mocks/budgetLimits.js');
+// const recurringBills = require('./mocks/recurringBills.js');
+// const transactionData = require('./mocks/transactionData');
+// const goals = require('./mocks/goals.js');
 
-const { getNotifications } = require('./notifications'); // import notification logic
+// const { getNotifications } = require('./notifications'); 
 
 
 const app = express()
@@ -120,10 +133,8 @@ app.get('/api/notifications', (req, res) => {
   res.json(notifications);
 });
 
-const goals = [
-  { id: 1, name: 'Traveling Fund', target: 1000, current: 200 },
-  { id: 2, name: 'Credit Card Payment', target: 500, current: 100 }
-];
+
+
 
 app.get('/goal', (req, res) => {
   res.json(goals);
@@ -131,8 +142,8 @@ app.get('/goal', (req, res) => {
 
 app.post('/goal', (req, res) => {
   const newGoal = req.body;
-  newGoal.id = goals.length + 1; 
-  newGoal.current = 0; 
+  newGoal.id = goals.length + 1;
+  newGoal.current = 0;
   goals.push(newGoal);
   res.status(201).json({ message: 'Goal added', goal: newGoal });
 });
@@ -149,4 +160,5 @@ app.get("*", (req, res) => {
 
 
 // export the express app we created to make it available to other modules
-module.exports = app
+// module.exports = app
+export default app;
