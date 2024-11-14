@@ -10,7 +10,8 @@ function GoalForm({ initialData, onSubmit }) {
 
   useEffect(() => {
     if (initialData) {
-      setInputs(initialData); // Initialize with existing goal data if editing
+      console.log("Prefilling with initial data:", initialData); // Debug log
+      setInputs(initialData);
     }
   }, [initialData]);
 
@@ -46,7 +47,7 @@ function GoalForm({ initialData, onSubmit }) {
           <option value="" disabled>spending frequency</option>
           <option value="daily">Daily</option>
           <option value="monthly">Monthly</option>
-          <option value="yearly">Yearly</option>
+          <option value="annual">Annual</option>
         </select>
       </label>
       <label>
