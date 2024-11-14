@@ -19,11 +19,11 @@ const SwipableFeed = ({ filters, selectedRestaurant }) => {
     setAllRestaurants,
   } = useContext(SwipableFeedContext);
 
-  const [currentIndex, setCurrentIndex] = useState(restaurants.length - 1);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [page, setPage] = useState(1);
   const [isFetching, setIsFetching] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-
+  console.log(restaurants, currentIndex);
   // Fetch data when accountInfo, page, or filters change
   useEffect(() => {
     if (!accountInfo) return;
@@ -42,7 +42,7 @@ const SwipableFeed = ({ filters, selectedRestaurant }) => {
       setAllRestaurants([]);
       setFilteredRestaurants([]);
       setHasMore(true);
-      setCurrentIndex(-1);
+      setCurrentIndex(0);
     }
     if (isFetching || (!hasMore && pageNumber !== 1)) return;
     setIsFetching(true);
@@ -77,7 +77,6 @@ const SwipableFeed = ({ filters, selectedRestaurant }) => {
           );
           return [...prevRestaurants, ...newRestaurants];
         });
-        setCurrentIndex((prevIndex) => prevIndex + fetchedRestaurants.length);
       }
     } catch (error) {
       console.error('Error fetching restaurants:', error);
@@ -108,9 +107,9 @@ const SwipableFeed = ({ filters, selectedRestaurant }) => {
     } else if (dir === 'right') {
       likeRestaurant(restaurant.id);
     }
-    setCurrentIndex(index - 1);
+    setCurrentIndex((prevIndex) => prevIndex + 1);
 
-    if (index - 1 < 5 && hasMore && !isFetching) {
+    if (index >= restaurants.length - 1 && hasMore && !isFetching) {
       const newPage = page + 1;
       setPage(newPage);
       fetchRestaurants(newPage);
