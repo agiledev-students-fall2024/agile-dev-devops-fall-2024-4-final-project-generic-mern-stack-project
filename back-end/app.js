@@ -25,7 +25,10 @@ dotenv.config({ silent: true });
 
 // const { getNotifications } = require('./notifications'); 
 
-const { monthlyData, categoryData, calculateMonthlyBalance } = require('./mocks/charts');
+// import { monthlyData, categoryData, calculateMonthlyBalance } from './mocks/charts.js';
+import charts from './mocks/charts.js';
+
+const { monthlyData, categoryData, calculateMonthlyBalance } = charts;
 
 
 const app = express()
