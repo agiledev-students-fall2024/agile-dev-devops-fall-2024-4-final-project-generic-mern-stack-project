@@ -1,5 +1,6 @@
 // Import and instantiate express
 import express from 'express';
+import { user } from './auth.js';
 const router = express.Router();
 
 router.post("/api/post", async (req, res) => {
@@ -17,6 +18,7 @@ router.post("/api/post", async (req, res) => {
         // Log the received data for debugging
         console.log("Post Content:", postContent);
         console.log("Selected Community:", selectedOption);
+        user.posts.unshift(postContent)
 
         res.status(200).json({
             message: "Post received successfully",
@@ -35,3 +37,6 @@ router.post("/api/post", async (req, res) => {
 });
 
 export default router;
+
+
+

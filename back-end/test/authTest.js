@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import request from "supertest";
-import server from "../app.js"; // Ensure this is correctly pointing to your Express application
+import server from "../app.js";
 
 describe("Authentication Tests", () => {
   describe("POST /api/signup", () => {
@@ -13,14 +13,12 @@ describe("Authentication Tests", () => {
     });
 
     it("should enforce password length", async () => {
-      const res = await request(server)
-        .post("/api/signup")
-        .send({
-          name: "John",
-          username: "johnDoe",
-          email: "john@example.com",
-          password: "123",
-        });
+      const res = await request(server).post("/api/signup").send({
+        name: "John",
+        username: "johnDoe",
+        email: "john@example.com",
+        password: "123",
+      });
       expect(res.status).to.equal(400);
       expect(res.body.message).to.equal(
         "Password should be at least 6 characters long"
@@ -28,14 +26,12 @@ describe("Authentication Tests", () => {
     });
 
     it("should create a user successfully", async () => {
-      const res = await request(server)
-        .post("/api/signup")
-        .send({
-          name: "John",
-          username: "johnDoe",
-          email: "john@example.com",
-          password: "123456",
-        });
+      const res = await request(server).post("/api/signup").send({
+        name: "John",
+        username: "johnDoe",
+        email: "john@example.com",
+        password: "123456",
+      });
       expect(res.status).to.equal(201);
       expect(res.body.message).to.equal("User created successfully");
       expect(res.body.user).to.include({
