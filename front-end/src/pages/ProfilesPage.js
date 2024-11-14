@@ -29,6 +29,7 @@ const ProfilesPage = () => {
   }, []);
 
 
+  //same with editing the user, not really essential and will change once we implement log-in / sign-up in future sprint
   const handleEditToggle = () => {
     setIsEditMode((prevMode) => !prevMode);
   };
