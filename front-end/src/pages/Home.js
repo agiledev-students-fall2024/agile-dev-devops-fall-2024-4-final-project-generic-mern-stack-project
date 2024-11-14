@@ -16,7 +16,7 @@ const Home = () => {
         axios
             .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/home`)
             .then(response => {
-                setPosts(response.data);
+                setPosts(response.data.posts);
             })
             .catch(err => {
                 console.log("Failed to fetch posts.");

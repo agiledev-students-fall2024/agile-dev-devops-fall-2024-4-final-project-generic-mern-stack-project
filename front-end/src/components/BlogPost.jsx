@@ -1,22 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 
-const BlogPost = ({ post }) => {
-  const [blogPost, setBlogPost] = useState({});
+const BlogPost = ({ post, isReply = false }) => {
+  const [blogPost, setBlogPost] = useState(post);
   const [liked, setLiked] = useState(false);
-  const [replies, setReplies] = useState([]);
   const [showReplies, setShowReplies] = useState(false);
   const [newReply, setNewReply] = useState("");
+  const [replies, setReplies] = useState(post.replies || []);
 
   useEffect(() => {
-
     setBlogPost(post);
-
-  }, [post]); 
+  }, [post]);
 
   const handleReplySubmit = () => {
     if (newReply.trim()) {
-      setReplies([...replies, newReply]);
+      const newReplyPost = {
+        id: Date.now(),
+        user: {
+          id: 2,
+          username: 'user2',
+          display_name: 'User Two',
+          profile_pic: 'https://picsum.photos/200',
+          about: 'A fellow art enthusiast!'
+        },
+        content: newReply,
+        likes: 0,
+        replies: []
+      };
+      setReplies([...replies, newReplyPost]);
       setNewReply("");
     }
   };
@@ -38,16 +49,20 @@ const BlogPost = ({ post }) => {
   };
 
   return (
-    <div className="w-[100%] md:w-[95%] px-4 py-2 bg-lavender_blush-900 rounded-lg shadow-md shadow-ebony-900 m-auto">
+    <div
+      className={`w-[100%] md:w-[95%] px-4 py-2 bg-lavender_blush-900 rounded-lg ${
+        isReply ? "rounded-none border-[1px] border-b-0 border-ebony-900" : "shadow-md shadow-ebony-900"
+      } ${isReply ? "m-0" : "m-auto"} `}
+    >
       <div className="flex flex-row items-center">
-        <img src={post.profilePic} alt="Profile" className="w-20 h-20 rounded-lg my-4 mx-2" />
+        <img src={blogPost.user.profile_pic} alt="Profile" className="w-20 h-20 rounded-lg my-4 mx-2" />
         <p className="flex flex-col justify-start items-start text-md my-4">
-          <span className="font-bold text-ebony text-left">{blogPost.name}</span>
-          <span className="text-rose opacity-[75%]">@{blogPost.userName}</span>
+          <span className="font-bold text-ebony text-left">{blogPost.user.display_name}</span>
+          <span className="text-rose opacity-[75%]">@{blogPost.user.username}</span>
         </p>
       </div>
 
-      <div className="w-[95%] m-auto text-lg text-ebony">{blogPost.text}</div>
+      <div className="w-[95%] m-auto text-lg text-ebony">{blogPost.content}</div>
       {blogPost.images && blogPost.images.length === 1 ? (
         <img
           src={blogPost.images[0]}
@@ -112,10 +127,10 @@ const BlogPost = ({ post }) => {
           </div>
           {replies.length > 0 && (
             <div className="mt-4">
-              <h3 className="font-bold text-ebony">Replies</h3>
+              <h3 className="font-bold text-ebony mb-2">Replies</h3>
               {replies.map((reply, index) => (
-                <div key={index} className="mt-2 text-ebony pl-4 border-l-2">
-                  {reply}
+                <div key={index} className="flex justify-center">
+                  <BlogPost post={reply} isReply={true} />
                 </div>
               ))}
             </div>

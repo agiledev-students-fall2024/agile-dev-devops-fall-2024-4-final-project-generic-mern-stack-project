@@ -79,7 +79,6 @@ function EditProfile() {
       setSelectedFile(file);
     }
   }
-
   function handleEmailChange(e) {
     setUser((prevUser) => ({
       ...prevUser,
