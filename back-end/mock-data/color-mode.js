@@ -1,7 +1,7 @@
 const colors = [
     {
         "id": 1,
-        "mode": "Dark"
+        "mode": "Light"
     }
 ]
 

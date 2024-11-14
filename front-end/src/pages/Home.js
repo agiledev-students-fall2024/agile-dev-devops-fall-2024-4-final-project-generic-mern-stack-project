@@ -1,10 +1,15 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import BlogPost from '../components/BlogPost';
 import DropdownMenu from '../components/DropdownMenu';
 import SearchBar from '../components/SearchBar';
+import { ColorContext } from '../ColorContext';
+import { FontContext } from '../FontContext';
 
 const Home = () => {
+    const { updateColor } = useContext(ColorContext);
+    const { updateFont } = useContext(FontContext);
+
     const [searchInput, setSearchInput] = useState("");
     const [posts, setPosts] = useState([]);
     const [selectedCommunity, setSelectedCommunity] = useState("Select a Community");
@@ -27,6 +32,24 @@ const Home = () => {
                 console.log("Failed to fetch posts.");
                 console.error(err);
             });
+
+        axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/color-mode`)
+            .then(response => {
+                updateColor(response.data.toLowerCase())
+            })
+            .catch(err => {
+                console.log(`Could not get data.`)
+                console.error(err)
+            })
+
+        axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/font-size`)
+            .then(response => {
+                updateFont(response.data)
+            })
+            .catch(err => {
+                console.log(`Could not get data.`)
+                console.error(err)
+            })
     }, []);
 
     return (
