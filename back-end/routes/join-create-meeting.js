@@ -18,7 +18,7 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
     // Generate a random 9-digit meeting ID
     const meetingId = Math.random().toString().slice(2, 11);
-   
+
     // Create new meeting room with default settings
     const newMeeting = {
         id: meetingId,
@@ -36,5 +36,25 @@ router.post('/', (req, res) => {
     meetings.set(meetingId, newMeeting);
     res.status(201).json(newMeeting);
 });
+
+// // POST /meeting/:id/save - save the meeting data at that point of time
+// router.post('/:id/save', (req, res) => {
+//     const meetingId = req.params.id;
+//     const meeting = meetings.get(meetingId);
+//     if (!meeting) {
+//         return res.status(404).json({
+//             error: 'Meeting not found',
+//             success: false
+//         });
+//     }
+//     const savedMeeting = req.body;
+
+//     res.json({
+//         message: 'Meeting saved successfully',
+//         id: meetingId,
+//         success: true,
+//         meeting: savedMeeting
+//     });
+// });
 
 module.exports = router;
