@@ -12,6 +12,9 @@ const AddActivity = () => {
   const handleFormSubmit = async (activity) => { // this is passed into the form component, edit this once the backend is ready
     try {
       const act = {...activity, locationId: locationId}; //add the location ID to the post request
+      
+      //shouldn't this have the tripId as well?
+
       const response = await axios.post('/activities', act); //this is the api call
       if(response.status === 201){
         console.log("successfully added activity :)", response.data);
