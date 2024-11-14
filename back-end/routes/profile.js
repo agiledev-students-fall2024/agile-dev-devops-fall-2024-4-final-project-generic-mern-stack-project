@@ -14,4 +14,16 @@ router.get('/api/profile', async (req, res) => {
     }
 });
 
+// route to update user profile
+router.post('/api/profile', async (req, res) => {
+    const { display_name, username, about, email, profile_pic } = req.body;
+    user.display_name = display_name;
+    user.username = username;
+    user.about = about;
+    user.email = email;
+    user.profile_pic = profile_pic;
+
+    res.status(200).json({ message: "Profile updated successfully", user });
+  });
+
 export default router

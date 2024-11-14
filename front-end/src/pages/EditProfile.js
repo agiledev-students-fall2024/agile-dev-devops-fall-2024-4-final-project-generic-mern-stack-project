@@ -1,150 +1,139 @@
-// users can change name, username, about, email, password and profile picture
 import React, { useEffect, useState } from "react";
 import TitleAndDescription from "../components/TitleAndDescription";
-import "./EditProfile.css";
 import InputField from "../components/InputField";
 import SubmitButton from "../components/SubmitButton";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../axios";
 import toast from "react-hot-toast";
 
-function EditProfile() {
-  // mock current user data
-  // todo: replace with the actual user data from the backend
-  const currentUser = {
-    name: "John Doe",
-    userName: "john_doe",
-    about: ["I am a software engineer", "I love to code"],
-    email: "jd@gmail.com",
-    password: "password123",
-    profilePic:
-      "https://images.pexels.com/photos/1759531/pexels-photo-1759531.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-  };
+const EditProfile = (props) => {
   const [user, setUser] = useState({
-    name: currentUser.name,
-    userName: currentUser.userName,
-    about: currentUser.about,
-    profilePic: currentUser.profilePic,
-    password: currentUser.password,
-    email: currentUser.email,
+    display_name: "",
+    username: "",
+    about: "",
+    email: "",
+    profile_pic: "default_pic.png",
   });
   const [selectedFile, setSelectedFile] = useState(null);
-
   const navigate = useNavigate();
 
-  // UseEffect for handling file upload
+  useEffect(() => {
+    axiosInstance.get("/profile")
+      .then(response => {
+        const { display_name, username, about, email, profile_pic } = response.data;
+        setUser({
+          display_name,
+          username,
+          about,
+          email,
+          profile_pic: profile_pic || "default_pic.png",
+        });
+      })
+      .catch(error => {
+        console.error("Error fetching user data:", error);
+        toast.error("Failed to load user profile.");
+      });
+  }, []);
+
   useEffect(() => {
     if (selectedFile) {
       const formData = new FormData();
       formData.append("file", selectedFile);
 
-      axiosInstance
-        .post("/upload-pic", formData)
-        .then((response) => {
+      axiosInstance.post("/upload-pic", formData)
+        .then(response => {
           toast.success("Profile picture uploaded successfully!");
-          setUser((prevUser) => ({
+          setUser(prevUser => ({
             ...prevUser,
-            profilePic: `${process.env.REACT_APP_SERVER_HOSTNAME}/${response.data.file.path}`,
+            profile_pic: `${process.env.REACT_APP_SERVER_HOSTNAME}/${response.data.file.path}`,
           }));
-          console.log(response.data.file.path);
         })
-        .catch((error) => {
+        .catch(error => {
           console.error("Upload error:", error);
           toast.error("Failed to upload profile picture.");
         });
     }
   }, [selectedFile]);
 
-  function handleNameChange(e) {
-    setUser((prevUser) => ({
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setUser(prevUser => ({
       ...prevUser,
-      name: e.target.value,
+      [name]: value,
     }));
   }
-  function handleUserNameChange(e) {
-    setUser((prevUser) => ({
-      ...prevUser,
-      userName: e.target.value,
-    }));
-  }
-  function handleAboutChange(e) {
-    setUser((prevUser) => ({
-      ...prevUser,
-      about: e.target.value,
-    }));
-  }
+
   function handleProfilePicInput(e) {
     const file = e.target.files[0];
     if (file) {
       setSelectedFile(file);
     }
   }
-  function handleEmailChange(e) {
-    setUser((prevUser) => ({
-      ...prevUser,
-      email: e.target.value,
-    }));
-  }
+
   function handleSaveChanges(e) {
     e.preventDefault();
-    console.log("Save changes: ", user);
-    toast.success("Profile updated successfully!");
-    navigate("/profile");
+
+    axiosInstance.post("/profile", user)
+      .then(response => {
+        toast.success("Profile updated successfully!");
+        navigate("/profile"); 
+      })
+      .catch(error => {
+        console.error("Error updating profile:", error);
+        toast.error("Failed to update profile.");
+      });
   }
 
   return (
     <div className="w-[90%] flex flex-col justify-center items-center gap-4 p-8 m-[auto]">
       <TitleAndDescription
         title="Edit Your Profile"
-        description={"Modify account information like your name and email."}
+        description="Modify account information like your name and email."
       />
 
-      <div className="flex flex-col justify-center items-center w-[100%] mx-auto gap-2 p-6 rounded-md  md:w-[80%] lg:w-[60%]">
+      <div className="flex flex-col justify-center items-center w-[100%] mx-auto gap-2 p-6 rounded-md md:w-[80%] lg:w-[60%]">
         <h2 className="text-xl text-ebony-600 text-center mb-2">
-          <img
-            className="profile-pic"
-            src={user.profilePic}
-            alt="profile pic"
-          />
+          <img className="w-32 h-32 md:w-44 md:h-44 rounded-lg object-cover" src={user.profile_pic} alt="profile pic" />
         </h2>
-        <input type="file" onChange={handleProfilePicInput}></input>
+        <input type="file" onChange={handleProfilePicInput} />
+
         <div className="w-[80%] flex flex-col gap-4">
           <InputField
             inputfieldName="Username"
             inputType="text"
-            handleChange={handleUserNameChange}
-            inputValue={user.userName}
+            handleChange={handleChange}
+            inputValue={user.username}
+            name="username"
           />
           <InputField
             inputfieldName="Name"
             inputType="text"
-            handleChange={handleNameChange}
-            inputValue={user.name}
+            handleChange={handleChange}
+            inputValue={user.display_name}
+            name="display_name"
           />
           <InputField
             inputfieldName="Email"
             inputType="email"
-            handleChange={handleEmailChange}
+            handleChange={handleChange}
             inputValue={user.email}
+            name="email"
           />
-
           <InputField
             inputfieldName="About"
             inputType="textarea"
-            handleChange={handleAboutChange}
+            handleChange={handleChange}
             inputValue={user.about}
+            name="about"
           />
         </div>
       </div>
 
       <div className="w-[60%] flex justify-center md:w-[40%] lg:w-[30%]">
-        <SubmitButton
-          placeholder="Save"
-          handleClick={handleSaveChanges}
-        ></SubmitButton>
+        <SubmitButton placeholder="Save" handleClick={handleSaveChanges} />
       </div>
     </div>
   );
-}
+};
 
 export default EditProfile;

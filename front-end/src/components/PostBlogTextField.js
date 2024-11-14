@@ -1,13 +1,11 @@
 // C14 
-
-
 import React, { useState } from 'react';
 import './PostBlogTextField.css';
 import DropdownMenu from './DropdownMenu';
 
 const PostBlogTextField = ({ onCancel, onPost }) => {
     const [postContent, setPostContent] = useState('');
-    const [selectedOption, setSelectedOption] = useState('');
+    const [selectedOption, setSelectedOption] = useState('Community 1');
     const [attachedImage, setAttachedImage] = useState(null);
 
     const handlePostClick = () => {
@@ -44,6 +42,7 @@ const PostBlogTextField = ({ onCancel, onPost }) => {
                 name="your-communities" 
                 label="Your Communities" 
                 options={['Community 1', 'Community 2', 'Community 3']} 
+                defaultValue="Community 1"
                 onChange={handleDropdownChange} 
             />
             <textarea
