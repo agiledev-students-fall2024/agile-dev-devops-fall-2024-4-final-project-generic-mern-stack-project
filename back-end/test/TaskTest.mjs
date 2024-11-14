@@ -10,13 +10,13 @@ import app from '../app.js';
 describe('Tasks API', () => {
 
 
-  it('GET /tasks - should fetch all tasks', async () => {
+  it('GET /tasks - Fetch all tasks', async () => {
     const res = await request(app).get('/tasks');
     expect(res).to.have.status(200);
     expect(res.body).to.be.an('array');
   });
 
-  it('GET /tasks/urgent - should fetch urgent tasks', async () => {
+  it('GET /tasks/urgent - Fetch urgent tasks for home page', async () => {
     const res = await request(app).get('/tasks/urgent');
     expect(res).to.have.status(200);
     expect(res.body).to.be.an('array');
@@ -36,13 +36,13 @@ describe('Tasks API', () => {
   // Comment: Since we don't have real database here and taskId is generated randomly every time.
   // So we cannot really do this test because ID will not be found correctly.
 
-  it('DELETE /tasks/:id - should delete a task', async () => {
+  it('DELETE /tasks/:id - Delete a task', async () => {
     const taskId = "1"; 
     const res = await request(app).delete(`/tasks/${taskId}`);
     expect(res).to.have.status(204);
-  });
+  }); // Currently not REALLY Deleting because data is not stored, only check status.
 
-  it('POST /tasks - should create a new task', async () => {
+  it('POST /tasks - Create a new task', async () => {
     const newTask = {
       name: 'Test for Task',
       due: '2024-12-01',

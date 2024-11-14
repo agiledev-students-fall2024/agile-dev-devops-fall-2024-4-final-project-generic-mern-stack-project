@@ -5,13 +5,13 @@ import app from '../app.js';
 
 
 describe('Goals API', () => {
-  it('GET /goals - should fetch all goals', async () => {
+  it('GET /goals - Fetch all goals', async () => {
     const res = await request(app).get('/goals');
     expect(res.status).to.equal(200);
     expect(res.body).to.be.an('array');
   });
 
-  it('POST /goals/new - should create a new goal', async () => {
+  it('POST /goals/new - Create a new goal', async () => {
     const newGoal = {
       title: 'New Goal',
       tasks: ['Task 1', 'Task 2'],
