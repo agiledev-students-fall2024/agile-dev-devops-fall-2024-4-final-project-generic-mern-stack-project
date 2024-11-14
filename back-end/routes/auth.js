@@ -5,19 +5,18 @@ import express from "express";
 const router = express.Router();
 export const user = {
   id: 1,
-  display_name: '',
-  username: '',
-  about: 'This user hasn’t added a bio yet...',
+  display_name: "",
+  username: "",
+  about: "This user hasn’t added a bio yet...",
   posts: [],
   communities: [],
-  profile_pic: 'default_pic.png',
+  profile_pic: "default_pic.png",
   signedIn: true,
   followers: [],
-  following: []
-}
+  following: [],
+};
 
 export const signup = async (req, res) => {
-  // res.json({ message: "signup" });
   try {
     const { name, username, password, email } = req.body;
     // const existingEmail = await User.findOne({ email });
@@ -77,4 +76,3 @@ router.post("/api/login", login);
 router.post("/api/logout", logout);
 
 export default router;
-
