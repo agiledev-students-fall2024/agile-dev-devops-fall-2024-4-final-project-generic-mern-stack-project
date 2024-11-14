@@ -21,7 +21,8 @@ const Profile = (props) => {
     const [onBlogs, setOnBlogs] = useState(false);
 
     useEffect(() => {
-        axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/profile`)
+        axios
+            .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/profile`)
             .then(response => {
                 setUser(response.data)
             })
@@ -50,7 +51,7 @@ const Profile = (props) => {
     };
 
     return (
-        <div className="w-[90%] flex flex-col justify-center items-center gap-4 p-8 m-[auto]">
+        <div className="w-[100%] lg:w-[90%] flex flex-col justify-center items-center gap-4 p-8 m-[auto]">
             <ProfileHeader 
                 user={user}
                 loggedIn={user.signedIn} 
@@ -72,7 +73,7 @@ const Profile = (props) => {
                             </div>
                         ))
                     ) : (
-                        <div className="m-auto bg-lavender_blush-900 w-[70%] p-8 rounded-lg text-center text-lg text-ebony font-semibold shadow-md shadow-[#fedae7]">
+                        <div className="m-auto bg-lavender_blush-900 w-[90%] md:w-[70%] p-8 rounded-lg text-center text-sm md:text-lg text-ebony font-semibold shadow-md shadow-[#fedae7]">
                             Find your place and join a community today <Link to="/community" className="text-rose text-bold hover:underline hover:text-rose">here</Link>
                             <hr className="border-none"></hr>
                             You can also form your own community <Link to="/create-community" className="text-rose text-bold hover:underline hover:text-rose">here</Link>
@@ -89,7 +90,7 @@ const Profile = (props) => {
                         </div>
                         ))
                     ) : (
-                        <div className="m-auto bg-lavender_blush-900 w-[70%] p-8 rounded-lg text-center text-lg text-ebony font-semibold shadow-md shadow-[#fedae7]">
+                        <div className="m-auto bg-lavender_blush-900 w-[90%] md:w-[70%] p-8 rounded-lg text-center text-sm md:text-lg text-ebony font-semibold shadow-md shadow-[#fedae7]">
                             Make your first post and connect with others <Link to="/post" className="text-rose text-bold hover:underline hover:text-rose">here</Link>
                         </div>
                     )}

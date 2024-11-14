@@ -1,10 +1,32 @@
-import React from 'react';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import PostBlogTextField from '../components/PostBlogTextField';
 import './Post.css';
 
 const Post = () => {
     const navigate = useNavigate();
+    const [user, setUser] = useState({
+        name: '',
+        userName: '',
+        about: [],
+        posts: [],
+        communities: [],
+        profilePic: '',
+        signedIn: false,
+        followers: 0
+    });
+
+    useEffect(() => {
+        axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/profile`)
+            .then(response => {
+                setUser(response.data)
+            })
+            .catch(err => {
+                console.log(`Error fetching data.`)
+                console.error(err)
+            })
+    }, []);
 
     const handleCancel = () => {
         navigate(-1); // Go back to the previous page
@@ -13,19 +35,24 @@ const Post = () => {
     const handlePost = (postContent, selectedOption) => {
         console.log("Posted:", postContent, "Community:", selectedOption);
 
-        // Mock new post data including the attached image URL
         const newPost = {
-            id: Date.now(), // Unique id for the mock post
-            profilePic: "https://images.pexels.com/photos/1759531/pexels-photo-1759531.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2", // Mock profile picture
-            name: "John Doe", // Replace with dynamic data if available
-            userName: "john_doe", // Replace with dynamic data if available
-            text: postContent,
+            id: Date.now(), 
+            user: user,
+            content: postContent,
+            liked_by: [],
             likes: 0,
-            images: ["https://images.pexels.com/photos/1759531/pexels-photo-1759531.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"]
+            images: [],
+            replies: []
         };
 
-        // Redirect to Home with the new post added to state
-        navigate("/", { state: { newPost } });
+        axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/post`, { postContent: newPost, selectedOption })
+        .then(response => {
+            console.log(response.data);
+            navigate("/", { state: { newPost } });
+        })
+        .catch(err => {
+            console.error("Error posting data:", err);
+        });
     };
 
     return (

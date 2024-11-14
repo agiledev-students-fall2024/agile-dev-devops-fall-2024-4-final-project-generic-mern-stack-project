@@ -29,19 +29,19 @@ const ProfileHeader = ({
         )}
         <div className="w-[90%] md:w-[60%] flex flex-col">
           {profileLoggedIn ? (
-            <div className="w-full flex justify-between items-center">
-              <p className="flex gap-2 text-sm sm:text-md md:text-lg pl-2">
+            <div className="w-full flex flex-col sm:flex-row justify-between items-center">
+              <p className="flex gap-2 text-sm sm:text-md md:text-lg pl-2 mb-2">
                 <span className="font-bold text-ebony">{profileUser.display_name}</span>
                 <span className="text-rose opacity-75">@{profileUser.username}</span>
               </p>
               <div className="flex flex-row gap-2">
                 <Link to="/settings">
-                  <div className="py-1 px-2 mb-1 border border-rose text-rose rounded-md hover:border-ebony hover:text-ebony text-xs md:text-sm text-center">
+                  <div className="py-1 px-2 mb-1 border border-rose text-rose rounded-md hover:border-ebony hover:text-ebony text-xs lg:text-sm text-center">
                     Settings
                   </div>
                 </Link>
                 <Link to="/editprofile">
-                  <div className="py-1 px-2 mb-1 border border-rose text-rose rounded-md hover:border-ebony hover:text-ebony text-xs md:text-sm text-center">
+                  <div className="py-1 px-2 mb-1 border border-rose text-rose rounded-md hover:border-ebony hover:text-ebony text-xs lg:text-sm text-center">
                     Edit Profile
                   </div>
                 </Link>

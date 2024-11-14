@@ -14,7 +14,7 @@ const Community = () => {
         console.log(e.target.value);
         setInput(e.target.value);
 
-        if (input == null || input == '') {
+        if (input === null || input === '') {
             setData(originalData);
             return
         }

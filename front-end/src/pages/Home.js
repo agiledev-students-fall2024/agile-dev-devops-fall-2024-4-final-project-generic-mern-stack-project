@@ -22,6 +22,7 @@ const Home = () => {
                 
                 // Check if a new post was added through the navigation state
                 const newPost = location.state?.newPost;
+                console.log(newPost)
                 if (newPost) {
                     setPosts([newPost, ...initialPosts]); // Add the new post to the top of the post list
                 } else {

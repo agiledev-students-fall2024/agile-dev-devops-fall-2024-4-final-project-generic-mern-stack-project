@@ -16,7 +16,6 @@ const BlogPost = ({ post, isReply = false }) => {
 
   const [blogPost, setBlogPost] = useState(post);
   const [liked, setLiked] = useState(false);
-  const [likedBy, setLikedBy] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
   const [newReply, setNewReply] = useState("");
   const [replies, setReplies] = useState(post.replies || []);
@@ -81,7 +80,7 @@ const BlogPost = ({ post, isReply = false }) => {
     >
       <div className="flex flex-row items-center">
         <img src={blogPost.user.profile_pic} alt="Profile" className="w-20 h-20 object-cover rounded-lg my-4 mx-2" />
-        <p className="flex flex-col justify-start items-start text-md my-4">
+        <p className="flex flex-col justify-start items-start text-md my-4 ml-2">
           <span className="font-bold text-ebony text-left">{blogPost.user.display_name}</span>
           <span className="text-rose opacity-[75%]">@{blogPost.user.username}</span>
         </p>
