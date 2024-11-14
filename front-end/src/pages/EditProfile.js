@@ -11,7 +11,6 @@ import toast from "react-hot-toast";
 function EditProfile() {
   // mock current user data
   // todo: replace with the actual user data from the backend
-  // todo: add functions to allow users to change their profile picture
   const currentUser = {
     name: "John Doe",
     userName: "john_doe",
@@ -54,7 +53,7 @@ function EditProfile() {
           toast.error("Failed to upload profile picture.");
         });
     }
-  }, [selectedFile]); // Dependency array includes selectedFile only
+  }, [selectedFile]);
 
   function handleNameChange(e) {
     setUser((prevUser) => ({
@@ -77,48 +76,10 @@ function EditProfile() {
   function handleProfilePicInput(e) {
     const file = e.target.files[0];
     if (file) {
-      setSelectedFile(file); // Update selectedFile state
+      setSelectedFile(file);
     }
   }
-  // function handleProfilePicInput(e) {
-  //   const file = e.target.files[0]; // Get the file from input
-  //   if (file) {
-  //     const formData = new FormData();
-  //     formData.append("file", file);
 
-  //     axiosInstance
-  //       .post("/upload-profile-pic", formData)
-  //       .then((response) => {
-  //         console.log(response.data.file);
-  //         console.log(response);
-  //         toast.success("Profile picture uploaded successfully!");
-  //         // Optionally update user state with new image URL/path
-  //         setUser((prevUser) => ({
-  //           ...prevUser,
-  //           profilePic: response.data.file.path, // Assuming this is how you access the path
-  //         }));
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //         toast.error("Failed to upload profile picture.");
-  //       });
-  //   }
-  // }
-  // function handleProfilePicChange(e) {
-  //   const formData = new FormData();
-  //   formData.append("file", user.profilePic);
-  //   axiosInstance
-  //     .post("/upload-profile-pic", user.profilePic)
-  //     .then((response) => {
-  //       console.log(response);
-  //       toast.success("Profile picture uploaded successfully!");
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       toast.error("Failed to upload profile picture.");
-  //     });
-  //   console.log(user);
-  // }
   function handleEmailChange(e) {
     setUser((prevUser) => ({
       ...prevUser,
@@ -146,22 +107,9 @@ function EditProfile() {
             src={user.profilePic}
             alt="profile pic"
           />
-
-          {/* <button
-            className="text-sm font-semibold mt-2 w-[60%] p-1 bg-ebony border-ebony rounded-lg text-rose-700 hover:bg-rose-700 hover:text-ebony hover:border-rose-700 "
-            onClick={handleProfilePicInput}
-          >
-            select image
-          </button> */}
         </h2>
         <input type="file" onChange={handleProfilePicInput}></input>
         <div className="w-[80%] flex flex-col gap-4">
-          {/* <InputField
-            inputfieldName="Profile Picture"
-            inputType="file"
-            handleChange={handleProfilePicInput}
-            inputValue={user.profilePic}
-          /> */}
           <InputField
             inputfieldName="Username"
             inputType="text"
@@ -180,14 +128,6 @@ function EditProfile() {
             handleChange={handleEmailChange}
             inputValue={user.email}
           />
-
-          {/* user go to resetpassword page to change password */}
-          {/* <InputField
-            inputfieldName="Password"
-            inputType="password"
-            handleChange={handlePasswordChange}
-            inputValue={user.password}
-          /> */}
 
           <InputField
             inputfieldName="About"
