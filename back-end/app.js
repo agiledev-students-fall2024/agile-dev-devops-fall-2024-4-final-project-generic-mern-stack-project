@@ -12,10 +12,17 @@ import goals from './mocks/goals.js';
 import { getNotifications } from './notifications.js'; 
 dotenv.config({ silent: true });
 
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 /* Initialize Express App */
 const app = express();
 
+// import { monthlyData, categoryData, calculateMonthlyBalance } from './mocks/charts.js';
+import charts from './mocks/charts.js';
+
+const { monthlyData, categoryData, calculateMonthlyBalance } = charts;
 /* ======================= Middleware ======================= */
 app.use(morgan('dev', { skip: (req, res) => process.env.NODE_ENV === 'test' })); // Log all requests, except in test mode
 app.use(cors()); // Enable Cross-Origin Requests
