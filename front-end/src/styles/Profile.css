@@ -1,141 +1,121 @@
 .profile-page {
-    justify-content: left;
-    margin: 15px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
 }
 
-.profile-elements {
-    display: flex;
+.profile-card {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.profile-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-right: 20px;
+  box-shadow: 1px 1px black;
+}
+
+.profile-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .profile-info {
-    display:block;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-name {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin: 0 0 5px 0;
+}
+
+.profile-phone {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+}
+
+.profile-details {
+  flex: 1;
+}
+
+.profile-details h2 {
+  margin: 0 0 8px 0;
+  color: #1a1a1a;
+  font-size: 28px;
+}
+
+.profile-details p {
+  margin: 4px 0;
+  color: #666;
+  font-size: 16px;
+}
+
+.restaurants-section {
+  background-color: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.restaurants-section h2 {
+  margin: 0 0 24px 0;
+  color: #1a1a1a;
+  font-size: 24px;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 12px;
+}
+
+.no-liked-restaurants {
+  text-align: center;
+  padding: 48px 0;
+  color: #666;
+  font-size: 18px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin: 16px 0;
 }
 
 .filters {
-    display:flex;
-    justify-content: center;
-    margin-bottom: 20px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
 }
 
-.restaurant-card {
-    display:flex;
-    border:1px solid #ccc;
-    overflow:hidden;
+.filter-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  background-color: #e9ecef;
+  color: #495057;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.restaurant-photo {
-    height: 100%;
-    object-fit: cover;
+.filter-button:hover {
+  background-color: #dee2e6;
 }
 
-.restaurant-info {
-    display:flex;
-    flex-direction: column;
-    justify-content: center;
-    padding:10px;
-    flex: 1;
+.filter-button.active {
+  background-color: #007bff;
+  color: white;
 }
-
-.restaurant-name {
-    font-size: 1.5rem;
-    margin: 0;
-}
-
-.restaurant-tags {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 5px;
-}
-
-.tag {
-    background-color: #e0e0e0e0;
-    border-radius: 4px;
-    padding: 5px;
-    margin-right: 5px;
-    font-size: 0.9rem;
-}
-
-button {
-    margin-top: 10px;
-    padding: 5px 10px;
-    cursor: pointer;
-}
-
-
-/* Profile.css */
-
-.profile-page {
-    padding: 16px;
-  }
-  
-  .header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 24px;
-  }
-  
-  .profile-elements {
-    display: flex;
-    align-items: center;
-  }
-  
-  .profile-pic {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-  
-  .profile-info {
-    margin-left: 16px;
-  }
-  
-  .filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    margin-bottom: 24px;
-  }
-  
-  .body {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-  
-  
-  .restaurant-photo {
-    width: 150px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-  
-  .restaurant-info {
-    margin-left: 16px;
-    flex: 1;
-  }
-  
-  .restaurant-info h2 {
-    margin: 0 0 8px 0;
-  }
-  
-  .restaurant-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 8px;
-  }
-  
-  .tag {
-    background-color: #eee;
-    padding: 4px 8px;
-    border-radius: 16px;
-    font-size: 0.875em;
-  }
-  
-  .no-liked-restaurants {
-    color: #555;
-    font-size: 1em;
-  }
-  

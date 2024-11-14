@@ -8,7 +8,6 @@ const Navbar = ({ setFilters, setSelectedRestaurant }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated } = useContext(AuthContext);
-
   const [filterOpen, setFilterOpen] = useState(false);
 
   const handleProfileClick = () => {

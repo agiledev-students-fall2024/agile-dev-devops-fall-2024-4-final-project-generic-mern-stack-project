@@ -1,8 +1,10 @@
+/* eslint-disable no-unused-vars */
+
 import React, { useState, useEffect, useContext } from 'react';
 import '../styles/Profile.css';
 import { AccountInfoContext } from '../contexts/AccountInfoContext';
-import RestaurantListItem from './RestaurantListItem';
 import { User } from '../api/User';
+import RestaurantListItem from './RestaurantListItem';
 
 const ProfilePage = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -56,59 +58,30 @@ const ProfilePage = () => {
 
   return (
     <div className="profile-page">
-      <h2>Profile Page</h2>
-      <div className="header">
-        <div className="profile-elements">
+      <h1>Profile Page</h1>
+      <div className="profile-card">
+        <div className="profile-photo">
           <img
-            src={accountInfo.profilePic}
+            src={accountInfo.profilePic || "default-profile-pic.jpg"}
             alt={`${accountInfo.email}'s profile`}
             className="profile-pic"
           />
-          <div className="profile-info">
-            <h2>{accountInfo.email}</h2>
-            <p>{phoneNumber}</p>
-          </div>
+        </div>
+        <div className="profile-info">
+          <h2 className="profile-name">{accountInfo.email || "User's Name"}</h2>
+          <p className="profile-phone">{phoneNumber || "Phone Yet to be Set"}</p>
         </div>
       </div>
-
-      <h2>Liked Restaurants</h2>
-
-      <div className="filters">
-        {/* ... (filter controls remain the same) */}
-      </div>
-
-      <div className="body">
-        {filteredRestaurants.length > 0 ? (
-          filteredRestaurants.map((id) => {
-            const restaurant = accountInfo.likedRestaurants[id];
-            return (
-              <div className="restaurant-card" key={id}>
-                <img
-                  src={restaurant.photo}
-                  alt={`${restaurant.name}`}
-                  className="restaurant-photo"
-                />
-                <div className="restaurant-info">
-                  <h2>{restaurant.name}</h2>
-                  <div className="restaurant-tags">
-                    <span className="tag">{restaurant.cuisine}</span>
-                    <span className="tag">{restaurant.neighborhood}</span>
-                    <span className="tag">{restaurant.priceRange}</span>
-                    <span className="tag">{restaurant.status}</span>
-                  </div>
-                  <button onClick={() => handleDelete(id)}>Delete</button>
-                </div>
-              </div>
-            );
-          })
-        ) : (
-          <p>No restaurants liked.</p>
-        )}
-      </div>
-
-      {accountInfo.likedRestaurants.length > 0 ? (
-        accountInfo.likedRestaurants.map((restaurant) => (
-          <RestaurantListItem key={restaurant.id} restaurant={restaurant} />
+  
+      <h2>Saved Restaurants</h2>
+      
+      {Object.keys(accountInfo.likedRestaurants).length > 0 ? (
+        Object.entries(accountInfo.likedRestaurants).map(([id, restaurant]) => (
+          <RestaurantListItem 
+            key={id} 
+            restaurant={restaurant} 
+            onDelete={() => handleDelete(id)}
+          />
         ))
       ) : (
         <p className="no-liked-restaurants">

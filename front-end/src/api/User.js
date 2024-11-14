@@ -5,7 +5,7 @@ export class User {
     this.id = id;
     this.email = email;
     this.profilePic = profilePic
-    this.likedRestaurants = this.likedRestaurants;
+    this.likedRestaurants = likedRestaurants;
   }
 
   /**

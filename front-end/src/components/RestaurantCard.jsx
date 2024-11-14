@@ -58,9 +58,9 @@ const RestaurantCard = ({ restaurant }) => {
         </h5>
         <div className="pills-container">
         {restaurant.cuisine && 
-         <span className="pill">
-         {restaurant.cuisine}
-       </span>
+        <span className="pill">
+        {restaurant.cuisine}
+        </span>
         }
             <span className="pill">
               {restaurant.neighborhood}
@@ -70,6 +70,7 @@ const RestaurantCard = ({ restaurant }) => {
       </div>
     </div>
   );
-};
+
+}
 
 export default RestaurantCard;
