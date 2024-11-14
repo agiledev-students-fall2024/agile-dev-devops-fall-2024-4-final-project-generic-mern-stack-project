@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import '../styles/RestaurantCard.css';
 
+
 const RestaurantCard = ({ restaurant }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   if (!restaurant) return <div>No Restaurant Found</div>;
-
+  // || !restaurant.imgs || restaurant.imgs.length === 0
   const totalImages = restaurant.images.length;
 
   const handleImageClick = (event) => {
@@ -29,6 +30,7 @@ const RestaurantCard = ({ restaurant }) => {
     <div className="restaurant-card">
       <div className="image-container">
         <div onClick={handleImageClick} className="clickable-image">
+          {/*eslint-disable-next-line jsx-a11y/img-redundant-alt*/}
           <img
             src={restaurant.images[currentImageIndex]}
             alt={`Image ${currentImageIndex + 1}`}

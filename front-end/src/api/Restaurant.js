@@ -62,11 +62,12 @@ export async function fetchLikedRestaurants(userId) {
   if (!userId) throw new Error("Empty userId. Cannot fetch");
 
   let fetchUrl = "";
-  if (process.env.NODE_ENV == "production") fetchUrl = "http://backend/api/restaurant";
-  if (process.env.NODE_ENV == "test") fetchUrl = "https://api.mockaroo.com/api";
-  if (process.env.NODE_ENV == "development") return [];
+  if (process.env.NODE_ENV === "production") fetchUrl = "http://backend/api/restaurant";
+  if (process.env.NODE_ENV === "test") fetchUrl = "https://api.mockaroo.com/api";
+  if (process.env.NODE_ENV === "development") return [];
 
   const response = await fetch(fetchUrl).then((response) => response.json);
+  /* eslint-disable no-array-constructor */
   const restaurants = new Array();
   response.restaurants.map((restaurant) => {
     restaurants.push(Restaurant.from(restaurant));
@@ -88,7 +89,7 @@ export async function fetchRestaurant(restaurantId) {
   if (!restaurantId) throw new Error("Empty restaurantId. Cannot fetch");
 
   let fetchUrl = "";
-  if (process.env.NODE_ENV == "production") fetchUrl = `http://backend/api/restaurant?id=${restaurantId}`;
+  if (process.env.NODE_ENV === "production") fetchUrl = `http://backend/api/restaurant?id=${restaurantId}`;
 
   else fetchUrl = "insert dummy api here";
 

@@ -1,8 +1,8 @@
-// src/components/FilterPopup.jsx
+import React, { useState, useContext, useEffect } from "react";
+import "../styles/FilterPopup.css"; // Create this CSS file for styling
+import { SwipableFeedContext } from "../contexts/SwipableFeedContext";
 
-import React, { useState, useContext } from 'react';
-import '../styles/FilterPopup.css';
-import { searchRestaurants, fetchRestaurant } from '../api/Restaurant';
+/* eslint-disable no-unused-vars */
 
 const FilterPopup = ({ open, close, onSelectRestaurant }) => {
   const [search, setSearch] = useState('');

@@ -6,7 +6,9 @@ import "../styles/Navbar.css";
 import { AuthContext } from "../contexts/AuthContext";
 import FilterPopup from "./FilterPopup";
 
-const Navbar = ({ setSelectedRestaurant }) => {
+/* eslint-disable no-unused-vars */
+
+const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated } = useContext(AuthContext);
