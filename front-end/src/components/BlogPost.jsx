@@ -1,29 +1,49 @@
+import axios from 'axios'
 import React, { useState, useEffect } from "react";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 
 const BlogPost = ({ post, isReply = false }) => {
+  const [user, setUser] = useState({
+    name: '',
+    userName: '',
+    about: [],
+    posts: [],
+    communities: [],
+    profilePic: '',
+    signedIn: false,
+    followers: 0
+  });
+
   const [blogPost, setBlogPost] = useState(post);
   const [liked, setLiked] = useState(false);
+  const [likedBy, setLikedBy] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
   const [newReply, setNewReply] = useState("");
   const [replies, setReplies] = useState(post.replies || []);
+
 
   useEffect(() => {
     setBlogPost(post);
   }, [post]);
 
+  useEffect(() => {
+    axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/profile`)
+      .then(response => {
+        setUser(response.data)
+      })
+      .catch(err => {
+          console.log(`Error fetching data.`)
+          console.error(err)
+      })
+  }, []);
+
   const handleReplySubmit = () => {
     if (newReply.trim()) {
       const newReplyPost = {
         id: Date.now(),
-        user: {
-          id: 2,
-          username: 'user2',
-          display_name: 'User Two',
-          profile_pic: 'https://picsum.photos/200',
-          about: 'A fellow art enthusiast!'
-        },
+        user,
         content: newReply,
+        liked_by: [],
         likes: 0,
         replies: []
       };
@@ -37,10 +57,16 @@ const BlogPost = ({ post, isReply = false }) => {
   };
 
   const toggleLike = () => {
+    const updatedLikes = liked ? blogPost.likes - 1 : blogPost.likes + 1;
+    const updatedLikedBy = liked
+      ? blogPost.liked_by.filter(id => id !== user.id)
+      : [...blogPost.liked_by, user.id];
+
     setLiked(!liked);
     setBlogPost((prev) => ({
       ...prev,
-      likes: liked ? prev.likes - 1 : prev.likes + 1,
+      likes: updatedLikes,
+      liked_by: updatedLikedBy
     }));
   };
 
@@ -55,7 +81,7 @@ const BlogPost = ({ post, isReply = false }) => {
       } ${isReply ? "m-0" : "m-auto"} `}
     >
       <div className="flex flex-row items-center">
-        <img src={blogPost.user.profile_pic} alt="Profile" className="w-20 h-20 rounded-lg my-4 mx-2" />
+        <img src={blogPost.user.profile_pic} alt="Profile" className="w-20 h-20 object-cover rounded-lg my-4 mx-2" />
         <p className="flex flex-col justify-start items-start text-md my-4">
           <span className="font-bold text-ebony text-left">{blogPost.user.display_name}</span>
           <span className="text-rose opacity-[75%]">@{blogPost.user.username}</span>

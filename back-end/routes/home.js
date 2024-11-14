@@ -24,6 +24,7 @@ router.get("/api/home", async (req, res) => {
                     about: "Art enthusiast and collector!"
                   },
                   liked_by: [3, 4, 5, 6, 7],
+                  likes: 5,
                   images: [],
                   content: "Visited an art gallery today, the colors were breathtaking!",
                   replies: [
@@ -37,6 +38,7 @@ router.get("/api/home", async (req, res) => {
                         about: "Lover of all things cultural"
                       },
                       liked_by: [2, 5],
+                      likes: 2,
                       images: [],
                       content: "Which gallery did you go to?",
                       replies: []
@@ -53,6 +55,7 @@ router.get("/api/home", async (req, res) => {
                     about: "World traveler and vlogger!"
                   },
                   liked_by: [2, 6, 8, 10],
+                  likes: 4,
                   images: [],
                   content: "Just got back from an amazing trip to Kyoto! The temples are stunning!",
                   replies: [
@@ -66,6 +69,7 @@ router.get("/api/home", async (req, res) => {
                         about: "Always looking for my next adventure!"
                       },
                       liked_by: [4, 7],
+                      likes: 2,
                       images: [],
                       content: "Kyoto is on my bucket list! Did you see the cherry blossoms?",
                       replies: []
@@ -82,6 +86,7 @@ router.get("/api/home", async (req, res) => {
                     about: "Reader, writer, and coffee lover"
                   },
                   liked_by: [3, 5, 9],
+                  likes: 3,
                   images: [],
                   content: "Finished reading 'To Kill a Mockingbird' today. Such a powerful story.",
                   replies: [
@@ -95,6 +100,7 @@ router.get("/api/home", async (req, res) => {
                         about: "Words are my escape"
                       },
                       liked_by: [6, 8],
+                      likes: 2,
                       images: [],
                       content: "That’s one of my favorites! Have you read '1984'?",
                       replies: []
@@ -111,6 +117,7 @@ router.get("/api/home", async (req, res) => {
                     about: "Cooking up flavors from around the world!"
                   },
                   liked_by: [2, 3, 6, 9, 10],
+                  likes: 5,
                   images: [],
                   content: "Experimented with Thai cuisine today! The spices are amazing!",
                   replies: [
@@ -124,6 +131,7 @@ router.get("/api/home", async (req, res) => {
                         about: "Living for flavors and experiences!"
                       },
                       liked_by: [8, 10],
+                      likes: 2,
                       images: [],
                       content: "Yum! Did you make a curry?",
                       replies: [
@@ -136,7 +144,8 @@ router.get("/api/home", async (req, res) => {
                             profile_pic: "https://picsum.photos/209",
                             about: "Spice up your life!"
                           },
-                          liked_by: [8, 9],
+                          liked_by: [8, 9, 10],
+                          likes: 3,
                           images: [],
                           content: "Thai green curry is the best!",
                           replies: []

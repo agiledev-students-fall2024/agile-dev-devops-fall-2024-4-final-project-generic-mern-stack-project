@@ -6,6 +6,7 @@ function InputField({
   inputType = "text",
   handleChange,
   inputValue,
+  name
 }) {
   // const [value, setValue] = useState("");
   // const handleChange = (event) => {
@@ -23,12 +24,11 @@ function InputField({
         </label>
         <input
           className="bg-lavender_blush-900 rounded-md px-2 py-1 text-md text-ebony w-full"
-          // className="input-box"
           type={inputType}
           id={inputfieldName}
-          // placeholder={inputfieldName}
           onChange={handleChange}
           value={inputValue}
+          name={name} 
         />
         {/* </div> */}
       </div>

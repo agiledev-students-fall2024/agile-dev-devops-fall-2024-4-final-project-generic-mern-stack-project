@@ -22,7 +22,7 @@ const ProfileHeader = ({
       <div className="w-full flex flex-col md:flex-row justify-evenly items-center">
         {profileUser.profile_pic && (
           <img
-            className="w-[35%] md:w-[30%] border-none rounded-full shadow-sm shadow-[#fedae7] bg-ebony-800 m-4"
+            className="w-32 h-32 md:w-44 md:h-44 rounded-lg shadow-sm shadow-[#fedae7] bg-ebony-800 object-cover m-4"
             src={profileUser.profile_pic}
             alt="Profile"
           />
