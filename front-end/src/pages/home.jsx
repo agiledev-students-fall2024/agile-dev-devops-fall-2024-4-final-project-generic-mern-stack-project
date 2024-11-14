@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/header';
 import BudgetProgress from '../mocks/BudgetProgress.jsx';
 import Notifications from '../components/notifications.jsx';
-import transactionData from '../mocks/transactionData';
-import budgetLimits from '../mocks/budgetLimits';
 import Categories from '../components/Categories.jsx';
 import AddTransaction from '../components/AddTransaction';
 import './home.css';
@@ -13,13 +11,34 @@ function Home() {
   const { overall } = BudgetProgress();
   const [showBreakdown, setShowBreakdown] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [categoryLimits, setCategoryLimits] = useState(budgetLimits);
+  const [categoryLimits, setCategoryLimits] = useState({});
   const [showAddTransaction, setShowAddTransaction] = useState(false);
-  const [transactions, setTransactions] = useState(transactionData);
-
-  const totalBudget = categoryLimits.MonthlyBudget || 0;
+  const [transactions, setTransactions] = useState([]);
+  const [totalBudget, setTotalBudget] = useState(0);
+  
+  const userId = 1; // Replace with the actual user ID
+  const budgetId = 1; // Replace with the actual budget ID
+  
   const totalSpent = overall.totalSpent || 0;
 
+  useEffect(() => {
+    // Fetch transactions for the user
+    fetch(`http://localhost:3001/api/transactions?userId=${userId}&budgetId=${budgetId}`)
+      .then(response => response.json())
+      .then(data => setTransactions(data))
+      .catch(err => console.error("Error fetching transactions:", err));
+
+    // Fetch budget limits
+    fetch(`http://localhost:3001/api/budget-limits?userId=${userId}&budgetId=${budgetId}`)
+      .then(response => response.json())
+      .then(data => {
+        setCategoryLimits(data.categoryLimits || {}); // Set category limits
+        setTotalBudget(data.monthlyLimit || 0);       // Set total budget from monthlyLimit
+      })
+      .catch(err => console.error("Error fetching budget limits:", err));
+  }, []);
+
+  // Calculate category totals based on transactions
   const categoryTotals = transactions.reduce((acc, transaction) => {
     const { category, amount } = transaction;
     if (categoryLimits[category]) {
@@ -68,8 +87,8 @@ function Home() {
           {isEditing ? (
             <input
               type="number"
-              value={categoryLimits.MonthlyBudget}
-              onChange={(e) => handleLimitChange('MonthlyBudget', e.target.value)}
+              value={totalBudget}
+              onChange={(e) => setTotalBudget(Number(e.target.value))}
               className="total-budget-input"
             />
           ) : (

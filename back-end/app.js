@@ -153,16 +153,17 @@ app.post('/goal', (req, res) => {
 
 /* ======================= Transaction Routes ======================= */
 app.get("/api/transactions", (req, res) => {
-    const userId = req.query.userId ? parseInt(req.query.userId) : MOCK_USER_ID;
-    const budgetId = req.query.budgetId ? parseInt(req.query.budgetId) : MOCK_BUDGET_ID;
+  const userId = req.query.userId ? parseInt(req.query.userId) : MOCK_USER_ID;
+  const budgetId = req.query.budgetId ? parseInt(req.query.budgetId) : MOCK_BUDGET_ID;
+  console.log("Fetching transactions for userId:", userId, "budgetId:", budgetId);
   
-    const userTransactions = transactionData.filter(transaction => 
-      transaction.userId === userId && transaction.budgetId === budgetId
-    );
-  
-    res.json(userTransactions);
-  });
-  
+  const userTransactions = transactionData.filter(transaction => 
+    transaction.userId === userId && transaction.budgetId === budgetId
+  );
+
+  res.json(userTransactions);
+});
+
 
 /* ======================= Recurring Payments Routes ======================= */
 
