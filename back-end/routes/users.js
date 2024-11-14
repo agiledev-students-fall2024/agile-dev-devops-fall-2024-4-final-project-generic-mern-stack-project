@@ -31,13 +31,71 @@ router.get('/:userId/trips', (req, res) => {
     }
   });
 
-// TODO: Create a new user (POST) - Add a new user to the system and respond with the newly created user data
+// Create a new user (POST)
+router.post('/', (req, res) => {
+  const { username, password, email, name, profileAvatar, bio } = req.body;
 
+  // Check if the user already exists
+  const existingUser = users.find(u => u.username === username || u.email === email);
+  if (existingUser) {
+    return res.status(400).json({ error: 'Username or email already exists' });
+  }
 
-// TODO: Update user information (PUT) - Modify the specified user's data and respond with updated info
+  // Create a new user and add to the users array
+  const newUser = {
+    id: users.length + 1, // simple id assignment
+    username,
+    password, // In a real system, hash the password before saving
+    email,
+    name,
+    profileAvatar,
+    bio,
+  };
 
+  users.push(newUser);
 
-// TODO: Delete a user (DELETE) - Remove the specified user and respond with a confirmation message
+  // Save to the mock-data file (or implement database saving)
+  fs.writeFileSync('./mock-data/users.json', JSON.stringify(users, null, 2));
 
+  res.status(201).json(newUser);
+});
+
+// Update user information (PUT)
+router.put('/:userId', (req, res) => {
+  const { userId } = req.params;
+  const { username, email, name, profileAvatar, bio } = req.body;
+
+  const userIndex = users.findIndex(u => u.id === parseInt(userId));
+
+  if (userIndex === -1) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+
+  const updatedUser = { ...users[userIndex], username, email, name, profileAvatar, bio };
+  users[userIndex] = updatedUser;
+
+  // Save updated user list
+  fs.writeFileSync('./mock-data/users.json', JSON.stringify(users, null, 2));
+
+  res.json(updatedUser);
+});
+
+// Delete a user (DELETE)
+router.delete('/:userId', (req, res) => {
+  const { userId } = req.params;
+  const userIndex = users.findIndex(u => u.id === parseInt(userId));
+
+  if (userIndex === -1) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+
+  // Remove the user from the array
+  const deletedUser = users.splice(userIndex, 1);
+
+  // Save the updated users array
+  fs.writeFileSync('./mock-data/users.json', JSON.stringify(users, null, 2));
+
+  res.json({ message: 'User deleted', user: deletedUser });
+});
 
 export default router;
