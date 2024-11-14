@@ -121,7 +121,7 @@ const Accessibility = (props) => {
                         options={options}
                         request={"color-mode"}
                         choice={color}
-                        handleChange={changeColor}
+                        onChange={changeColor}
                     />
                 </div>
                 <div className="flex flex-row justify-between mx-10 my-5">
@@ -132,7 +132,7 @@ const Accessibility = (props) => {
                         options={imgOptions}
                         request={"image-mode"}
                         choice={image}
-                        handleChange={changeImage}
+                        onChange={changeImage}
                     />
                 </div>
                 <div className="flex flex-row justify-between mx-10 my-5">
