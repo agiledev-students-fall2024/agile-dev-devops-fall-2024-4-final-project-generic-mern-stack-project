@@ -49,8 +49,12 @@ async function proofReadText(text) {
                 },
                 { 
                     role: 'user', 
-                    content: `Proofread the following text for any grammatical or spelling errors:\n\n${text} 
-                              Your output will be given to user directly 
+                    content: `Proofread the following text for any grammatical or spelling errors. 
+                              First, identify any spelling mistakes and correct them. 
+                              Next, check for grammatical errors and suggest corrections. 
+                              Finally, provide a clean version of the text with all corrections applied. 
+                              Here is the text:\n\n${text} 
+                              Your output will be given to the user directly, 
                               so don't output any extra information.` 
                 },
             ],
