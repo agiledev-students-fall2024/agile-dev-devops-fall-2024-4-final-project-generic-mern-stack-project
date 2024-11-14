@@ -86,3 +86,24 @@
     text-align: center;
   }
   
+.join-trip-success {
+  color: #28a745;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background-color: #e6ffed;
+  border: 1px solid #b0e6b0;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.join-trip-error {
+  color: #e0304b;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background-color: #ffe6e6;
+  border: 1px solid #ffcccc;
+  border-radius: 5px;
+  text-align: center;
+}

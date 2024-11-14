@@ -21,7 +21,7 @@ const Locations = () => {
 
       const tripResponse = await axios.get(`/trips/${tripId}`);
       setTripStatus(tripResponse.data.status);
-      setTripName(tripResponse.data.name); //does this work?
+      setTripName(tripResponse.data.name);
     } catch (error) {
       console.error('Error fetching locations or trip status:', error);
     } finally {
@@ -32,8 +32,7 @@ const Locations = () => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(`/trips/${tripId}`);
-      const participants = response.data.participants;
-      setParticipants(participants);
+      setParticipants(response.data.participants);
     } catch (error) {
       console.error('Error fetching participants:', error);
     }
@@ -43,8 +42,14 @@ const Locations = () => {
     fetchLocationsAndStatus();
   }, []);
 
-  const handleStatusChange = (e) => {
-    setTripStatus(e.target.value);
+  const handleStatusChange = async (e) => {
+    const newStatus = e.target.value;
+    setTripStatus(newStatus);
+    try {
+      await axios.put(`/trips/${tripId}/status`, { status: newStatus });
+    } catch (error) {
+      console.error('Error updating trip status:', error);
+    }
   };
 
   const toggleMembersList = () => {
