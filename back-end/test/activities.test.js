@@ -38,6 +38,21 @@ describe('activity routes', function() {
         });
     });
 
+    describe('POST /activities/:activityId/upvote', function() {
+        it('should increase the vote count for an activity', async function() {
+            const activityId = 'activity_001';
+            const response = await request(app).post(`/activities/${activityId}/upvote`);
+            expect(response.status).to.equal(200);
+            expect(response.body).to.have.property('votes').that.is.a('number');
+        });
+
+        it('should return 404 if activity to upvote is not found', async function() {
+            const activityId = 'invalid_activity_id';
+            const response = await request(app).post(`/activities/${activityId}/upvote`);
+            expect(response.status).to.equal(404);
+        });
+    });
+
     describe('POST /activities/:activityId/downvote', function() {
         it('should decrease the vote count for an activity', async function() {
             const activityId = 'activity_001';
