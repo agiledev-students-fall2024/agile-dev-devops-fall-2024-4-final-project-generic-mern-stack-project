@@ -171,18 +171,16 @@ function Record() {
   if (!recipeId && !currRecipe.recipe_name) {
     return <NoRecipe navigate={navigate} />;
   }
-  //<Timer duration={currRecipe.duration} />
+
   return (
     <div className="record-container">
       <h1> {currRecipe.recipe_name || "N/A"}</h1>
       <h2> {currRecipe.recipe_description || "N/A"}</h2>
-
       <IngredientsList
         ingredients={currRecipe.ingredients}
         selectedIngredients={selectedIngredients}
         handleIngredientSelect={handleIngredientSelect}
       />
-
       <RecipeSteps
         steps={currRecipe.recipe_steps}
         completedSteps={completedSteps}
@@ -190,9 +188,7 @@ function Record() {
         buttonRef={buttonRef}
         onComplete={handleRecipeComplete}
       />
-
-      <div>{currRecipe.duration}</div>
-
+      <Timer duration={currRecipe.duration || 240} />
       <CompletionModal
         isOpen={isModalOpen}
         onRequestClose={closeModal}

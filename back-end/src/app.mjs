@@ -118,13 +118,17 @@ app.get("/api/activity-tracker", async (req, res) => {
 
 app.get("/api/record-activity", async (req, res) => {
   try {
+    const mockError = process.env.MOCK_ERROR === "true";
+    if (mockError) {
+      throw new Error("Forced error for testing");
+    }
     const { data } = await axios.get(
       "https://my.api.mockaroo.com/recipe_steps?key=594b4990"
     );
     res.json(data);
   } catch (error) {
     console.error("Error fetching data from API:", error.message);
-    res.status(500).json({ error: "Failed to fetch recipe_steps data" });
+    res.status(500).json({ error: "Failed to fetch recipe data" });
   }
 });
 
@@ -195,7 +199,9 @@ app.get("/api/homeWeeklyActivity", async (req, res) => {
     res.json(data);
   } catch (error) {
     console.error("Error fetching data from API:", error.message);
-    res.status(500).json({ error: "Failed to fetch home weekly activity data" });
+    res
+      .status(500)
+      .json({ error: "Failed to fetch home weekly activity data" });
   }
 });
 
