@@ -69,6 +69,27 @@ app.post('/meeting', (req, res) => {
     res.status(201).json(newMeeting);
 });
 
+
+// POST /meeting/:id/save - save the meeting data at that point of time
+app.post('/meeting/:id/save', (req, res) => {
+    const meetingId = req.params.id;
+    const meeting = meetings.get(meetingId);
+    if (!meeting) {
+        return res.status(404).json({
+            error: 'Meeting not found',
+            success: false
+        });
+    }
+    const savedMeeting = req.body;
+
+    res.json({
+        message: 'Meeting saved successfully',
+        id: meetingId,
+        success: true,
+        meeting: savedMeeting
+    });
+});
+
 // Code Routes
 app.use('/code', codeRoutes);
 app.use('/whiteboard', whiteboardRoutes);
@@ -79,9 +100,11 @@ app.use((err, req, res, next) => {
     res.status(500).json({ error: 'Something went wrong!' });
 });
 
-const PORT = 8080;
-app.listen(PORT, () => {
-    console.log(`Backend server running on http://localhost:${PORT}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+    const PORT = 8080;
+    app.listen(PORT, () => {
+        console.log(`Backend server running on http://localhost:${PORT}`);
+    });
+}
 
-module.exports = app;
+module.exports = app; // Export app without starting the server
