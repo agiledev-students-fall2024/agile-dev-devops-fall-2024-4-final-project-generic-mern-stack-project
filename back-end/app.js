@@ -1,15 +1,27 @@
-require('dotenv').config({ silent: true }); // Load env variables from .env
-const express = require('express');
-const morgan = require('morgan'); // Middleware for logging HTTP requests
-const cors = require('cors'); // Enabling CORS requests
-const mongoose = require('mongoose');
-const path = require('path');
+// require('dotenv').config({ silent: true }); // Load env variables from .env
+// const express = require('express');
+// const morgan = require('morgan'); // Middleware for logging HTTP requests
+// const cors = require('cors'); // Enabling CORS requests
+// const path = require('path');
+import express from 'express';
+import morgan from 'morgan';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import path from 'path';
 
-/* Importing Mock Data */
-const budgetLimits = require('./mocks/budgetLimits.js');
-const recurringBills = require('./mocks/recurringBills.js');
-const transactionData = require('./mocks/transactionData');
-const { getNotifications } = require('./notifications'); // Import notification logic
+// /* Importing Mock Data */
+// const budgetLimits = require('./mocks/budgetLimits.js');
+// const recurringBills = require('./mocks/recurringBills.js');
+// const transactionData = require('./mocks/transactionData');
+// const { getNotifications } = require('./notifications'); // Import notification logic
+
+import budgetLimits from './mocks/budgetLimits.js';
+import recurringBills from './mocks/recurringBills.js';
+import transactionData from './mocks/transactionData.js';
+import goals from './mocks/goals.js';
+import { getNotifications } from './notifications.js'; 
+dotenv.config({ silent: true });
+
 
 /* Initialize Express App */
 const app = express();
@@ -121,10 +133,6 @@ app.get('/api/notifications', (req, res) => {
 });
 
 /* ======================= Goal Routes ======================= */
-const goals = [
-  { id: 1, name: 'Traveling Fund', target: 1000, current: 200 },
-  { id: 2, name: 'Credit Card Payment', target: 500, current: 100 }
-];
 
 // Route to get all goals
 app.get('/goal', (req, res) => {
@@ -190,4 +198,4 @@ app.get("*", (req, res) => {
 });
 
 /* ======================= Export Express App ======================= */
-module.exports = app;
+export default app;

@@ -42,4 +42,5 @@ function BudgetProgress() {
   };
 }
 
-module.exports= BudgetProgress;
+//module.exports= BudgetProgress;
+export default BudgetProgress;

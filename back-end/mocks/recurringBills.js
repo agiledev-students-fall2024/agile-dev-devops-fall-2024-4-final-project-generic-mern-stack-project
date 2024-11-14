@@ -11,4 +11,5 @@ const recurringBills = [
   { id: 10, name: "Hulu", category: 'Subscriptions', amount: 12, dueDate: 'Monthly on 17th' }
 ];
 
-module.exports = recurringBills;
+//module.exports = recurringBills;
+export default recurringBills;

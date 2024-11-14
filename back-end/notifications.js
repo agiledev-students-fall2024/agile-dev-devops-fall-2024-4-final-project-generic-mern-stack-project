@@ -1,4 +1,5 @@
-const recurringBills = require('./mocks/recurringBills');
+// const recurringBills = require('./mocks/recurringBills');
+import recurringBills from './mocks/recurringBills.js';
 
 // calculate upcoming bills based on current date
 const getUpcomingBills = () => {
@@ -45,4 +46,5 @@ const getUpcomingBills = () => {
   return notifications;
 };
 
-module.exports = { getNotifications: getUpcomingBills };
+// module.exports = { getNotifications: getUpcomingBills };
+export { getUpcomingBills as getNotifications };
