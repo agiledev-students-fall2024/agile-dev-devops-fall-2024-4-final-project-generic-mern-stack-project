@@ -24,12 +24,41 @@ The idea for the project of our team came from observing the academic environmen
 
 We sincerely appreciate your contribution! To start contribute, please visit the following link for [CONTRIBUTING.md](./CONTRIBUTING.md) and follow the guidelines!
 
-## Build and Test
+## Building & Testing
+To set up the project locally, follow these steps:
+1. Clone the Repo to local and open:
+   ```bash
+   git clone https://github.com/agiledev-students-fall2024/4-final-project-task-destroyer.git
+   ```
 
-Please follow the instructions to run our application!
+2. Navigate to the according directories and install dependencies:
+   ```bash
+   cd back-end
+   npm install
+   cd front-end/front-end 
+   npm install
+   ```
 
- * clone the project from your repository to your device
- * cd into the project and use npm install to download all necessary packages
- * use npm start to run project
+### Run the Application
+1. Start the backend server:
+   ```bash
+   cd back-end
+   npm start
+   ```
 
-(testing instructions coming soon)
+2. Start the frontend application:
+   ```bash
+   cd front-end/front-end 
+   npm start
+   ```
+
+### Testing
+
+1. Enter in backend directory.
+   ```bash
+   cd back-end
+   ```
+2. Run the test script:
+   ```bash
+   npm run test
+   ```

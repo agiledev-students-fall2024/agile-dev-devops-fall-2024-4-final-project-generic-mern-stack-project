@@ -128,6 +128,7 @@ function Tasks() {
 
           <select name="subject" onChange={(e) => setFilters({ ...filters, subject: e.target.value })}>
             <option value="">All Subjects</option>
+            {/* Hard coded now cause we didn't store subject, will integrate from database with real subject */}
             <option value="algorithms">Algorithms</option>
             <option value="software engineering">Software Engineering</option>
             <option value="ethics">Ethics</option>
@@ -155,6 +156,8 @@ function Tasks() {
               {/* Comment for the edit task: because of the restriction of mock data now, 
               this function cannot fully achieved, so the way we connect it is not exactly true.
               the page itself can be seen from http://localhost:3000/EditTask. */}
+              {/* Sprint2 Comment: Since there's still no way to store the real data with ID, so currently all
+               the tasks are connected to the same edit task page*/}
               <span className="due-date">{task.due}</span>
             </div>
           ))
