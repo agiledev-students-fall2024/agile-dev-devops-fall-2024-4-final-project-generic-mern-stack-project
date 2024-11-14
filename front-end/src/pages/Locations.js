@@ -7,6 +7,7 @@ import axios from 'axios';
 
 const Locations = () => {
   const [locations, setLocations] = useState([]);
+  const [tripName, setTripName] = useState("");
   const [tripStatus, setTripStatus] = useState("ongoing"); 
   const [loading, setLoading] = useState(true);
   const [showMembers, setShowMembers] = useState(false);
@@ -20,6 +21,7 @@ const Locations = () => {
 
       const tripResponse = await axios.get(`/trips/${tripId}`);
       setTripStatus(tripResponse.data.status);
+      setTripName(tripResponse.data.name); //does this work?
     } catch (error) {
       console.error('Error fetching locations or trip status:', error);
     } finally {
@@ -57,7 +59,7 @@ const Locations = () => {
   return (
     <div className="locations-page">
       <div className="locations-header">
-        <h1>Locations</h1>
+        <h1>{tripName}</h1>
         <div className="header-right">
           {tripStatus !== 'completed' && (
             <Link to={`/add-location/${tripId}`} className="add-location-link">
