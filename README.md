@@ -47,7 +47,7 @@ Once both servers are running, you can access the application by visiting `http:
 
 - Ensure that the `backend` directory contains a `.env` with environment variable `PORT=3002`
 
-- The back-end contains a lot of redundant routes that aren't implemented or needed on the front-end. This is on purpose, some are written in case more front-end features should be implemented in the future, the rest are just useful for locally testing the overall functionality of the back-end.
+- The back-end contains a lot of redundant routes that aren't implemented or needed on the front-end. This is on purpose, some are written in case more front-end features should be implemented in the future, the rest are just useful for locally testing/using the overall functionality of the back-end.
 
 ### Testing
 
