@@ -17,7 +17,22 @@ const Home = () => {
 
     const handleSearch = () => {
         console.log(`Searching for: ${searchInput}`);
+        axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/blocked-users/`,
+            { searchInput: searchInput },
+            { headers: { 'Content-Type': 'application/json' } }
+        )
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(err => {
+                console.log('Failed to unblock user')
+                console.log(err)
+            })
     };
+
+    const handleChange = (e) => {
+        setSearchInput(e.target.value);
+    }
 
     useEffect(() => {
         axios
@@ -66,12 +81,14 @@ const Home = () => {
                 searchInput={searchInput}
                 setSearchInput={setSearchInput}
                 handleSearch={handleSearch}
+                onChange={handleChange}
             />
 
             <DropdownMenu
                 name="communitySelect"
                 label="Select a Community"
                 options={['Community 1', 'Community 2', 'Community 3']}
+                onChange={() => { console.log('change selected community') }}
             />
 
             <div className="w-[100%] flex flex-col gap-4 md:w-[80%] lg:w-[70%]">
