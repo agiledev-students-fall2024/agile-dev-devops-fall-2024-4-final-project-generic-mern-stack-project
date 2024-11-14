@@ -188,6 +188,23 @@ app.delete("/api/transactions/:id", (req, res) => {
   transactionData.splice(transactionIndex, 1);
   res.status(204).send();
 });
+/* ======================= Recurring Payments Routes ======================= */
+
+app.get("/api/recurring-bills", (req, res) => {
+    const { userId, budgetId } = req.query;
+  
+    if (!userId) {
+      return res.status(400).json({ error: "User ID is required" });
+    }
+  
+    const userRecurringBills = recurringBills.filter(bill => 
+      bill.userId === parseInt(userId) &&
+      (!budgetId || bill.budgetId === parseInt(budgetId))
+    );
+  
+    res.json(userRecurringBills);
+  });  
+
 
 /* ======================= Serve Frontend (React App) ======================= */
 app.get("*", (req, res) => {

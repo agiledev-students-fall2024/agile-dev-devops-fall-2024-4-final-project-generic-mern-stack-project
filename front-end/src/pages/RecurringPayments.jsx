@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import recurringBills from '../mocks/recurringBills';
+import React, { useState, useEffect } from 'react';
 import './RecurringPayments.css';
 
-function RecurringPayments() {
-  const [payments, setPayments] = useState(recurringBills);
+function RecurringPayments({ userId, budgetId }) { // temp userid and budgetid
+  const [payments, setPayments] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false); 
   const [currentPaymentIndex, setCurrentPaymentIndex] = useState(null);
@@ -13,6 +12,20 @@ function RecurringPayments() {
     amount: '',
     dueDate: ''
   });
+
+  useEffect(() => {
+    const fetchRecurringBills = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/api/recurring-bills?userId=${userId}&budgetId=${budgetId}`);
+        const data = await response.json();
+        setPayments(data);
+      } catch (error) {
+        console.error("Failed to fetch recurring bills:", error);
+      }
+    };
+
+    fetchRecurringBills();
+  }, [userId, budgetId]);  
 
   const handleAddOrEditPayment = () => {
     if (isEditing && currentPaymentIndex !== null) {
