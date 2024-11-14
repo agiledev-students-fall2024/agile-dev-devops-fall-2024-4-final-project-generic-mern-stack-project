@@ -80,45 +80,6 @@ function EditProfile() {
       setSelectedFile(file); // Update selectedFile state
     }
   }
-  // function handleProfilePicInput(e) {
-  //   const file = e.target.files[0]; // Get the file from input
-  //   if (file) {
-  //     const formData = new FormData();
-  //     formData.append("file", file);
-
-  //     axiosInstance
-  //       .post("/upload-profile-pic", formData)
-  //       .then((response) => {
-  //         console.log(response.data.file);
-  //         console.log(response);
-  //         toast.success("Profile picture uploaded successfully!");
-  //         // Optionally update user state with new image URL/path
-  //         setUser((prevUser) => ({
-  //           ...prevUser,
-  //           profilePic: response.data.file.path, // Assuming this is how you access the path
-  //         }));
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //         toast.error("Failed to upload profile picture.");
-  //       });
-  //   }
-  // }
-  // function handleProfilePicChange(e) {
-  //   const formData = new FormData();
-  //   formData.append("file", user.profilePic);
-  //   axiosInstance
-  //     .post("/upload-profile-pic", user.profilePic)
-  //     .then((response) => {
-  //       console.log(response);
-  //       toast.success("Profile picture uploaded successfully!");
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       toast.error("Failed to upload profile picture.");
-  //     });
-  //   console.log(user);
-  // }
   function handleEmailChange(e) {
     setUser((prevUser) => ({
       ...prevUser,

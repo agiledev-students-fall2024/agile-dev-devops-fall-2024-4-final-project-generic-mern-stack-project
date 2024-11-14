@@ -20,28 +20,28 @@ const ProfileHeader = ({
   return (
     <div className="flex flex-col justify-center items-center border-none rounded-xl p-4 w-full md:w-4/5 m-auto bg-lavender_blush-900 shadow-md shadow-[#fedae7] min-h-[300px]">
       <div className="w-full flex flex-col md:flex-row justify-evenly items-center">
-        {profileUser.profilePic && (
+        {profileUser.profile_pic && (
           <img
-            className="w-[35%] md:w-[30%] border-none rounded-full shadow-sm shadow-[#fedae7] bg-ebony-800"
-            src={profileUser.profilePic}
+            className="w-[35%] md:w-[30%] border-none rounded-full shadow-sm shadow-[#fedae7] bg-ebony-800 m-4"
+            src={profileUser.profile_pic}
             alt="Profile"
           />
         )}
         <div className="w-[90%] md:w-[60%] flex flex-col">
           {profileLoggedIn ? (
             <div className="w-full flex justify-between items-center">
-              <p className="flex gap-2 text-xs sm:text-sm md:text-md pl-2">
-                <span className="font-bold text-ebony">{user.name}</span>
-                <span className="text-rose opacity-75">@{user.userName}</span>
+              <p className="flex gap-2 text-sm sm:text-md md:text-lg pl-2">
+                <span className="font-bold text-ebony">{profileUser.display_name}</span>
+                <span className="text-rose opacity-75">@{profileUser.username}</span>
               </p>
-              <div>
+              <div className="flex flex-row gap-2">
                 <Link to="/settings">
-                  <div className="py-1 px-2 mb-1 border border-rose text-rose rounded-md hover:border-ebony hover:text-ebony text-xs md:text-sm">
+                  <div className="py-1 px-2 mb-1 border border-rose text-rose rounded-md hover:border-ebony hover:text-ebony text-xs md:text-sm text-center">
                     Settings
                   </div>
                 </Link>
                 <Link to="/editprofile">
-                  <div className="py-1 px-2 mb-1 border border-rose text-rose rounded-md hover:border-ebony hover:text-ebony text-xs md:text-sm">
+                  <div className="py-1 px-2 mb-1 border border-rose text-rose rounded-md hover:border-ebony hover:text-ebony text-xs md:text-sm text-center">
                     Edit Profile
                   </div>
                 </Link>
@@ -49,9 +49,9 @@ const ProfileHeader = ({
             </div>
           ) : (
             <div className="w-full flex justify-between items-center">
-              <p className="flex gap-2 text-xs sm:text-sm md:text-md pl-2">
-                <span className="font-bold text-ebony">{user.name}</span>
-                <span className="text-rose opacity-75">@{user.userName}</span>
+              <p className="flex gap-2 text-sm sm:text-md md:text-lg pl-2">
+                <span className="font-bold text-ebony">{profileUser.display_name}</span>
+                <span className="text-rose opacity-75">@{profileUser.username}</span>
               </p>
               <button
                 className={`py-1 px-2 mb-1 border rounded-md text-xs md:text-sm ${
@@ -66,9 +66,9 @@ const ProfileHeader = ({
             </div>
           )}
 
-          <div className="w-full h-auto flex flex-col justify-evenly px-4 py-2 rounded-md shadow-md gap-1">
+          <div className="w-full h-auto flex flex-col justify-evenly px-2 py-2 rounded-md gap-1">
             {profileUser.about && (
-              <p className="text-xs md:text-sm lg:text-md">
+              <p className="text-xs md:text-sm lg:text-md text-ebony">
                 {profileUser.about}
               </p>
             )}

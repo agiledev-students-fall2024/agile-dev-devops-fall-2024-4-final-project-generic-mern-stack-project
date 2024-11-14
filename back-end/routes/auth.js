@@ -1,8 +1,20 @@
 // this is a route for authentication
 import express from "express";
-import User from "../models/user.model.js";
+// import User from "../models/user.model.js";
 
 const router = express.Router();
+export const user = {
+  id: 1,
+  display_name: '',
+  username: '',
+  about: 'This user hasn’t added a bio yet...',
+  posts: [],
+  communities: [],
+  profile_pic: 'default_pic.png',
+  signedIn: true,
+  followers: [],
+  following: []
+}
 
 export const signup = async (req, res) => {
   // res.json({ message: "signup" });
@@ -26,12 +38,10 @@ export const signup = async (req, res) => {
     //todo2: implement mailTrap api
 
     //todo: create cookie
-    const user = {
-      name,
-      username,
-      email,
-      password,
-    };
+    user.display_name = name;
+    user.username = username;
+    user.email = email;
+    user.password = password;
 
     //todo3: save user to database
 
@@ -47,6 +57,8 @@ export const login = async (req, res) => {
     // find a user by username
     // compare the password and hash
     // create a cookie
+    user.username = username;
+
     res
       .status(200)
       .json({ message: "Logged in successfully", username, password });
@@ -65,3 +77,4 @@ router.post("/api/login", login);
 router.post("/api/logout", logout);
 
 export default router;
+
