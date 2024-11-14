@@ -47,8 +47,8 @@ router.post('/', (req, res)=>{
   res.status(201).json(newLocation);
 });
 
+//Streth Goal Routes
 // TODO: Update location information (PUT) - Modify location data and respond with the updated location information
-
 // TODO: Delete a location (DELETE) - Remove the specified location and respond with a confirmation message
 
 export default router;
