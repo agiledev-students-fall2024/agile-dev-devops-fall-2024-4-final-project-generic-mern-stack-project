@@ -10,5 +10,5 @@ const budgetLimits = {
     MonthlyBudget: 3000,
 };
 
-module.exports = budgetLimits;
+export default budgetLimits;
 

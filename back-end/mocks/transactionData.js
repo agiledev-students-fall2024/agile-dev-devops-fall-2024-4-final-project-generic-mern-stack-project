@@ -17,4 +17,5 @@ const transactionData = [
     { id: 16, merchant: "Rent", category: 'Bills', amount: 1200, date: 'Oct 01' }
 ];
 
-module.exports = transactionData;
+// module.exports = transactionData;
+export default transactionData;
