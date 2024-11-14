@@ -29,7 +29,7 @@ function ConditionalNavigationBar({ noNavRoutes }) {
     <>
       {isMobile ? (
         <>
-          <button onClick={toggleNav} className="md:hidden fixed top-4 left-4 z-30 text-rose">
+          <button onClick={toggleNav} className="lg:hidden fixed top-4 left-4 z-30 text-rose">
             <HiOutlineMenuAlt1 size="32" />
           </button>
           {isOpen && (

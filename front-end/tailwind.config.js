@@ -1,9 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'selector',
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
-  theme: {},
   theme: {
     screens: {
       'sm': '640px',
@@ -26,6 +26,9 @@ module.exports = {
           700: '#fcf6f8',
           800: '#fdf9fa',
           900: '#fefcfd',
+          1000: "#2e2727",
+          1001: "#3d3434"
+
         },
         ebony: {
           DEFAULT: '#6A4040',

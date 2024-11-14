@@ -13,8 +13,7 @@ import Accessibility from "./pages/Accessibility";
 import {
   BrowserRouter as Router,
   Routes,
-  Route,
-  useLocation,
+  Route
 } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -26,8 +25,11 @@ import LandingPage from "./pages/LandingPage";
 import EditProfile from "./pages/EditProfile";
 import CreateCommunity from "./pages/CreateCommunity";
 import { Toaster } from "react-hot-toast";
+import { ColorProvider, ColorContext } from './ColorContext';
+import { useContext } from "react";
+import { FontContext, FontProvider } from "./FontContext";
 
-function App() {
+function AppContent() {
   const noNavRoutes = [
     "/login",
     "/signup",
@@ -37,12 +39,15 @@ function App() {
     "/landing",
   ];
 
+  const { color } = useContext(ColorContext);
+  const { font } = useContext(FontContext);
+
   return (
     <Router>
-      <div className="flex h-screen">
+      <div className={color + " flex h-screen"}>
         <ConditionalNavBar noNavRoutes={noNavRoutes} />
 
-        <div className="flex-1 p-4 z-0 overflow-y-auto h-screen">
+        <div className={"dark:bg-lavender_blush-1000 flex-1 p-4 z-0 overflow-y-auto h-screen text-" + font}>
           <Routes>
             <Route path="/landing" element={<LandingPage />} />
             <Route path="/" element={<Home />} />
@@ -95,6 +100,16 @@ function App() {
         </div>
       </div>
     </Router>
+  );
+}
+
+function App() {
+  return (
+    <ColorProvider>
+      <FontProvider>
+        <AppContent />
+      </FontProvider>
+    </ColorProvider>
   );
 }
 
