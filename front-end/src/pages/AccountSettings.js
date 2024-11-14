@@ -5,6 +5,7 @@ import AccountInfo from '../components/AccountInfo'
 import { Link } from 'react-router-dom';
 
 const AccountSettings = (props) => {
+
     const [data, setData] = useState([])
     const [popup, setPopup] = useState(false)
 
@@ -19,7 +20,8 @@ const AccountSettings = (props) => {
 
     const handleClick = async () => {
         axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/deactivate`,
-            { id: 1, username: 'monalisa' },
+            { id: 1 },
+            { headers: { 'Content-Type': 'application/json' } }
         )
             .then(console.log('User deactivated'))
             .catch(err => {
@@ -30,8 +32,6 @@ const AccountSettings = (props) => {
 
     useEffect(() => {
         // fetch data
-        console.log("Server hostname:", process.env.REACT_APP_SERVER_HOSTNAME);
-
         axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/account-settings`)
             .then(response => {
                 setData(response.data)

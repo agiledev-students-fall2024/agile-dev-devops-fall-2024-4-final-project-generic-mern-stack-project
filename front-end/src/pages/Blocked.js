@@ -15,8 +15,8 @@ const Blocked = (props) => {
             )
                 .then(response => {
                     setInput("")
-                    setMessage("Muted word successfully!")
-                    setData(response.data);
+                    setMessage(response.data.message)
+                    setData(response.data.words);
                 })
                 .catch(err => {
                     console.log('Failed to mute word')
@@ -33,8 +33,8 @@ const Blocked = (props) => {
             )
                 .then(response => {
                     setInput("")
-                    setMessage("Blocked community successfully!")
-                    setData(response.data);
+                    setMessage(response.data.message)
+                    setData(response.data.communities);
                 })
                 .catch(err => {
                     console.log('Failed to block community')
@@ -51,8 +51,8 @@ const Blocked = (props) => {
             )
                 .then(response => {
                     setInput("")
-                    setMessage("Blocked user successfully!")
-                    setData(response.data);
+                    setMessage(response.data.message)
+                    setData(response.data.users);
                 })
                 .catch(err => {
                     console.log('Failed to block user')

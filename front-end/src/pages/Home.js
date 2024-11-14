@@ -7,9 +7,14 @@ import SearchBar from '../components/SearchBar';
 const Home = () => {
     const [searchInput, setSearchInput] = useState("");
     const [posts, setPosts] = useState([]);
+    const [selectedCommunity, setSelectedCommunity] = useState("Select a Community");
 
     const handleSearch = () => {
         console.log(`Searching for: ${searchInput}`);
+    };
+
+    const handleCommunityChange = (event) => {
+        setSelectedCommunity(event.target.value);
     };
 
     useEffect(() => {
@@ -26,18 +31,19 @@ const Home = () => {
 
     return (
         <div className="w-[100%] flex flex-col justify-center items-center gap-6 p-8 mx-auto md:w-[90%]">
-            <SearchBar 
-                searchInput={searchInput} 
-                setSearchInput={setSearchInput} 
-                handleSearch={handleSearch} 
+            <SearchBar
+                searchInput={searchInput}
+                setSearchInput={setSearchInput}
+                handleSearch={handleSearch}
             />
-            
-            <DropdownMenu 
-                name="communitySelect" 
-                label="Select a Community" 
-                options={['Community 1', 'Community 2', 'Community 3']} 
+
+            <DropdownMenu
+                name="communitySelect"
+                label={selectedCommunity}
+                options={['Community 1', 'Community 2', 'Community 3']}
+                handleChange={handleCommunityChange}
             />
-            
+
             <div className="w-[100%] flex flex-col gap-4 md:w-[80%] lg:w-[70%]">
                 {posts.map(post => (
                     <div key={post.id}>
