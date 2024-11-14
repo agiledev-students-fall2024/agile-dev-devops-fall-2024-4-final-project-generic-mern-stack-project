@@ -6,28 +6,32 @@ import DeleteRouteButton from "./DeleteRouteButton";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const sampleSavedRoutes: SavedRoute[] = [
-  {
-    _id: "1",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit at alias natus nostrum quas assumenda inventore animi perferendis sequi. Quos eligendi sapiente error alias aspernatur dolores eum, voluptas possimus quaerat!",
-    name: "saved route 1",
-    stores: sampleStores,
-    created_by: "user",
-  },
-  {
-    _id: "2",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit at alias natus nostrum quas assumenda inventore animi perferendis sequi. Quos eligendi sapiente error alias aspernatur dolores eum, voluptas possimus quaerat!",
-    name: "saved route 2",
-    stores: sampleStores,
-    created_by: "user",
-  },
-];
-
 export default function SavedRoutesPage() {
   const navigate = useNavigate();
-  const savedRoutes = sampleSavedRoutes.map((route) => (
+  const [savedRoutes, setSavedRoutes] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3001/routes/saved", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setSavedRoutes(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching saved routes:", error);
+      });
+  }, []);
+
+  const routeItems = savedRoutes.map((route) => (
     <div
       key={route._id}
       className="flex justify-between border-2 bg-green-200 hover:bg-green-300  border-green-400 rounded-sm p-2"

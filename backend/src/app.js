@@ -18,6 +18,6 @@ app.use(express.json());
 app.use("/auth", authRoutes);
 app.use("/filters", filtersRoutes);
 app.use("/stores", storesRoutes);
-app.use("/route", savedRoutes);
+app.use("/routes", savedRoutes);
 
 export default app;
