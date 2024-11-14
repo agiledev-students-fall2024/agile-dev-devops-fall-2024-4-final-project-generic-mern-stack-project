@@ -12,20 +12,15 @@ const PastTrip = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch location details and activities using locationId
     const fetchLocationData = async () => {
       try {
-        // Fetch location name and other details
-        const locationResponse = await axios.get(
-          `https://mock-api-misty-fog-1131.fly.dev/api/locations/${locationId}`
-        );
-        setLocationName(locationResponse.data.name); // Set the location name
+        // Fetch location details
+        const locationResponse = await axios.get(`/locations/${locationId}`);
+        setLocationName(locationResponse.data.name);
 
         // Fetch activities associated with this location
-        const activitiesResponse = await axios.get(
-          `https://mock-api-misty-fog-1131.fly.dev/api/locations/${locationId}/activities`
-        );
-        setActivities(activitiesResponse.data); // Set activities data
+        const activitiesResponse = await axios.get(`/activities/location/${locationId}`);
+        setActivities(activitiesResponse.data);
       } catch (error) {
         console.error('Error fetching location data:', error);
         setError('Failed to load past trip data');
@@ -33,7 +28,7 @@ const PastTrip = () => {
     };
 
     fetchLocationData();
-  }, [locationId]); // Run effect whenever locationId changes
+  }, [locationId]); // Re-fetch whenever locationId changes
 
   return (
     <div className="past-activities-page">
