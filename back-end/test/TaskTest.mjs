@@ -10,22 +10,22 @@ import app from '../app.js';
 describe('Tasks API', () => {
 
 
-  it('GET /tasks - should fetch all tasks', async () => {
+  it('GET /tasks - Fetch all tasks', async () => {
     const res = await request(app).get('/tasks');
     expect(res).to.have.status(200);
     expect(res.body).to.be.an('array');
   });
 
-  it('GET /tasks/urgent - should fetch urgent tasks', async () => {
+  it('GET /tasks/urgent - Fetch urgent tasks for home page', async () => {
     const res = await request(app).get('/tasks/urgent');
     expect(res).to.have.status(200);
     expect(res.body).to.be.an('array');
-    expect(res.body.length).to.be.at.most(3); // Assuming a maximum of 3 urgent tasks
+    expect(res.body.length).to.be.at.most(3);
   });
 
   // it('PUT /tasks/:id/status - should update task status', async function() {
   //   this.timeout(5000); 
-  //   const taskId = "1"; // Mock ID; replace with an actual one if testing a live database
+  //   const taskId = "1"; 
   //   const res = await request(app)
   //     .put(`/tasks/${taskId}/status`)
   //     .send({ status: 'ongoing' });
@@ -33,20 +33,22 @@ describe('Tasks API', () => {
   //   expect(res).to.have.status(200);
   //   expect(res.body).to.have.property('status', 'ongoing');
   // });
+  // Comment: Since we don't have real database here and taskId is generated randomly every time.
+  // So we cannot really do this test because ID will not be found correctly.
 
-  it('DELETE /tasks/:id - should delete a task', async () => {
+  it('DELETE /tasks/:id - Delete a task', async () => {
     const taskId = "1"; 
     const res = await request(app).delete(`/tasks/${taskId}`);
     expect(res).to.have.status(204);
-  });
+  }); // Currently not REALLY Deleting because data is not stored, only check status.
 
-  it('POST /tasks - should create a new task', async () => {
+  it('POST /tasks - Create a new task', async () => {
     const newTask = {
-      name: 'Sample Task',
+      name: 'Test for Task',
       due: '2024-12-01',
-      status: 'pending',
+      status: 'not started',
       priority: 'high',
-      subject: 'Work',
+      subject: 'SDE',
       recurring_period: 'weekly'
     };
     const res = await request(app).post('/tasks').send(newTask);
