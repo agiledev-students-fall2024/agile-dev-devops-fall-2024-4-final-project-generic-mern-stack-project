@@ -5,6 +5,7 @@ import AccountInfo from '../components/AccountInfo'
 import { Link } from 'react-router-dom';
 
 const AccountSettings = (props) => {
+
     const [data, setData] = useState([])
     const [popup, setPopup] = useState(false)
 
@@ -17,9 +18,21 @@ const AccountSettings = (props) => {
         setPopup(true)
     }
 
+    const handleClick = async () => {
+        axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/deactivate`,
+            { id: 1 },
+            { headers: { 'Content-Type': 'application/json' } }
+        )
+            .then(console.log('User deactivated'))
+            .catch(err => {
+                console.log('Failed to deactivate user')
+                console.log(err)
+            })
+    }
+
     useEffect(() => {
         // fetch data
-        axios("http://localhost:8000/api/account-settings")
+        axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/account-settings`)
             .then(response => {
                 setData(response.data)
             })
@@ -50,7 +63,7 @@ const AccountSettings = (props) => {
                     <p className="text-ebony-700 font-bold text-center mb-5">Are you sure you want to deactivate?</p>
                     <p className="mb-5 text-ebony text-center w-[85%] m-auto py-2">Deactivation of your account is a permanent action and cannot be undone. Once deactivated, you will be unable to recover your Seraphim account, and all associated data will be permanently deleted.</p>
                     <div className="flex flex-row justify-between">
-                        <Link to={'/signup'}><p className="text-rose font-bold hover:text-ebony hover:border-ebony border-[1px] border-rose p-2 rounded-md">Deactivate</p></Link>
+                        <Link to={'/signup'}><p onClick={handleClick} className="text-rose font-bold hover:text-ebony hover:border-ebony border-[1px] border-rose p-2 rounded-md">Deactivate</p></Link>
                         <p className="text-ebony cursor-pointer font-bold hover:text-rose hover:border-rose border-[1px] border-ebony py-2 px-4 rounded-md" onClick={closePopup}>Cancel</p>
                     </div>
                 </div>
