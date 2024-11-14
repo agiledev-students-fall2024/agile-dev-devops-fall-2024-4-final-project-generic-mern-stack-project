@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import './AddTrip.css';
+import axios from 'axios';
 
 const AddTrip = () => {
+  const { userId } = useParams(); // note that the params haven't been put in yet
+  //so this won't work until then
   const navigate = useNavigate();
   const [tripData, setTripData] = useState({
     name: '',
@@ -27,16 +30,27 @@ const AddTrip = () => {
     }));
   };
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    console.log('Trip created:', tripData);
-    navigate('/'); // Navigate back to home page after submission
+  const handleFormSubmit = async (tripData) => {
+    try{
+      const newTrip = {...tripData, userId: userId};
+      const response = await axios.post('/trips', newTrip);
+
+      if (response.status === 201){
+        console.log("added a trip :)", response.data);
+        navigate(-1);
+      }else{console.error("failed to add activity :(")};
+    }catch(error){
+      console.error("error creating trip", error);
+    };
   };
 
   return (
     <div className="add-trip-page">
       <h2>Create New Trip</h2>
-      <form onSubmit={handleFormSubmit}>
+      <form onSubmit={(e) => {
+        e.preventDefault();
+        handleFormSubmit(tripData);
+      }}>
         <label>Trip Name:
           <input
             type="text"
@@ -77,14 +91,16 @@ const AddTrip = () => {
           />
         </label>
 
-        <label>Upload Image:
+        {/* sorry @aditi commenting this out for now until we are ready to implement it */}
+        {/* <label>Upload Image:
           <input
             type="file"
             name="image"
             accept="image/*"
             onChange={handleImageUpload}
           />
-        </label>
+        </label> */}
+      
 
         <button type="submit">Create Trip</button>
       </form>

@@ -36,7 +36,8 @@ const Home = ({ isLoggedIn }) => {
           <div className="home__trips-actions">
             <a href="/join-trip">Join Trip</a>
             <span className="home__trips-actions__separator">|</span>
-            <a href="/create-trip">Create Trip</a>
+            {user && <a href={`/create-trip/${user.id}`}>Create Trip</a>}
+            {/* for now i will leave the user hardcoded */}
           </div>
         </div>
         <TripTabs activeTab={activeTab} setActiveTab={setActiveTab} />

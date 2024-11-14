@@ -40,6 +40,9 @@ router.get('/:activityId', (req, res) => {
   });
 
 // Create a new activity (POST) - Add a new activity within a location and respond with the newly created activity data
+//note: we don't have any error handling here, we need to add this once we include the database connection.
+// ie. if it fails to send the data to the database, it should send back a 4xx code, although it may not be possible because
+//form submit only happens when all fields are inputted correctly
 router.post('/', (req, res) => {
     const newActivity = {
       id: `activity_${Date.now()}`, // @ant what is the correct way for me to create activity IDs?

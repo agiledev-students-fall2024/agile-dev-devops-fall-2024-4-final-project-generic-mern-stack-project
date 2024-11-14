@@ -34,6 +34,16 @@ router.get('/:tripId/locations', (req, res) => {
   });
 
 // TODO: Create a new trip (POST) - Add a new trip to the system and respond with the newly created trip data
+//no error handling yet because errors will happen if the database interaction doesn't work,
+//which we haven't implemented
+router.post('/', (req, res)=>{
+  const newTrip = {
+    ...req.body,
+    id: `trip_${Date.now()}`
+  };
+  //console.log(newTrip);
+  res.status(201).json(newTrip);
+});
 
 
 // TODO: Update trip information (PUT) - Modify trip data and respond with the updated information
