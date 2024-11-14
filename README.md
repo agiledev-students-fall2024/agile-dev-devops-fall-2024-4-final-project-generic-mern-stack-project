@@ -2,7 +2,7 @@
 
 ### Project Description
 
-Network is an interactive blogging web app that allows users to share any and all inspirational ideas. Blogs can range anywhere from a short blurb to longer stories that the users want to share. In addition, users can easily follow their friends and any other authors to stay up to date on what others want to share. 
+Network is an interactive blogging web app that allows users to share any and all inspirational ideas. Blogs can range anywhere from a short blurb to longer stories that the users want to share. In addition, users can easily follow their friends and any other authors to stay up to date on what others want to share.
 
 ### Product Vision Statement
 
@@ -23,7 +23,11 @@ One of our teammates has always loved playing volleyball. The first idea was to 
 
 ### Building and Testing the Project
 
-Releasing beta products to test users, then refine the product. In order to run the application, you need to create two new terminals: front-end and back-end. For the back-end terminal, cd into your back-end file and run "npm run dev". For the front-end terminal, cd into your front-end file and run "npm start". Make sure to run the back-end terminal before running your front-end terminal. This will allow you to view the application. 
+1. Clone this repo
+2. Create a .env file within the back-end folder and in it put the line: PORT=3000
+3. Create a .env file within the front-end folder and in it put the line: REACT_APP_API_URL=http://localhost:3000
+4. Create two new terminals: front-end and back-end. For the back-end terminal, cd into the back-end file and run the command "npm run dev". For the front-end terminal, cd into your front-end file and run the command "npm start". Make sure to run the back-end terminal before running your front-end terminal. This will allow you to view the application.
 
 ### Links to relevant documents
+
 A detailed breakdown of our app map and wireframes, as well as a Figma prototype: [UX Design](./UX-DESIGN.md)
