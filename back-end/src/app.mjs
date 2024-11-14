@@ -163,6 +163,18 @@ app.post(
   }
 );
 
+app.get("/api/users", async (req, res) => {
+    try {
+      const { data } = await axios.get(
+        "https://my.api.mockaroo.com/users.json?key=66da8e80"
+      );
+      res.json(data);
+    } catch (error) {
+      console.error("Error fetching data from API:", error.message);
+      res.status(500).json({ error: "Failed to fetch user data" });
+    }
+  });
+
 app.get("/api/progress-tracker", async (req, res) => {
   try {
     const { data } = await axios.get(
