@@ -18,7 +18,7 @@ const Home = () => {
         axios
             .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/home`)
             .then(response => {
-                const initialPosts = response.data;
+                const initialPosts = response.data.posts;
                 
                 // Check if a new post was added through the navigation state
                 const newPost = location.state?.newPost;

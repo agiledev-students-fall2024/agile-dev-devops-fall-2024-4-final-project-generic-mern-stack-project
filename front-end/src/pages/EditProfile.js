@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../axios";
 import toast from "react-hot-toast";
 
-function EditProfile() {
+const EditProfile = (props) => {
   const [user, setUser] = useState({
     display_name: "",
     username: "",
@@ -53,7 +53,6 @@ function EditProfile() {
           toast.error("Failed to upload profile picture.");
         });
     }
-  }, [selectedFile]);
   }, [selectedFile]);
 
   function handleChange(e) {
@@ -135,6 +134,6 @@ function EditProfile() {
       </div>
     </div>
   );
-}
+};
 
 export default EditProfile;

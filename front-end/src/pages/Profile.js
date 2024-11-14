@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios';
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ProfileHeader from "../components/ProfileHeader";
@@ -97,6 +97,6 @@ const Profile = (props) => {
             )}
         </div>
     );
-}
+};
 
 export default Profile;

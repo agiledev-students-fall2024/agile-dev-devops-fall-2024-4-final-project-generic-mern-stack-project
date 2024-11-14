@@ -157,7 +157,7 @@ router.get("/api/home", async (req, res) => {
             }
           };
         
-        res.json(posts);  // Send the hardcoded posts as JSON response
+        res.json(response.data);  // Send the hardcoded posts as JSON response
     } catch (err) {
         console.error(err);
         res.status(500).json({
