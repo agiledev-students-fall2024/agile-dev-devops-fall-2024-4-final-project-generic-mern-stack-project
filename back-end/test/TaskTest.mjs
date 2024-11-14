@@ -37,10 +37,10 @@ describe('Tasks API', () => {
   // So we cannot really do this test because ID will not be found correctly.
 
   it('DELETE /tasks/:id - Delete a task', async () => {
-    const taskId = "1"; 
+    const taskId = "1111"; 
     const res = await request(app).delete(`/tasks/${taskId}`);
     expect(res).to.have.status(204);
-  }); // Currently not REALLY Deleting because data is not stored, only check status.
+  }); // Currently not REALLY Deleting because data is not stored, no real ID, only check status.
 
   it('POST /tasks - Create a new task', async () => {
     const newTask = {
