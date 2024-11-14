@@ -9,23 +9,23 @@ import AppRoutes from "./AppRoutes";
 import { AuthProvider } from "../src/contexts/AuthContext";
 import { AccountInfoProvider } from "./contexts/AccountInfoContext";
 import { SwipableFeedProvider } from "./contexts/SwipableFeedContext";
+import { SelectedRestaurantProvider } from "./contexts/SelectedRestaurantContext";
 import "./App.css";
 
 
 function App() {
   return (
-    <SwipableFeedProvider>
-      <AccountInfoProvider>
-        <AuthProvider>
-          <Router>
-            <Navbar />
-            <div className="app-content">
+    <AccountInfoProvider>
+      <AuthProvider>
+        <SwipableFeedProvider>
+          <SelectedRestaurantProvider>
+            <Router>
               <AppRoutes />
-            </div>
-          </Router>
-        </AuthProvider>
-      </AccountInfoProvider>
-    </SwipableFeedProvider>
+            </Router>
+          </SelectedRestaurantProvider>
+        </SwipableFeedProvider>
+      </AuthProvider>
+    </AccountInfoProvider>
   );
 }
 

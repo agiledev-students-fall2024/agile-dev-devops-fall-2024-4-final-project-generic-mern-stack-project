@@ -1,92 +1,111 @@
-import React, { useState, useContext, useEffect } from "react";
-import "../styles/FilterPopup.css"; // Create this CSS file for styling
-import { SwipableFeedContext } from "../contexts/SwipableFeedContext";
+import React, { useState } from 'react';
+import '../styles/FilterPopup.css';
+import { searchRestaurants } from '../api/Restaurant';
 
-/* eslint-disable no-unused-vars */
+const cuisines = [
+  "American", "Chinese", "Italian", "Mexican", "Japanese", "French", "Thai", "Indian",
+  "Mediterranean", "Greek", "Spanish", "Korean", "Vietnamese", "Middle Eastern", "Lebanese",
+  "Turkish", "Caribbean", "Latin American", "African", "Vegetarian", "Vegan", "Seafood",
+  "Steakhouse", "Pizza", "Burgers", "Sushi", "Barbecue", "Tapas", "Bakery", "Cafe", "Diner",
+  "Dessert", "Breakfast", "Brunch", "Cocktails", "Wine Bar",
+];
 
-const FilterPopup = ({ open, close }) => {
-  const { setFilteredRestaurants, filters, setFilters, allRestaurants } = useContext(SwipableFeedContext);
-  const [search, setSearch] = useState("");
-  const [pills, setPills] = useState([])
+const neighborhoods = [
+  "Alphabet City", "Battery Park City", "Carnegie Hill", "Chelsea", "Chinatown", "East Harlem",
+  "East Village", "Financial District", "Flatiron District", "Gramercy Park", "Greenwich Village",
+  "Harlem", "Hells Kitchen", "Clinton", "Inwood", "Kips Bay", "Lincoln Square", "Lower East Side",
+  "Manhattan Valley", "Midtown East", "Morningside Heights", "Murray Hill", "Little Italy",
+  "Roosevelt Island", "SoHo", "Tribeca", "Upper East Side", "Upper West Side",
+  "Washington Heights", "West Village"
+];
+
+const FilterPopup = ({ open, close, onApplyFilters, onSelectRestaurant }) => {
+  const [search, setSearch] = useState('');
+  const [selectedCuisines, setSelectedCuisines] = useState([]);
+  const [selectedNeighborhoods, setSelectedNeighborhoods] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
 
-  useEffect(() => {
-    if (allRestaurants) {
-      if (allRestaurants.length > 0) {
-        for (const restaurant of allRestaurants) {
-          restaurant.pills.flatMap((pill) =>
-          setPills((prev) => {
-            return [...prev,pill]
-          }
-          ));
-        };
-      }
-    }
-  },[allRestaurants])
-
-  const handleCheckboxChange = (pill) => {
-    let updatedFilters;
-    if (filters.includes(pill)) {
-      updatedFilters = filters.filter((p) => p !== pill);
-    } else {
-      updatedFilters = [...filters, pill];
-    }
-
-    setFilters(updatedFilters);
-    filterRestaurants(updatedFilters, search);
-  };
-
-  const handleSearchChange = (event) => {
+  const handleSearchChange = async (event) => {
     const value = event.target.value;
     setSearch(value);
-    const results = allRestaurants.filter((r) =>
-      r.name.toLowerCase().includes(value.toLowerCase())
+
+    if (value.trim() === '') {
+      setSearchResults([]);
+      return;
+    }
+
+    setIsSearching(true);
+    try {
+      const results = await searchRestaurants(value);
+      setSearchResults(results);
+    } catch (error) {
+      console.error('Error searching for restaurants:', error);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  const handleCuisineChange = (event) => {
+    const value = event.target.value;
+    setSelectedCuisines(
+      selectedCuisines.includes(value)
+        ? selectedCuisines.filter((cuisine) => cuisine !== value)
+        : [...selectedCuisines, value]
     );
-    setSearchResults(results);
   };
 
-  const handleSearchSelect = (restaurant) => {
-    setFilteredRestaurants((prevFiltered) => {
-      const otherRestaurants = allRestaurants.filter(
-        (r) => r.id !== restaurant.id
-      );
-      return [restaurant, ...otherRestaurants];
-    });
+  const handleNeighborhoodChange = (event) => {
+    const value = event.target.value;
+    setSelectedNeighborhoods(
+      selectedNeighborhoods.includes(value)
+        ? selectedNeighborhoods.filter((neighborhood) => neighborhood !== value)
+        : [...selectedNeighborhoods, value]
+    );
+  };
 
-    setSearch("");
+  const handleSearchSelect = async (restaurant) => {
+    try {
+      // const detailedRestaurant = await fetchRestaurant(restaurant.id);
+      onSelectRestaurant(restaurant);
+      setSearch('');
+      setSearchResults([]);
+      close();
+    } catch (error) {
+      console.error('Error fetching restaurant details:', error);
+    }
+  };
+
+  const handleOverlayClick = () => {
+    setSearch('');
     setSearchResults([]);
-    setFilters([]); // Reset filters after selection
-    close(); // Close the dialog
+    close();
   };
 
-  const filterRestaurants = (pills, searchQuery) => {
-    const filtered = allRestaurants.filter((restaurant) => {
-      const matchesPills =
-        pills.length === 0 ||
-        pills.every((pill) => restaurant.pills.includes(pill));
-      const matchesSearch =
-        !searchQuery ||
-        restaurant.name.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchesPills && matchesSearch;
+  const handleApplyFilters = () => {
+    onApplyFilters({
+      cuisines: selectedCuisines,
+      neighborhoods: selectedNeighborhoods,
     });
-    setFilteredRestaurants(filtered);
+    close();
   };
 
   if (!open) return null;
 
   return (
-    <div className="modal-overlay" onClick={close}>
+    <div className="modal-overlay" onClick={handleOverlayClick}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <h2>Filter Restaurants</h2>
+        <h2>Search/Filter Restaurants</h2>
         <div className="dialog-content">
           <input
             type="text"
-            placeholder="Search"
+            placeholder="Search by name"
             value={search}
             onChange={handleSearchChange}
             className="search-input"
           />
-          {searchResults.length > 0 && (
+           {isSearching && <div className="loading">Searching...</div>}
+           {searchResults.length > 0 && (
             <ul className="search-results">
               {searchResults.map((restaurant, index) => (
                 <li
@@ -99,20 +118,48 @@ const FilterPopup = ({ open, close }) => {
               ))}
             </ul>
           )}
-          <div className="checkbox-group">
-            {pills.map((pill, index) => (
-              <label key={index} className="checkbox-label">
-                <input
-                  type="checkbox"
-                  checked={filters.includes(pill)}
-                  onChange={() => handleCheckboxChange(pill)}
-                />
-                {pill}
-              </label>
-            ))}
+          {searchResults.length === 0 && search && !isSearching && (
+            <div className="no-results">No restaurants found.</div>
+          )}
+
+          <div className="filter-section">
+            <h3>Cuisines</h3>
+            <div className="checkbox-group">
+              {cuisines.map((cuisine) => (
+                <label key={cuisine}>
+                  <input
+                    type="checkbox"
+                    value={cuisine}
+                    checked={selectedCuisines.includes(cuisine)}
+                    onChange={handleCuisineChange}
+                  />
+                  {cuisine}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div className="filter-section">
+            <h3>Neighborhoods</h3>
+            <div className="checkbox-group">
+              {neighborhoods.map((neighborhood) => (
+                <label key={neighborhood}>
+                  <input
+                    type="checkbox"
+                    value={neighborhood}
+                    checked={selectedNeighborhoods.includes(neighborhood)}
+                    onChange={handleNeighborhoodChange}
+                  />
+                  {neighborhood}
+                </label>
+              ))}
+            </div>
           </div>
         </div>
         <div className="dialog-actions">
+          <button onClick={handleApplyFilters} className="apply-button">
+            Apply Filters
+          </button>
           <button onClick={close} className="close-button">
             Close
           </button>

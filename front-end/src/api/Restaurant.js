@@ -1,3 +1,6 @@
+import axios from 'axios';
+import { BACKEND_URL } from './config';
+
 export class Restaurant {
   constructor(id, name, description, location, link, images, pills) {
     this.id = id;
@@ -24,29 +27,50 @@ export class Restaurant {
  * @param userId - The authenticated user's id; function throws error if this is empty
  * @returns A Restaurant object from the desired restaurant
  */
-export async function bulkFetchRestaurants(userId) {
-  if (!userId) throw new Error("Empty userId. Cannot fetch");
+export async function bulkFetchRestaurants({ page = 1, limit = 20, neighborhood, cuisine }) {
+  const params = new URLSearchParams({ page, limit });
 
-  const API_KEY = process.env.REACT_APP_API_KEY
+  if (neighborhood) params.append('neighborhood', neighborhood);
+  if (cuisine) params.append('cuisine', cuisine);
 
-  let fetchUrl = "";
-  if (process.env.NODE_ENV === "production")
-    fetchUrl = "http://backend/api/restaurant";
-  else fetchUrl = `https://my.api.mockaroo.com/restaurant.json?key=${API_KEY}`;
+  const fetchUrl = `${BACKEND_URL}/restaurants?${params.toString()}`;
 
+  try {
+    const response = await axios.get(fetchUrl);
+    const data = response.data;
 
-  const response = await fetch(fetchUrl)
-    .then((response) => {
-      return response.json()
-    })
-    .then((data) => {
-      return data
-  });
-  const restaurants = new Array();
-  response.flatMap((restaurant) => {
-    restaurants.push(Restaurant.from(restaurant));
-  });
+    // Adjust based on your API response structure
+    const restaurants = data.data.map((restaurantData) => Restaurant.from(restaurantData));
+
+    return {
+      restaurants,
+      totalPages: Math.ceil(data.total / limit),
+      currentPage: data.page,
+    };
+  } catch (error) {
+    console.error('Error fetching restaurants:', error);
+    return { restaurants: [], totalPages: 1, currentPage: 1 };
+  }
+}
+
+export async function searchRestaurants(query) {
+  const fetchUrl = `${BACKEND_URL}/restaurant/search?query=${encodeURIComponent(query)}`;
+
+  const response = await axios.get(fetchUrl);
+  const data = response.data;
+
+  const restaurants = data.map((restaurantData) => Restaurant.from(restaurantData));
   return restaurants;
+}
+
+export async function likeRestaurant(restaurantId) {
+  const url = `${BACKEND_URL}/restaurant/${restaurantId}/like`;
+  await axios.post(url);
+}
+
+export async function dislikeRestaurant(restaurantId) {
+  const url = `${BACKEND_URL}/restaurant/${restaurantId}/dislike`;
+  await axios.post(url);
 }
 
 export async function fetchLikedRestaurants(userId) {

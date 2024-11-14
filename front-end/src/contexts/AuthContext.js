@@ -11,9 +11,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email) => {
     setIsAuthenticated(true);
 
-    const user = await fetchUser(email)
-    console.log(user);
-
+    const user = await fetchUser(email);
     // This assumes that userData has the correct fields -Eric
     setAccountInfo(user)
   };

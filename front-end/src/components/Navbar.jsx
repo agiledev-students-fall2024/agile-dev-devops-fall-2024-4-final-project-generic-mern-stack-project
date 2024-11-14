@@ -4,9 +4,7 @@ import "../styles/Navbar.css";
 import { AuthContext } from "../contexts/AuthContext";
 import FilterPopup from "./FilterPopup";
 
-/* eslint-disable no-unused-vars */
-
-const NavBar = () => {
+const Navbar = ({ setFilters, setSelectedRestaurant }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated } = useContext(AuthContext);
@@ -26,32 +24,46 @@ const NavBar = () => {
 
   const isFeedPage = location.pathname === "/feed";
 
+  const handleApplyFilters = (filters) => {
+    setFilters(filters);
+  };
+
+  const handleSelectRestaurant = (restaurant) => {
+    setSelectedRestaurant(restaurant);
+  };
+
   return (
-    <nav className="nav-bar">
-      <div className="toolbar">
-        {isAuthenticated &&
-          (isFeedPage ? (
-            <button className="icon-button" onClick={handleFilterClick}>
-              {/* Replace with an icon or text */}
-              <span className="icon">🔍</span> {/* Or use a filter icon */}
+    <>
+      <nav className="nav-bar">
+        <div className="toolbar">
+          {isAuthenticated &&
+            (isFeedPage ? (
+              <button className="icon-button" onClick={handleFilterClick}>
+                <span className="icon">🔍</span>
+              </button>
+            ) : (
+              <button className="icon-button" onClick={handleBackClick}>
+                <span className="icon">←</span>
+              </button>
+            ))}
+          <h1 className="nav-title">Restaswipe</h1>
+          {isAuthenticated && (
+            <button className="icon-button" onClick={handleProfileClick}>
+              <span className="icon">👤</span>
             </button>
-          ) : (
-            <button className="icon-button" onClick={handleBackClick}>
-              {/* Replace with an icon or text */}
-              <span className="icon">←</span> {/* Or use a back arrow */}
-            </button>
-          ))}
-        <h1 className="nav-title">Restaswipe</h1>
-        {isAuthenticated && (
-          <button className="icon-button" onClick={handleProfileClick}>
-            {/* Replace with an icon or text */}
-            <span className="icon">👤</span> {/* Or use a profile icon */}
-          </button>
-        )}
-      </div>
-      <FilterPopup open={filterOpen} close={() => setFilterOpen(false)} />
-    </nav>
+          )}
+        </div>
+      </nav>
+      {isFeedPage && (
+        <FilterPopup
+          open={filterOpen}
+          close={() => setFilterOpen(false)}
+          onSelectRestaurant={handleSelectRestaurant}
+          onApplyFilters={handleApplyFilters}
+        />
+      )}
+    </>
   );
 };
 
-export default NavBar;
+export default Navbar;
