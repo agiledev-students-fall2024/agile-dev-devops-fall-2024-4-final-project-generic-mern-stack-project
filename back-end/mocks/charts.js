@@ -37,5 +37,5 @@ const monthlyData = {
   }
   
   // Export the data and calculation function
-  export { monthlyData, categoryData, calculateMonthlyBalance };
+  export default { monthlyData, categoryData, calculateMonthlyBalance };
   
