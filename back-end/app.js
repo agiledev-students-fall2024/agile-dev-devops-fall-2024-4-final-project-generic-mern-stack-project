@@ -16,6 +16,12 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+/* MOCK USER SESSION WHILE AWAITING LOGIN IMPLEMENTATION */
+// Define mock userId and budgetId
+const MOCK_USER_ID = 1;
+const MOCK_BUDGET_ID = 1;
+
+
 /* Initialize Express App */
 const app = express();
 
@@ -191,20 +197,20 @@ app.delete("/api/transactions/:id", (req, res) => {
 /* ======================= Recurring Payments Routes ======================= */
 
 app.get("/api/recurring-bills", (req, res) => {
-    const { userId, budgetId } = req.query;
-  
-    if (!userId) {
-      return res.status(400).json({ error: "User ID is required" });
-    }
-  
-    const userRecurringBills = recurringBills.filter(bill => 
-      bill.userId === parseInt(userId) &&
-      (!budgetId || bill.budgetId === parseInt(budgetId))
-    );
-  
-    res.json(userRecurringBills);
-  });  
+    // Get userId and budgetId from query or use defaults
+    const userId = req.query.userId ? parseInt(req.query.userId) : MOCK_USER_ID;
+    const budgetId = req.query.budgetId ? parseInt(req.query.budgetId) : MOCK_BUDGET_ID;
 
+    if (!userId) {
+        return res.status(400).json({ error: "User ID is required" });
+    }
+
+    const userRecurringBills = recurringBills.filter(bill => 
+        bill.userId === userId && (!budgetId || bill.budgetId === budgetId)
+  );
+
+  res.json(userRecurringBills);
+});
 
 /* ======================= Serve Frontend (React App) ======================= */
 app.get("*", (req, res) => {
