@@ -91,4 +91,22 @@ describe('activity routes', function() {
             expect(response.status).to.equal(404);
         });
     });
+
+    describe('DELETE /activities/:activityId/comments/:commentId', function() {
+        it('should delete a comment from an activity and return a confirmation message', async function() {
+            const activityId = 'activity_001';
+            const commentId = 'comment_001';
+            const response = await request(app).delete(`/activities/${activityId}/comments/${commentId}`);
+            expect(response.status).to.equal(200);
+            expect(response.body.message).to.equal('Comment deleted successfully');
+        });
+
+        it('should return 404 if activity or comment to delete is not found', async function() {
+            const activityId = 'invalid_activity_id';
+            const commentId = 'invalid_comment_id';
+            const response = await request(app).delete(`/activities/${activityId}/comments/${commentId}`);
+            expect(response.status).to.equal(404);
+        });
+    });
+
 });
