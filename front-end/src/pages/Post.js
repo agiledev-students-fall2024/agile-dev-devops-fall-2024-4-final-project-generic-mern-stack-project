@@ -1,7 +1,5 @@
-//Post page is for the blog icon in nav bar in wireframe
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import PostBlogTextField from '../components/PostBlogTextField';
 import './Post.css';
 
@@ -15,19 +13,19 @@ const Post = () => {
     const handlePost = (postContent, selectedOption) => {
         console.log("Posted:", postContent, "Community:", selectedOption);
 
-        // Send post data to the back-end
-        axios
-            .post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/post`, {
-                postContent,
-                selectedOption
-            })
-            .then(response => {
-                console.log("Post submitted successfully:", response.data);
-                navigate('/'); // Redirect to the home page
-            })
-            .catch(err => {
-                console.error("Failed to submit post:", err);
-            });
+        // Mock new post data including the attached image URL
+        const newPost = {
+            id: Date.now(), // Unique id for the mock post
+            profilePic: "https://images.pexels.com/photos/1759531/pexels-photo-1759531.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2", // Mock profile picture
+            name: "John Doe", // Replace with dynamic data if available
+            userName: "john_doe", // Replace with dynamic data if available
+            text: postContent,
+            likes: 0,
+            images: ["https://images.pexels.com/photos/1759531/pexels-photo-1759531.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"]
+        };
+
+        // Redirect to Home with the new post added to state
+        navigate("/", { state: { newPost } });
     };
 
     return (
@@ -38,4 +36,7 @@ const Post = () => {
 };
 
 export default Post;
+
+
+
 
