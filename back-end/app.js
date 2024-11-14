@@ -143,7 +143,7 @@ app.post('/goal', (req, res) => {
 /* ======================= Transaction Routes ======================= */
 // Route to get all transactions
 app.get("/api/transactions", (req, res) => {
-  res.json(transactions);
+  res.json(transactionData);
 });
 
 // Route to add a new transaction
@@ -152,8 +152,8 @@ app.post("/api/transactions", (req, res) => {
   if (!merchant || !category || amount == null || !date) {
     return res.status(400).json({ error: "Merchant, category, amount, and date are required" });
   }
-  const newTransaction = { id: transactions.length + 1, merchant, category, amount, date };
-  transactions.push(newTransaction);
+  const newTransaction = { id: transactionData.length + 1, merchant, category, amount, date };
+  transactionData.push(newTransaction);
   res.status(201).json(newTransaction);
 });
 
@@ -161,26 +161,26 @@ app.post("/api/transactions", (req, res) => {
 app.put("/api/transactions/:id", (req, res) => {
   const { id } = req.params;
   const { merchant, category, amount, date } = req.body;
-  const transactionIndex = transactions.findIndex((transaction) => transaction.id === parseInt(id));
+  const transactionIndex = transactionData.findIndex((transaction) => transaction.id === parseInt(id));
 
   if (transactionIndex === -1) {
     return res.status(404).json({ error: "Transaction not found" });
   }
 
   transactions[transactionIndex] = { ...transactions[transactionIndex], merchant, category, amount, date };
-  res.json(transactions[transactionIndex]);
+  res.json(transactionData[transactionIndex]);
 });
 
 // Route to delete a transaction by ID
 app.delete("/api/transactions/:id", (req, res) => {
   const { id } = req.params;
-  const transactionIndex = transactions.findIndex((transaction) => transaction.id === parseInt(id));
+  const transactionIndex = transactionData.findIndex((transaction) => transaction.id === parseInt(id));
 
   if (transactionIndex === -1) {
     return res.status(404).json({ error: "Transaction not found" });
   }
 
-  transactions.splice(transactionIndex, 1);
+  transactionData.splice(transactionIndex, 1);
   res.status(204).send();
 });
 
