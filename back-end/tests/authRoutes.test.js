@@ -6,9 +6,9 @@ describe('Auth Routes', () => {
     it('should login a user', async () => {
         const res = await request(app)
             .post('/auth/login')
-            .send({ username: 'test', password: 'test' });
+            .send({ username: 'username', password: 'password' });
         expect(res.statusCode).toEqual(200);
-        expect(res.body.message).toBe('Login route');
+        expect(res.body.message).toBe('User logged in successfully.');
     });
 
     it('should create a new user', async () => {
@@ -16,7 +16,7 @@ describe('Auth Routes', () => {
             .post('/auth/user')
             .send({ username: 'newUser', password: 'newPassword' });
         expect(res.statusCode).toEqual(201);
-        expect(res.body.message).toBe('User created');
+        expect(res.body.message).toBe('User newUser created successfully.');
     });
 
     it('should update a user password', async () => {
@@ -24,6 +24,6 @@ describe('Auth Routes', () => {
             .patch('/auth/user')
             .send({ password: 'updatedPassword' });
         expect(res.statusCode).toEqual(200);
-        expect(res.body.message).toBe('Password updated');
+        expect(res.body.message).toBe('Password updated successfully.');
     });
 });
