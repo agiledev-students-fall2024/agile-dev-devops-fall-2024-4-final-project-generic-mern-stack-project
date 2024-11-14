@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Header from '../components/header';
 import BudgetProgress from '../mocks/BudgetProgress.jsx';
 import Notifications from '../components/notifications.jsx';
@@ -8,20 +8,17 @@ import Categories from '../components/Categories.jsx';
 import AddTransaction from '../components/AddTransaction';
 import './home.css';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 
 function Home() {
-  const BASE_URL = process.env.REACT_APP_SERVER_HOSTNAME; 
   const { overall } = BudgetProgress();
   const [showBreakdown, setShowBreakdown] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [categoryLimits, setCategoryLimits] = useState(budgetLimits);
   const [showAddTransaction, setShowAddTransaction] = useState(false);
-  const [transactions, setTransactions] = useState([]);
+  const [transactions, setTransactions] = useState(transactionData);
 
   const totalBudget = categoryLimits.MonthlyBudget || 0;
   const totalSpent = overall.totalSpent || 0;
-  
 
   const categoryTotals = transactions.reduce((acc, transaction) => {
     const { category, amount } = transaction;
@@ -52,12 +49,6 @@ function Home() {
     setIsEditing(false);
   };
 
-  useEffect(() => {
-    axios.get(`${BASE_URL}/api/transactions`)
-      .then(res => setTransactions(res.data)) // Set transactions from the server
-      .catch(err => console.error("Error fetching transactions:", err));
-  }, [BASE_URL]);
-  
   return (
     <div className="home-container">
       <Header />

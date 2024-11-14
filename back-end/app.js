@@ -212,6 +212,24 @@ app.get("/api/recurring-bills", (req, res) => {
   res.json(userRecurringBills);
 });
 
+/* ======================= Budget Limits Routes ======================= */
+app.get("/api/budget-limits", (req, res) => {
+    const userId = req.query.userId ? parseInt(req.query.userId) : MOCK_USER_ID;
+    const budgetId = req.query.budgetId ? parseInt(req.query.budgetId) : MOCK_BUDGET_ID;
+
+    const userBudgetLimit = budgetLimits.find(
+        (limit) => limit.userId === userId && limit.budgetId === budgetId
+    );
+
+    if (!userBudgetLimit) {
+        return res.status(404).json({ error: "Budget limits not found for this user and budget." });
+    }
+
+    res.json(userBudgetLimit);
+});
+
+  
+
 /* ======================= Serve Frontend (React App) ======================= */
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../front-end/", "index.html"));
