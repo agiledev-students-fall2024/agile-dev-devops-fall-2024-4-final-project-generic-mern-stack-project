@@ -1,12 +1,10 @@
-// src/components/Navbar.jsx
-
 import React, { useContext, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/Navbar.css";
 import { AuthContext } from "../contexts/AuthContext";
 import FilterPopup from "./FilterPopup";
 
-const Navbar = ({ setSelectedRestaurant }) => {
+const Navbar = ({ setFilters, setSelectedRestaurant }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated } = useContext(AuthContext);
@@ -26,6 +24,10 @@ const Navbar = ({ setSelectedRestaurant }) => {
   };
 
   const isFeedPage = location.pathname === "/feed";
+
+  const handleApplyFilters = (filters) => {
+    setFilters(filters);
+  };
 
   const handleSelectRestaurant = (restaurant) => {
     setSelectedRestaurant(restaurant);
@@ -58,6 +60,7 @@ const Navbar = ({ setSelectedRestaurant }) => {
           open={filterOpen}
           close={() => setFilterOpen(false)}
           onSelectRestaurant={handleSelectRestaurant}
+          onApplyFilters={handleApplyFilters}
         />
       )}
     </>
