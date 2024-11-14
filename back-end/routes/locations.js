@@ -34,10 +34,23 @@ router.get('/trip/:tripId', (req, res) => {
   });
 
 // TODO: Create a new location (POST) - Add a new location to a trip and respond with the newly created location data
-
+router.post('/', (req, res)=>{
+  const newLocation = {
+    ...req.body,
+    status: 'upcoming',
+    activities: [],
+    id: `location_${Date.now()}`,
+    image: "https://picsum.photos/200/305" //right now, not implementing the upload photo route
+  };
+  console.log('new location:'); //instead, this should be a backend connection that goes to the database
+  console.log(newLocation);
+  res.status(201).json(newLocation);
+});
 
 // TODO: Update location information (PUT) - Modify location data and respond with the updated location information
 
+//TODO: change trip status, should be a PUT request
+//this one is important
 
 // TODO: Delete a location (DELETE) - Remove the specified location and respond with a confirmation message
 
