@@ -12,9 +12,11 @@
     display: flex;
     flex-direction: column;
 
-    min-height: 400px;
+    min-height: 600px;
     color: brown;
 }
+
+
 
 textarea {
     width: 100%;
@@ -25,6 +27,7 @@ textarea {
     font-size: 14px;
     resize: none;
     color: brown;
+    margin-top: 10px;
 }
 
 .header {
@@ -102,3 +105,4 @@ textarea {
     cursor: pointer;
     font-size: 14px;
 }
+
