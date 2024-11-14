@@ -23,7 +23,7 @@ One of our teammates has always loved playing volleyball. The first idea was to 
 
 ### Building and Testing the Project
 
-Releasing beta products to test users, then refine the product.
+Releasing beta products to test users, then refine the product. In order to run the application, you need to create two new terminals: front-end and back-end. For the back-end terminal, cd into your back-end file and run "npm run dev". For the front-end terminal, cd into your front-end file and run "npm start". Make sure to run the back-end terminal before running your front-end terminal. This will allow you to view the application. 
 
 ### Links to relevant documents
 A detailed breakdown of our app map and wireframes, as well as a Figma prototype: [UX Design](./UX-DESIGN.md)
