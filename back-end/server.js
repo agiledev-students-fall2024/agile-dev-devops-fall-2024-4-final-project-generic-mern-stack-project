@@ -10,6 +10,7 @@ app.use(express.json());
 
 // Import routes
 const codeRoutes = require('./routes/code');
+const whiteboardRoutes = require('./routes/whiteboard');
 
 // Hardcoded login credentials
 const HARD_CODED_USERNAME = "username";
@@ -70,6 +71,7 @@ app.post('/meeting', (req, res) => {
 
 // Code Routes
 app.use('/code', codeRoutes);
+app.use('/whiteboard', whiteboardRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
