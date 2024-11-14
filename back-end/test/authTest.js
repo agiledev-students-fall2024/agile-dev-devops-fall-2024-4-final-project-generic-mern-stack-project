@@ -35,7 +35,7 @@ describe("Authentication Tests", () => {
       expect(res.status).to.equal(201);
       expect(res.body.message).to.equal("User created successfully");
       expect(res.body.user).to.include({
-        name: "John",
+        display_name: "John",
         username: "johnDoe",
         email: "john@example.com",
       });
