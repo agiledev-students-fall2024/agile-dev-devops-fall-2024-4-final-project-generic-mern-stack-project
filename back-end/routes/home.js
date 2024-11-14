@@ -11,8 +11,8 @@ router.get("/api/home", async (req, res) => {
         // Fetch data from Mockaroo
         // const response = await axios.get(mockAPIUrl);
         const response = {
-          data: {
-            posts: [
+            data: {
+              posts: [
                 {
                   id: 11,
                   user: {
