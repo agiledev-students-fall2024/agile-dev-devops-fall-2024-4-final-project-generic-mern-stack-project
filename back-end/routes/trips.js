@@ -40,7 +40,8 @@ router.get('/:tripId/locations', (req, res) => {
 router.post('/', (req, res)=>{
   const newTrip = {
     ...req.body,
-    id: `trip_${Date.now()}`
+    id: `trip_${Date.now()}`,
+    status: 'upcoming'
   };
   //console.log(newTrip);
   res.status(201).json(newTrip);
