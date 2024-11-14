@@ -30,7 +30,7 @@ export async function bulkFetchRestaurants(userId) {
   const API_KEY = process.env.REACT_APP_API_KEY
 
   let fetchUrl = "";
-  if (process.env.NODE_ENV == "production")
+  if (process.env.NODE_ENV === "production")
     fetchUrl = "http://backend/api/restaurant";
   else fetchUrl = `https://my.api.mockaroo.com/restaurant.json?key=${API_KEY}`;
 

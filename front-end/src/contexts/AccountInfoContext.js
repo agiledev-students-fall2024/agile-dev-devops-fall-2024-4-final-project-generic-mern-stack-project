@@ -1,4 +1,3 @@
-/*eslint-disable no-unused-vars*/
 import React, { createContext, useState } from "react";
 import { User, fetchUser } from "../api/User";
 
@@ -35,9 +34,8 @@ export const AccountInfoProvider = ({ children }) => {
     <AccountInfoContext.Provider
       value={{
         accountInfo,
-        setAccountInfo,
         addLikedRestaurant,
-        User,
+        setAccountInfo,
       }}
     >
       {children}
