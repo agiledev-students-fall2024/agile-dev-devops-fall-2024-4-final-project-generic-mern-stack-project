@@ -14,6 +14,7 @@ import searchCommunity from "./routes/search-community.js";
 import subcommunity from "./routes/subcommunity.js";
 import home from "./routes/home.js";
 import post from "./routes/post.js";
+import profile from "./routes/profile.js";
 import multer from "./lib/multer.js";
 
 const app = express(); // instantiate an Express object
@@ -45,5 +46,6 @@ app.use(subcommunity);
 
 app.use(home);
 app.use(post);
+app.use(profile)
 
 export default app;
