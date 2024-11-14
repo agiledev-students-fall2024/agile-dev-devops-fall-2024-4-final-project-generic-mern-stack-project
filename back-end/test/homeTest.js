@@ -12,13 +12,13 @@ describe("GET request to /api/home route", () => {
     it("should respond with JSON data in the body", async () => {
         const res = await request(server).get("/api/home");
         expect(res.headers["content-type"]).to.include("application/json");
-        expect(res.body).to.be.an("array").with.length.above(0);
+        expect(res.body.posts).to.be.an("array");
     });
 
     it("should contain posts with expected properties", async () => {
         const res = await request(server).get("/api/home");
         
-        res.body.forEach(post => {
+        res.body.posts.forEach(post => {
             expect(post).to.be.an("object");
             expect(post).to.have.property("id").that.is.a("number");
             expect(post).to.have.property("user").that.is.an("object");
@@ -26,6 +26,7 @@ describe("GET request to /api/home route", () => {
             expect(post.user).to.have.property("display_name").that.is.a("string");
             expect(post).to.have.property("content").that.is.a("string");
             expect(post).to.have.property("likes").that.is.a("number");
+            expect(post).to.have.property("liked_by").that.is.a("array");
             expect(post).to.have.property("images").that.is.an("array");
         });
     });
