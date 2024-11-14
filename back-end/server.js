@@ -21,4 +21,6 @@ const close = () => {
 };
 
 // Export close function and listener
+
 export { close, listener };
+

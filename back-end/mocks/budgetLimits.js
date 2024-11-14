@@ -10,5 +10,7 @@ const budgetLimits = {
     MonthlyBudget: 3000,
 };
 
+
 export default budgetLimits;
+
 
