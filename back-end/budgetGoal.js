@@ -1,12 +1,11 @@
-// models/BudgetGoal.js
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const BudgetGoalSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    targetAmount: { type: Number, required: true },
-    currentAmount: { type: Number, default: 0 },
-    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    collaborators: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+  name: String,
+  targetAmount: Number,
+  currentAmount: Number,
+  ownerId: mongoose.Schema.Types.ObjectId,
+  collaborators: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], // Array of collaborator IDs
 });
 
-module.exports = mongoose.model('BudgetGoal', BudgetGoalSchema);
+export default mongoose.model('BudgetGoal', BudgetGoalSchema);

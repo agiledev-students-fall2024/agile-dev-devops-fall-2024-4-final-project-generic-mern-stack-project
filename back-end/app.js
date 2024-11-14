@@ -4,10 +4,11 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import bcrypt from 'bcrypt'; // Import bcrypt for hashing passwords
 
-// Required imports for `jessy`'s additional functionality
-const User = require('./models/User');
-const BudgetGoal = require('./models/BudgetGoal');
+// Import User and BudgetGoal models (lowercase filenames)
+import User from './user.js';
+import BudgetGoal from './budgetGoal.js';
 
 dotenv.config({ silent: true });
 const __filename = fileURLToPath(import.meta.url);
@@ -37,7 +38,23 @@ app.get("/api/accounts", (req, res) => {
   res.json(accounts);
 });
 
-// Define other account routes here...
+/* ======================= Sign-Up Route ======================= */
+app.post('/api/signup', async (req, res) => {
+    const { username, email, password } = req.body;
+
+    try {
+        const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+        if (existingUser) {
+            return res.status(400).json({ message: 'Username or email already in use' });
+        }
+
+        const newUser = new User({ username, email, password: await bcrypt.hash(password, 10) });
+        await newUser.save();
+        res.status(201).json({ message: 'User registered successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
 
 /* ======================= Debt Routes ======================= */
 // Define debt routes...
@@ -79,6 +96,7 @@ app.get('/goals/:userId', async (req, res) => {
     }
 });
 
+/* ======================= User Account Routes ======================= */
 // Route to get user details
 app.get('/user/:userId', async (req, res) => {
     try {
@@ -122,6 +140,12 @@ app.post('/user/:userId', async (req, res) => {
 /* ======================= Serve Frontend ======================= */
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../front-end/", "index.html"));
+});
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
 
 export default app;
