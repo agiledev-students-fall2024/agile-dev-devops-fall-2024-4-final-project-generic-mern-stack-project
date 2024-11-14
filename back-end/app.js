@@ -1,8 +1,3 @@
-// require('dotenv').config({ silent: true }); // Load env variables from .env
-// const express = require('express');
-// const morgan = require('morgan'); // Middleware for logging HTTP requests
-// const cors = require('cors'); // Enabling CORS requests
-// const path = require('path');
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
@@ -10,11 +5,6 @@ import dotenv from 'dotenv';
 import path from 'path';
 
 // /* Importing Mock Data */
-// const budgetLimits = require('./mocks/budgetLimits.js');
-// const recurringBills = require('./mocks/recurringBills.js');
-// const transactionData = require('./mocks/transactionData');
-// const { getNotifications } = require('./notifications'); // Import notification logic
-
 import budgetLimits from './mocks/budgetLimits.js';
 import recurringBills from './mocks/recurringBills.js';
 import transactionData from './mocks/transactionData.js';
