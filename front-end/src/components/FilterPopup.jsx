@@ -1,11 +1,28 @@
-import React, { useState, useContext, useEffect } from "react";
-import "../styles/FilterPopup.css"; // Create this CSS file for styling
-import { SwipableFeedContext } from "../contexts/SwipableFeedContext";
+import React, { useState } from 'react';
+import '../styles/FilterPopup.css';
+import { searchRestaurants } from '../api/Restaurant';
 
-/* eslint-disable no-unused-vars */
+const cuisines = [
+  "American", "Chinese", "Italian", "Mexican", "Japanese", "French", "Thai", "Indian",
+  "Mediterranean", "Greek", "Spanish", "Korean", "Vietnamese", "Middle Eastern", "Lebanese",
+  "Turkish", "Caribbean", "Latin American", "African", "Vegetarian", "Vegan", "Seafood",
+  "Steakhouse", "Pizza", "Burgers", "Sushi", "Barbecue", "Tapas", "Bakery", "Cafe", "Diner",
+  "Dessert", "Breakfast", "Brunch", "Cocktails", "Wine Bar",
+];
 
-const FilterPopup = ({ open, close, onSelectRestaurant }) => {
+const neighborhoods = [
+  "Alphabet City", "Battery Park City", "Carnegie Hill", "Chelsea", "Chinatown", "East Harlem",
+  "East Village", "Financial District", "Flatiron District", "Gramercy Park", "Greenwich Village",
+  "Harlem", "Hells Kitchen", "Clinton", "Inwood", "Kips Bay", "Lincoln Square", "Lower East Side",
+  "Manhattan Valley", "Midtown East", "Morningside Heights", "Murray Hill", "Little Italy",
+  "Roosevelt Island", "SoHo", "Tribeca", "Upper East Side", "Upper West Side",
+  "Washington Heights", "West Village"
+];
+
+const FilterPopup = ({ open, close, onApplyFilters, onSelectRestaurant }) => {
   const [search, setSearch] = useState('');
+  const [selectedCuisines, setSelectedCuisines] = useState([]);
+  const [selectedNeighborhoods, setSelectedNeighborhoods] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
 
@@ -29,6 +46,24 @@ const FilterPopup = ({ open, close, onSelectRestaurant }) => {
     }
   };
 
+  const handleCuisineChange = (event) => {
+    const value = event.target.value;
+    setSelectedCuisines(
+      selectedCuisines.includes(value)
+        ? selectedCuisines.filter((cuisine) => cuisine !== value)
+        : [...selectedCuisines, value]
+    );
+  };
+
+  const handleNeighborhoodChange = (event) => {
+    const value = event.target.value;
+    setSelectedNeighborhoods(
+      selectedNeighborhoods.includes(value)
+        ? selectedNeighborhoods.filter((neighborhood) => neighborhood !== value)
+        : [...selectedNeighborhoods, value]
+    );
+  };
+
   const handleSearchSelect = async (restaurant) => {
     try {
       // const detailedRestaurant = await fetchRestaurant(restaurant.id);
@@ -47,12 +82,20 @@ const FilterPopup = ({ open, close, onSelectRestaurant }) => {
     close();
   };
 
+  const handleApplyFilters = () => {
+    onApplyFilters({
+      cuisines: selectedCuisines,
+      neighborhoods: selectedNeighborhoods,
+    });
+    close();
+  };
+
   if (!open) return null;
 
   return (
     <div className="modal-overlay" onClick={handleOverlayClick}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <h2>Search Restaurants</h2>
+        <h2>Search/Filter Restaurants</h2>
         <div className="dialog-content">
           <input
             type="text"
@@ -61,8 +104,8 @@ const FilterPopup = ({ open, close, onSelectRestaurant }) => {
             onChange={handleSearchChange}
             className="search-input"
           />
-          {isSearching && <div className="loading">Searching...</div>}
-          {searchResults.length > 0 && (
+           {isSearching && <div className="loading">Searching...</div>}
+           {searchResults.length > 0 && (
             <ul className="search-results">
               {searchResults.map((restaurant, index) => (
                 <li
@@ -78,8 +121,45 @@ const FilterPopup = ({ open, close, onSelectRestaurant }) => {
           {searchResults.length === 0 && search && !isSearching && (
             <div className="no-results">No restaurants found.</div>
           )}
+
+          <div className="filter-section">
+            <h3>Cuisines</h3>
+            <div className="checkbox-group">
+              {cuisines.map((cuisine) => (
+                <label key={cuisine}>
+                  <input
+                    type="checkbox"
+                    value={cuisine}
+                    checked={selectedCuisines.includes(cuisine)}
+                    onChange={handleCuisineChange}
+                  />
+                  {cuisine}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div className="filter-section">
+            <h3>Neighborhoods</h3>
+            <div className="checkbox-group">
+              {neighborhoods.map((neighborhood) => (
+                <label key={neighborhood}>
+                  <input
+                    type="checkbox"
+                    value={neighborhood}
+                    checked={selectedNeighborhoods.includes(neighborhood)}
+                    onChange={handleNeighborhoodChange}
+                  />
+                  {neighborhood}
+                </label>
+              ))}
+            </div>
+          </div>
         </div>
         <div className="dialog-actions">
+          <button onClick={handleApplyFilters} className="apply-button">
+            Apply Filters
+          </button>
           <button onClick={close} className="close-button">
             Close
           </button>

@@ -59,11 +59,14 @@ const RestaurantCard = ({ restaurant }) => {
           {restaurant.name}
         </h5>
         <div className="pills-container">
-          {restaurant.pills?.map((pill, index) => (
-            <span key={index} className="pill">
-              {pill}
+        {restaurant.cuisine && 
+         <span className="pill">
+         {restaurant.cuisine}
+       </span>
+        }
+            <span className="pill">
+              {restaurant.neighborhood}
             </span>
-          ))}
         </div>
         <p className="description">{restaurant.description}</p>
       </div>

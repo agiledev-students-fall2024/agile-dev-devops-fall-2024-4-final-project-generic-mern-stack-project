@@ -27,15 +27,30 @@ export class Restaurant {
  * @param userId - The authenticated user's id; function throws error if this is empty
  * @returns A Restaurant object from the desired restaurant
  */
-export async function bulkFetchRestaurants(userId) {
-  // if (!userId) throw new Error("Empty userId. Cannot fetch");
-  const fetchUrl = `${BACKEND_URL}/restaurants`;
+export async function bulkFetchRestaurants({ page = 1, limit = 20, neighborhood, cuisine }) {
+  const params = new URLSearchParams({ page, limit });
 
-  const response = await axios.get(fetchUrl);
-  const data = response.data;
+  if (neighborhood) params.append('neighborhood', neighborhood);
+  if (cuisine) params.append('cuisine', cuisine);
 
-  const restaurants = data.map((restaurantData) => Restaurant.from(restaurantData));
-  return restaurants;
+  const fetchUrl = `${BACKEND_URL}/restaurants?${params.toString()}`;
+
+  try {
+    const response = await axios.get(fetchUrl);
+    const data = response.data;
+
+    // Adjust based on your API response structure
+    const restaurants = data.data.map((restaurantData) => Restaurant.from(restaurantData));
+
+    return {
+      restaurants,
+      totalPages: Math.ceil(data.total / limit),
+      currentPage: data.page,
+    };
+  } catch (error) {
+    console.error('Error fetching restaurants:', error);
+    return { restaurants: [], totalPages: 1, currentPage: 1 };
+  }
 }
 
 export async function searchRestaurants(query) {
