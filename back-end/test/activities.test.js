@@ -67,4 +67,28 @@ describe('activity routes', function() {
             expect(response.status).to.equal(404);
         });
     });
+
+    describe('POST /activities/:activityId/comments', function() {
+        it('should add a comment to an activity and return it', async function() {
+            const activityId = 'activity_001';
+            const newComment = {
+                userId: 'user_123',
+                commentString: 'Great activity!'
+            };
+            const response = await request(app).post(`/activities/${activityId}/comments`).send(newComment);
+            expect(response.status).to.equal(201);
+            expect(response.body).to.have.property('id').that.includes('comment_');
+            expect(response.body.commentString).to.equal('Great activity!');
+        });
+
+        it('should return 404 if activity to comment on is not found', async function() {
+            const activityId = 'invalid_activity_id';
+            const newComment = {
+                userId: 'user_123',
+                commentString: 'Great activity!'
+            };
+            const response = await request(app).post(`/activities/${activityId}/comments`).send(newComment);
+            expect(response.status).to.equal(404);
+        });
+    });
 });
