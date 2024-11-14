@@ -93,14 +93,24 @@ describe('activity routes', function() {
     });
 
     describe('DELETE /activities/:activityId/comments/:commentId', function() {
-        it('should delete a comment from an activity and return a confirmation message', async function() {
+        it('should add a comment to an activity and then delete that comment', async function() {
             const activityId = 'activity_001';
-            const commentId = 'comment_001';
-            const response = await request(app).delete(`/activities/${activityId}/comments/${commentId}`);
-            expect(response.status).to.equal(200);
-            expect(response.body.message).to.equal('Comment deleted successfully');
+            const newComment = {
+                userId: 'user_123',
+                commentString: 'Great activity!'
+            };
+            
+            const addCommentResponse = await request(app).post(`/activities/${activityId}/comments`).send(newComment);
+            expect(addCommentResponse.status).to.equal(201);
+            expect(addCommentResponse.body).to.have.property('id').that.includes('comment_');
+            
+            const commentId = addCommentResponse.body.id; 
+            
+            const deleteResponse = await request(app).delete(`/activities/${activityId}/comments/${commentId}`);
+            expect(deleteResponse.status).to.equal(200);
+            expect(deleteResponse.body.message).to.equal('Comment deleted successfully');
         });
-
+    
         it('should return 404 if activity or comment to delete is not found', async function() {
             const activityId = 'invalid_activity_id';
             const commentId = 'invalid_comment_id';
@@ -108,5 +118,8 @@ describe('activity routes', function() {
             expect(response.status).to.equal(404);
         });
     });
+
+    //i left out the following routes because we aren't currently utilizing them on our app
+    //Delete an activity (DELETE), Update activity information (PUT), Get a specific activity by ID (GET)
 
 });
