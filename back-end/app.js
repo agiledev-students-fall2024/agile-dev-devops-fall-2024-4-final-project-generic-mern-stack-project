@@ -14,11 +14,8 @@ import searchCommunity from "./routes/search-community.js";
 import subcommunity from "./routes/subcommunity.js";
 import home from "./routes/home.js";
 import post from "./routes/post.js";
-<<<<<<< HEAD
 import profile from "./routes/profile.js";
-=======
 import multer from "./lib/multer.js";
->>>>>>> 15719031670db0d47327621f5dc77acea4408d7e
 
 const app = express(); // instantiate an Express object
 
@@ -49,9 +46,6 @@ app.use(subcommunity);
 
 app.use(home);
 app.use(post);
-<<<<<<< HEAD
 app.use(profile)
-=======
->>>>>>> 15719031670db0d47327621f5dc77acea4408d7e
 
 export default app;

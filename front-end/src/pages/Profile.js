@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import ProfileHeader from "../components/ProfileHeader";
 import BlogPost from "../components/BlogPost";
 import TitleAndDescriptionBox from "../components/TitleAndDescriptionBox";
@@ -71,19 +72,25 @@ const Profile = (props) => {
                             </div>
                         ))
                     ) : (
-                        <div className="p-4 text-center border border-dashed border-ebony-500 bg-rose-50 rounded-md">
-                            <p className="text-ebony font-semibold">Explore some new communities to join!</p>
+                        <div className="m-auto bg-lavender_blush-900 w-[70%] p-8 rounded-lg text-center text-lg text-ebony font-semibold shadow-md shadow-[#fedae7]">
+                            Find your place and join a community today <Link to="/create-community" className="text-rose text-bold hover:underline hover:text-rose">here</Link>!
                         </div>
                     )}
                 </section>
             )}
             {onBlogs && (
                 <section className="flex flex-col justify-center w-[85%] gap-2">
-                    {user.posts.map(post => (
+                    {user.posts.length > 0 ? (
+                        user.posts.map(post => (
                         <div key={post.id}>
                             <BlogPost post={post} />
                         </div>
-                    ))}
+                        ))
+                    ) : (
+                        <div className="m-auto bg-lavender_blush-900 w-[70%] p-8 rounded-lg text-center text-lg text-ebony font-semibold shadow-md shadow-[#fedae7]">
+                            Make your first post and connect with others <Link to="/post" className="text-rose text-bold hover:underline hover:text-rose">here</Link>!
+                        </div>
+                    )}
                 </section>
             )}
         </div>
