@@ -37,7 +37,17 @@ const reportIncident = async (req, res) => {
  * @param {Object} res - Response object for sending incidents.
  */
 const getIncidents = async (req, res) => {
-  // Replace with implementation for retrieving incidents
+  try {
+    // Read incidents from the JSON file
+    const incidents = readIncidentsFromFile();
+
+    // Send the list of incidents as a response
+    res.status(200).json(incidents);
+  } catch (error) {
+    // Handle errors and send a 500 status code with an error message
+    console.error(error);
+    res.status(500).json({ message: 'Failed to retrieve incidents', error });
+  }
 };
 
 module.exports = {
