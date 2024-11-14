@@ -3,10 +3,8 @@ import express from "express";
 const router = express.Router();
 
 const joinCommunity = async (req, res) => {
-  //   res.json({ message: "joinCommunity" });
   try {
     // const { communityId } = req.params;
-    // const communityId = 1;
     const userId = 2;
     // const userId = req.user._id;
     // const user = await User.findById(userId); // find user by id
@@ -27,10 +25,8 @@ const joinCommunity = async (req, res) => {
     };
 
     if (isNaN(parseInt(community.communityId, 10))) {
-      // return res.json({ message: typeof community.communityId });
       return res.status(404).json({
         message: "Invalid community ID",
-        // type: typeof community.communityId,
       });
     } else if (user.communities.includes(parseInt(community.communityId, 10))) {
       return res.status(400).json({

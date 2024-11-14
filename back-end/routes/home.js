@@ -1,6 +1,5 @@
-// Import express and axios
+// Import express
 import express from 'express';
-import axios from 'axios';
 
 const router = express.Router();
 
@@ -12,8 +11,8 @@ router.get("/api/home", async (req, res) => {
         // Fetch data from Mockaroo
         // const response = await axios.get(mockAPIUrl);
         const response = {
-            data: {
-              posts: [
+          data: {
+            posts: [
                 {
                   id: 11,
                   user: {
@@ -156,15 +155,14 @@ router.get("/api/home", async (req, res) => {
                 }
               ]
             }
-        };
-          
-        // Send the data as a JSON response
-        res.json(response.data);          
+          };
+        
+        res.json(posts);  // Send the hardcoded posts as JSON response
     } catch (err) {
         console.error(err);
         res.status(500).json({
             error: err.message,
-            status: "Failed to retrieve posts from Mockaroo."
+            status: "Failed to retrieve posts from hardcoded data."
         });
     }
 });

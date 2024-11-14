@@ -54,6 +54,7 @@ function EditProfile() {
         });
     }
   }, [selectedFile]);
+  }, [selectedFile]);
 
   function handleChange(e) {
     const { name, value } = e.target;

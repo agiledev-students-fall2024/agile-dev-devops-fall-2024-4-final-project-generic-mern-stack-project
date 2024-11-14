@@ -21,7 +21,6 @@ const BlogPost = ({ post, isReply = false }) => {
   const [newReply, setNewReply] = useState("");
   const [replies, setReplies] = useState(post.replies || []);
 
-
   useEffect(() => {
     setBlogPost(post);
   }, [post]);
@@ -168,3 +167,5 @@ const BlogPost = ({ post, isReply = false }) => {
 };
 
 export default BlogPost;
+
+
