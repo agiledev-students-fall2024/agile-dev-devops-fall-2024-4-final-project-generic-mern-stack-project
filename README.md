@@ -47,8 +47,12 @@ Once both servers are running, you can access the application by visiting `http:
 
 - Ensure that the `backend` directory contains a `.env` with environment variable `PORT=3002`
 
+- The back-end contains a lot of redundant routes that aren't implemented or needed on the front-end. This is on purpose, some are written in case more front-end features should be implemented in the future, the rest are just useful for locally testing the overall functionality of the back-end.
+
 ### Testing
 
-Instructions for testing will be provided once the testing framework setup is complete.
+To run the tests for our code, follow these simple steps:
+1. navigate to the backend: `cd back-end`
+2. run the tests + show the coverage report: `npm run coverage`
 
 
