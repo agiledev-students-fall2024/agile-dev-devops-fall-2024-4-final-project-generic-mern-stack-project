@@ -19,18 +19,44 @@ ChartJS.register(
 const ChartsPage = () => {
   const [expenseData, setExpenseData] = useState([]);
   const [incomeData, setIncomeData] = useState([]);
+  const [categoryData, setCategoryData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
+  // Define month labels
+  const monthLabels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  // Fetch data from back-end API
   useEffect(() => {
     const fetchData = async () => {
-      const mockExpenseData = [500, 400, 300, 700, 600, 400, 800, 500, 600, 700, 400, 900];
-      const mockIncomeData = [1000, 1200, 900, 1100, 1000, 1200, 1300, 1150, 1200, 1250, 1300, 1400];
-      
-      setExpenseData(mockExpenseData);
-      setIncomeData(mockIncomeData);
-      setLoading(false);
+      try {
+        const expenses = [];
+        const incomes = [];
+
+        for (let month of monthLabels) {
+          const monthResponse = await fetch(`http://localhost:3001/charts/${month}`);
+          const monthData = await monthResponse.json();
+          
+          expenses.push(monthData.expenses || 0); // Store each month’s expenses
+          incomes.push(monthData.income || 0); // Store each month’s income
+        }
+
+        setExpenseData(expenses);
+        setIncomeData(incomes);
+
+        const categoryResponse = await fetch("http://localhost:3001/charts/spending-categories");
+        const categories = await categoryResponse.json();
+        
+        // Extract amounts for the pie chart
+        const categoriesData = categories.map(category => category.amount);
+        setCategoryData(categoriesData);
+
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching chart data:", error);
+      }
     };
+
     fetchData();
   }, []);
 
@@ -49,7 +75,7 @@ const ChartsPage = () => {
   const totalSavings = totalIncome - totalExpense;
 
   const lineChartData = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    labels: monthLabels,
     datasets: [
       {
         label: 'Monthly Expenses',
@@ -69,11 +95,11 @@ const ChartsPage = () => {
   };
 
   const barChartData = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    labels: monthLabels,
     datasets: [
       {
         label: 'Net Balance (Income - Expenses)',
-        data: expenseData.map((expense, index) => incomeData[index] - expense),
+        data: incomeData.map((income, index) => income - (expenseData[index] || 0)),
         backgroundColor: 'rgba(75, 192, 192, 0.6)',
       },
     ],
@@ -84,7 +110,7 @@ const ChartsPage = () => {
     datasets: [
       {
         label: 'Expense Breakdown',
-        data: [1200, 300, 200, 150, 100], // Mock data
+        data: categoryData,
         backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
       },
     ],

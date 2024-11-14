@@ -25,6 +25,8 @@ dotenv.config({ silent: true });
 
 // const { getNotifications } = require('./notifications'); 
 
+const { monthlyData, categoryData, calculateMonthlyBalance } = require('./mocks/charts');
+
 
 const app = express()
 app.use(morgan('dev', { skip: (req, res) => process.env.NODE_ENV === 'test' })) // log all incoming requests, except when in unit test mode.  morgan has a few logging default styles - dev is a nice concise color-coded style
@@ -152,6 +154,22 @@ app.get('/api/transactions', (req, res) => {
   res.json(transactionData);
 });
 
+// Route to get spending categories
+app.get('/charts/spending-categories', (req, res) => {
+  res.json(categoryData);
+});
+
+
+// Route to get data for a specific month
+app.get('/charts/:month', (req, res) => {
+  const month = req.params.month;
+  const data = calculateMonthlyBalance(month);
+  if (data.error) {
+    res.status(404).json({ error: data.error });
+  } else {
+    res.json(data);
+  }
+});
 
 // Serve the frontend (React app)
 app.get("*", (req, res) => {
@@ -160,5 +178,9 @@ app.get("*", (req, res) => {
 
 
 // export the express app we created to make it available to other modules
+
 // module.exports = app
 export default app;
+
+
+
