@@ -60,9 +60,9 @@ function Home() {
   const handleLimitChange = (category, value) => {
     setCategoryLimits((prevLimits) => ({
       ...prevLimits,
-      [category]: Number(value),
+      [category]: value,
     }));
-  };
+  };  
 
   const saveBudgetLimits = () => {
     setIsEditing(false);
