@@ -1,48 +1,33 @@
-// require('dotenv').config({ silent: true }) // load env variables from .env
-// const express = require('express')
-// const morgan = require('morgan') // middleware for nice logging of incoming HTTP requests
-// const cors = require('cors') // enabling CORS requests
-// const mongoose = require('mongoose')
-// const path = require('path');
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
+
+// /* Importing Mock Data */
 import budgetLimits from './mocks/budgetLimits.js';
 import recurringBills from './mocks/recurringBills.js';
 import transactionData from './mocks/transactionData.js';
 import goals from './mocks/goals.js';
 import { getNotifications } from './notifications.js'; 
-
 dotenv.config({ silent: true });
 
-/* Importing mock data */
-// const budgetLimits = require('./mocks/budgetLimits.js');
-// const recurringBills = require('./mocks/recurringBills.js');
-// const transactionData = require('./mocks/transactionData');
-// const goals = require('./mocks/goals.js');
 
-// const { getNotifications } = require('./notifications'); 
+/* Initialize Express App */
+const app = express();
 
-// import { monthlyData, categoryData, calculateMonthlyBalance } from './mocks/charts.js';
-import charts from './mocks/charts.js';
+/* ======================= Middleware ======================= */
+app.use(morgan('dev', { skip: (req, res) => process.env.NODE_ENV === 'test' })); // Log all requests, except in test mode
+app.use(cors()); // Enable Cross-Origin Requests
+app.use(express.json()); // Parse JSON requests
+app.use(express.urlencoded({ extended: true })); // Parse URL-encoded requests
 
-const { monthlyData, categoryData, calculateMonthlyBalance } = charts;
-
-
-const app = express()
-app.use(morgan('dev', { skip: (req, res) => process.env.NODE_ENV === 'test' })) // log all incoming requests, except when in unit test mode.  morgan has a few logging default styles - dev is a nice concise color-coded style
-app.use(cors())
-
-// parse incoming requests
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-
-// temp in-memory storage for accounts and debts since no DB yet
+/* ======================= Temporary Data Storage ======================= */
+// Temporary in-memory storage for accounts and debts since no DB yet
 const accounts = [];
 const debts = [];
 
+/* ======================= Account Routes ======================= */
 // Route to get all accounts
 app.get("/api/accounts", (req, res) => {
   res.json(accounts);
@@ -86,6 +71,23 @@ app.delete("/api/accounts/:id", (req, res) => {
   res.status(204).send();
 });
 
+/* ======================= Debt Routes ======================= */
+// Route to get all debts
+app.get("/api/debts", (req, res) => {
+  res.json(debts);
+});
+
+// Route to add a new debt
+app.post("/api/debts", (req, res) => {
+  const { type, amount, dueDate, paymentSchedule } = req.body;
+  if (!type || amount == null || !dueDate || !paymentSchedule) {
+    return res.status(400).json({ error: "Type, amount, due date, and payment schedule are required" });
+  }
+  const newDebt = { id: debts.length + 1, type, amount, dueDate, paymentSchedule };
+  debts.push(newDebt);
+  res.status(201).json(newDebt);
+});
+
 // Route to update a debt by ID
 app.put("/api/debts/:id", (req, res) => {
   const { id } = req.params;
@@ -113,38 +115,21 @@ app.delete("/api/debts/:id", (req, res) => {
   res.status(204).send();
 });
 
-// Route to add a new debt
-app.post("/api/debts", (req, res) => {
-  console.log("Received debt:", req.body);
-  const { type, amount, dueDate, paymentSchedule } = req.body;
-  if (!type || amount == null || !dueDate || !paymentSchedule) {
-    return res.status(400).json({ error: "Type, amount, due date, and payment schedule are required" });
-  }
-  const newDebt = { id: debts.length + 1, type, amount, dueDate, paymentSchedule };
-  debts.push(newDebt);
-  res.status(201).json(newDebt);
-});
-
-// Route to get all debts
-app.get("/api/debts", (req, res) => {
-  res.json(debts);
-});
-
-
-
-/* Routes for Notifications/Reminders */
+/* ======================= Notification Routes ======================= */
+// Route to get notifications
 app.get('/api/notifications', (req, res) => {
   const notifications = getNotifications();
   res.json(notifications);
 });
 
+/* ======================= Goal Routes ======================= */
 
-
-
+// Route to get all goals
 app.get('/goal', (req, res) => {
   res.json(goals);
 });
 
+// Route to add a new goal
 app.post('/goal', (req, res) => {
   const newGoal = req.body;
   newGoal.id = goals.length + 1;
@@ -153,37 +138,54 @@ app.post('/goal', (req, res) => {
   res.status(201).json({ message: 'Goal added', goal: newGoal });
 });
 
-app.get('/api/transactions', (req, res) => {
+/* ======================= Transaction Routes ======================= */
+// Route to get all transactions
+app.get("/api/transactions", (req, res) => {
   res.json(transactionData);
 });
 
-// Route to get spending categories
-app.get('/charts/spending-categories', (req, res) => {
-  res.json(categoryData);
-});
-
-
-// Route to get data for a specific month
-app.get('/charts/:month', (req, res) => {
-  const month = req.params.month;
-  const data = calculateMonthlyBalance(month);
-  if (data.error) {
-    res.status(404).json({ error: data.error });
-  } else {
-    res.json(data);
+// Route to add a new transaction
+app.post("/api/transactions", (req, res) => {
+  const { merchant, category, amount, date } = req.body;
+  if (!merchant || !category || amount == null || !date) {
+    return res.status(400).json({ error: "Merchant, category, amount, and date are required" });
   }
+  const newTransaction = { id: transactionData.length + 1, merchant, category, amount, date };
+  transactionData.push(newTransaction);
+  res.status(201).json(newTransaction);
 });
 
-// Serve the frontend (React app)
+// Route to update a transaction by ID
+app.put("/api/transactions/:id", (req, res) => {
+  const { id } = req.params;
+  const { merchant, category, amount, date } = req.body;
+  const transactionIndex = transactionData.findIndex((transaction) => transaction.id === parseInt(id));
+
+  if (transactionIndex === -1) {
+    return res.status(404).json({ error: "Transaction not found" });
+  }
+
+  transactions[transactionIndex] = { ...transactions[transactionIndex], merchant, category, amount, date };
+  res.json(transactionData[transactionIndex]);
+});
+
+// Route to delete a transaction by ID
+app.delete("/api/transactions/:id", (req, res) => {
+  const { id } = req.params;
+  const transactionIndex = transactionData.findIndex((transaction) => transaction.id === parseInt(id));
+
+  if (transactionIndex === -1) {
+    return res.status(404).json({ error: "Transaction not found" });
+  }
+
+  transactionData.splice(transactionIndex, 1);
+  res.status(204).send();
+});
+
+/* ======================= Serve Frontend (React App) ======================= */
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../front-end/", "index.html"));
 });
 
-
-// export the express app we created to make it available to other modules
-
-// module.exports = app
+/* ======================= Export Express App ======================= */
 export default app;
-
-
-

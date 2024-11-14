@@ -46,5 +46,6 @@ const getUpcomingBills = () => {
   return notifications;
 };
 
-// module.exports = { getNotifications: getUpcomingBills };
+
 export { getUpcomingBills as getNotifications };
+

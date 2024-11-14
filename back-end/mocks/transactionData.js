@@ -146,3 +146,4 @@ const transactionData = [
 ];
 
 export default transactionData;
+//module.exports = transactionData;
