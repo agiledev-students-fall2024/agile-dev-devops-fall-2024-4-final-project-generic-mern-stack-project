@@ -7,7 +7,7 @@ const router = express.Router();
 router.post('/', async (req, res) => {
   
   const { name, email, password, occupation, studying } = req.body;
-  username = name;
+  let username = name;
   console.log("DBG: user registration: ");
   console.log(req.body);
 
@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
     
     user.save()
     .then(() => res.status(201).send('User registered successfully'))
-    .catch(err => res.status(500).send('Error saving user to database'));
+    .catch(err => res.status(500).send(`Error saving user to database: ${err.message}`));
   });
 
 });

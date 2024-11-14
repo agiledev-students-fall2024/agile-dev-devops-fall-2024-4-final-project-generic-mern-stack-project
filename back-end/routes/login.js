@@ -11,7 +11,7 @@ router.post('/', async (req, res) => {
     const { email, password } = req.body;
     console.log("DBG: come into login, generate token, user:",req.body, email, password);
     
-    const user = await User.findOne({ email })
+    await User.findOne({ email })
     .then(user => {
         if (!user) {
             res.json({ 'Error': 'User not found'}); 
@@ -30,7 +30,7 @@ router.post('/', async (req, res) => {
           }
         });
       })
-      .catch(err => res.json({ 'Error': 'Error fetching user from database'}));
+      .catch(err => res.json({ 'Error': 'Error fetching user from database', 'Details': err.message }));
     
 });
 
