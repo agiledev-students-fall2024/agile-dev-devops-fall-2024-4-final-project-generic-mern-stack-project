@@ -107,26 +107,7 @@
     "votes": 8,
     "price": 3,
     "image": "https://picsum.photos/200/302",
-    "comments": [
-      {
-        "id": "comment_004",
-        "userId": "user_123",
-        "commentString": "The view was breathtaking!",
-        "activityId": "activity_003"
-      },
-      {
-        "id": "comment_005",
-        "userId": "user_456",
-        "commentString": "Loved seeing the city from above!",
-        "activityId": "activity_003"
-      },
-      {
-        "id": "comment_006",
-        "userId": "user_789",
-        "commentString": "A bit crowded but worth it.",
-        "activityId": "activity_003"
-      }
-    ],
+    "comments": [],
     "isCompleted": true
   },
   {

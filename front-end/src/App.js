@@ -38,7 +38,7 @@ const App = () => {
           <Route path="/add-activity/:locationId" element={<AddActivity />} />
           <Route path="/add-location/:tripId" element={<AddLocation />} />
           <Route path="/profile" element={<ProfilesPage />} />
-          <Route path="/create-trip" element={<AddTrip />} />
+          <Route path="/create-trip/:userId" element={<AddTrip />} />
           <Route path="/join-trip" element={<JoinTrip />} />
           <Route path="/log-in" element={<LogIn />} />
           <Route path="/sign-up" element={<SignUp />} />
