@@ -37,4 +37,19 @@ describe('activity routes', function() {
             expect(response.body).to.have.property('id').that.includes('activity_'); // check to see if other fields have been created
         });
     });
+
+    describe('POST /activities/:activityId/downvote', function() {
+        it('should decrease the vote count for an activity', async function() {
+            const activityId = 'activity_001';
+            const response = await request(app).post(`/activities/${activityId}/downvote`);
+            expect(response.status).to.equal(200);
+            expect(response.body).to.have.property('votes').that.is.a('number');
+        });
+
+        it('should return 404 if activity to downvote is not found', async function() {
+            const activityId = 'invalid_activity_id';
+            const response = await request(app).post(`/activities/${activityId}/downvote`);
+            expect(response.status).to.equal(404);
+        });
+    });
 });
