@@ -17,7 +17,7 @@ const ProfilesPage = () => {
   useEffect(() => {
     async function fetchUserData() {
       try {
-        const response = await fetch('https://mock-api-misty-fog-1131.fly.dev/api/users/user_123');
+        const response = await fetch('/users/user_123');
         const data = await response.json();
         const [firstName, lastName] = data.name.split(' '); 
         setUserData({ ...data, firstName, lastName });
