@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "name": "From Washington Park to Central Park",
+    "start_location": "Washington Park",
+    "end_location": "Central Park",
+    "date": "2024-10-28"
+  },
+  {
+    "id": 2,
+    "name": "Prospect Park Ride",
+    "start_location": "Prospect Park Ride",
+    "end_location": "Prospect Park Ride",
+    "date": "2024-11-01"
+  },
+  {
+    "id": 3,
+    "name": "Commute to School",
+    "start_location": "Stuytown",
+    "end_location": "Washington Square Park",
+    "date": "2024-11-15"
+  }
+]

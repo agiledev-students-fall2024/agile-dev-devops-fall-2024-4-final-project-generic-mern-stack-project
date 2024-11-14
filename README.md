@@ -1,19 +1,74 @@
-# Project Repository
+# Cyclable: DO NOT OCCUPY THE BIKE LANE
 
-This repository will be used for team projects.
+## Product Vision Statement
 
-Several sets of instructions are included in this repository. They should each be treated as separate assignments with their own due dates and sets of requirements.
+Cyclable is a route planning web application designed to enhance the cycling experience in New York City by integrating real-time user reports on road constructions and bike lane blockages. The app ensures smoother, safer rides for cyclists by providing up-to-date information on disruptions and generating alternative routes that prioritize safety. Cyclists will be able to report blockages or construction in real-time, view an interactive map displaying current bike lanes and reported issues, and plan safer routes that avoid these disruptions. Additionally, users will have the option to save frequently used routes for future reference, making it easier to navigate the city on subsequent trips.
 
-1. See the [App Map & Wireframes](instructions-0a-app-map-wireframes.md) and [Prototyping](./instructions-0b-prototyping.md) instructions for the requirements of the initial user experience design of the app.
+In the future, Cyclable may include advanced features such as photo recognition, enabling users to submit blockages by taking pictures that can be analyzed by computer vision algorithms for more detailed reporting. The app could also introduce social functionalities, allowing cyclists to add friends, share routes, and collaborate on ride planning.
 
-1. Delete the contents of this file and replace with the contents of a proper README.md, as described in the [project setup instructions](./instructions-0c-project-setup.md)
+Cyclable’s mission is to make biking in NYC more accessible and enjoyable for all, allowing cyclists to better utilize the city’s bike lane infrastructure despite ongoing challenges.
 
-1. See the [Sprint Planning instructions](instructions-0d-sprint-planning.md) for the requirements of Sprint Planning for each Sprint.
+## Core Team Members
 
-1. See the [Front-End Development instructions](./instructions-1-front-end.md) for the requirements of the initial Front-End Development.
+- **[Nikky Lu](https://github.com/nikkylu)**
+- **[Eleazar Neri](https://github.com/afknero)**
+- **[Diya Agrawal](https://github.com/diyagr)**
+- **[Hojong Shim](https://github.com/hojongshim)**
+- **[Rickie Ling](https://github.com/12083568)**
 
-1. See the [Back-End Development instructions](./instructions-2-back-end.md) for the requirements of the initial Back-End Development.
+## Project History
 
-1. See the [Database Integration instructions](./instructions-3-database.md) for the requirements of integrating a database into the back-end.
+Cyclable was born out of a common frustration among cyclists in New York City: despite a growing network of bike lanes, disruptions such as construction, blockages, and traffic often force cyclists into unsafe detours. The idea behind Cyclable is to leverage the collective knowledge of the cycling community to report these blockages in real-time, ensuring safer and more efficient routes for everyone.
 
-1. See the [Deployment instructions](./instructions-4-deployment.md) for the requirements of deploying an app.
+## Building and Testing Instructions
+
+### Setup and Installation
+
+1. **Prerequisites**:
+
+   - Ensure you have **Node.js** (version 14 or higher) and **npm** installed.
+   - You can verify your installations by running:
+     ```bash
+     node -v
+     npm -v
+     ```
+
+2. **Clone the Repository**:
+   Since we have our front-end setup, you can run our front-end by:
+
+   ```bash
+   git clone https://github.com/agiledev-students-fall2024/4-final-project-cyclists.git
+   cd 4-final-project-cyclists
+   cd front-end
+   ```
+
+3. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
+
+### Running the Application
+
+To start the application , run:
+
+```bash
+npm start
+```
+
+To create an optimized production build, run:
+
+```bash
+npm run build
+```
+
+The app will be accessible locally at `http://localhost:3000`.
+
+## How to Contribute
+
+Please see the [Contributing Guidelines](./CONTRIBUTING.md) for detailed instructions on how to contribute to this project.
+
+## Additional Resources
+
+For further reading on Cyclable’s development, design decisions, or related documentation, check out:
+
+- [Link to Product Design Document](https://github.com/agiledev-students-fall2024/4-final-project-cyclists/blob/b21b1acc23ffe952848d9ce82cf607ba3bab3323/UX-DESIGN.md)
