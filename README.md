@@ -17,3 +17,8 @@ Several sets of instructions are included in this repository. They should each b
 1. See the [Database Integration instructions](./instructions-3-database.md) for the requirements of integrating a database into the back-end.
 
 1. See the [Deployment instructions](./instructions-4-deployment.md) for the requirements of deploying an app.
+
+
+# Instructions
+* back-end: `npm install` and then `npm start`
+* front-end `npm install` and then `npm start`. You'll need to add `REACT_APP_API_KEY="VALUE"` to a .env in the front-end directory. See Discord team channel for the correct value.

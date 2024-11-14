@@ -68,3 +68,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+# Instructions
+* `npm install` and then `npm start`. You'll need to add `REACT_APP_API_KEY="VALUE"` to a .env in the front-end directory. See Discord team channel for the correct value.

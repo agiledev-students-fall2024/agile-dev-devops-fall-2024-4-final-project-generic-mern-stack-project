@@ -1,4 +1,4 @@
-const restaurants = require('./restaurants.json');
+const restaurants = require('./restaurants');
 const express = require("express");
 require("dotenv").config({ silent: true });
 const cors = require('cors');
@@ -24,7 +24,6 @@ app.get('/restaurants', async (req, res) => {
     // Convert page and limit to integers
     const pageInt = parseInt(page);
     const limitInt = parseInt(limit);
-
     // Convert cuisine and neighborhood to arrays
     const cuisineArray = cuisine ? cuisine.split(',').map(c => c.toLowerCase()) : [];
     const neighborhoodArray = neighborhood ? neighborhood.split(',').map(n => n.toLowerCase()) : [];
@@ -33,7 +32,7 @@ app.get('/restaurants', async (req, res) => {
 
     if (cuisineArray.length > 0) {
       filteredRestaurants = filteredRestaurants.filter(restaurant =>
-        restaurant?.cuisine && cuisineArray.includes(restaurant.cuisine.toLowerCase())
+        restaurant.cuisine && cuisineArray.includes(restaurant.cuisine.toLowerCase())
       );
     }
 
@@ -43,7 +42,6 @@ app.get('/restaurants', async (req, res) => {
       );
     }
 
-    // Implement pagination
     const startIndex = (pageInt - 1) * limitInt;
     const endIndex = pageInt * limitInt;
     const paginatedRestaurants = filteredRestaurants.slice(startIndex, endIndex);

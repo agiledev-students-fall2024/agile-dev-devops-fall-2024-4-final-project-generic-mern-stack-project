@@ -1,3 +1,6 @@
-The back-end of your project will live in this directory.
+Our backend should not require any additional setup other than `npm install` and then `npm start`
 
-You will most likely initiate the back-end Node.js/Express.js server by running the "npm init" command from within this directory.
+You can run tests with `npm test` and coverage with `npm coverage`
+
+
+In order to run the front-end, you'll need to add `REACT_APP_API_KEY="VALUE"` to a .env in the front-end directory. See Discord team channel for the correct value.
