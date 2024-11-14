@@ -1,0 +1,17 @@
+[
+    {
+      "id": 1,
+      "name": "Alice Smith",
+      "email": "alice@example.com",
+      "message": "I absolutely love this platform! It’s such a unique idea.",
+      "timestamp": "2024-11-12T10:30:00Z"
+    },
+    {
+      "id": 2,
+      "name": "John Doe",
+      "email": "john.doe@example.com",
+      "message": "How do I report an issue? The map doesn’t seem to load in some areas.",
+      "timestamp": "2024-11-12T11:00:00Z"
+    }
+  ]
+  
