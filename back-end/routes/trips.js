@@ -78,10 +78,31 @@ router.post('/:tripId/join', (req, res) => {
   res.status(200).json({ message: 'Successfully joined the trip', trip });
 });
 
+//TODO: change trip status, should be a PUT request
+// Update trip status by Trip ID (PUT)
+router.put('/:tripId/status', (req, res) => {
+  const { tripId } = req.params;
+  const { status } = req.body;
+
+  // Find the trip
+  const trip = trips.find(t => t.id === tripId);
+
+  if (!trip) {
+    return res.status(404).json({ error: 'Trip not found' });
+  }
+
+  // Update the status
+  trip.status = status;
+
+  // Save the updated data to the JSON file
+  fs.writeFileSync('./mock-data/trips.json', JSON.stringify(trips, null, 2), 'utf-8');
+
+  res.status(200).json({ message: 'Trip status updated successfully', trip });
+});
+
+
 //Stretch Goal Routes
 // TODO: Update trip information (PUT) - Modify trip data and respond with the updated information
 // TODO: Delete a trip (DELETE) - Remove the specified trip and respond with a confirmation message
-
-
 
 export default router;
