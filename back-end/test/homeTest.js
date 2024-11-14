@@ -21,15 +21,12 @@ describe("GET request to /api/home route", () => {
         res.body.forEach(post => {
             expect(post).to.be.an("object");
             expect(post).to.have.property("id").that.is.a("number");
-            expect(post).to.have.property("profilePic").that.is.a("string").and.is.not.empty;
-            expect(post).to.have.property("name").that.is.a("string").and.is.not.empty;
-            expect(post).to.have.property("userName").that.is.a("string").and.is.not.empty;
-            expect(post).to.have.property("text").that.is.a("string").and.is.not.empty;
+            expect(post).to.have.property("user").that.is.an("object");
+            expect(post.user).to.have.property("username").that.is.a("string");
+            expect(post.user).to.have.property("display_name").that.is.a("string");
+            expect(post).to.have.property("content").that.is.a("string");
             expect(post).to.have.property("likes").that.is.a("number");
             expect(post).to.have.property("images").that.is.an("array");
         });
     });
 });
-
-
-
