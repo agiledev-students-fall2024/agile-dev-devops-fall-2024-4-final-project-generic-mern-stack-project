@@ -56,7 +56,7 @@ export default function LoginForm() {
     });
     if (response.ok) {
       const { token, username } = await response.json();
-      console.log(token, username)
+      console.log(token, username);
       toast({
         description: `Welcome back, ${username}`,
         duration: 1000,
@@ -65,9 +65,9 @@ export default function LoginForm() {
       // TODO: change this to navigate to last page they were on
       navigate("/");
     } else {
-      console.log('hi')
+      console.log("hi");
       const { message } = await response.json();
-      console.log(message)
+      console.log(message);
       toast({
         variant: "destructive",
         title: "Log in failed",

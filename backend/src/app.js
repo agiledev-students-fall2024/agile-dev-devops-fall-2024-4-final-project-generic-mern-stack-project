@@ -1,6 +1,5 @@
 import express from "express";
-import authRoutes from "./routes/authRoutes.js";
-import filtersRoutes from "./routes/filtersRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 import storesRoutes from "./routes/storesRoutes.js";
 import savedRoutes from "./routes/savedRoutes.js";
 import dotenv from "dotenv";
@@ -16,7 +15,6 @@ app.use(express.json());
 
 // routes
 app.use("/user", userRoutes);
-app.use("/filters", filtersRoutes);
 app.use("/stores", storesRoutes);
 app.use("/routes", savedRoutes);
 

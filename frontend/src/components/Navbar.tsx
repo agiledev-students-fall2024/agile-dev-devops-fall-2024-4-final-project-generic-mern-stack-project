@@ -2,7 +2,6 @@ import { Button } from "./ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "@/context/AuthContext";
 
-
 export default function Navbar() {
   const { logout, isAuthenticated } = useAuth();
   const location = useLocation();
@@ -35,13 +34,13 @@ export default function Navbar() {
         </div>
 
         <div className="w-1/3 flex justify-end">
-            <Button
-              variant={isAuthenticated ? "destructive" : "default"}
-              onClick={() => (isAuthenticated ? logout() : navigate("/login"))}
-            >
-              {isAuthenticated ? "Log Out" : "Sign In"}
-            </Button>
-          </div>
+          <Button
+            variant={isAuthenticated ? "destructive" : "default"}
+            onClick={() => (isAuthenticated ? logout() : navigate("/login"))}
+          >
+            {isAuthenticated ? "Log Out" : "Sign In"}
+          </Button>
+        </div>
       </div>
     </nav>
   );

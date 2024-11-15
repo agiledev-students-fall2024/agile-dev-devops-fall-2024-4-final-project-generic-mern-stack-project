@@ -6,7 +6,7 @@ import { useMyStores } from "@/context/StoresContext";
 import { FiltersType } from "@/types";
 import { FilterStringTypes } from "@/types";
 import { suggestStores } from "@/lib/utils";
-import sampleStores from "@/stores";
+import useStores from "@/hooks/useStores";
 
 const filterDescriptions: Record<FilterStringTypes, string> = {
   Brand: "Select specific retailers and boutiques",
@@ -31,6 +31,7 @@ const filterNames: FilterStringTypes[] = [
 ];
 
 export default function SuggestPage() {
+  const { stores, loading, error } = useStores();
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentFilter, setCurrentFilter] =
     useState<FilterStringTypes>("Brand");
@@ -45,8 +46,8 @@ export default function SuggestPage() {
   const navigate = useNavigate();
 
   const handleGenerateStores = () => {
-    // replace sampleStores with stores from database
-    const suggestedStores = suggestStores(sampleStores, filters);
+    if (error || loading) return;
+    const suggestedStores = suggestStores(stores, filters);
     navigate("/", {
       state: {
         suggestedStores: suggestedStores,
@@ -161,12 +162,12 @@ export default function SuggestPage() {
         <ul>
           {filterNames.map((filter) => (
             <li
-            key={filter}
-            onClick={() => setCurrentFilter(filter)}
-            className={`p-4 py-8 font-bold text-center cursor-pointer text-lg 
+              key={filter}
+              onClick={() => setCurrentFilter(filter)}
+              className={`p-4 py-8 font-bold text-center cursor-pointer text-lg 
                   ${filter === currentFilter ? "bg-green-600 text-black font-bold text-xl" : "hover:bg-blue-500"} 
                   min-h-[80px] flex items-center justify-center transition duration-200`}
-            style={{ minWidth: "120px", maxHeight: "80px" }}
+              style={{ minWidth: "120px", maxHeight: "80px" }}
             >
               {filter}
             </li>
