@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useProfile } from './ProfileContext';
+
 
 // Mock data 
 const mockNotes = [
@@ -75,6 +76,9 @@ const ExistingNotes = () => {
       <div className="notes-header">
         <h1>Your Notes</h1>
         <Link to="/new-note" className="create-button">Create New Note</Link>
+        <Link to="/edit-note" className="edit-button">Edit Note</Link>
+        <button className="delete-button">Delete Note</button>
+
       </div>
 
       <div className="notes-filters">
