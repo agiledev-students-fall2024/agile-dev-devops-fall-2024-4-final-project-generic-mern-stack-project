@@ -13,6 +13,13 @@ dotenv.config({ silent: true });
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+/* MOCK USER SESSION WHILE AWAITING LOGIN IMPLEMENTATION */
+// Define mock userId and budgetId
+const MOCK_USER_ID = 1;
+const MOCK_BUDGET_ID = 1;
+
+
+/* Initialize Express App */
 const app = express();
 
 /* ======================= Middleware ======================= */
@@ -117,9 +124,56 @@ app.post('/user/:userId', async (req, res) => {
 });
 
 /* ======================= Transaction Routes ======================= */
-// Define transaction routes...
+app.get("/api/transactions", (req, res) => {
+  const userId = req.query.userId ? parseInt(req.query.userId) : MOCK_USER_ID;
+  const budgetId = req.query.budgetId ? parseInt(req.query.budgetId) : MOCK_BUDGET_ID;
+  console.log("Fetching transactions for userId:", userId, "budgetId:", budgetId);
+  
+  const userTransactions = transactionData.filter(transaction => 
+    transaction.userId === userId && transaction.budgetId === budgetId
+  );
 
-/* ======================= Serve Frontend ======================= */
+  res.json(userTransactions);
+});
+
+
+/* ======================= Recurring Payments Routes ======================= */
+
+app.get("/api/recurring-bills", (req, res) => {
+    // Get userId and budgetId from query or use defaults
+    const userId = req.query.userId ? parseInt(req.query.userId) : MOCK_USER_ID;
+    const budgetId = req.query.budgetId ? parseInt(req.query.budgetId) : MOCK_BUDGET_ID;
+
+    if (!userId) {
+        return res.status(400).json({ error: "User ID is required" });
+    }
+
+    const userRecurringBills = recurringBills.filter(bill => 
+        bill.userId === userId && (!budgetId || bill.budgetId === budgetId)
+  );
+
+  res.json(userRecurringBills);
+});
+
+/* ======================= Budget Limits Routes ======================= */
+app.get("/api/budget-limits", (req, res) => {
+    const userId = req.query.userId ? parseInt(req.query.userId) : MOCK_USER_ID;
+    const budgetId = req.query.budgetId ? parseInt(req.query.budgetId) : MOCK_BUDGET_ID;
+
+    const userBudgetLimit = budgetLimits.find(
+        (limit) => limit.userId === userId && limit.budgetId === budgetId
+    );
+
+    if (!userBudgetLimit) {
+        return res.status(404).json({ error: "Budget limits not found for this user and budget." });
+    }
+
+    res.json(userBudgetLimit);
+});
+
+  
+
+/* ======================= Serve Frontend (React App) ======================= */
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../front-end/", "index.html"));
 });

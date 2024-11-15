@@ -1,11 +1,11 @@
 const transactionData = [
     { id: 1, merchant: "Target", category: 'Shopping', amount: 60, date: 'Oct 23' },
     { id: 2, merchant: "Netflix", category: 'Subscription', amount: 15, date: 'Oct 22' },
-    { id: 3, merchant: "Whole Foods", category: 'Groceries', amount: 195, date: 'Oct 21' },
+    { id: 3, merchant: "Whole Foods", category: 'Groceries', amount: 105, date: 'Oct 21' },
     { id: 4, merchant: "Shell Gas Station", category: 'Fuel', amount: 40, date: 'Oct 21' },
     { id: 5, merchant: "Planet Fitness", category: 'Health', amount: 25, date: 'Oct 19' },
     { id: 6, merchant: "Starbucks", category: 'Other', amount: 5, date: 'Oct 19' },
-    { id: 7, merchant: "Trader Joe's", category: 'Groceries', amount: 120, date: 'Oct 15' },
+    { id: 7, merchant: "Trader Joe's", category: 'Groceries', amount: 92, date: 'Oct 15' },
     { id: 8, merchant: "Electric Co.", category: 'Utilities', amount: 75, date: 'Oct 15' },
     { id: 9, merchant: "Amazon", category: 'Shopping', amount: 120, date: 'Oct 15' },
     { id: 10, merchant: "T-Mobile", category: 'Bills', amount: 60, date: 'Oct 14' },

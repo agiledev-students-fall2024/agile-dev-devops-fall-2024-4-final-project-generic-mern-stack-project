@@ -23,7 +23,7 @@ const transactionData = [
         budgetId: 1, 
         merchant: "Whole Foods", 
         category: 'Groceries', 
-        amount: 195, 
+        amount: 105, 
         date: 'Oct 21' 
     },
     { 
@@ -59,7 +59,7 @@ const transactionData = [
         budgetId: 1, 
         merchant: "Trader Joe's", 
         category: 'Groceries', 
-        amount: 120, 
+        amount: 92, 
         date: 'Oct 15' 
     },
     { 
