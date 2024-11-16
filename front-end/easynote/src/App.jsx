@@ -8,6 +8,7 @@ import ExistingNotes from './components/ExistingNotes';
 import Login from './components/Login';
 import Signup from './components/SignUp';
 import AuthGuard from './components/AuthGuard';
+import EditNote from './components/EditNote';
 
 const App = () => {
   return (
@@ -40,8 +41,18 @@ const App = () => {
                   <ExistingNotes />
                 </AuthGuard>
               }
-            />
             
+            />
+
+            <Route
+              path="edit-note"
+              element={
+                <AuthGuard>
+                  <EditNote />
+                </AuthGuard>
+              }
+            
+            />
           </Route>
         </Routes>
       </BrowserRouter>
