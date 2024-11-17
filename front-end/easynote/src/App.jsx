@@ -9,6 +9,7 @@ import Login from './components/Login';
 import Signup from './components/SignUp';
 import AuthGuard from './components/AuthGuard';
 import EditNote from './components/EditNote';
+import ViewNote from './components/ViewNote';
 
 const App = () => {
   return (
@@ -52,6 +53,15 @@ const App = () => {
                 </AuthGuard>
               }
             
+            />
+
+              <Route
+              path="view-note"
+              element={
+                <AuthGuard>
+                  <ViewNote />
+                </AuthGuard>
+              }
             />
           </Route>
         </Routes>

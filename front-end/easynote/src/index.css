@@ -81,9 +81,11 @@ body {
   font-weight: 500;
 }
 
+
+.open-button,
 .create-button,
 .edit-button,
-.delete-button {
+.delete-button{
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
   background-color: #f0f0f0;
@@ -92,13 +94,18 @@ body {
   cursor: pointer;
   text-decoration: none;
   color: inherit;
+  margin-right: 20px;
 }
+
 
 .edit-button {
   color: black;
 }
 
 .edit-button:hover {
+  background-color: #e0e0e0;
+}
+.open-button:hover {
   background-color: #e0e0e0;
 }
 
@@ -779,5 +786,64 @@ body {
 
 .controls-right:hover,
 .back-button:hover {
+  background-color: #e0e0e0;
+}
+
+.view-note {
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 2rem auto;
+}
+
+.view-note h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.view-note p {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+  color: #555;
+}
+
+.view-note .note-tags {
+  margin-top: 1rem;
+}
+
+.view-note .tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  margin-right: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #333;
+  border-radius: 4px;
+}
+
+.view-note .note-preview {
+  font-size: 1rem;
+  margin-top: 1rem;
+  line-height: 1.6;
+}
+
+.view-note a {
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  text-align: center;
+}
+
+.view-note a:hover {
   background-color: #e0e0e0;
 }
