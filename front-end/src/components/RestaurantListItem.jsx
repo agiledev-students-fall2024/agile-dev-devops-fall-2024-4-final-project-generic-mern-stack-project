@@ -32,11 +32,16 @@ const RestaurantListItem = ({ restaurant, onDelete }) => {
     <div className="restaurant-list-item">
       <h2 className="restaurant-name">{restaurant.name}</h2>
       <div className="pills-container">
-        {restaurant.pills.map((pill, index) => (
-          <span key={index} className="pill">
-            {pill}
-          </span>
-        ))}
+      <div className="pills-container">
+        {restaurant.cuisine && 
+        <span className="pill">
+        {restaurant.cuisine}
+        </span>
+        }
+            <span className="pill">
+              {restaurant.neighborhood}
+            </span>
+        </div>
         <span className="pill">
           {status}
         </span>
