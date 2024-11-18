@@ -1,6 +1,8 @@
-const mongoose = require('mongoose')
+//This isn't how we should use this file -Eric
+/*
+import mongoose from 'mongoose';
 
-const OTPSChema = new mongoose.schema({
+const otp_schema = new mongoose.schema({
     name: {
         type: String,
         required: true,
@@ -18,4 +20,8 @@ const OTPSChema = new mongoose.schema({
     }
 });
 
-module.exports = mongoose.model("User", schema);
+const User = mongoose.model("User", otp_schema);
+
+export default User;
+
+*/

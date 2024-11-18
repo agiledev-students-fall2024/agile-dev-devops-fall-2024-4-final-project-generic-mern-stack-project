@@ -1,12 +1,11 @@
 import globals from "globals";
-import pluginJs from "@eslint/js";
+import plugin_js from "@eslint/js";
 import snakecasejs from "eslint-plugin-snakecasejs";
 
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
   {
-    languageOptions: { globals: globals.browser },
     plugins: {
       snakecasejs
     },
@@ -17,5 +16,5 @@ export default [
       "snakecasejs/snakecasejs": "error"
     }
   },
-  pluginJs.configs.recommended,
+  plugin_js.configs.recommended,
 ];

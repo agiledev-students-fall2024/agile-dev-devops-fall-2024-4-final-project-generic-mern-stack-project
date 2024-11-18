@@ -1,10 +1,12 @@
-import { SchemaTypes, mongoose } from "mongoose";
+import { schema_types, mongoose } from "mongoose";
 
 const user_schema = new mongoose.Schema({
-  _id: {type: SchemaTypes.ObjectId, require: true},
+  _id: {type: schema_types.object_id, require: true},
+  name: {type: String, require: true},
   email: {type: String, require: true},
+  password: {type: String, require: true},
   profile_pic: {type: String, require: false}
-}, {toJson: {virtuals: true}});
+}, {to_json: {virtuals: true}});
 
 user_schema.virtual("profilePic").get(function() {
   return this.profile_pic;

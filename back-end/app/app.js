@@ -1,9 +1,6 @@
-import { express } from "express";
-import { cors } from "cors";
-import { dotenv } from "dotenv";
-//const google_places_controller = ('./controllers/google_places_controller');
-//I left this here incase you might need it later
-
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
 
 
 dotenv.config({ silent: true });
