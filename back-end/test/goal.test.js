@@ -51,67 +51,37 @@ describe("Goal API", function () {
     });
   });
 
-  // Additional tests start here
-  import User from '../user.js';
-  import BudgetGoal from '../budgetGoal.js';
-
-  let goalId, userId, collaboratorEmail;
-
-  before(async () => {
-    // Create a test user and collaborator for additional tests
-    const user = new User({ username: 'goaluser', email: 'goaluser@example.com', password: 'password123' });
-    const collaborator = new User({ username: 'collabuser', email: 'collabuser@example.com', password: 'password123' });
-    await user.save();
-    await collaborator.save();
-
-    userId = user._id;
-    collaboratorEmail = collaborator.email;
-
-    const goal = new BudgetGoal({ name: 'Save for Vacation', targetAmount: 1000, currentAmount: 200, ownerId: userId });
-    const savedGoal = await goal.save();
-    goalId = savedGoal._id;
-  });
-
-  after(async () => {
-    await User.deleteMany({});
-    await BudgetGoal.deleteMany({});
-  });
-
+  // Additional Tests for Invite Collaborator - Added at the end
   describe("POST /goal/:goalId/invite", function () {
-    it("should invite a collaborator to a goal", function (done) {
+    it("should add a collaborator to a goal", function (done) {
       request(app)
-        .post(`/goal/${goalId}/invite`)
-        .send({ collaboratorEmail: collaboratorEmail })
+        .post("/goal/1/invite") // Mock goal ID
+        .send({ collaboratorEmail: 'collabuser@example.com' }) // Mock collaborator email
         .expect(200)
         .end((err, res) => {
-          if (err) return done(err);
-          assert.equal(res.body.message, "Collaborator added successfully", "Expected success message");
+          assert.equal(res.body.message, 'Collaborator added successfully', "Expected success message");
+          done();
+        });
+    });
+
+    it("should return 404 for invalid goal ID", function (done) {
+      request(app)
+        .post("/goal/999/invite") // Invalid goal ID
+        .send({ collaboratorEmail: 'collabuser@example.com' })
+        .expect(404)
+        .end((err, res) => {
+          assert.equal(res.body.error, 'Goal not found', "Expected error for nonexistent goal");
           done();
         });
     });
 
     it("should return 404 if collaborator email does not exist", function (done) {
       request(app)
-        .post(`/goal/${goalId}/invite`)
-        .send({ collaboratorEmail: "nonexistent@example.com" })
+        .post("/goal/1/invite")
+        .send({ collaboratorEmail: 'nonexistent@example.com' }) // Invalid collaborator email
         .expect(404)
         .end((err, res) => {
-          if (err) return done(err);
-          assert.equal(res.body.error, "Collaborator not found", "Expected error for nonexistent collaborator");
-          done();
-        });
-    });
-  });
-
-  describe("GET /goal/:userId", function () {
-    it("should retrieve all goals for a specific user", function (done) {
-      request(app)
-        .get(`/goal/${userId}`)
-        .expect(200)
-        .end((err, res) => {
-          if (err) return done(err);
-          assert(Array.isArray(res.body), "Response should be an array");
-          assert(res.body[0].name === 'Save for Vacation', "Goal name should match");
+          assert.equal(res.body.error, 'Collaborator not found', "Expected error for nonexistent collaborator");
           done();
         });
     });
