@@ -1,7 +1,7 @@
-const express = require("express");
-const Route = require("../models/Route");
-const User = require("../models/User");
-const jwt = require("jsonwebtoken");
+import express from 'express';
+import Route from "../models/Route.js";
+import User from "../models/User.js";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
@@ -125,4 +125,4 @@ router.delete("/:routeId", verifyToken, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

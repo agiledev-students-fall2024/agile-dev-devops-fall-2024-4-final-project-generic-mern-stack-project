@@ -1,5 +1,5 @@
 import express from "express";
-import Store from "../models/Store";
+import Store from "../models/Store.js";
 
 const router = express.Router();
 
@@ -11,3 +11,5 @@ router.get("/", async (req, res) => {
     res.status(500).json({ message: "Error fetching stores", error });
   }
 });
+
+export default router;
