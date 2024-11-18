@@ -67,7 +67,7 @@ app.get('/restaurant/search', async (req, res) => {
     if (!query) {
       return res.status(400).send('Missing query parameter');
     }
-    
+
     //TODO: Add restaurants
     const search_results = restaurants.filter(restaurant => restaurant.name.toLowerCase().includes(query.toLowerCase()));
 
