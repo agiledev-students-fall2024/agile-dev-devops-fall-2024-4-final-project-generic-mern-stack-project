@@ -1,7 +1,6 @@
-
-const express = require("express")
-const bcrypt = require("bcrypt")
-const bodyParser = require("body-parser")
+import { app } from "../app.js";
+import { bcrypt } from "bycrypt";
+import { bodyParser } from "body-parser";
 
 const app = express()
 app.use(bodyParser.json())

@@ -1,7 +1,7 @@
-const request = require('supertest');
-const { expect } = require('chai');
-const app = require('./app');
-const restaurants = require('./restaurants');
+import { request } from 'supertest';
+import { expect } from 'chai';
+import { app } from './app/app';
+import { restaurants } from './restaurants';
 
 describe('GET /restaurants', () => {
   it('should return a list of restaurants with default pagination', (done) => {
@@ -12,7 +12,7 @@ describe('GET /restaurants', () => {
         expect(res.body).to.have.property('total');
         expect(res.body).to.have.property('page', 1);
         expect(res.body).to.have.property('limit', 10);
-        expect(res.body).to.have.property('data').with.lengthOf.at.most(10);
+        expect(res.body).to.have.property('data').with.length_of.at.most(10);
         done();
       });
   });
@@ -85,7 +85,7 @@ describe('POST /restaurant/:id/dislike', () => {
 describe('GET /restaurants error handling', () => {
   it('should handle errors in the restaurants API', (done) => {
     // Temporarily set restaurants to null to simulate an error
-    const originalRestaurants = [...restaurants];
+    const original_restaurants = [...restaurants];
     restaurants.length = 0; // Empty the array to simulate an error
     restaurants.push(null); // Add a null entry to cause an error in the route handler
 
@@ -97,7 +97,7 @@ describe('GET /restaurants error handling', () => {
 
         // Restore the original data
         restaurants.length = 0;
-        restaurants.push(...originalRestaurants);
+        restaurants.push(...original_restaurants);
         done();
       });
   });
@@ -106,7 +106,7 @@ describe('GET /restaurants error handling', () => {
 describe('GET /restaurant/search error handling', () => {
   it('should handle errors in the search API', (done) => {
     // Simulate an error by causing an exception in the route handler
-    const originalFilter = Array.prototype.filter;
+    const original_filter = Array.prototype.filter;
     Array.prototype.filter = () => {
       throw new Error('Simulated error');
     };
@@ -119,7 +119,7 @@ describe('GET /restaurant/search error handling', () => {
         expect(res.text).to.equal('Error searching for restaurant');
 
         // Restore the original filter method
-        Array.prototype.filter = originalFilter;
+        Array.prototype.filter = original_filter;
         done();
       });
   });
