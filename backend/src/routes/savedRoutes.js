@@ -1,40 +1,13 @@
-import express from "express";
-import jwt from "jsonwebtoken";
+const express = require("express");
+const Route = require("../models/Route");
+const User = require("../models/User");
+const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 
-//Mock data array representing saved routes in database
-const savedRoutes = [
-  {
-    _id: "route1",
-    name: "Route 1",
-    userId: "123456789",
-    stores: [
-      {
-        _id: "store1",
-        name: "Test Store",
-        location: "Test Location",
-      },
-    ],
-  },
-  {
-    _id: "route2",
-    name: "Route 2",
-    userId: "123456789",
-    stores: [
-      {
-        _id: "store2",
-        name: "Another Test Store",
-        location: "Another Test Location",
-      },
-    ],
-  },
-];
-
-// Middleware to authenticate JWT token
+// Middleware to verify token
 const verifyToken = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
-
   if (!token) {
     return res.status(401).json({ message: "No token provided" });
   }
@@ -43,33 +16,18 @@ const verifyToken = (req, res, next) => {
     if (err) {
       return res.status(401).json({ message: "Invalid or expired token" });
     }
-    req.user = decoded;
+    req.userId = decoded.userId;
+    req.username = decoded.username;
     next();
   });
 };
 
-// Get all saved routes for a user, given the userId
-router.get("/saved", verifyToken, (req, res) => {
-  try {
-    const userRoutes = savedRoutes.filter(
-      (route) => route.userId === req.user.userId,
-    );
-
-    if (!userRoutes.length) {
-      return res.status(404).json({ message: "No route found for this user!" });
-    }
-
-    res.json(userRoutes);
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching user routes", error });
-  }
-});
-
-// Get specific route by routeId
-router.get("/:routeId", verifyToken, (req, res) => {
+// getting a specific route
+router.get("/:routeId", verifyToken, async (req, res) => {
   try {
     const { routeId } = req.params;
-    const route = savedRoutes.find((route) => route._id === routeId);
+
+    const route = await Route.findById(routeId).populate("stores");
 
     if (!route) {
       return res.status(404).json({ message: "Route not found" });
@@ -81,68 +39,90 @@ router.get("/:routeId", verifyToken, (req, res) => {
   }
 });
 
-// Create a new route
-router.post("/new", verifyToken, (req, res) => {
+// Create new route
+router.post("/", verifyToken, async (req, res) => {
   try {
-    const { name, stores } = req.body;
-    const newRoute = {
-      _id: `route${savedRoutes.length + 1}`,
+    const { name, description, stores } = req.body;
+
+    if (stores.length === 0) {
+      res.status(500).json({
+        message: `Error creating route: A route must have at least one store.`,
+      });
+    }
+
+    const newRoute = new Route({
       name,
-      userId: req.user.userId,
+      description,
       stores,
-    };
-    savedRoutes.push(newRoute);
-    res.status(201).json(newRoute);
+      created_by: req.username,
+    });
+
+    await newRoute.save();
+
+    // add route to users saved_routes
+    await User.findByIdAndUpdate(req.userId, {
+      $push: { saved_routes: newRoute._id },
+    });
+
+    const populatedRoute = await Route.findById(newRoute._id).populate(
+      "stores",
+    );
+    res.status(201).json(populatedRoute);
   } catch (error) {
-    res.status(500).json({ message: "Error creating route", error });
+    console.log(error);
+    res.status(500).json({ message: `Error creating route: ${error}` });
   }
 });
 
-// Update a specific route by routeId
-router.put("/:routeId", verifyToken, (req, res) => {
+// Update route
+router.put("/:routeId", verifyToken, async (req, res) => {
   try {
+    const { name, description, stores } = req.body;
     const { routeId } = req.params;
-    const { name, stores } = req.body;
-    const routeIndex = savedRoutes.findIndex((route) => route._id === routeId);
 
-    if (routeIndex === -1) {
+    if (stores.length === 0) {
+      res.status(500).json({
+        message: `Error creating route: A route must have at least one store.`,
+      });
+    }
+
+    const updatedRoute = await Route.findByIdAndUpdate(
+      routeId,
+      {
+        name,
+        description,
+        stores,
+      },
+      { new: true },
+    ).populate("stores");
+
+    if (!updatedRoute) {
       return res.status(404).json({ message: "Route not found" });
     }
 
-    if (savedRoutes[routeIndex].userId !== req.user.userId) {
-      return res
-        .status(403)
-        .json({ message: "Unauthorized to update this route" });
-    }
-
-    savedRoutes[routeIndex] = { ...savedRoutes[routeIndex], name, stores };
-    res.json(savedRoutes[routeIndex]);
+    res.json(updatedRoute);
   } catch (error) {
     res.status(500).json({ message: "Error updating route", error });
   }
 });
 
-// Delete a specific route by routeId
-router.delete("/:routeId", verifyToken, (req, res) => {
+// Delete route
+router.delete("/:routeId", verifyToken, async (req, res) => {
   try {
     const { routeId } = req.params;
-    const routeIndex = savedRoutes.findIndex((route) => route._id === routeId);
 
-    if (routeIndex === -1) {
-      return res.status(404).json({ message: "Route not found" });
-    }
+    // Remove route from user's saved_routes
+    await User.findByIdAndUpdate(req.userId, {
+      $pull: { saved_routes: routeId },
+    });
 
-    if (savedRoutes[routeIndex].userId !== req.user.userId) {
-      return res
-        .status(403)
-        .json({ message: "Unauthorized to delete this route" });
-    }
+    // Delete the route
+    await Route.findByIdAndDelete(routeId);
 
-    savedRoutes.splice(routeIndex, 1);
     res.json({ message: "Route deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Error deleting route", error });
   }
 });
 
-export default router;
+module.exports = router;
