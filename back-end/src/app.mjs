@@ -5,14 +5,27 @@ import sanitize from "mongo-sanitize";
 import multer from "multer";
 import axios from "axios";
 import cors from "cors";
-import * as auth from "./auth.mjs";
+import * as auth from "../routes/auth.mjs";
 import path from "path";
 import bodyParser from "body-parser";
 import morgan from "morgan";
 import { fileURLToPath } from "url";
+import authRoutes from "../routes/authRoutes.mjs";
+import mongoose from "mongoose";
+import keys from "../keys.mjs";
 
 const app = express();
 const PORT = process.env.backPORT || 5000;
+app.use(express.json());
+
+// MongoDB Connection
+const mango = keys.MONGOURI;
+mongoose.connect(mango, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connection.on("connected", () => console.log("Connected to MongoDB"));
+mongoose.connection.on("error", (err) =>
+  console.error("MongoDB connection error:", err)
+);
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "public/uploads");
@@ -55,35 +68,8 @@ app.use(morgan("dev"));
 // }));
 
 //APIs for backend
-
-app.post("/api/login", async (req, res) => {
-  const { username, password } = req.body;
-  try {
-    const newUser = await auth.login(sanitize(username), password);
-    // await auth.startAuthenticatedSession(req, newUser);
-    // console.log('Session User', req.session.user);
-    res.status(200).json({ message: "Login successful", newUser });
-  } catch (error) {
-    console.log("does not try");
-    res.status(401).json({ message: error.message });
-  }
-});
-
-app.post("/api/signup", async (req, res) => {
-  const { username, email, password } = req.body;
-
-  try {
-    const newUser = await auth.register(
-      sanitize(username),
-      sanitize(email),
-      password
-    );
-    // await auth.startAuthenticatedSession(req, newUser);
-    res.status(201).json({ message: "User registered successfully", newUser });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
+//for sign up and login
+app.use("/api/auth", authRoutes);
 
 const tempRecipeShareStorage = [];
 
@@ -152,19 +138,19 @@ app.post(
 );
 
 app.get("/api/users", async (req, res) => {
-    try {
-      if (process.env.MOCK_ERROR === "true") {
-          throw new Error("Mocked error");
-      }
-      const { data } = await axios.get(
-        "https://my.api.mockaroo.com/users.json?key=66da8e80"
-      );
-      res.json(data);
-    } catch (error) {
-      console.error("Error fetching data from API:", error.message);
-      res.status(500).json({ error: "Failed to fetch user data" });
+  try {
+    if (process.env.MOCK_ERROR === "true") {
+      throw new Error("Mocked error");
     }
-  });
+    const { data } = await axios.get(
+      "https://my.api.mockaroo.com/users.json?key=66da8e80"
+    );
+    res.json(data);
+  } catch (error) {
+    console.error("Error fetching data from API:", error.message);
+    res.status(500).json({ error: "Failed to fetch user data" });
+  }
+});
 
 app.get("/api/challenges", async (req, res) => {
   try {

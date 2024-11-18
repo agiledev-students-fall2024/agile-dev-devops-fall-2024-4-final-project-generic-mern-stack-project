@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "test": "c8 mocha 'tests/**/*.mjs' 'src/**/*.mjs' --exit",
-    "start": "node src/app.mjs",
-    "dev": "nodemon src/app.mjs"
+    "start": "node src/server.mjs",
+    "dev": "nodemon src/server.mjs"
   },
   "keywords": [],
   "author": "",
