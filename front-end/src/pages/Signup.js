@@ -28,8 +28,10 @@ export default function Signup() {
         navigate(`/verifyemail?email=${email}`);
       })
       .catch((error) => {
-        console.log(error);
-        toast.error("User creation failed");
+        // console.log("a real error", error.message);
+        console.log("Error in signup", error.response.data.message);
+        // toast.error("User creation failed! Try agin!");
+        toast.error(error.response.data.message);
       });
   }
   function handleNameChange(e) {

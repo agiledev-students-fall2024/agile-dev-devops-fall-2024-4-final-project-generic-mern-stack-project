@@ -30,8 +30,9 @@ export default function Login() {
         navigate("/");
       })
       .catch((error) => {
-        console.error("Error in login", error.message);
-        toast.error("Invalid credentials");
+        console.error("Error in login: ", error.response.data.message);
+        // toast.error("Invalid credentials");
+        toast.error(error.response.data.message);
       });
   }
 
