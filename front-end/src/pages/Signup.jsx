@@ -42,7 +42,7 @@ function Signup() {
     }
 
     setError("");
-
+    
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_BACK_PORT}/api/auth/signup`,
@@ -51,8 +51,9 @@ function Signup() {
       console.log(response.data.message);
       navigate("/signup-profile");
     } catch (err) {
-      setError(err.response?.data.message || "Signup failed");
-      console.error(err);
+      const backendError = err.response?.data?.error || "Signup failed";
+      setError(backendError);
+      console.error("Signup Error:", backendError);
     }
   }
 

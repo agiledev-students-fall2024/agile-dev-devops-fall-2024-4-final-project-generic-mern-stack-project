@@ -1,67 +1,78 @@
 import express from "express";
 import * as auth from "./auth.mjs";
 import sanitize from "mongo-sanitize";
-import mongoose from "mongoose";
-import user from "../models/user.mjs";
-import bcrypt from "bcryptjs";
+import bcrypt from 'bcryptjs';
+import User from "../models/user.mjs"
 
 const router = express.Router();
+router.use(express.json());
 
-/*
-router.post("/login", async (req, res) => {
-  const { username, password } = req.body;
-  try {
-    const newUser = await auth.login(sanitize(username), password);
-    res.status(200).json({ message: "Login successful", newUser });
-  } catch (error) {
-    res.status(401).json({ message: error.message });
-  }
-});*/
 
-router.post("/signup", async (req, res) => {
+router.post('/signup', async (req, res) => {
   const { username, email, password } = req.body;
 
+  console.log("Request data:", req.body); // Log incoming data
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
   try {
-    // Check if the user already exists
-    const savedUser = await user.findOne({ email: email });
+    const savedUser = await User.findOne({ email: email });
     if (savedUser) {
+      console.log("User already exists with that email:", email);
       return res
         .status(422)
         .json({ error: "User already exists with that email" });
     }
-
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 12);
-
-    // Create a new user
-    const newUser = new user({
-      username: username,
-      email: email,
-      password: hashedPassword, // Use hashed password
+    const existingUserByUsername = await User.findOne({ username });
+    if (existingUserByUsername) {
+      console.log("User already exists with that username:", username);
+      return res.status(422).json({ error: "User already exists with that username" });
+    }
+    
+    const newUser = new User({
+      username,
+      email,
+      password: hashedPassword,
       recipes: [],
-      activities: []
+      activities: [],
     });
-
-    // Save the user
+    console.log('saved');
     await newUser.save();
-    res.json({ message: "User saved successfully" });
-  } catch (err) {
-    console.error("Error during signup:", err);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(201).send('User registered');
+  } catch (error) {
+    console.error("Error registering user:", error.message);
+    res.status(500).send('Error registering user');
   }
 });
 
-/*
+
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
   try {
-    const newUser = await auth.register(
-      sanitize(username),
-      sanitize(email),
-      password
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(401).send('User not found');
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).send('Invalid credentials');
+    }
+
+    const token = jwt.sign(
+      { userId: user._id, username: user.username },
+      process.env.SECRET_KEY,
+      { expiresIn: '1h' }
     );
-    res.status(201).json({ message: "User registered successfully", newUser });
+
+    res.json({ token });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).send('Error logging in');
   }
-});*/
+});
+
+
 
 export default router;
