@@ -1,4 +1,4 @@
-import express from 'express';
+import express from "express";
 import Route from "../models/Route.js";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
@@ -23,7 +23,7 @@ const verifyToken = (req, res, next) => {
 };
 
 // getting a specific route
-router.get("/:routeId", verifyToken, async (req, res) => {
+router.get("/:routeId", async (req, res) => {
   try {
     const { routeId } = req.params;
 
