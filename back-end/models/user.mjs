@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import userRecipeSchema from "./userRecipe.mjs";
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -13,6 +14,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  recipes: [userRecipeSchema]
 });
 
 const user = mongoose.model("User", userSchema);

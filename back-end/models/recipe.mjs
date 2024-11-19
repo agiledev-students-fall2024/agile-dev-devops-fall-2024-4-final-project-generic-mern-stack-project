@@ -16,11 +16,7 @@ const recipeSchema = new mongoose.Schema({
   steps: [{
     type: String,
     required: true
-  }],
-  duration: {
-    type: Number,
-    required: false
-  }
+  }]
 });
 
 const recipe = mongoose.model("Recipe", recipeSchema);
