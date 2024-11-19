@@ -15,6 +15,13 @@ cd back-end
 node server.js
 ```
 
+### env file in back-end
+Should contain the following:
+```
+MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/<database>?retryWrites=true&w=majority
+JWT_SECRET=your_jwt_secret
+```
+
 
 #### Testing login
 Username: username
