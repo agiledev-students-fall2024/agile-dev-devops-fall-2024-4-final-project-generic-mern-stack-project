@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const userRecipeSchema = new mongoose.Schema({
   id: {
-      type: ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       required: true
   },
   duration: {
@@ -17,6 +17,6 @@ const userRecipeSchema = new mongoose.Schema({
   }
 });
 
-const userRecipe = mongoose.model("UserRecipe", userRecipeSchema);
+// const userRecipe = mongoose.model("UserRecipe", userRecipeSchema);
 
-export default userRecipe;
+export default userRecipeSchema;
