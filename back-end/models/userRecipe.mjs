@@ -7,14 +7,12 @@ const userRecipeSchema = new mongoose.Schema({
   },
   duration: {
       type: Number,
+      default: 0,
       required: true
   },
   completed: {
       type: Boolean,
-      required: true
-  },
-  duration: {
-      type: Number,
+      default: false,
       required: true
   }
 });
