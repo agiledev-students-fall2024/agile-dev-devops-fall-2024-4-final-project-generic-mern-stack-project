@@ -1,24 +1,3 @@
-// import '../index.css'
-// import '../Home.css'
-// import { useNavigate } from 'react-router-dom';
-
-
-// function Home(){
-//     const navigate = useNavigate();
-//     function goToActivityTracker(){
-//         navigate('/activity-tracker')
-//     }
-//     return(<>
-//         <h1>HOME PAGE</h1>
-//         <div className='weekly-acitivty-div'>
-//             <button onClick={goToActivityTracker}>(click for) See More</button>
-
-//         </div>
-//         </>
-//     );
-// }
-
-// export default Home
 
 import '../index.css';
 import React, { useState, useEffect } from "react";

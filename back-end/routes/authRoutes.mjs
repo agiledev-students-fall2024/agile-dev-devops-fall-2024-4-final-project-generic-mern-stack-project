@@ -3,6 +3,7 @@ import * as auth from "./auth.mjs";
 import sanitize from "mongo-sanitize";
 import bcrypt from 'bcryptjs';
 import User from "../models/user.mjs"
+import jwt from'jsonwebtoken';
 
 const router = express.Router();
 router.use(express.json());
@@ -36,9 +37,19 @@ router.post('/signup', async (req, res) => {
       recipes: [],
       activities: [],
     });
+
+
+
     console.log('saved');
     await newUser.save();
-    res.status(201).send('User registered');
+
+    const token = jwt.sign(
+      { userId: newUser._id, username: newUser.username },
+      process.env.SECRET_KEY, 
+      { expiresIn: '1h' } 
+    );
+    console.log(token)
+    res.status(201).json({ token });
   } catch (error) {
     console.error("Error registering user:", error.message);
     res.status(500).send('Error registering user');
@@ -47,10 +58,10 @@ router.post('/signup', async (req, res) => {
 
 
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-
+  const { username, password } = req.body;
+  console.log(username, password)
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ username });
 
     if (!user) {
       return res.status(401).send('User not found');
@@ -66,7 +77,7 @@ router.post('/login', async (req, res) => {
       process.env.SECRET_KEY,
       { expiresIn: '1h' }
     );
-
+    console.log(token)
     res.json({ token });
   } catch (error) {
     res.status(500).send('Error logging in');

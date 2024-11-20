@@ -1,18 +1,14 @@
 import "./config.mjs";
 import express from "express";
-import session from "express-session";
-import sanitize from "mongo-sanitize";
 import multer from "multer";
 import axios from "axios";
 import cors from "cors";
 import path from "path";
 import bodyParser from "body-parser";
 import morgan from "morgan";
-import { fileURLToPath } from "url";
 import authRoutes from "../routes/authRoutes.mjs";
 import mongoose from "mongoose";
 import keys from "../keys.mjs";
-import verifyToken from "../routes/auth.mjs";
 
 const app = express();
 const PORT = process.env.backPORT || 5000;
@@ -58,23 +54,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 
-// app.use(session({
-//   secret: 'secret',
-//   resave: false,
-//   saveUninitialized: true,
-//   cookie: {
-//       secure: false,
-//       sameSite: 'lax'
-//   }
-// }));
-
 //APIs for backend
 //for sign up and login
 app.use("/api/auth", authRoutes);
 
 const tempRecipeShareStorage = [];
 
-app.post("/api/shareRecipe", verifyToken, async (req, res) => {
+app.post("/api/shareRecipe", async (req, res) => {
   const { foodName, story, recipe } = req.body;
   try {
     const shareRecipe = {
@@ -91,7 +77,7 @@ app.post("/api/shareRecipe", verifyToken, async (req, res) => {
   }
 });
 
-app.get("/api/record-activity", verifyToken, async (req, res) => {
+app.get("/api/record-activity", async (req, res) => {
   try {
     const mockError = process.env.MOCK_ERROR === "true";
     if (mockError) {
@@ -107,7 +93,7 @@ app.get("/api/record-activity", verifyToken, async (req, res) => {
   }
 });
 
-app.post("/api/upload-recipe-image", verifyToken, upload.array("my_files", 2),(req, res, next) => {
+app.post("/api/upload-recipe-image", upload.array("my_files", 2),(req, res, next) => {
     if (!req.files || req.files.length === 0) {
       // No files uploaded
       return res.status(400).json({
@@ -135,7 +121,7 @@ app.post("/api/upload-recipe-image", verifyToken, upload.array("my_files", 2),(r
   }
 );
 
-app.get("/api/users", verifyToken, async (req, res) => {
+app.get("/api/users", async (req, res) => {
   try {
     if (process.env.MOCK_ERROR === "true") {
       throw new Error("Mocked error");
@@ -150,7 +136,7 @@ app.get("/api/users", verifyToken, async (req, res) => {
   }
 });
 
-app.get("/api/challenges",verifyToken, async (req, res) => {
+app.get("/api/challenges", async (req, res) => {
   try {
     const mockError = process.env.MOCK_ERROR === "true";
     if (mockError) {
@@ -166,7 +152,7 @@ app.get("/api/challenges",verifyToken, async (req, res) => {
   }
 });
 
-app.get("/api/biteBuddyProfile", verifyToken, async (req, res) => {
+app.get("/api/biteBuddyProfile", async (req, res) => {
   try {
     const { data } = await axios.get(
       "https://my.api.mockaroo.com/bite_buddy_profile.json?key=786e37d0"
@@ -178,7 +164,7 @@ app.get("/api/biteBuddyProfile", verifyToken, async (req, res) => {
   }
 });
 
-app.get("/api/basicRecipe", verifyToken, async (req, res) => {
+app.get("/api/basicRecipe", async (req, res) => {
   try {
     const { data } = await axios.get(
       "https://my.api.mockaroo.com/basic_recipe.json?key=786e37d0"
@@ -190,7 +176,7 @@ app.get("/api/basicRecipe", verifyToken, async (req, res) => {
   }
 });
 
-app.get("/api/recipes", verifyToken, async (req, res) => {
+app.get("/api/recipes", async (req, res) => {
   try {
     const { data } = await axios.get(
       "https://my.api.mockaroo.com/recipes.json?key=a170a060"

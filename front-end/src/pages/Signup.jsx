@@ -9,24 +9,13 @@ function Signup() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
-  // useEffect(() => {
-  //     const checkSession = async () => {
-  //         try {
-  //             const currentPath = window.location.pathname;
-  //             const response = await axios.get(`${process.env.REACT_APP_BACK_PORT}/api/check-session`, {
-  //                 params: { path: currentPath }
-  //             });
-
-  //             if (response.data.redirect === '/home') {
-  //                 navigate('/home');
-  //             }
-  //         } catch (err) {
-  //             console.error(err);
-  //         }
-  //     };
-
-  //     checkSession();
-  // }, [navigate]);
+  
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate('/home');
+    }
+  }, [navigate]);
 
   async function goToSignUpProfile(e) {
     e.preventDefault();
@@ -42,12 +31,15 @@ function Signup() {
     }
 
     setError("");
-    
+
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_BACK_PORT}/api/auth/signup`,
         { username, password, email }
       );
+      const token = response.data.token;
+      localStorage.setItem('token', token);
+      console.log('Token saved:', token);
       console.log(response.data.message);
       navigate("/signup-profile");
     } catch (err) {
