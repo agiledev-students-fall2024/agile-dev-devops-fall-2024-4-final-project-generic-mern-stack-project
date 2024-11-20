@@ -1,8 +1,8 @@
-import { app } from "../app.js";
-import { User } from "../models/user.js";
-import { Types } from "mongoose";
+const express = require("express");
+const router = express.Router();
+// import { Types } from "mongoose";
 
-app.get("/user", async (req, res) => {
+router.get("/", async (req, res) => {
   const user_id = req.query.id
 
   if (!user_id) {
@@ -12,11 +12,11 @@ app.get("/user", async (req, res) => {
     return
   }
 
-  const objectId = Types.ObjectId(user_id);
+//   const objectId = Types.ObjectId(user_id);
 
   try {
-    const user = await User.findById(objectId);
-
+    // const user = await User.findById(objectId);
+    const user = {}
     if (!user) {
       console.log("User not found")
       res.status = 404;
@@ -34,3 +34,5 @@ app.get("/user", async (req, res) => {
   }
 
 })
+
+module.exports = router;

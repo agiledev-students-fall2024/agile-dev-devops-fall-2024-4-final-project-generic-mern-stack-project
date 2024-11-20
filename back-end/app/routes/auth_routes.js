@@ -1,21 +1,15 @@
-import { app } from "../app.js";
-import { bcrypt } from "bycrypt";
-import { bodyParser } from "body-parser";
-
-const app = express()
-app.use(bodyParser.json())
+const express = require("express");
+const router = express.Router();
 
 
-module.exports = app
-
-let otpStore = {} // replace with data base when we reach that part of the sprint
+let otpStore = {} 
 
 //generate the OTP
 function generateOTP(){
     return Math.floor(100000 + Math.random() * 900000).toString()
 }
 
-app.post('/request-otp', async (req, res) => {
+router.post('/request', async (req, res) => {
     const { email } = req.body;
     if (!email) return res.status(400).send('Email is required');
 
@@ -31,9 +25,7 @@ app.post('/request-otp', async (req, res) => {
 });
 
 
-
-//verify the otp
-app.post('/request-otp', async (req, res) =>{
+router.post('/verify', async (req, res) =>{
     const {email, otp} = req.body
     if(!email || !otp) return res.status(400).send("Email and OTP are required.");
     
@@ -54,7 +46,5 @@ app.post('/request-otp', async (req, res) =>{
     }
 })
 
-const PORT = process.env.PORT || 3000
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`)
-})
+
+module.exports = router;

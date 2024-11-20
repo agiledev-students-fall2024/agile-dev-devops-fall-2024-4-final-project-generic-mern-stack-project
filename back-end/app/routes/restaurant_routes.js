@@ -1,80 +1,79 @@
-import { app } from "../app.js";
+const express = require("express");
+const router = express.Router();
+const restaurants = require("../../restaurants");
 
-app.get('/restaurants', async (req, res) => {
+// Get all restaurants with pagination, filtering, and query params
+router.get("/", async (req, res) => {
   try {
-    const {
-      page = 1,
-      limit = 10,
-      cuisine,
-      neighborhood,
-    } = req.query;
+    const { page = 1, limit = 10, cuisine, neighborhood } = req.query;
 
-    // Convert page and limit to integers
-    const page_int = parseInt(page);
-    const limit_int = parseInt(limit);
-    // Convert cuisine and neighborhood to arrays
-    const cuisine_array = cuisine ? cuisine.split(',').map(c => c.toLowerCase()) : [];
-    const neighborhood_array = neighborhood ? neighborhood.split(',').map(n => n.toLowerCase()) : [];
-    // Filter restaurants based on cuisine, neighborhood, and search query
-    let filtered_restaurants = restaurants;
+    const pageInt = parseInt(page);
+    const limitInt = parseInt(limit);
+    const cuisineArray = cuisine ? cuisine.split(",").map(c => c.toLowerCase()) : [];
+    const neighborhoodArray = neighborhood ? neighborhood.split(",").map(n => n.toLowerCase()) : [];
 
-    if (cuisine_array.length > 0) {
-      filtered_restaurants = filtered_restaurants.filter(restaurant =>
-        restaurant.cuisine && cuisine_array.includes(restaurant.cuisine.toLowerCase())
+    let filteredRestaurants = restaurants;
+
+    if (cuisineArray.length > 0) {
+      filteredRestaurants = filteredRestaurants.filter(restaurant =>
+        restaurant.cuisine && cuisineArray.includes(restaurant.cuisine.toLowerCase())
       );
     }
 
-    if (neighborhood_array.length > 0) {
-      filtered_restaurants = filtered_restaurants.filter(restaurant =>
-        restaurant?.neighborhood && neighborhood_array.includes(restaurant.neighborhood.toLowerCase())
+    if (neighborhoodArray.length > 0) {
+      filteredRestaurants = filteredRestaurants.filter(restaurant =>
+        restaurant.neighborhood && neighborhoodArray.includes(restaurant.neighborhood.toLowerCase())
       );
     }
 
-    const start_index = (page_int - 1) * limit_int;
-    const end_index = page_int * limit_int;
-    const paginated_restaurants = filtered_restaurants.slice(start_index, end_index);
+    const startIndex = (pageInt - 1) * limitInt;
+    const paginatedRestaurants = filteredRestaurants.slice(startIndex, startIndex + limitInt);
 
     res.json({
-      total: filtered_restaurants.length,
-      page: page_int,
-      limit: limit_int,
-      data: paginated_restaurants,
+      total: filteredRestaurants.length,
+      page: pageInt,
+      limit: limitInt,
+      data: paginatedRestaurants,
     });
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error fetching restaurants');
+    res.status(500).send("Error fetching restaurants");
   }
 });
 
 // Like a restaurant
-app.post('/restaurant/:id/like', (req, res) => {
-  const restaurant_id = req.params.id;
-  console.log(`Restaurant ${restaurant_id} liked`);
-  res.send(`Restaurant ${restaurant_id} liked`);
+router.post("/:id/like", (req, res) => {
+  const restaurantId = req.params.id;
+  console.log(`Restaurant ${restaurantId} liked`);
+  res.send(`Restaurant ${restaurantId} liked`);
 });
 
-app.post('/restaurant/:id/dislike', (req, res) => {
-  const restaurant_id = req.params.id;
-  console.log(`Restaurant ${restaurant_id} disliked`);
-  res.send(`Restaurant ${restaurant_id} disliked`);
+// Dislike a restaurant
+router.post("/:id/dislike", (req, res) => {
+  const restaurantId = req.params.id;
+  console.log(`Restaurant ${restaurantId} disliked`);
+  res.send(`Restaurant ${restaurantId} disliked`);
 });
 
 
-app.get('/restaurant/search', async (req, res) => {
-  try {
-    const query = req.query.query;
-
-    if (!query) {
-      return res.status(400).send('Missing query parameter');
+router.get("/search", async (req, res) => {
+    try {
+      const query = req.query.query;
+  
+      if (!query) {
+        return res.status(400).send("Missing query parameter");
+      }
+  
+      const searchResults = restaurants.filter(restaurant =>
+        restaurant.name.toLowerCase().includes(query.toLowerCase())
+      );
+  
+      res.json(searchResults);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Error searching for restaurant");
     }
+  });
 
-    //TODO: Add restaurants
-    const search_results = restaurants.filter(restaurant => restaurant.name.toLowerCase().includes(query.toLowerCase()));
 
-    res.json(search_results);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Error searching for restaurant');
-  }
-});
-
+module.exports = router;

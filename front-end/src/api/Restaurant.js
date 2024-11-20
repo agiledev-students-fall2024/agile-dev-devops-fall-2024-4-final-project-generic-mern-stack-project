@@ -54,7 +54,7 @@ export async function bulkFetchRestaurants({ page = 1, limit = 20, neighborhood,
 }
 
 export async function searchRestaurants(query) {
-  const fetchUrl = `${BACKEND_URL}/restaurant/search?query=${encodeURIComponent(query)}`;
+  const fetchUrl = `${BACKEND_URL}/restaurants/search?query=${encodeURIComponent(query)}`;
 
   const response = await axios.get(fetchUrl);
   const data = response.data;
@@ -64,12 +64,12 @@ export async function searchRestaurants(query) {
 }
 
 export async function likeRestaurant(restaurantId) {
-  const url = `${BACKEND_URL}/restaurant/${restaurantId}/like`;
+  const url = `${BACKEND_URL}/restaurants/${restaurantId}/like`;
   await axios.post(url);
 }
 
 export async function dislikeRestaurant(restaurantId) {
-  const url = `${BACKEND_URL}/restaurant/${restaurantId}/dislike`;
+  const url = `${BACKEND_URL}/restaurants/${restaurantId}/dislike`;
   await axios.post(url);
 }
 

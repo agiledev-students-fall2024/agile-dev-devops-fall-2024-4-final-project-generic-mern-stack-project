@@ -1,7 +1,7 @@
-import { request } from 'supertest';
-import { expect } from 'chai';
-import { app } from './app/app';
-import { restaurants } from './restaurants';
+const request = require('supertest');
+const { expect } = require('chai');
+const app = require('./app/app');
+const restaurants = require('./restaurants');
 
 describe('GET /restaurants', () => {
   it('should return a list of restaurants with default pagination', (done) => {
@@ -12,16 +12,15 @@ describe('GET /restaurants', () => {
         expect(res.body).to.have.property('total');
         expect(res.body).to.have.property('page', 1);
         expect(res.body).to.have.property('limit', 10);
-        expect(res.body).to.have.property('data').with.length_of.at.most(10);
+        expect(res.body).to.have.property('data').with.lengthOf.at.most(10);
         done();
       });
   });
 });
-
-describe('POST /restaurant/:id/like', () => {
+describe('POST /restaurants/:id/like', () => {
   it('should like a restaurant', (done) => {
     request(app)
-      .post('/restaurant/1/like')
+      .post('/restaurants/1/like')
       .expect(200)
       .end((err, res) => {
         expect(res.text).to.equal('Restaurant 1 liked');
@@ -29,11 +28,10 @@ describe('POST /restaurant/:id/like', () => {
       });
   });
 });
-
-describe('GET /restaurant/search', () => {
+describe('GET /restaurants/search', () => {
   it('should return restaurants matching the search query', (done) => {
     request(app)
-      .get('/restaurant/search')
+      .get('/restaurants/search')
       .query({ query: 'sushi' })
       .expect(200)
       .end((err, res) => {
@@ -41,10 +39,9 @@ describe('GET /restaurant/search', () => {
         done();
       });
   });
-
   it('should return 400 if query parameter is missing', (done) => {
     request(app)
-      .get('/restaurant/search')
+      .get('/restaurants/search')
       .expect(400)
       .end((err, res) => {
         expect(res.text).to.equal('Missing query parameter');
@@ -52,7 +49,6 @@ describe('GET /restaurant/search', () => {
       });
   });
 });
-
 describe('GET /restaurants with filters', () => {
   it('should return restaurants filtered by cuisine and neighborhood', (done) => {
     request(app)
@@ -69,11 +65,10 @@ describe('GET /restaurants with filters', () => {
       });
   });
 });
-
-describe('POST /restaurant/:id/dislike', () => {
+describe('POST /restaurants/:id/dislike', () => {
   it('should dislike a restaurant', (done) => {
     request(app)
-      .post('/restaurant/1/dislike')
+      .post('/restaurants/1/dislike')
       .expect(200)
       .end((err, res) => {
         expect(res.text).to.equal('Restaurant 1 disliked');
@@ -81,11 +76,10 @@ describe('POST /restaurant/:id/dislike', () => {
       });
   });
 });
-
 describe('GET /restaurants error handling', () => {
   it('should handle errors in the restaurants API', (done) => {
     // Temporarily set restaurants to null to simulate an error
-    const original_restaurants = [...restaurants];
+    const originalRestaurants = [...restaurants];
     restaurants.length = 0; // Empty the array to simulate an error
     restaurants.push(null); // Add a null entry to cause an error in the route handler
 
@@ -97,30 +91,29 @@ describe('GET /restaurants error handling', () => {
 
         // Restore the original data
         restaurants.length = 0;
-        restaurants.push(...original_restaurants);
+        restaurants.push(...originalRestaurants);
         done();
       });
   });
 });
-
-describe('GET /restaurant/search error handling', () => {
+describe('GET /restaurants/search error handling', () => {
   it('should handle errors in the search API', (done) => {
     // Simulate an error by causing an exception in the route handler
-    const original_filter = Array.prototype.filter;
+    const originalFilter = Array.prototype.filter;
     Array.prototype.filter = () => {
       throw new Error('Simulated error');
     };
-
     request(app)
-      .get('/restaurant/search')
+      .get('/restaurants/search')
       .query({ query: 'sushi' })
       .expect(500)
       .end((err, res) => {
         expect(res.text).to.equal('Error searching for restaurant');
 
         // Restore the original filter method
-        Array.prototype.filter = original_filter;
+        Array.prototype.filter = originalFilter;
         done();
       });
   });
 });
+  
