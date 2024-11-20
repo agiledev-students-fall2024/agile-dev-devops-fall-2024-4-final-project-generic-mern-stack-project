@@ -1,8 +1,7 @@
-// otpSender.js
-import { dotenv } from "dotenv";
-import { nodemailer } from "nodemailer";
+const dotenv = require("dotenv"); 
+const nodemailer = require("nodemailer");
 
-dotenv.config()
+dotenv.config();
 
 // Generate a 6-digit OTP
 function generate_otp() {
@@ -14,8 +13,8 @@ async function send_otp_email(receiver_email) {
   const otp = generate_otp();
 
   // Configure Nodemailer with your email provider
-  const transporter = nodemailer.create_transport({
-    service: 'gmail', // e.g., Gmail
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
@@ -32,18 +31,17 @@ async function send_otp_email(receiver_email) {
 
   // Send email
   try {
-    await transporter.send_mail(mail_options);
+    await transporter.sendMail(mail_options);
     console.log(`OTP sent to ${receiver_email}`);
     return otp; // Return OTP if needed for verification
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error("Error sending email:", error);
     throw error;
   }
 }
 
-// Example usage
-send_otp_email('receiver@example.com')
+send_otp_email("receiver@example.com")
   .then((otp) => console.log(`Generated OTP: ${otp}`))
   .catch(console.error);
 
-export { send_otp_email };
+module.exports = { send_otp_email };

@@ -1,15 +1,15 @@
-import { schema_types, mongoose } from "mongoose";
+const mongoose = require("mongoose");
 
 const restaurant_schema = new mongoose.Schema({
-  _id: {type: schema_types.object_id, require: true},
-  name: {type: String, require: true},
-  description: {type: String, require: false},
-  location: {type: String, require: true},
-  link: {type: String, require: false},
-  images: {type: [String], require: true},
-  pills: {type: [String], require: true},
+  _id: { type: mongoose.Schema.Types.ObjectId, required: true },
+  name: { type: String, required: true },
+  description: { type: String, required: false },
+  location: { type: String, required: true },
+  link: { type: String, required: false },
+  images: { type: [String], required: true },
+  pills: { type: [String], required: true },
 });
 
-const Restaurant = mongoose.model('Restaurant', user_schema);
+const Restaurant = mongoose.model("Restaurant", restaurant_schema);
 
-export default Restaurant;
+module.exports = Restaurant; 
