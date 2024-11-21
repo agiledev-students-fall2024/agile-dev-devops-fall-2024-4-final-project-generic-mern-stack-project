@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useNavigate } from "react-router-dom";
 import {
   Form,
   FormControl,
@@ -17,6 +18,8 @@ import { Button } from "./ui/button";
 import { Loader } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import useAuth from "@/context/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   username: z.string().min(4, {
@@ -28,7 +31,10 @@ const formSchema = z.object({
 });
 
 export default function SignupForm() {
+  const { login } = useAuth();
+  const navigate = useNavigate();
   const [pending, setPending] = useState(false);
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -41,7 +47,31 @@ export default function SignupForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
     setPending(true);
-    // make call to backend and store token
+    const response = await fetch("http://localhost:3001/user/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: values.username,
+        password: values.password,
+      }),
+    });
+    if (response.ok) {
+      const { token, username } = await response.json();
+      toast({
+        description: `Welcome, ${username}!`,
+        duration: 1000,
+      });
+      login(token);
+      navigate("/");
+    } else {
+      const { message } = await response.json();
+      toast({
+        variant: "destructive",
+        title: "Sign up failed",
+        description: message,
+      });
+      setPending(false);
+    }
   }
 
   return (

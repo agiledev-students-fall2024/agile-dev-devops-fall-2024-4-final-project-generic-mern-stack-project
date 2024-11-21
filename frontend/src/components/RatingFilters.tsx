@@ -65,12 +65,17 @@ export default function RatingFilters({ handleRatingURL }: Props) {
           id="numRatings"
           value={numRatingsInput ?? ""}
           className="w-[75px] border border-gray-300 rounded-md p-1 overflow-y-auto max-helgith-[50px] position-absolute"
-          onChange={(e) => handleNumRatingsInputChange(e as React.ChangeEvent<HTMLSelectElement>)}>
-            {[...Array(11).keys()].map((num) => (
-              <option key={num * 10} value={num * 10}>
+          onChange={(e) =>
+            handleNumRatingsInputChange(
+              e as React.ChangeEvent<HTMLSelectElement>,
+            )
+          }
+        >
+          {[...Array(11).keys()].map((num) => (
+            <option key={num * 10} value={num * 10}>
               {num * 10}
-              </option>
-            ))}
+            </option>
+          ))}
         </select>
       </div>
     </div>

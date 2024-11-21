@@ -2,7 +2,6 @@ import { Button } from "./ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "@/context/AuthContext";
 
-
 export default function Navbar() {
   const { logout, isAuthenticated } = useAuth();
   const location = useLocation();
@@ -11,7 +10,7 @@ export default function Navbar() {
   const isHelpPage = location.pathname === "/help";
 
   return (
-    <nav className="bg-gray-800 p-4">
+    <nav className="bg-gray-800 p-4 sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center">
         <div className="w-1/3">
           {(isSuggestPage || isHelpPage) && (
@@ -35,13 +34,13 @@ export default function Navbar() {
         </div>
 
         <div className="w-1/3 flex justify-end">
-            <Button
-              variant={isAuthenticated ? "destructive" : "default"}
-              onClick={() => (isAuthenticated ? logout() : navigate("/login"))}
-            >
-              {isAuthenticated ? "Log Out" : "Sign In"}
-            </Button>
-          </div>
+          <Button
+            variant={isAuthenticated ? "destructive" : "default"}
+            onClick={() => (isAuthenticated ? logout() : navigate("/login"))}
+          >
+            {isAuthenticated ? "Log Out" : "Sign In"}
+          </Button>
+        </div>
       </div>
     </nav>
   );

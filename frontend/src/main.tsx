@@ -41,15 +41,16 @@ const router = createBrowserRouter(
 createRoot(document.getElementById("root")!).render(
   // <StrictMode>
   <AuthProvider>
-  <APIProvider
-    apiKey={"AIzaSyBX6VqkGXWxsNGmZ45gHz4CGWHiRSgyhzI"}
-    onLoad={() => console.log("Maps API has loaded.")}
-  >
-    <StoreProvider>
-      <Toaster />
-      <RouterProvider router={router} />
-    </StoreProvider>
-  </APIProvider>,
+    <APIProvider
+      apiKey={"AIzaSyBX6VqkGXWxsNGmZ45gHz4CGWHiRSgyhzI"}
+      onLoad={() => console.log("Maps API has loaded.")}
+    >
+      <StoreProvider>
+        <Toaster />
+        <RouterProvider router={router} />
+      </StoreProvider>
+    </APIProvider>
+    ,
   </AuthProvider>,
 
   // </StrictMode>,

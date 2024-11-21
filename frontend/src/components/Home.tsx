@@ -1,25 +1,41 @@
+import StoreSearchBar from "./StoresSearchBar";
+import useStores from "@/hooks/useStores";
+import { Loader } from "lucide-react";
+import MyStoresButton from "./MyStoresButton";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
-import StoreSearchBar from "./StoresSearchBar";
-import MyStoresButton from "./MyStoresButton";
-import sampleStores from "@/stores";
 import SoHoMap from "./SoHoMap";
 import { useMyStores } from "@/context/StoresContext";
 
 export default function Home() {
-  const navigate = useNavigate();
+  const { stores, loading, error } = useStores();
   const { stores: userStores } = useMyStores();
+  const navigate = useNavigate();
 
   return (
     <main className="flex flex-col gap-10 px-5">
       <div className="flex flex-col gap-5">
-        <StoreSearchBar stores={sampleStores} />
+        {error ? (
+          <span>an error: {error}</span>
+        ) : !loading ? (
+          <StoreSearchBar stores={stores} />
+        ) : (
+          <Loader className="m-auto animate-spin" />
+        )}
         <MyStoresButton />
       </div>
 
       <div className="flex flex-col gap-6">
         <div className="w-full h-[300px] border-2 border-black">
-          <SoHoMap stores={sampleStores} type="Home" />
+          {loading ? (
+            <div className="h-full w-full flex justify-center items-center">
+              <Loader className="animate-spin w-[40px] h-[40px]" />
+            </div>
+          ) : error ? (
+            <div>Something went wrong when loading the map : {error}</div>
+          ) : (
+            <SoHoMap stores={stores} type="Home" />
+          )}
         </div>
         <Button
           className="rounded-3xl h-12 font-extrabold text-lg"
@@ -29,16 +45,16 @@ export default function Home() {
         </Button>
         <Button
           className="rounded-3xl h-12 font-extrabold text-lg"
+          onClick={() => navigate("/saved-routes")}
+        >
+          Saved Routes
+        </Button>
+        <Button
+          className="rounded-3xl h-12 font-extrabold text-lg"
           onClick={() => navigate("/route")}
           disabled={userStores.length === 0}
         >
           Generate Route
-        </Button>
-        <Button
-          className="rounded-3xl h-12 font-extrabold text-lg"
-          onClick={() => navigate("/saved-routes")}
-        >
-          Saved Routes
         </Button>
         <Button
           className="rounded-3xl bg-red-400 hover:bg-red-600 border-red-500 h-12 font-extrabold text-lg text-white"
