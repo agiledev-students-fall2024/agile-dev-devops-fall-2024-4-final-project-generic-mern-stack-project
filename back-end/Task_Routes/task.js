@@ -1,7 +1,9 @@
+const mongoose = require('mongoose');
 const express = require('express');
 const { resource } = require('../app');
 const router = express.Router();
-// const Task = require('./models/Task'); 
+require('../models/schema'); 
+const Task = mongoose.model("Task")
 
 router.get('/tasks/urgent', async (req, res) => {
   const response = await fetch('https://my.api.mockaroo.com/tasks?key=34c59640');
@@ -25,11 +27,60 @@ router.get('/tasks/:id', async (req, res) => {
   res.json(task);
 });
 
+// router.post('/tasks', async (req, res) => {
+//   const { name, description, subject, due, priority, recurring, recurring_period} = req.body;
+//   const status = "not_started"
+//   console.log(req.body)
+//   const dueDate = new Date(due)
+//   const newTask = new Task({name, description, subject, due:dueDate, priority, recurring, recurring_period, status })
+//   const task1 = await newTask.save()
+//   // const newTask = { name, due, status, priority, subject, recurring_period };
+//   res.status(201).json(task1);
+// });
 router.post('/tasks', async (req, res) => {
-  const { name, due, status, priority, subject, recurring_period } = req.body;
-  const newTask = { name, due, status, priority, subject, recurring_period };
-  res.status(201).json(newTask);
+  try {
+    const { title, description, subject, due_date, priority, recurring, recurring_period } = req.body;
+
+    // Validate required fields
+
+    if (!title || !subject || !priority || !recurring) {
+      console.log(subject,priority,recurring)
+      // return res.status(400).json({ error: "Missing required fields." });
+    }
+    // Validate and convert the 'due' field to a Date object
+    console.log(due_date)
+    const dueDate = new Date(due_date);
+    console.log(dueDate)
+    if (isNaN(dueDate)) {
+      console.log("f")
+      // return res.status(400).json({ error: "Invalid date format for 'due'." });
+    }
+
+    // Default status
+    const status = "not_started";
+
+    // Create a new task
+    const newTask = new Task({
+      "name":title,
+      description,
+      subject,
+      due: dueDate, // Use the validated Date object
+      priority,
+      recurring,
+      recurring_period,
+      status
+    });
+
+    // Save the task to the database
+    const task1 = await newTask.save();
+
+    res.status(201).json(task1);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to create the task." });
+  }
 });
+
 
 
 router.put('/tasks/:id', async (req, res) => {
