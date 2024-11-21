@@ -1,4 +1,5 @@
 import express from 'express';
+import * as tripsController from '../controllers/tripsController.js';
 import fs from 'fs';
 
 const router = express.Router();
@@ -7,32 +8,13 @@ const locations = JSON.parse(fs.readFileSync('./mock-data/locations.json', 'utf-
 const users = JSON.parse(fs.readFileSync('./mock-data/users.json', 'utf-8'));
 
 // Get all trips (GET) - Retrieve and respond with a list of all trips in the system
-router.get('/', (req, res) => {
-  res.json(trips);
-});
+router.get('/', tripsController.getAllTrips);
 
 // Get a specific trip by ID (GET) - Retrieve details for the specified trip, including associated locations and participants
-router.get('/:tripId', (req, res) => {
-  const trip = trips.find(t => t.id === req.params.tripId);
-  if (trip) {
-    const tripLocations = locations.filter(location => location.tripId === trip.id);
-    res.json({ ...trip, locations: tripLocations });
-  } else {
-    res.status(404).json({ error: 'Trip not found' });
-  }
-});
+router.get('/:tripId', tripsController.getTripById);
 
 // Get Trip info (locations) for a specific trip by tripId
-router.get('/:tripId/locations', (req, res) => {
-    const tripId = req.params.tripId;
-    const tripLocations = locations.filter(location => location.tripId === tripId);
-  
-    if (tripLocations.length > 0) {
-      res.json(tripLocations);
-    } else {
-      res.status(404).json({ error: 'No locations found for this trip' });
-    }
-  });
+router.get('/:tripId/locations', tripsController.getTripLocations);
 
 // TODO: Create a new trip (POST) - Add a new trip to the system and respond with the newly created trip data
 //no error handling yet because errors will happen if the database interaction doesn't work,

@@ -38,7 +38,7 @@
       "description": "Exploring the best beaches and surfing spots on the West Coast.",
       "startDate": "2024-10-15",
       "endDate": "2024-10-25",
-      "participants": ["user_456", "user_789"],
+      "participants": ["user_123", "user_456", "user_789"],
       "locations": ["location_006"],
       "status": "ongoing",
       "image": "https://picsum.photos/200/303"

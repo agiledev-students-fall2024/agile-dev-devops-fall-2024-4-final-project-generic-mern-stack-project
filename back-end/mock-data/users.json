@@ -7,7 +7,7 @@
       "name": "John Doe",
       "profileAvatar": "😎",
       "bio": "Travel enthusiast and food lover.",
-      "trips": ["trip_456", "trip_789"]
+      "trips": ["trip_456", "trip_789", "trip_101"]
     },
     {
       "id": "user_456",
@@ -17,7 +17,7 @@
       "name": "Jane Smith",
       "profileAvatar": "🌍",
       "bio": "Explorer and photographer.",
-      "trips": ["trip_456"]
+      "trips": ["trip_456", "trip_101"]
     },
     {
       "id": "user_789",
@@ -27,7 +27,7 @@
       "name": "Alex Wanderer",
       "profileAvatar": "🧳",
       "bio": "Always on the move.",
-      "trips": ["trip_789"]
+      "trips": ["trip_789", "trip_101"]
     }
   ]
   
