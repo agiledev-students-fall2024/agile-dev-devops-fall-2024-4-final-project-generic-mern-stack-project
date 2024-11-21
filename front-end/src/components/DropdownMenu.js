@@ -4,7 +4,7 @@ const DropdownMenu = (props) => {
 
     return (
         <div className="flex justify-center overflow-hidden px-4 py-2 bg-lavender_blush-900 border-[1px] border-rose rounded-md text-rose font-bold">
-            <select className="bg-transparent" value={props.label} name={props.name} onChange={props.handleChange}>
+            <select className="bg-transparent" value={props.label} name={props.name} onChange={props.onChange}>
                 <option>{props.label}</option>
 
                 {props.options.map(x => (

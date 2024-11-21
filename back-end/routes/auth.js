@@ -1,6 +1,7 @@
 // this is a route for authentication
 import express from "express";
 import User from "../models/user.model.js";
+import Setting from "../models/setting.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -44,21 +45,33 @@ export const signup = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const user = new User({
+    const user = await User.create({
       name,
       username,
       email,
       password: hashedPassword,
     });
 
+    // TODO: replace userId with current logged in user
+    // const setting = new Setting({
+    //   userId: id,
+    //   mutedWords: [],
+    //   blockedUsers: [],
+    //   blockedCommunities: [],
+    //   displayMode: "Light",
+    //   fontSize: 16,
+    //   imagePreference: "Show",
+    // });
+
     await user.save();
+    // await setting.save();
 
     //todo: implement mailTrap api
-    const token = jwt.sign({ userID: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "3d",
     });
 
-    res.cookie("jwt-seraphim", token, {
+    await res.cookie("jwt-seraphim", token, {
       httpOnly: true,
       maxAge: 3 * 24 * 60 * 60 * 1000,
       sameSite: "strict",
