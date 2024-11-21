@@ -1,12 +1,11 @@
 import React from 'react';
 import axios from 'axios';
-import { Navigate } from 'react-router-dom'
-
+import { AuthContext } from '../components/authContext';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const LoginForm = () => {
-  const [logIn, setLogIn] = React.useState(false)
+  const { login } = React.useContext(AuthContext);
 
   const [formData, setFormData] = React.useState({
       username: '',
@@ -26,10 +25,12 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-        const response = await axios.post(`${apiUrl}/api/account/login`, formData);
-        setError(null)
-        setLogIn(true)
-        console.log(response.data.message)
+      const response = await axios.post(`${apiUrl}/api/authentication/login`, formData);
+      setError(null)
+
+      if (response.data.token) {
+        login(response.data.token)
+      }
     } catch (error) {
       if (error.response) {
           setError(error.response.data.message)
@@ -37,10 +38,6 @@ const LoginForm = () => {
           setError(`Network error: ${error.message}`)
       }
     }
-  }
-
-  if (logIn){
-    return <Navigate to='/' /> 
   }
 
   return (
@@ -52,7 +49,6 @@ const LoginForm = () => {
             type='text' 
             onChange={handleChange}
             autoComplete='username'
-            aria-hidden="true"
             required
             className='border border-gray-300 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-gray-400 text-base' />
       </div>

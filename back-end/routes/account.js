@@ -27,46 +27,6 @@ router.post('/edit', (req, res) => {
     return res.status(200).json({ message: 'Your profile was successfully updated', username: user.username });
 })
 
-router.post('/login', (req, res) => {
-    const { username, password } = req.body;
-    const user = usersData.find(user => user.username === username && user.password === password)
-    
-    if (user) {
-        loggedInData[0].id = user.id
-        return res.status(200).json({ message: 'Login successful' });
-    } else {
-        return res.status(401).json({ message: 'Invalid username or password.' });
-    }
-})
-
-router.post('/register', (req, res) => {
-    const { name, username, email, password, confirm } = req.body;
-    const user = usersData.find(user => user.username === username || user.email === email)
-
-    if (user){
-        return res.status(401).json({ message: 'Username or email already exists.' });
-    }
-    
-    if (password !== confirm){
-        return res.status(401).json({ message: 'Passwords must match.' });
-    }
-
-    usersData.push({
-        'id': 7,
-        'username': username,
-        'password': password,
-        'email': email,
-        'name': name,
-        'bio': '',
-        'createdAt': '2023-01-01T12:00:00Z',
-        'updatedAt': '2023-10-01T12:00:00Z',
-        'profilePicture': '',
-        'layout':'list'
-    })
-
-    return res.status(200).json({ message: 'Registration successful' });
-})
-
 router.get('/user/:username', (req, res) => {
     const username = req.params.username
     const user = usersData.find(user => user.username === username)

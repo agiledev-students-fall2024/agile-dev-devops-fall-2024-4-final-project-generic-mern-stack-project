@@ -12,6 +12,20 @@ app.use(cors()) // allow cross-origin resource sharing
 app.use(express.json()) // decode JSON-formatted incoming POST data
 app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming POST data
 
+// the following are used for authentication with JSON Web Tokens
+const jwt = require('jsonwebtoken')
+const passport = require('passport')
+
+// use this JWT strategy within passport for authentication handling
+const jwtStrategy = require('./config/jwt-config.js') // import setup options for using JWT in passport
+passport.use(jwtStrategy)
+
+// tell express to use passport middleware
+app.use(passport.initialize())
+
+// models for mongoose
+const User = require('./models/User.js')
+
 try {
     mongoose.connect(process.env.MONGODB_URI)
     console.log(`Connected to MongoDB.`)
@@ -22,12 +36,14 @@ try {
   }
 
 // import route files
+const authentication = require('./routes/authentication')
 const account = require('./routes/account');
 const friends = require('./routes/friends');
 const main = require('./routes/main');
 const posts = require('./routes/posts');
 
 //  use routes
+app.use('/api/authentication', authentication)
 app.use('/api/account', account);
 app.use('/api/friends', friends);
 app.use('/api/main', main);
