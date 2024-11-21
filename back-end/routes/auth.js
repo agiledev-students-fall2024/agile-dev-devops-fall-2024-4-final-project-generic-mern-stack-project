@@ -45,7 +45,7 @@ export const signup = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const user = new User({
+    const user = await User.create({
       name,
       username,
       email,
@@ -67,11 +67,11 @@ export const signup = async (req, res) => {
     // await setting.save();
 
     //todo: implement mailTrap api
-    const token = jwt.sign({ userID: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "3d",
     });
 
-    res.cookie("jwt-seraphim", token, {
+    await res.cookie("jwt-seraphim", token, {
       httpOnly: true,
       maxAge: 3 * 24 * 60 * 60 * 1000,
       sameSite: "strict",
@@ -80,7 +80,6 @@ export const signup = async (req, res) => {
 
     res.status(201).json({ message: "User created successfully", user });
   } catch (error) {
-    console.log("Error in signup baaaaackend", error.message);
     console.error("Error in signup", error.message);
     res.status(500).json({ message: "Internal server error" });
   }
@@ -105,7 +104,7 @@ export const login = async (req, res) => {
       expiresIn: "3d",
     });
 
-    res.cookie("jwt-seraphim", token, {
+    await res.cookie("jwt-seraphim", token, {
       httpOnly: true,
       maxAge: 3 * 24 * 60 * 60 * 1000,
       sameSite: "strict",
@@ -113,7 +112,7 @@ export const login = async (req, res) => {
     });
 
     res
-      .status(200)
+      .status(201)
       .json({ message: "Logged in successfully", username, password });
   } catch (error) {
     console.error("Error in login", error.message);
