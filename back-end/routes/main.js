@@ -1,18 +1,39 @@
 const express = require('express');
 const router = express.Router();
 
-// get data
-const loggedInData = require('../fillerData/loggedIn');
+// model import
+/*
+const User = require('../models/User');
+const Post = require('../models/Post');
+const LoggedIn = require('../models/LoggedIn');
+const Friend = require('../models/Friend');
+const Blocked = require('../models/Blocked')
+*/
+
 const usersData = require('../fillerData/users');
 const friendsData = require('../fillerData/friendships');
-const postsData = require('../fillerData/posts');
 const blockedData = require('../fillerData/blocked');
+const postsData = require('../fillerData/posts');
+const loggedInData = require('../fillerData/loggedIn')
+
 
 // current user
 const authUserId = loggedInData[0].id
 
+// Fetch data from MongoDB
+/*
+const usersData = await User.findOne({ id: authUserId });
+const friendsData = await Friend.findOne({ userId: authUserId });
+const postsData = await Post.find({ userId: authUserId });
+const blockedData = await Blocked.findOne({ userId: authUserId });
+const loggedInData = await LoggedIn.findOne({ userId: authUserId });
+*/
+
+
 // route for home
 router.get('/', (req, res) => {
+
+
   const user = usersData.find(user => user.id === authUserId)
 
   // if not logged in, user cannot view home page blog posts
