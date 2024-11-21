@@ -7,6 +7,16 @@ import config from './config.js';
   - Uses the connection string from the environment variables for secure configuration.
 */
 
+// Global transformation for all schemas(maps _id to id, and vice versa)
+mongoose.set('toJSON', {
+    virtuals: true, 
+    versionKey: false, 
+    transform: (doc, ret) => {
+      ret.id = ret._id; 
+      delete ret._id; 
+    },
+  });
+
 const connectDB = async () => {
     try {
         const conn = await mongoose.connect(config.mongoURI);

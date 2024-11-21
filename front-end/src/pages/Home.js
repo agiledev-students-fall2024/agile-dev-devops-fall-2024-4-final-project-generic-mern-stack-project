@@ -13,7 +13,7 @@ const Home = ({ isLoggedIn }) => {
     const fetchUserData = async () => {
       try {
         // we will assume the current user ID is hardcoded or fetched from a global state or context (like logged in)
-        const userId = 'user_123'; // This will be Replaced with actual logic for fetching current user
+        const userId = "64b1c7c8f2a5b9a2d5c8f001"; // This will be Replaced with actual logic for fetching current user
         const response = await axios.get(`/users/${userId}`);
         setUser(response.data);
       } catch (error) {

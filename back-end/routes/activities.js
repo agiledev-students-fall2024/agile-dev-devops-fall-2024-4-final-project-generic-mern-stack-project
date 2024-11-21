@@ -1,4 +1,5 @@
 import express from 'express';
+import * as activitiesController from '../controllers/activitiesController.js';
 import fs from 'fs';
 
 const router = express.Router();

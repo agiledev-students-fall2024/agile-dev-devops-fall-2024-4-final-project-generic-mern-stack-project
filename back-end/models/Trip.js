@@ -10,6 +10,7 @@ import mongoose from 'mongoose';
     - participants: Array of references to User documents (users part of the trip)
     - locations: Array of references to Location documents (places visited during the trip)
     - status: Status of the trip ('upcoming', 'ongoing', or 'completed')
+    - image: URL string for an optional image representing the trip
 */
 const TripSchema = new mongoose.Schema({
     name: { type: String, required: true }, // Name of the trip
@@ -23,6 +24,7 @@ const TripSchema = new mongoose.Schema({
         enum: ['upcoming', 'ongoing', 'completed'], // Allowed trip statuses
         default: 'upcoming', // Default status
     },
+    image: { type: String, default: '' }, // Optional image URL
 }, 
 { timestamps: true }); // Automatically adds createdAt and updatedAt fields
 

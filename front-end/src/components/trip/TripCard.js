@@ -13,7 +13,7 @@ const TripCard = ({ trip }) => {
     <div className="trip-card" onClick={handleCardClick}>
       <div className="trip-card__image-wrapper">
         <img
-          src={`https://picsum.photos/400/300?random=${trip.id}`}
+          src={trip.image}
           alt={trip.name}
           className="trip-card__image"
         />
