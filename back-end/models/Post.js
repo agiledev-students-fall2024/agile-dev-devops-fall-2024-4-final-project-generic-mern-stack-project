@@ -6,9 +6,14 @@
 
 // module.exports = Post;
 
+//schema exlains what the format of the data will be 
+
 const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema({
+    id: {
+        type: Number,
+    },
     title: {
         type: String,
         required: true,
@@ -26,9 +31,14 @@ const postSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
+    },
+    photo: {
+        type: String,
     }
 });
 
 const Post = mongoose.model('Post', postSchema);
 
 module.exports = Post;
+
+//take the schema and create a model from it
