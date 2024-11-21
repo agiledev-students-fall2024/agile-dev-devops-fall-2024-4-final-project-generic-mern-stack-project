@@ -3,7 +3,7 @@ import FiltersWithSearch from "./FiltersWithSearch";
 import RatingFilters from "./RatingFilters";
 import { useMyStores } from "@/context/StoresContext";
 import type { FiltersType } from "@/types";
-import { useState, useEffect } from "react";
+import { categoryFilters, brandFilters } from "@/filters";
 
 type Props = {
   toggleFilterURL: (filterType: string, value: string) => void;
@@ -19,18 +19,6 @@ export default function Filters({
   getFilterValuesFromURL,
 }: Props) {
   const { toggleFilter } = useMyStores();
-  const [brandFilters, setBrandFilters] = useState<string[]>([]);
-  const [categoryFilters, setCategoryFilters] = useState<string[]>([]);
-
-  useEffect(() => {
-    fetch("http://localhost:3001/filters")
-      .then((response) => response.json())
-      .then((data) => {
-        setBrandFilters(data.brands);
-        setCategoryFilters(data.categories);
-      })
-      .catch((error) => console.error("Error fetching filters:", error));
-  }, []);
 
   const handleFilterClick = (
     filter: keyof FiltersType,
@@ -60,7 +48,7 @@ export default function Filters({
   else if (currentFilter === "Category")
     return (
       <FiltersWithSearch
-        key={"category"}
+        key={"category"} // needed to fix search bar being shared across filters
         handleFilterClick={handleFilterClick}
         handleSearchURL={handleSearchOrRatingURL}
         urlFilterParam="category"
