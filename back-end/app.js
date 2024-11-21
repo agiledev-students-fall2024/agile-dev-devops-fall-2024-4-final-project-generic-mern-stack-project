@@ -3,6 +3,8 @@ import express from "express";
 import axios from "axios";
 import morgan from "morgan";
 import cors from "cors";
+import cookieParser from "cookie-parser";
+import jwt from "jsonwebtoken";
 
 // import routes
 import accountSettings from "./routes/account-settings.js";
@@ -24,6 +26,9 @@ const app = express(); // instantiate an Express object
 
 // use the morgan middleware to log all incoming http requests
 app.use(morgan("dev"));
+
+// use cookie parser to get cookie data
+app.use(cookieParser());
 
 // use express's builtin body-parser middleware to parse any data included in a request
 app.use(express.json());

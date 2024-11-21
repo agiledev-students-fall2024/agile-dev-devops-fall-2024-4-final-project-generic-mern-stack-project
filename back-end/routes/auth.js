@@ -1,6 +1,7 @@
 // this is a route for authentication
 import express from "express";
 import User from "../models/user.model.js";
+import Setting from "../models/setting.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -51,7 +52,19 @@ export const signup = async (req, res) => {
       password: hashedPassword,
     });
 
+    // TODO: replace userId with current logged in user
+    // const setting = new Setting({
+    //   userId: id,
+    //   mutedWords: [],
+    //   blockedUsers: [],
+    //   blockedCommunities: [],
+    //   displayMode: "Light",
+    //   fontSize: 16,
+    //   imagePreference: "Show",
+    // });
+
     await user.save();
+    // await setting.save();
 
     //todo: implement mailTrap api
     const token = jwt.sign({ userID: user._id }, process.env.JWT_SECRET, {
