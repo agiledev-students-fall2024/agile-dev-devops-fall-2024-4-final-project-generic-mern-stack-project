@@ -67,7 +67,6 @@ export const signup = async (req, res) => {
 
     res.status(201).json({ message: "User created successfully", user });
   } catch (error) {
-    console.log("Error in signup baaaaackend", error.message);
     console.error("Error in signup", error.message);
     res.status(500).json({ message: "Internal server error" });
   }
@@ -92,7 +91,7 @@ export const login = async (req, res) => {
       expiresIn: "3d",
     });
 
-    res.cookie("jwt-seraphim", token, {
+    await res.cookie("jwt-seraphim", token, {
       httpOnly: true,
       maxAge: 3 * 24 * 60 * 60 * 1000,
       sameSite: "strict",
@@ -100,7 +99,7 @@ export const login = async (req, res) => {
     });
 
     res
-      .status(200)
+      .status(201)
       .json({ message: "Logged in successfully", username, password });
   } catch (error) {
     console.error("Error in login", error.message);

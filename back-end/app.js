@@ -3,6 +3,7 @@ import express from "express";
 import axios from "axios";
 import morgan from "morgan";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 // import routes
 import accountSettings from "./routes/account-settings.js";
@@ -22,18 +23,19 @@ import multer from "./lib/multer.js";
 
 const app = express(); // instantiate an Express object
 
+// adding CORS middleware
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+
 // use the morgan middleware to log all incoming http requests
 app.use(morgan("dev"));
 
 // use express's builtin body-parser middleware to parse any data included in a request
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 // make 'public' directory publicly readable with static content
 app.use("/public", express.static("public"));
-
-// adding CORS middleware
-app.use(cors());
 
 // use routes
 app.use(accountSettings);
@@ -52,6 +54,6 @@ app.use(subcommunity);
 
 app.use(home);
 app.use(post);
-app.use(profile)
+app.use(profile);
 
 export default app;
