@@ -112,3 +112,49 @@ async function testSummarization() {
 
 testSummarization();
 
+
+
+async function rewriteText(text) {
+    if (!text) {
+        throw new Error('Text is required');
+    }
+
+    try {
+        const response = await openai.chat.completions.create({
+            model: 'gpt-4o-mini',
+            messages: [
+                { 
+                    role: 'system', 
+                    content: 'You are a helpful assistant.' 
+                },
+                { 
+                    role: 'user', 
+                    content: `Rewrite the following text to improve clarity and readability, 
+                              while maintaining the original meaning. Here is the text:\n\n${text} 
+                              Your output will be given to the user directly, 
+                              so don't output any extra information.` 
+                },
+            ],
+        });
+        return response.choices[0].message.content;
+    } catch (error) {
+        console.error('Error generating rewritten text:', error);
+    }
+}
+
+async function testRewriting() {
+    try {
+        const result = await rewriteText(`Contribution comment: This sprint is currently ongoing. 
+        Here are some notes on Git and GitHub activity by user GavinZhengOI in the main/master branch 
+        during the time period 10/10/2024 12:30 to 10/29/2024 12:30. Contributions made under any other 
+        username or made without the required Git/GitHub configuration settings will not be counted in 
+        this or future work.`);
+        console.log(result);
+    } catch (error) {
+        console.error('Error during rewriting:', error);
+    }
+}
+
+testRewriting();
+
+
