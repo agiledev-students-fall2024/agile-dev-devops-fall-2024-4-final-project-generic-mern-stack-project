@@ -1,60 +1,56 @@
+// routes/join-create-meeting.js
 const express = require('express');
 const router = express.Router();
+const meetingStorageService = require('../services/meetingStorageService');
 
-// Store meetings in memory for now (will be replaced with database later)
-const meetings = new Map();
+// Initialize MongoDB connection when server starts
+(async () => {
+    try {
+        await meetingStorageService.connect();
+    } catch (error) {
+        console.error('Failed to connect to MongoDB:', error);
+    }
+})();
 
 // GET /meeting/:id - Fetch meeting room by ID
-router.get('/:id', (req, res) => {
-    const meetingId = req.params.id;
-    const meeting = meetings.get(meetingId);
-    if (!meeting) {
-        return res.status(404).json({ error: 'Meeting not found' });
+router.get('/:id', async (req, res) => {
+    try {
+        const meetingId = req.params.id;
+        const meeting = await meetingStorageService.getMeeting(meetingId);
+        
+        if (!meeting) {
+            return res.status(404).json({ error: 'Meeting not found' });
+        }
+        
+        res.json(meeting);
+    } catch (error) {
+        console.error('Error fetching meeting:', error);
+        res.status(500).json({ error: 'Failed to fetch meeting' });
     }
-    res.json(meeting);
 });
 
 // POST /meeting - Create a new meeting room
-router.post('/', (req, res) => {
-    // Generate a random 9-digit meeting ID
-    const meetingId = Math.random().toString().slice(2, 11);
-
-    // Create new meeting room with default settings
-    const newMeeting = {
-        id: meetingId,
-        createdAt: new Date().toISOString(),
-        participants: [],
-        settings: {
-            allowChat: true,
-            allowCodeEditor: true,
-            allowWhiteboard: true,
-            allowScreenShare: true
-        }
-    };
-
-    // Store meeting in our temporary Map
-    meetings.set(meetingId, newMeeting);
-    res.status(201).json(newMeeting);
+router.post('/', async (req, res) => {
+    try {
+        // Generate a random 9-digit meeting ID
+        const meetingId = Math.random().toString().slice(2, 11);
+        const meeting = await meetingStorageService.createMeeting(meetingId);
+        res.status(201).json(meeting);
+    } catch (error) {
+        console.error('Error creating meeting:', error);
+        res.status(500).json({ error: 'Failed to create meeting' });
+    }
 });
 
-// // POST /meeting/:id/save - save the meeting data at that point of time
-// router.post('/:id/save', (req, res) => {
-//     const meetingId = req.params.id;
-//     const meeting = meetings.get(meetingId);
-//     if (!meeting) {
-//         return res.status(404).json({
-//             error: 'Meeting not found',
-//             success: false
-//         });
-//     }
-//     const savedMeeting = req.body;
-
-//     res.json({
-//         message: 'Meeting saved successfully',
-//         id: meetingId,
-//         success: true,
-//         meeting: savedMeeting
-//     });
-// });
+// GET /meeting/past - Get past meetings
+router.get('/past/list', async (req, res) => {
+    try {
+        const pastMeetings = await meetingStorageService.getPastMeetings();
+        res.json(pastMeetings);
+    } catch (error) {
+        console.error('Error fetching past meetings:', error);
+        res.status(500).json({ error: 'Failed to fetch past meetings' });
+    }
+});
 
 module.exports = router;
