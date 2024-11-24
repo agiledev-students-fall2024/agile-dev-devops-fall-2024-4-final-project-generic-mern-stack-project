@@ -1,16 +1,22 @@
 // import and instantiate express
 import express from 'express'
 const router = express.Router();
-import colors from '../mock-data/color-mode.js'
-import images from '../mock-data/image-mode.js'
-import font from '../mock-data/font-size.js'
+import Setting from "../models/setting.model.js";
 
 router.get("/api/color-mode", async (req, res) => {
     // get user's current color-mode
     try {
-        const color = colors.filter(user => user.id === 1);
+        // replace with getting user id from cookies
+        const id = '6740c351fdcb802f3f7ec5e7'
 
-        res.status(200).json(color[0].mode)
+        const user = await Setting.findOne({ userId: id });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const color = user.displayMode;
+
+        res.status(200).json(color)
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to get color mode' });
@@ -38,9 +44,17 @@ router.post("/api/color-mode", async (req, res) => {
 router.get("/api/image-mode", async (req, res) => {
     // get user's current image mode
     try {
-        const image = images.filter(user => user.id === 1);
+        // replace with getting user id from cookies
+        const id = '6740c351fdcb802f3f7ec5e7'
 
-        res.status(200).json(image[0].mode)
+        const user = await Setting.findOne({ userId: id });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const image = user.imagePreference;
+
+        res.status(200).json(image)
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to get image mode' });
@@ -68,9 +82,17 @@ router.post("/api/image-mode", async (req, res) => {
 router.get("/api/font-size", async (req, res) => {
     // get user's current font size
     try {
-        const size = font.filter(user => user.id === 1);
+        // replace with getting user id from cookies
+        const id = '6740c351fdcb802f3f7ec5e7'
 
-        res.status(200).json(size[0].font)
+        const user = await Setting.findOne({ userId: id });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const font = user.fontSize;
+
+        res.status(200).json(font)
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to get font size' });

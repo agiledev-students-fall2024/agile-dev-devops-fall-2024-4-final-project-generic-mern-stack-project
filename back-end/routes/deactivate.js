@@ -1,15 +1,22 @@
 // import and instantiate express
 import express from 'express'
 const router = express.Router();
-import users from '../mock-data/users.js'
+import User from "../models/user.model.js";
+import Setting from "../models/setting.model.js";
 
 router.post("/api/deactivate", async (req, res) => {
-    const id = req.body.id
-    let userList = users
-
     try {
+        // const id = req.body.id
+        const id = '6740c351fdcb802f3f7ec5e7'
+
+        const user = await Setting.findOne({ userId: id });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
         // dropping user from user database
-        userList = userList.filter(user => user.id !== id);
+        // await User.findOneAndRemove({ userId: id })
+        // await Setting.findOneAndRemove({ userId: id })
 
         res.status(200).send('User deactivated')
     } catch (error) {

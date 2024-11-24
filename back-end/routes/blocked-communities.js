@@ -1,13 +1,24 @@
 // import and instantiate express
 import express from 'express'
 const router = express.Router();
-import blockedCommunityData from '../mock-data/blocked-communities.js'
+// import blockedCommunityData from '../mock-data/blocked-communities.js'
+import User from "../models/user.model.js";
+import Setting from "../models/setting.model.js";
 
 // blocked communities
 router.get("/api/blocked-communities", async (req, res) => {
     const communities = []
 
-    // read data in from file
+    // replace with getting user id from cookies
+    const id = '6740c351fdcb802f3f7ec5e7'
+
+    const user = await Setting.findOne({ userId: id });
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
+
+    const blockedCommunityData = user.blockedCommunities;
+
     blockedCommunityData.forEach(x => {
         communities.push(x)
     })

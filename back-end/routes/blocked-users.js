@@ -1,11 +1,21 @@
 // import and instantiate express
 import express from 'express'
 const router = express.Router();
-import blockedUserData from '../mock-data/blocked-users.js'
+import Setting from "../models/setting.model.js";
 
 // blocked users
 router.get("/api/blocked-users", async (req, res) => {
     const users = []
+
+    // replace with getting user id from cookies
+    const id = '6740c351fdcb802f3f7ec5e7'
+
+    const user = await Setting.findOne({ userId: id });
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
+
+    const blockedUserData = user.blockedUsers;
 
     // read data in from file
     blockedUserData.forEach(x => {

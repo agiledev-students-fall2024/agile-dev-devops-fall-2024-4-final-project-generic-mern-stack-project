@@ -1,11 +1,21 @@
 // import and instantiate express
 import express from 'express'
 const router = express.Router();
-import mutedWordData from '../mock-data/muted-words.js'
+import Setting from "../models/setting.model.js";
 
 // muted words
 router.get("/api/muted-words", async (req, res) => {
     const words = []
+
+    // replace with getting user id from cookies
+    const id = '6740c351fdcb802f3f7ec5e7'
+
+    const user = await Setting.findOne({ userId: id });
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
+    }
+
+    const mutedWordData = user.mutedWords;
 
     // read data in from file
     mutedWordData.forEach(x => {

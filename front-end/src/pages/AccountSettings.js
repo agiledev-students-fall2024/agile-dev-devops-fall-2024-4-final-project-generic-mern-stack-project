@@ -56,7 +56,7 @@ const AccountSettings = (props) => {
                     <AccountInfo title={"Username"} text={data.username} />
                     <AccountInfo title={"Name"} text={data.name} />
                     <AccountInfo title={"Email"} text={data.email} />
-                    <AccountInfo title={"Password"} text={data.password} />
+                    {/* <AccountInfo title={"Password"} text={data.password} /> */}
                 </div>
 
                 <div className="bg-lavender_blush-900 rounded-md w-[100%] m-6 p-8 shadow-md shadow-ebony-900 md:w-[80%] lg:w-[50%]">
@@ -84,7 +84,7 @@ const AccountSettings = (props) => {
                     <AccountInfo title={"Username"} text={data.username} />
                     <AccountInfo title={"Name"} text={data.name} />
                     <AccountInfo title={"Email"} text={data.email} />
-                    <AccountInfo title={"Password"} text={data.password} />
+                    {/* <AccountInfo title={"Password"} text={data.password} /> */}
                 </div>
 
                 <div className="w-[60%] flex justify-center md:w-[40%] lg:w-[30%]">
