@@ -10,9 +10,10 @@ const activitiesPath = './mock-data/activities.json'; // Define activitiesPath g
 // Get all activities (GET) - Retrieve and respond with a list of all activities in the system
 router.get('/', activitiesController.getActivities);  
 
-  const saveActivitiesToFile = () => {
-    fs.writeFileSync(activitiesPath, JSON.stringify(activities, null, 2), 'utf-8');
-  };
+  //we don't need this, we want to access the database
+  // const saveActivitiesToFile = () => {
+  //   fs.writeFileSync(activitiesPath, JSON.stringify(activities, null, 2), 'utf-8');
+  // };
 
 
 router.get('/location/:locationId', (req, res) => {

@@ -16,7 +16,7 @@ const ActivitiesPage = () => {
     axios.get(`/locations/${locationId}`)
       .then((locationResponse) => {
         setLocationName(locationResponse.data.name);
-        return axios.get(`/activities/location/${locationId}`);
+        return axios.get(`/locations/activities/${locationId}`); //changed this to use fred's, not harrison's
       })
       .then((activitiesResponse) => {
      

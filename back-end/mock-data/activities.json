@@ -67,6 +67,10 @@
         "userId": "user_456",
         "commentString": "Perfect lighting in the morning!",
         "activityId": "activity_004"
+      },
+      {
+        "id": "comment_1731602565228",
+        "commentString": "sd"
       }
     ],
     "isCompleted": false
@@ -235,6 +239,11 @@
       },
       {
         "id": "comment_1731600576090",
+        "userId": "user_123",
+        "commentString": "Great activity!"
+      },
+      {
+        "id": "comment_1731602521847",
         "userId": "user_123",
         "commentString": "Great activity!"
       }
