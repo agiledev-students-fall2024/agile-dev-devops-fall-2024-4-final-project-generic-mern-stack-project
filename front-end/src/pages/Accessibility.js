@@ -18,7 +18,7 @@ const Accessibility = (props) => {
 
     const changeColor = (event) => {
         axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/color-mode`,
-            { id: 1, color: event.target.value },
+            { color: event.target.value },
         )
             .then(response => {
                 setColor(response.data)
@@ -34,7 +34,7 @@ const Accessibility = (props) => {
 
     const changeImage = (event) => {
         axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/image-mode`,
-            { id: 1, image: event.target.value },
+            { image: event.target.value },
         )
             .then(response => {
                 setImage(response.data)
@@ -92,7 +92,7 @@ const Accessibility = (props) => {
         const font = parseFloat(evt.target.value);
 
         axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/font-size`,
-            { id: 1, fontSize: font },
+            { fontSize: font },
         )
             .then(response => {
                 setSize(response.data)

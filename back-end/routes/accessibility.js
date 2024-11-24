@@ -26,13 +26,13 @@ router.get("/api/color-mode", async (req, res) => {
 router.post("/api/color-mode", async (req, res) => {
     // change user's current color-mode
     try {
-        const id = req.body.id
+        // replace with getting user id from cookies
+        const id = '6740c351fdcb802f3f7ec5e7'
+
         const color = req.body.color
-        colors.forEach((elem) => {
-            if (elem.id === id) {
-                elem.mode = color
-            }
-        })
+
+        // update information
+        await Setting.updateOne({ userId: id }, { displayMode: color });
 
         res.status(200).json(color)
     } catch (error) {
@@ -64,13 +64,13 @@ router.get("/api/image-mode", async (req, res) => {
 router.post("/api/image-mode", async (req, res) => {
     // change user's current image mode
     try {
-        const id = req.body.id
+        // replace with getting user id from cookies
+        const id = '6740c351fdcb802f3f7ec5e7'
+
         const image = req.body.image
-        images.forEach((elem) => {
-            if (elem.id === id) {
-                elem.mode = image
-            }
-        })
+
+        // update information
+        await Setting.updateOne({ userId: id }, { imagePreference: image });
 
         res.status(200).json(image)
     } catch (error) {
@@ -102,14 +102,13 @@ router.get("/api/font-size", async (req, res) => {
 router.post("/api/font-size", async (req, res) => {
     // change user's current font size
     try {
-        const id = req.body.id
+        // replace with getting user id from cookies
+        const id = '6740c351fdcb802f3f7ec5e7'
+
         const size = req.body.fontSize
 
-        font.forEach((elem) => {
-            if (elem.id === id) {
-                elem.mode = size
-            }
-        })
+        // update information
+        await Setting.updateOne({ userId: id }, { fontSize: size });
 
         res.status(200).json(size)
     } catch (error) {
