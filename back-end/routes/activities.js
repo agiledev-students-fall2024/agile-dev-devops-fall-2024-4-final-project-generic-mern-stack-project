@@ -5,10 +5,10 @@ import fs from 'fs';
 
 const router = express.Router();
 // const activities = JSON.parse(fs.readFileSync('./mock-data/activities.json', 'utf-8'));
-const activitiesPath = './mock-data/activities.json'; // Define activitiesPath globally
+// const activitiesPath = './mock-data/activities.json'; // Define activitiesPath globally
 
 // Get all activities (GET) - Retrieve and respond with a list of all activities in the system
-router.get('/', activitiesController.getActivities);  
+router.get('/', activitiesController.getActivities);
 
   //we don't need this, we want to access the database
   // const saveActivitiesToFile = () => {

@@ -19,7 +19,7 @@ const PastTrip = () => {
         setLocationName(locationResponse.data.name);
 
         // Fetch activities associated with this location
-        const activitiesResponse = await axios.get(`/activities/location/${locationId}`);
+        const activitiesResponse = await axios.get(`/locations/activities/${locationId}`);
         setActivities(activitiesResponse.data);
       } catch (error) {
         console.error('Error fetching location data:', error);

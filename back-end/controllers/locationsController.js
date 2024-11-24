@@ -23,3 +23,8 @@ export const getLocationActivities = async (req, res) => {
         res.status(500).json({ error: 'Failed to retrieve activities for the location' });
     };
 }
+
+export default {
+    getLocation,
+    getLocationActivities
+  };

@@ -1,5 +1,5 @@
 import express from 'express';
-import * as usersController from '../controllers/usersController.js';
+import usersController from '../controllers/usersController.js';
 import fs from 'fs';
 
 
