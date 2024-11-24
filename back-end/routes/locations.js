@@ -5,34 +5,29 @@ import fs from 'fs';
 const router = express.Router();
 const locations = JSON.parse(fs.readFileSync('./mock-data/locations.json', 'utf-8'));
 
-// TODO: Get all locations (GET) - Retrieve and respond with a list of all locations, including basic details
-router.get('/', (req, res) => {
-    res.json(locations);
-  });
 
-router.get('/:locationId', (req, res) => {
-  const locationId = req.params.locationId;
-  const location = locations.find(loc => loc.id === locationId);
+//get all information for a specific location (which includes it's activities)
+router.get('/:locationId', locationsController.getLocation);
 
-  if (location) {
-    res.json(location);
-  } else {
-    res.status(404).json({ error: 'Location not found' });
-  }
-});
+//get activities for location
+router.get('/activities/:locationId', locationsController.getLocationActivities);
+
+//get the location using a location id
+
   
 
+//not needed anymore because @ant built this in trips.js
 // Get locations by Trip ID (GET) - Retrieve all locations associated with a specific trip
-router.get('/trip/:tripId', (req, res) => {
-    const tripId = req.params.tripId;
-    const filteredLocations = locations.filter(location => location.tripId === tripId);
+// router.get('/trip/:tripId', (req, res) => {
+//     const tripId = req.params.tripId;
+//     const filteredLocations = locations.filter(location => location.tripId === tripId);
     
-    if (filteredLocations.length > 0) {
-      res.json(filteredLocations);
-    } else {
-      res.status(404).json({ error: 'No locations found for this trip' });
-    }
-  });
+//     if (filteredLocations.length > 0) {
+//       res.json(filteredLocations);
+//     } else {
+//       res.status(404).json({ error: 'No locations found for this trip' });
+//     }
+//   });
 
 // TODO: Create a new location (POST) - Add a new location to a trip and respond with the newly created location data
 router.post('/', (req, res)=>{
