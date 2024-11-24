@@ -31,9 +31,6 @@ app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 // use the morgan middleware to log all incoming http requests
 app.use(morgan("dev"));
 
-// use cookie parser to get cookie data
-app.use(cookieParser());
-
 // use express's builtin body-parser middleware to parse any data included in a request
 app.use(express.json());
 app.use(cookieParser());

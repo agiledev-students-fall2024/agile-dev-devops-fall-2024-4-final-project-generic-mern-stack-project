@@ -10,7 +10,7 @@ const Blocked = (props) => {
     const handleMute = () => {
         if (input) {
             axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/muted-words`,
-                { request: 'mute', word: input, words: data },
+                { request: 'mute', word: input },
                 { headers: { 'Content-Type': 'application/json' } }
             )
                 .then(response => {
@@ -28,7 +28,7 @@ const Blocked = (props) => {
     const handleBlockC = () => {
         if (input) {
             axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/blocked-communities`,
-                { request: 'block', name: input, communities: data },
+                { request: 'block', name: input },
                 { headers: { 'Content-Type': 'application/json' } }
             )
                 .then(response => {
@@ -46,7 +46,7 @@ const Blocked = (props) => {
     const handleBlockU = () => {
         if (input) {
             axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/blocked-users`,
-                { request: 'block', user: input, users: data },
+                { request: 'block', user: input },
                 { headers: { 'Content-Type': 'application/json' } }
             )
                 .then(response => {
@@ -95,7 +95,7 @@ const Blocked = (props) => {
 
         if (props.type === "blocked_users") {
             axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/blocked-users/`,
-                { request: 'unblock', id: id, users: data },
+                { request: 'unblock', id: id },
                 { headers: { 'Content-Type': 'application/json' } }
             )
                 .then(response => {
@@ -109,7 +109,7 @@ const Blocked = (props) => {
 
         if (props.type === "blocked_communities") {
             axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/blocked-communities/`,
-                { request: 'unblock', id: id, communities: data },
+                { request: 'unblock', name: id },
                 { headers: { 'Content-Type': 'application/json' } }
             )
                 .then(response => {
@@ -123,11 +123,11 @@ const Blocked = (props) => {
 
         if (props.type === "muted_words") {
             axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/muted-words/`,
-                { request: 'unmute', id: id, words: data },
+                { request: 'unmute', id: id },
                 { headers: { 'Content-Type': 'application/json' } }
             )
                 .then(response => {
-                    setData(response.data);
+                    setData(response.data.words);
                 })
                 .catch(err => {
                     console.log('Failed to unmute word')
@@ -158,10 +158,10 @@ const Blocked = (props) => {
                 <div>
                     {/* if user has blocked users */}
                     {data.length > 0 ? (
-                        data.map(item => (
-                            <div key={item.id} className="flex flex-row justify-between items-center space-x-40 bg-lavender_blush-900 py-4 px-8 border-[1px] border-rose-900 w-full">
+                        data.map((item) => (
+                            <div key={item.userId} className="flex flex-row justify-between items-center space-x-40 bg-lavender_blush-900 py-4 px-8 border-[1px] border-rose-900 w-full">
                                 <p className="text-ebony font-bold">{item.username}</p>
-                                <button className="text-ebony-700 font-bold border border-ebony-800 py-1 px-2 rounded-md hover:border-rose hover:text-rose" onClick={(e) => handleClick(e, item.id)}>Unblock</button>
+                                <button className="text-ebony-700 font-bold border border-ebony-800 py-1 px-2 rounded-md hover:border-rose hover:text-rose" onClick={(e) => handleClick(e, item.username)}>Unblock</button>
                             </div>
                         ))
                     ) : (
@@ -195,9 +195,9 @@ const Blocked = (props) => {
                     {/* if user has blocked communities */}
                     {data.length > 0 ? (
                         data.map(item => (
-                            <div key={item.id} className="flex flex-row justify-between items-center space-x-40 bg-lavender_blush-900 py-4 px-8 border-[1px] border-rose-900 w-full">
-                                <p className="text-ebony font-bold">{item.community}</p>
-                                <button className="text-ebony-700 font-bold border border-ebony-800 py-1 px-2 rounded-md hover:border-rose hover:text-rose" onClick={(e) => handleClick(e, item.id)}>Unblock</button>
+                            <div key={item.cid} className="flex flex-row justify-between items-center space-x-40 bg-lavender_blush-900 py-4 px-8 border-[1px] border-rose-900 w-full">
+                                <p className="text-ebony font-bold">{item.name}</p>
+                                <button className="text-ebony-700 font-bold border border-ebony-800 py-1 px-2 rounded-md hover:border-rose hover:text-rose" onClick={(e) => handleClick(e, item.name)}>Unblock</button>
                             </div>
                         ))
                     ) : (
@@ -230,10 +230,10 @@ const Blocked = (props) => {
                 <div>
                     {/* if user has muted words */}
                     {data.length > 0 ? (
-                        data.map(item => (
-                            <div key={item.id} className="flex flex-row justify-between items-center space-x-40 bg-lavender_blush-900 py-4 px-8 border-[1px] border-rose-900 w-full">
-                                <p className="text-ebony font-bold">{item.muted_word}</p>
-                                <button className="text-ebony-700 font-bold border border-ebony-800 py-1 px-2 rounded-md hover:border-rose hover:text-rose" onClick={(e) => handleClick(e, item.id)}>Unmute</button>
+                        data.map((item, i) => (
+                            <div key={i} className="flex flex-row justify-between items-center space-x-40 bg-lavender_blush-900 py-4 px-8 border-[1px] border-rose-900 w-full">
+                                <p className="text-ebony font-bold">{item}</p>
+                                <button className="text-ebony-700 font-bold border border-ebony-800 py-1 px-2 rounded-md hover:border-rose hover:text-rose" onClick={(e) => handleClick(e, item)}>Unmute</button>
                             </div>
                         ))
                     ) : (

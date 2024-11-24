@@ -1,19 +1,23 @@
 // import and instantiate express
 import express from 'express'
 const router = express.Router();
-import blockedUserData from '../mock-data/blocked-users.js'
+import Setting from "../models/setting.model.js";
+import User from "../models/user.model.js";
 
 // blocked users
 router.get("/api/blocked-users", async (req, res) => {
-    const users = []
-
-    // read data in from file
-    blockedUserData.forEach(x => {
-        users.push(x)
-    })
+    // replace with getting user id from cookies
+    const id = '6740c351fdcb802f3f7ec5e7'
 
     try {
-        res.json(users);
+        const user = await Setting.findOne({ userId: id });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const blockedUserData = user.blockedUsers;
+
+        res.json(blockedUserData);
     } catch (error) {
         res.status(500).json({ error: "Could not get data." })
     }
@@ -22,48 +26,69 @@ router.get("/api/blocked-users", async (req, res) => {
 // unblock user
 router.post("/api/blocked-users", async (req, res) => {
     const request = req.body.request
-    let users = req.body.users;
+    // replace with getting user id from cookies
+    const id = '6740c351fdcb802f3f7ec5e7'
 
     if (request === 'unblock') {
-        const userId = req.body.id;
-
         try {
-            users = users.filter(user => user.id !== userId);
+            const userId = req.body.id;
 
-            blockedUserData.length = 0;
-            blockedUserData.push(...users);
+            // check if unblocked user exists
+            const unblockUser = await User.findOne({ username: userId });
 
-            res.status(200).json(users)
+            if (!unblockUser) {
+                return res.status(404).json({ message: "User not found" });
+            }
+
+            await Setting.updateOne({ userId: id }, { $pull: { blockedUsers: { username: userId } } });
+
+            // fetch updated info
+            const updatedUser = await Setting.findOne({ userId: id });
+            const updatedBlockedUserData = updatedUser.blockedUsers
+
+            res.status(200).json(updatedBlockedUserData)
         } catch (error) {
-            console.error(error);
+            console.error(error); 
             res.status(500).json({ error: 'Failed to unblock user' });
         }
     }
     else if (request === 'block') {
         try {
+            // check if user to block exists
             const name = req.body.user
-            const lastId = blockedUserData.length ? blockedUserData[blockedUserData.length - 1].id : 0;
+            const blockUser = await User.findOne({ username: name });
+
+            if (!blockUser) {
+                return res.status(404).json({ message: "User not found" });
+            }
+
+            // update blocked user data
+            const user = await Setting.findOne({ userId: id });
+
+            if (!user) {
+                return res.status(404).json({ message: "User not found" });
+            }
+
+            const blockedUserData = user.blockedUsers;
 
             // preventing duplicates
-            const userInList = users.find(u => u.username === name);
+            const userInList = blockedUserData.find(u => u.username === name);
 
             if (userInList) {
                 return res.status(200).json({
-                    users: users,
+                    users: blockedUserData,
                     message: "You have already blocked this user.",
                 });
             }
 
-            const newUser = {
-                id: lastId + 1,
-                username: name
-            }
-            users.push(newUser)
+            // update database
+            await Setting.findOneAndUpdate({ userId: id }, { $push: { blockedUsers: { userId: blockUser, username: name } } });
 
-            blockedUserData.length = 0;
-            blockedUserData.push(...users);
+            // retrieve updated information
+            const updatedUser = await Setting.findOne({ userId: id });
+            const updatedBlockedUserData = updatedUser.blockedUsers;
 
-            res.status(200).json({ users: users, message: "Blocked user successfully!" })
+            res.status(200).json({ users: updatedBlockedUserData, message: "Blocked user successfully!" })
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Failed to unblock user' });

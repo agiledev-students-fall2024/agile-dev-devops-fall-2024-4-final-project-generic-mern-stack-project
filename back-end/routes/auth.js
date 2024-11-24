@@ -54,7 +54,7 @@ export const signup = async (req, res) => {
 
     // TODO: replace userId with current logged in user
     // const setting = new Setting({
-    //   userId: id,
+    //   uid: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     //   mutedWords: [],
     //   blockedUsers: [],
     //   blockedCommunities: [],
