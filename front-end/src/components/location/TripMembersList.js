@@ -7,7 +7,8 @@ const TripMembersList = ({ participants }) => {
       <h2>Trip Members</h2>
       <ul>
         {participants.map((member, index) => (
-          <li key={index}>{member}</li>
+          // Render the participant's name or username
+          <li key={index}>{member.name || member.username || 'Unknown Member'}</li>
         ))}
       </ul>
     </div>
