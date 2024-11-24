@@ -16,6 +16,7 @@ import deactivate from "./routes/deactivate.js";
 import auth from "./routes/auth.js";
 import community from "./routes/community.js";
 import searchCommunity from "./routes/search-community.js";
+import createCommunity from "./routes/create-community.js";
 import subcommunity from "./routes/subcommunity.js";
 import home from "./routes/home.js";
 import post from "./routes/post.js";
@@ -55,6 +56,7 @@ app.use(multer);
 
 app.use(searchCommunity);
 app.use(subcommunity);
+app.use(createCommunity);
 
 app.use(home);
 app.use(post);
