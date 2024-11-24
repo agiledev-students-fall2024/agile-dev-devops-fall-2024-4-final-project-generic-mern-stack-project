@@ -4,7 +4,7 @@ import express from "express"
 const router = express.Router();
 
 //subcommunity - sends back a specific community group data after clicking the group
-router.get("/api/community/:communityId", async (req, res) => {
+router.get('/api/community/:communityId', async (req, res) => {
     try {
         //gets a random image 
         const image = `https://picsum.photos/200?id=${req.params.communityId}`

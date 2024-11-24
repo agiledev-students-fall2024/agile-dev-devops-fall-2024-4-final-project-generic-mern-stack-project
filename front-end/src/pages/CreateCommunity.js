@@ -9,31 +9,33 @@ const CreateCommunity = () => {
   const [description, setDescription] = useState("");
   const [communityPicture, setCommunityPicture] = useState("");
 
-  function handleCreateCommunity() {
-    console.log(
-      "Creating community successfully:",
-      name,
-      description,
-      communityPicture
-    );
-    toast.success("Community created successfully!");
+  function handleCreateCommunity(e) {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("file", communityPicture);
+
+    axiosInstance
+      .post("/create-community", formData)
+      .then((response) => {
+        console.log("New community:", response.data)
+        toast.success("Community created successfully!");
+      })
+      .catch((err) => {
+        toast.error("Failed to create community.");
+      })
   }
 
   function handlePictureUpload(e) {
     const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append("file", file);
-    axiosInstance
-      .post("/upload-pic", formData)
-      .then((response) => {
-        const uploadedImagePath = `${process.env.REACT_APP_SERVER_HOSTNAME}/${response.data.file.path}`;
-        setCommunityPicture(uploadedImagePath);
-        toast.success("Picture uploaded successfully!");
-      })
-      .catch((error) => {
-        console.error("Upload error:", error);
-        toast.error("Failed to upload picture.");
-      });
+    if (file == undefined){
+      toast.error("Failed to upload picture.")
+    }
+    else{
+      setCommunityPicture(file);
+      toast.success("Picture uploaded successfully!");
+    }
   }
 
   return (

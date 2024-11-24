@@ -4,7 +4,7 @@ import express from "express"
 const router = express.Router();
 
 //community - sends back community group data for searching 
-router.get("/api/community", async (req, res) => {
+router.get('/api/community', async (req, res) => {
     try{
         //hardcoded community group data 
         const data = [
