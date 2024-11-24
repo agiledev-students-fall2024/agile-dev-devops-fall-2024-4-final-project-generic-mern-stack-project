@@ -18,7 +18,7 @@ const JoinTrip = () => {
 
     try {
       // will replace 'user_123' with the actual logged-in user's ID in a real application
-      const response = await axios.post(`/trips/${tripId}/join`, { userId: 'user_123' });
+      const response = await axios.post(`/trips/${tripId}/join`, { userId: '64b1c7c8f2a5b9a2d5c8f001' });
 
       if (response.status === 200) {
         setFeedback({

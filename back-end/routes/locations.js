@@ -1,5 +1,5 @@
 import express from 'express';
-import * as locationsController from '../controllers/locationsController.js';
+import locationsController from '../controllers/locationsController.js';
 import fs from 'fs';
 
 const router = express.Router();

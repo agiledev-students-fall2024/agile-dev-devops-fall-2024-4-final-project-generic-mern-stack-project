@@ -16,7 +16,7 @@ import mongoose from 'mongoose';
     - comments: Array of embedded comment objects (userId, commentString)
     - isCompleted: Boolean indicating if the activity has been completed
 */
-const ActivitySchema = new mongoose.Schema({
+const ActivitySchema = new mongoose.Schema({ 
     name: { type: String, required: true }, // Name of the activity
     description: { type: String }, // Optional description
     locationId: { type: mongoose.Schema.Types.ObjectId, ref: 'Location', required: true }, // Associated location
