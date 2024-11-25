@@ -6,18 +6,25 @@ const Friendship = require('../models/Friendship');
 const FriendRequest = require('../models/FriendRequest');
 const Blocked = require('../models/Blocked');
 
-const CURRENT_USER_ID = '1';
+const CURRENT_USER_ID = '673f858d5fc4b9efe8ac6266';
 
 // 1. FETCH AVAILABLE USERS (ex. Blocked & Users that sent me a friend request)
-router.get('/users', async (req, res) => {
+router.get('/potential-friends', async (req, res) => {
   try {
     const blockedUsers = await Blocked.find({ blocker: CURRENT_USER_ID }).select('blocked');
     const blockedIds = blockedUsers.map(block => block.blocked);
     const incomingRequests = await FriendRequest.find({ to: CURRENT_USER_ID }).select('from');
-    const requestIds = incomingRequests.map(request => request.from);
-    const excludedIds = [...blockedIds, ...requestIds];
-
-    const users = await User.find({ _id: { $nin: excludedIds, $ne: CURRENT_USER_ID } });
+    const incomingRequestIds = incomingRequests.map(request => request.from);
+    const outgoingRequests = await FriendRequest.find({ from: CURRENT_USER_ID }).select('to');
+    const outgoingRequestIds = outgoingRequests.map(request => request.to);
+    const currentFriends = await Friendship.find({
+      $or: [{ user1: CURRENT_USER_ID }, { user2: CURRENT_USER_ID }]
+    }).select('user1 user2');
+    const friendIds = currentFriends.map(friendship =>
+      friendship.user1.toString() === CURRENT_USER_ID ? friendship.user2 : friendship.user1
+    );
+    const excludedIds = [...blockedIds, ...incomingRequestIds, ...outgoingRequestIds, ...friendIds, CURRENT_USER_ID];
+    const users = await User.find({ _id: { $nin: excludedIds } });
 
     res.json(users.map(user => ({ id: user._id, name: user.name, username: user.username })));
   } catch (error) {
@@ -133,9 +140,12 @@ router.post('/requests/cancel/:id', async (req, res) => {
 router.post('/requests/accept/:id', async (req, res) => {
   const requestId = req.params.id;
   try {
-    await Friendship.create({ user1: request.from, user2: request.to });
+    const friendRequest = await FriendRequest.findById(requestId);
+    if (!friendRequest) {
+      return res.status(404).json({ message: 'Friend request not found' });
+    }
+    await Friendship.create({ user1: friendRequest.from, user2: friendRequest.to });
     await FriendRequest.deleteOne({ _id: requestId });
-
     res.status(200).json({ message: 'Friend request accepted successfully' });
   } catch (error) {
     res.status(500).json({ error: error.message });
