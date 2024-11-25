@@ -15,13 +15,13 @@ const meetingSchema = new mongoose.Schema({
         type: Date,
     },
     participants: [{
-        type: String  // You can store participant IDs/names
+        type: String  // Participant IDs/names?
     }],
     codeHistory: [{
         code: String,
         language: String,
         timestamp: Date,
-        author: String  // Optional: to track who made the changes
+        author: String  // Stretch goal: to track who made the changes
     }],
     status: {
         type: String,

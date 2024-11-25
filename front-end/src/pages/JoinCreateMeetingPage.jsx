@@ -157,7 +157,7 @@ const JoinCreateMeetingPage = () => {
                                                         )}
                                                     </div>
                                                     <div className="text-blue-500">
-                                                        <span>Join →</span>
+                                                        <span>Create →</span>
                                                     </div>
                                                 </div>
                                             </button>
