@@ -20,15 +20,17 @@ const UserSchema = new Schema({
     required: true,
   },
   bio: {
-    type: String
+    type: String,
+    default: '',
   },
   profilePicture: {
-    type: String
+    type: String,
+    default: null,
   },
   layout: {
     type: String,
     enum: ['list', 'list-title', 'masonry', 'masonry-title', 'grid'],
-    default: 'list'
+    default: 'list',
   },
   password: {
     type: String,

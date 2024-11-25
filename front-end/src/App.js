@@ -1,7 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { AuthContext } from './components/authContext'
-import { useNavigate } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute'
 import Home from './screens/Home'
 import Explore from './screens/Explore'

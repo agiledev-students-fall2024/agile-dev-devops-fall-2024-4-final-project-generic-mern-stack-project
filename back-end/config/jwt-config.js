@@ -8,33 +8,37 @@ const JwtStrategy = passportJWT.Strategy
 
 // JWT authentication options for passport
 let jwtOptions = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('jwt'),
+  jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer'),
   secretOrKey: process.env.JWT_SECRET,
 }
 // console.log(jwtOptions) 
 
 // define the method that is used by passport to verify the contents (i.e. the payload) of the JWT token
-const jwtVerifyToken = async function (jwt_payload, next) {
+const jwtVerifyToken = async function (jwt_payload, done) {
   // console.log('JWT payload received', jwt_payload)
+  try {
+    const expirationDate = new Date(jwt_payload.exp * 1000)
+    if (expirationDate < new Date()) {
+      return done(null, false, { message: 'JWT token has expired.' })
+    }
 
-  const expirationDate = new Date(jwt_payload.exp * 1000)
-  if (expirationDate < new Date()) {
-    return next(null, false, { message: 'JWT token has expired.' })
-  }
+    const userId = new ObjectId(jwt_payload.id);
+    const user = await User.findOne({ _id: userId }).exec()
 
-  const userId = ObjectId(jwt_payload.id)
-  const user = await User.findOne({ _id: userId }).exec()
-  if (user) {
-    next(null, user)
-  } else {
-    next(null, false, { message: 'User not found' })
+    if (user) {
+      // console.log('User found:', user);
+      done(null, user)
+    } else {
+      done(null, false, { message: 'User not found' })
+    }
+  } catch(error) {
+      // console.error('Error during JWT verification:', error);
+      return done(error, false, { message: 'An error occurred during JWT verification' })
   }
+  
 }
 
 // settubg some middleware code for using JWT that we'll pass to passport to use
-const jwtStrategy = jwtOptions => {
-  const strategy = new JwtStrategy(jwtOptions, jwtVerifyToken)
-  return strategy
-}
+const jwtStrategy = new JwtStrategy(jwtOptions, jwtVerifyToken)
 
-module.exports = jwtStrategy(jwtOptions, jwtVerifyToken)
+module.exports = jwtStrategy
