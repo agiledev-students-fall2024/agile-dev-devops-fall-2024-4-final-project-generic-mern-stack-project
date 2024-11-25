@@ -3,11 +3,12 @@ import express from 'express'
 const router = express.Router();
 import Setting from "../models/setting.model.js";
 import User from "../models/user.model.js";
+import { protectRouter } from "../middlewares/auth.middleware.js";
 
 // blocked users
-router.get("/api/blocked-users", async (req, res) => {
-    // replace with getting user id from cookies
-    const id = '6740c351fdcb802f3f7ec5e7'
+router.get("/api/blocked-users", protectRouter, async (req, res) => {
+    // getting user id from cookies
+    const id = req.user._id
 
     try {
         const user = await Setting.findOne({ userId: id });
@@ -24,10 +25,11 @@ router.get("/api/blocked-users", async (req, res) => {
 });
 
 // unblock user
-router.post("/api/blocked-users", async (req, res) => {
+router.post("/api/blocked-users", protectRouter, async (req, res) => {
     const request = req.body.request
-    // replace with getting user id from cookies
-    const id = '6740c351fdcb802f3f7ec5e7'
+
+    // getting user id from cookies
+    const id = req.user._id
 
     if (request === 'unblock') {
         try {
@@ -48,7 +50,7 @@ router.post("/api/blocked-users", async (req, res) => {
 
             res.status(200).json(updatedBlockedUserData)
         } catch (error) {
-            console.error(error); 
+            console.error(error);
             res.status(500).json({ error: 'Failed to unblock user' });
         }
     }

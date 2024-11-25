@@ -2,11 +2,13 @@
 import express from 'express'
 const router = express.Router();
 import Setting from "../models/setting.model.js";
+import { protectRouter } from "../middlewares/auth.middleware.js";
+import jwt from "jsonwebtoken";
 
 // muted words
-router.get("/api/muted-words", async (req, res) => {
-    // replace with getting user id from cookies
-    const id = '6740c351fdcb802f3f7ec5e7'
+router.get("/api/muted-words", protectRouter, async (req, res) => {
+    // getting user id from cookies
+    const id = req.user._id
 
     try {
         const user = await Setting.findOne({ userId: id });
@@ -23,10 +25,11 @@ router.get("/api/muted-words", async (req, res) => {
 });
 
 // mute and unmute words
-router.post("/api/muted-words", async (req, res) => {
+router.post("/api/muted-words", protectRouter, async (req, res) => {
     const request = req.body.request
-    // replace with getting user id from cookies
-    const id = '6740c351fdcb802f3f7ec5e7'
+
+    // getting user id from cookies
+    const id = req.user._id
 
     if (request === 'unmute') {
         try {

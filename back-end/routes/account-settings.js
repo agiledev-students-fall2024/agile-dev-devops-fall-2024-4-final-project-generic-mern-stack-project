@@ -1,16 +1,15 @@
 // import and instantiate express
 import express from 'express'
 import User from "../models/user.model.js";
+import { protectRouter } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
 // account settings
-router.get("/api/account-settings", async (req, res) => {
-    console.log('hello', req.cookies)
-
+router.get("/api/account-settings", protectRouter, async (req, res) => {
     try {
-        // replace with getting user id from cookies
-        const userId = '6740c351fdcb802f3f7ec5e7'
+        // getting user id from cookies
+        const userId = req.user._id
 
         const user = await User.findById(userId);
         if (!user) {

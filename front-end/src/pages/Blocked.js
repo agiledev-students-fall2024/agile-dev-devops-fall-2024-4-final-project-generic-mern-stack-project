@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { BsSearchHeart } from "react-icons/bs"
-import axios from "axios"
+import { axiosInstance } from "../axios";
 
 const Blocked = (props) => {
     const [data, setData] = useState([])
@@ -9,7 +9,7 @@ const Blocked = (props) => {
 
     const handleMute = () => {
         if (input) {
-            axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/muted-words`,
+            axiosInstance.post(`/muted-words`,
                 { request: 'mute', word: input },
                 { headers: { 'Content-Type': 'application/json' } }
             )
@@ -27,7 +27,7 @@ const Blocked = (props) => {
 
     const handleBlockC = () => {
         if (input) {
-            axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/blocked-communities`,
+            axiosInstance.post(`/blocked-communities`,
                 { request: 'block', name: input },
                 { headers: { 'Content-Type': 'application/json' } }
             )
@@ -45,7 +45,7 @@ const Blocked = (props) => {
 
     const handleBlockU = () => {
         if (input) {
-            axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/blocked-users`,
+            axiosInstance.post(`/blocked-users`,
                 { request: 'block', user: input },
                 { headers: { 'Content-Type': 'application/json' } }
             )
@@ -70,17 +70,17 @@ const Blocked = (props) => {
 
         // set api url based on type of data needed
         if (props.type === "blocked_users") {
-            url = `${process.env.REACT_APP_SERVER_HOSTNAME}/api/blocked-users`
+            url = `/blocked-users`
         }
         if (props.type === "blocked_communities") {
-            url = `${process.env.REACT_APP_SERVER_HOSTNAME}/api/blocked-communities`
+            url = `/blocked-communities`
         }
         if (props.type === "muted_words") {
-            url = `${process.env.REACT_APP_SERVER_HOSTNAME}/api/muted-words`
+            url = `/muted-words`
         }
 
         // fetch data
-        axios(url)
+        axiosInstance.get(url)
             .then(response => {
                 setData(response.data)
             })
@@ -94,7 +94,7 @@ const Blocked = (props) => {
         e.preventDefault();
 
         if (props.type === "blocked_users") {
-            axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/blocked-users/`,
+            axiosInstance.post(`/blocked-users`,
                 { request: 'unblock', id: id },
                 { headers: { 'Content-Type': 'application/json' } }
             )
@@ -108,7 +108,7 @@ const Blocked = (props) => {
         };
 
         if (props.type === "blocked_communities") {
-            axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/blocked-communities/`,
+            axiosInstance.post(`/blocked-communities`,
                 { request: 'unblock', name: id },
                 { headers: { 'Content-Type': 'application/json' } }
             )
@@ -122,7 +122,7 @@ const Blocked = (props) => {
         };
 
         if (props.type === "muted_words") {
-            axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/muted-words/`,
+            axiosInstance.post(`/muted-words`,
                 { request: 'unmute', id: id },
                 { headers: { 'Content-Type': 'application/json' } }
             )

@@ -52,24 +52,25 @@ export const signup = async (req, res) => {
       password: hashedPassword,
     });
 
-    // TODO: replace userId with current logged in user
-    // const setting = new Setting({
-    //   uid: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    //   mutedWords: [],
-    //   blockedUsers: [],
-    //   blockedCommunities: [],
-    //   displayMode: "Light",
-    //   fontSize: 16,
-    //   imagePreference: "Show",
-    // });
-
     await user.save();
-    // await setting.save();
 
     //todo: implement mailTrap api
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "3d",
     });
+
+    // set up default user settings on signup
+    const setting = new Setting({
+      userId: user._id,
+      mutedWords: [],
+      blockedUsers: [],
+      blockedCommunities: [],
+      displayMode: "Light",
+      fontSize: 16,
+      imagePreference: "Show",
+    });
+
+    await setting.save();
 
     await res.cookie("jwt-seraphim", token, {
       httpOnly: true,

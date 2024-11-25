@@ -3,11 +3,13 @@ import express from 'express'
 const router = express.Router();
 import Setting from "../models/setting.model.js";
 import Community from '../models/community.model.js';
+import { protectRouter } from "../middlewares/auth.middleware.js";
+import jwt from "jsonwebtoken";
 
 // blocked communities
-router.get("/api/blocked-communities", async (req, res) => {
-    // replace with getting user id from cookies
-    const id = '6740c351fdcb802f3f7ec5e7'
+router.get("/api/blocked-communities", protectRouter, async (req, res) => {
+    // getting user id from cookies
+    const id = req.user._id
 
     const user = await Setting.findOne({ userId: id });
     if (!user) {
@@ -24,11 +26,11 @@ router.get("/api/blocked-communities", async (req, res) => {
 });
 
 // unblock community
-router.post("/api/blocked-communities", async (req, res) => {
+router.post("/api/blocked-communities", protectRouter, async (req, res) => {
     const request = req.body.request
 
-    // replace with getting user id from cookies
-    const id = '6740c351fdcb802f3f7ec5e7'
+    // getting user id from cookies
+    const id = req.user._id
 
     if (request === 'unblock') {
         try {
