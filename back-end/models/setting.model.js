@@ -14,14 +14,14 @@ const settingSchema = mongoose.Schema({
   ],
   blockedUsers: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+      username: { type: String, required: true }
     },
   ],
   blockedCommunities: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Community",
+      cid: { type: mongoose.Schema.Types.ObjectId, ref: "Community", required: true },
+      name: { type: String, required: true }
     },
   ],
   displayMode: {

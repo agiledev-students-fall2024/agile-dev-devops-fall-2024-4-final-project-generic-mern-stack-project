@@ -16,6 +16,7 @@ import deactivate from "./routes/deactivate.js";
 import auth from "./routes/auth.js";
 import community from "./routes/community.js";
 import searchCommunity from "./routes/search-community.js";
+import createCommunity from "./routes/create-community.js";
 import subcommunity from "./routes/subcommunity.js";
 import home from "./routes/home.js";
 import post from "./routes/post.js";
@@ -29,9 +30,6 @@ app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
 // use the morgan middleware to log all incoming http requests
 app.use(morgan("dev"));
-
-// use cookie parser to get cookie data
-app.use(cookieParser());
 
 // use express's builtin body-parser middleware to parse any data included in a request
 app.use(express.json());
@@ -55,6 +53,7 @@ app.use(multer);
 
 app.use(searchCommunity);
 app.use(subcommunity);
+app.use(createCommunity);
 
 app.use(home);
 app.use(post);
