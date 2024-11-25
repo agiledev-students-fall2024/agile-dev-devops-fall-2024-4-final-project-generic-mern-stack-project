@@ -1,14 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-// model import
-/*
-const User = require('../models/User');
-const Post = require('../models/Post');
-const Friend = require('../models/Friend');
-const Blocked = require('../models/Blocked')
-*/
-
 const usersData = require('../fillerData/users');
 const friendsData = require('../fillerData/friendships');
 const blockedData = require('../fillerData/blocked');
@@ -18,15 +10,6 @@ const loggedInData = require('../fillerData/loggedIn')
 
 // current user
 const authUserId = loggedInData[0].id
-
-// Fetch data from MongoDB
-/*
-const usersData = await User.findOne({ id: authUserId });
-const friendsData = await Friend.findOne({ userId: authUserId });
-const postsData = await Post.find({ userId: authUserId });
-const blockedData = await Blocked.findOne({ userId: authUserId });
-const loggedInData = await LoggedIn.findOne({ userId: authUserId });
-*/
 
 
 // route for home
