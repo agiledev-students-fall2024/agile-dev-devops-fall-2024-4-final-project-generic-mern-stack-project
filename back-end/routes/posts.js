@@ -75,13 +75,17 @@
 
 
 
+
+
+
+
 // //Sprint 3 code
 
 const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
-const auth = require('../middleware/auth');
+const auth = require('../middleware/auth'); //NEED TO WAIT FOR THE AUTH FILE TO BE CREATED
 const Post = require('../models/Post'); //linking to my schema here, schema is how you connect stuff
 
 // Create a new post
