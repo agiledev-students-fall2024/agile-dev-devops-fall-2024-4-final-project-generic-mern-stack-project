@@ -56,7 +56,7 @@ const CreateCommunity = () => {
         ></InputField>
         <div className="flex flex-col gap-1 w-full p-2">
           <label className="text-sm text-ebony-700 font-bold">
-            Upload a picture for your community:
+            Upload a Picture for your Community:
           </label>
           <input type="file" className="pt-1" onChange={handlePictureUpload} />
         </div>
