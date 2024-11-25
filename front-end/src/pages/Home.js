@@ -6,6 +6,7 @@ import SearchBar from "../components/SearchBar";
 import { useLocation } from "react-router-dom";
 import { ColorContext } from "../ColorContext";
 import { FontContext } from "../FontContext";
+import { axiosInstance } from "../axios";
 
 const Home = () => {
   const { updateColor } = useContext(ColorContext);
@@ -17,19 +18,19 @@ const Home = () => {
 
   const handleSearch = () => {
     console.log(`Searching for: ${searchInput}`);
-    axios
-      .post(
-        `${process.env.REACT_APP_SERVER_HOSTNAME}/api/blocked-users/`,
-        { searchInput: searchInput },
-        { headers: { "Content-Type": "application/json" } }
-      )
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((err) => {
-        console.log("Failed to unblock user");
-        console.log(err);
-      });
+    // axios
+    //   .post(
+    //     `${process.env.REACT_APP_SERVER_HOSTNAME}/api/blocked-users/`,
+    //     { searchInput: searchInput },
+    //     { headers: { "Content-Type": "application/json" } }
+    //   )
+    //   .then((response) => {
+    //     console.log(response.data);
+    //   })
+    //   .catch((err) => {
+    //     console.log("Failed to unblock user");
+    //     console.log(err);
+    //   });
   };
 
   const handleChange = (e) => {
@@ -60,16 +61,16 @@ const Home = () => {
   }, [location.state]);
 
   useEffect(() => {
-    axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/color-mode`)
+    axiosInstance.get(`/color-mode`)
       .then((response) => {
-        updateColor(response.data.toLowerCase());
+        updateColor(response.data);
       })
       .catch((err) => {
         console.log(`Could not get data.`);
         console.error(err);
       });
 
-    axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/font-size`)
+    axiosInstance.get(`/font-size`)
       .then((response) => {
         updateFont(response.data);
       })
