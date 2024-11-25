@@ -7,6 +7,7 @@ const TASKS_PER_PAGE = 5;
 function Tasks() {
   const [currentPage, setCurrentPage] = useState(1);
   const [showFilters, setShowFilters] = useState(false);
+  const [subjects, setSubjects] = useState([]); 
   const [filters, setFilters] = useState({
     priority: '',
     status: '',
@@ -26,6 +27,8 @@ function Tasks() {
       const data = await response.json();
       setTasks(data);
       console.log(data)
+      const uniqueSubjects = [...new Set(data.map(task => task.subject))];
+      setSubjects(uniqueSubjects); // Update subjects state
       setLoading(false);
     };
     collect();
@@ -128,11 +131,13 @@ function Tasks() {
 
           <select name="subject" onChange={(e) => setFilters({ ...filters, subject: e.target.value })}>
             <option value="">All Subjects</option>
-            {/* Hard coded now cause we didn't store subject, will integrate from database with real subject */}
-            <option value="algorithms">Algorithms</option>
-            <option value="software engineering">Software Engineering</option>
-            <option value="ethics">Ethics</option>
+            {subjects.map((subject, index) => (
+              <option key={index} value={subject}>
+                {subject}
+              </option>
+            ))}
           </select>
+
         </div>
       )}
 
@@ -158,7 +163,7 @@ function Tasks() {
               the page itself can be seen from http://localhost:3000/EditTask. */}
               {/* Sprint2 Comment: Since there's still no way to store the real data with ID, so currently all
                the tasks are connected to the same edit task page*/}
-              <span className="due-date">{task.due}</span>
+              <span className="due-date">{new Date(task.due).toISOString().split("T")[0]}</span>
             </div>
           ))
         )}
