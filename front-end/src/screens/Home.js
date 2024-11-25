@@ -2,9 +2,13 @@ import '../styles/Home.css'
 import React from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom'
+import { AuthContext } from '../components/authContext';
+
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const Home = () => {
+  const { logout } = React.useContext(AuthContext);
+
   // state variables
   const [user, setUser] = React.useState(null)
   const [posts, setPosts] = React.useState([])
@@ -30,6 +34,7 @@ const Home = () => {
     <div className='homeScreen'>
       <header>
         <Link to='/explore' className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>Explore</Link>
+        <button className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline' onClick={logout} >Logout</button>
         <Link to= {`/profile/${user.username}`} className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>Profile</Link>
       </header>
       <div>
