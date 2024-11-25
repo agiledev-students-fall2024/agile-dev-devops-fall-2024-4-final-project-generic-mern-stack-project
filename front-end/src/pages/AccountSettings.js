@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react"
-import axios from "axios"
 import TitleAndDescription from '../components/TitleAndDescription'
 import AccountInfo from '../components/AccountInfo'
 import { Link } from 'react-router-dom';
+import { axiosInstance } from "../axios";
 
 const AccountSettings = (props) => {
 
@@ -19,7 +19,7 @@ const AccountSettings = (props) => {
     }
 
     const handleClick = async () => {
-        axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/deactivate`,
+        axiosInstance.post("/deactivate",
             { id: 1 },
             { headers: { 'Content-Type': 'application/json' } }
         )
@@ -32,7 +32,7 @@ const AccountSettings = (props) => {
 
     useEffect(() => {
         // fetch data
-        axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/account-settings`)
+        axiosInstance.get(`/account-settings`)
             .then(response => {
                 setData(response.data)
             })
