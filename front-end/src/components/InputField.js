@@ -16,14 +16,14 @@ function InputField({
   //   // }
   // };
   return (
-      <div className="flex flex-col gap-1 w-full">
+      <div className="flex flex-col gap-1 w-full p-1.5">
         {/* <div className="input"> */}
         {/* <img src={imgSrc} alt="" /> */}
         <label className="text-sm text-ebony-700 font-bold">
           {inputfieldName}
         </label>
         <input
-          className="bg-lavender_blush-900 rounded-md px-2 py-1 text-md text-ebony w-full"
+          className="bg-lavender_blush-900 rounded-md px-2 py-1 text-md text-ebony w-full border border-[#d9d9d9]"
           type={inputType}
           id={inputfieldName}
           onChange={handleChange}
