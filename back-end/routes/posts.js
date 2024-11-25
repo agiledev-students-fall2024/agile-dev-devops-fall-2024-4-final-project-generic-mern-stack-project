@@ -74,48 +74,80 @@ module.exports = router;
 
 
 
-// // Corrected version of routes/posts.js
 
-// // Importing necessary modules for backend use only
+// //Sprint 3 code
+
 // const express = require('express');
 // const router = express.Router();
+// const { check, validationResult } = require('express-validator');
+// const jwt = require('jsonwebtoken');
+// const auth = require('../middleware/auth');
+// const Post = require('../models/Post');
 
-// // Assuming there's a data file named posts.js in a 'data' directory
-// const posts = require('../data/posts');
-
-// // Route to get all posts
-// router.get('/', (req, res) => {
-//   try {
-//     res.status(200).json(posts);
-//   } catch (err) {
-//     res.status(500).send('Server Error');
-//   }
-// });
-
-// // Route to get a single post by id
-// router.get('/:id', (req, res) => {
-//   try {
-//     const postId = req.params.id;
-//     const post = posts.find((p) => p.id === postId);
-//     if (post) {
-//       res.status(200).json(post);
-//     } else {
-//       res.status(404).send('Post not found');
+// // Create a new post
+// router.post('/create',
+//   [
+//     auth,
+//     check('title', 'Title is required').not().isEmpty(),
+//     check('content', 'Content is required').not().isEmpty()
+//   ],
+//   async (req, res) => {
+//     const errors = validationResult(req);
+//     if (!errors.isEmpty()) {
+//       return res.status(400).json({ errors: errors.array() });
 //     }
-//   } catch (err) {
-//     res.status(500).send('Server Error');
-//   }
-// });
 
-// // Route to create a new post
-// router.post('/create', (req, res) => {
-//   try {
-//     const newPost = req.body;
-//     posts.push(newPost);
-//     res.status(201).json(newPost);
-//   } catch (err) {
-//     res.status(500).send('Server Error');
-//   }
-// });
+//     const { title, content } = req.body;
+//     try {
+//       const newPost = new Post({
+//         title,
+//         content,
+//         author: req.user.id  // Assuming req.user is set by the auth middleware
+//       });
+
+//       await newPost.save();
+//       res.status(201).json({ message: 'Post created successfully', post: newPost });
+//     } catch (err) {
+//       console.error(err.message);
+//       res.status(500).send('Server Error');
+//     }
+//   });
+
+// // Edit an existing post
+// router.put('/edit/:id',
+//   [
+//     auth,
+//     check('title', 'Title is optional').optional().isLength({ min: 1 }),
+//     check('content', 'Content is optional').optional().isLength({ min: 1 })
+//   ],
+//   async (req, res) => {
+//     const errors = validationResult(req);
+//     if (!errors.isEmpty()) {
+//       return res.status(400).json({ errors: errors.array() });
+//     }
+
+//     try {
+//       const { title, content } = req.body;
+//       const post = await Post.findById(req.params.id);
+
+//       if (!post) {
+//         return res.status(404).json({ message: 'Post not found' });
+//       }
+
+//       if (post.author.toString() !== req.user.id) {
+//         return res.status(401).json({ message: 'User not authorized' });
+//       }
+
+//       if (title) post.title = title;
+//       if (content) post.content = content;
+
+//       await post.save();
+//       console.log(`Post updated successfully: ${post._id}`);
+//       res.status(200).json({ message: 'Post updated successfully', post });
+//     } catch (err) {
+//       console.error(err.message);
+//       res.status(500).send('Server Error');
+//     }
+//   });
 
 // module.exports = router;
