@@ -1,223 +1,190 @@
 const express = require('express');
 const router = express.Router();
 
-// GET DATA
-const users = require('../fillerData/users');
-const friendships = require('../fillerData/friendships');
-const friendRequests = require('../fillerData/friendRequests');
-const blocked = require('../fillerData/blocked');
+const User = require('../models/User');
+const Friendship = require('../models/Friendship');
+const FriendRequest = require('../models/FriendRequest');
+const Blocked = require('../models/Blocked');
 
-const CURRENT_USER_ID = 1;  // REPLACE WITH DYNAMIC ID LATER
+const CURRENT_USER_ID = '1';
 
-// FETCH FRIENDS LIST FOR CURRENT USER
-router.get('/', (req, res) => {
-  const friendIds = friendships
-    .filter(f => f.user_id_1 === CURRENT_USER_ID || f.user_id_2 === CURRENT_USER_ID)
-    .map(f => f.user_id_1 === CURRENT_USER_ID ? f.user_id_2 : f.user_id_1);
+// 1. FETCH AVAILABLE USERS (ex. Blocked & Users that sent me a friend request)
+router.get('/users', async (req, res) => {
+  try {
+    const blockedUsers = await Blocked.find({ blocker: CURRENT_USER_ID }).select('blocked');
+    const blockedIds = blockedUsers.map(block => block.blocked);
+    const incomingRequests = await FriendRequest.find({ to: CURRENT_USER_ID }).select('from');
+    const requestIds = incomingRequests.map(request => request.from);
+    const excludedIds = [...blockedIds, ...requestIds];
 
-  const blockedIds = blocked
-    .filter(b => b.blocker_id === CURRENT_USER_ID || b.blocked_id === CURRENT_USER_ID)
-    .map(b => b.blocker_id === CURRENT_USER_ID ? b.blocked_id : b.blocker_id);
+    const users = await User.find({ _id: { $nin: excludedIds, $ne: CURRENT_USER_ID } });
 
-  const friendList = users
-    .filter(user => friendIds.includes(user.id) && !blockedIds.includes(user.id))
-    .map(user => ({ id: user.id, name: user.name, username: user.username }));
-
-  res.json(friendList);
+    res.json(users.map(user => ({ id: user._id, name: user.name, username: user.username })));
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
-// BLOCK A USER
-router.post('/block/:id', (req, res) => {
-  const userId = parseInt(req.params.id);
+// 2. FETCH FRIENDSHIPS
+router.get('/friends', async (req, res) => {
+  try {
+    const friendships = await Friendship.find({
+      $or: [{ user1: CURRENT_USER_ID }, { user2: CURRENT_USER_ID }]
+    }).populate('user1 user2');
 
-  // REMOVE USER FROM FRIEND LIST
-  const friendshipIndex = friendships.findIndex(f =>
-    (f.user_id_1 === CURRENT_USER_ID && f.user_id_2 === userId) ||
-    (f.user_id_2 === CURRENT_USER_ID && f.user_id_1 === userId)
-  );
-  if (friendshipIndex !== -1) {
-    friendships.splice(friendshipIndex, 1);
-  }
-
-  // CHECK IF USER IS ALREADY BLOCKED
-  const isAlreadyBlocked = blocked.some(b => b.blocker_id === CURRENT_USER_ID && b.blocked_id === userId);
-  if (!isAlreadyBlocked) {
-    blocked.push({
-      id: blocked.length + 1,
-      blocker_id: CURRENT_USER_ID,
-      blocked_id: userId,
-      created_at: new Date().toISOString()
+    const friendList = friendships.map(friendship => {
+      const friend = friendship.user1._id.equals(CURRENT_USER_ID) ? friendship.user2 : friendship.user1;
+      return { id: friend._id, name: friend.name, username: friend.username };
     });
+
+    res.json(friendList);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
-
-  res.status(200).json({ message: 'User blocked and removed from friends successfully' });
 });
 
-
-// REMOVE A FRIEND
-router.post('/remove/:id', (req, res) => {
-  const userId = parseInt(req.params.id);
-  const index = friendships.findIndex(f => 
-    (f.user_id_1 === CURRENT_USER_ID && f.user_id_2 === userId) || 
-    (f.user_id_1 === userId && f.user_id_2 === CURRENT_USER_ID)
-  );
-  if (index !== -1) friendships.splice(index, 1);
-  res.status(200).json({ message: 'Friend removed successfully' });
+// 3. REMOVE A FRIEND
+router.post('/remove/:id', async (req, res) => {
+  const userId = req.params.id;
+  try {
+    await Friendship.deleteOne({
+      $or: [
+        { user1: CURRENT_USER_ID, user2: userId },
+        { user2: CURRENT_USER_ID, user1: userId }
+      ]
+    });
+    res.status(200).json({ message: 'Friend removed successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
-// FETCH ALL POTENTIAL FRIENDS TO ADD
-router.get('/potential-friends', (req, res) => {
-  const friendIds = friendships
-    .filter(f => f.user_id_1 === CURRENT_USER_ID || f.user_id_2 === CURRENT_USER_ID)
-    .map(f => (f.user_id_1 === CURRENT_USER_ID ? f.user_id_2 : f.user_id_1));
+// 4. BLOCK A USER
+router.post('/block/:id', async (req, res) => {
+  const userId = req.params.id;
+  try {
+    await Friendship.deleteOne({
+      $or: [
+        { user1: CURRENT_USER_ID, user2: userId },
+        { user2: CURRENT_USER_ID, user1: userId }
+      ]
+    });
 
-  const blockedIds = blocked
-    .filter(b => b.blocker_id === CURRENT_USER_ID || b.blocked_id === CURRENT_USER_ID)
-    .map(b => (b.blocker_id === CURRENT_USER_ID ? b.blocked_id : b.blocker_id));
+    const isBlocked = await Blocked.findOne({ blocker: CURRENT_USER_ID, blocked: userId });
+    if (!isBlocked) {
+      await Blocked.create({ blocker: CURRENT_USER_ID, blocked: userId });
+    }
 
-  const pendingRequestIds = friendRequests
-    .filter(req => req.from_user_id === CURRENT_USER_ID || req.to_user_id === CURRENT_USER_ID)
-    .map(req => (req.from_user_id === CURRENT_USER_ID ? req.to_user_id : req.from_user_id));
-
-  const potentialFriends = users.filter(user => 
-    user.id !== CURRENT_USER_ID && // EXCLUDE SELF
-    !friendIds.includes(user.id) && // EXCLUDE FRIENDS
-    !blockedIds.includes(user.id) && // EXCLUDE BLOCKED
-    !pendingRequestIds.includes(user.id) // EXCLUDE PENDING REQUESTS
-  );
-
-  res.json(potentialFriends);
+    res.status(200).json({ message: 'User blocked successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
-// ADD A FRIEND
-router.post('/request/:id', (req, res) => {
-  const friendId = parseInt(req.params.id);
-
-  // AVOID DUPLICATE REQUEST
-  const existingRequest = friendRequests.find(
-      req => req.from_user_id === CURRENT_USER_ID && req.to_user_id === friendId
-  );
-  
-  if (existingRequest) {
+// 5. ADD A FRIEND (SEND AN OUTGOING FRIEND REQUEST)
+router.post('/request/:id', async (req, res) => {
+  const friendId = req.params.id;
+  try {
+    const existingRequest = await FriendRequest.findOne({ from: CURRENT_USER_ID, to: friendId });
+    if (existingRequest) {
       return res.status(400).json({ message: 'Friend request already sent' });
+    }
+
+    await FriendRequest.create({ from: CURRENT_USER_ID, to: friendId });
+    res.status(200).json({ message: 'Friend request sent successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
-
-  // CREATE NEW FRIEND REQUEST
-  const newRequest = {
-      id: friendRequests.length + 1,
-      from_user_id: CURRENT_USER_ID,
-      to_user_id: friendId,
-      created_at: new Date().toISOString()
-  };
-  friendRequests.push(newRequest);
-
-  res.status(200).json({ message: 'Friend request sent successfully' });
 });
 
-// FETCH ALL FRIEND REQUESTS FOR CURRENT USER
-router.get('/requests', (req, res) => {
-  const incomingRequests = friendRequests
-      .filter(request => request.to_user_id === CURRENT_USER_ID)
-      .map(request => {
-          const fromUser = users.find(user => user.id === request.from_user_id);
-          return {
-              ...request,
-              fromUser: fromUser ? { 
-                  id: fromUser.id,
-                  name: fromUser.name,
-                  username: fromUser.username
-              } : null
-          };
-      });
+// 6. FETCH ALL FRIEND REQUESTS
+router.get('/requests', async (req, res) => {
+  try {
+    const incomingRequests = await FriendRequest.find({ to: CURRENT_USER_ID }).populate('from');
+    const outgoingRequests = await FriendRequest.find({ from: CURRENT_USER_ID }).populate('to');
 
-  const outgoingRequests = friendRequests
-      .filter(request => request.from_user_id === CURRENT_USER_ID)
-      .map(request => {
-          const toUser = users.find(user => user.id === request.to_user_id);
-          return {
-              ...request,
-              toUser: toUser ? {
-                  id: toUser.id,
-                  name: toUser.name,
-                  username: toUser.username
-              } : null
-          };
-      });
-  
-  res.json({ incomingRequests, outgoingRequests });
-});
-
-// ACCEPTING A FRIEND REQUEST
-router.post('/requests/accept/:id', (req, res) => {
-  const requestId = parseInt(req.params.id);
-  const requestIndex = friendRequests.findIndex(request => request.id === requestId);
-
-  if (requestIndex === -1) return res.status(404).json({ message: 'Request not found' });
-
-  const request = friendRequests[requestIndex];
-
-  friendships.push({
-    id: friendships.length + 1,
-    user_id_1: request.from_user_id,
-    user_id_2: request.to_user_id,
-    created_at: new Date().toISOString()
-  });
-
-  friendRequests.splice(requestIndex, 1);
-  res.json({ message: 'Friend request accepted' });
-});
-
-// DECLINING A FRIEND REQUEST
-router.post('/requests/decline/:id', (req, res) => {
-  const requestId = parseInt(req.params.id);
-  const requestIndex = friendRequests.findIndex(request => request.id === requestId);
-
-  if (requestIndex === -1) return res.status(404).json({ message: 'Request not found' });
-
-  friendRequests.splice(requestIndex, 1);
-  res.json({ message: 'Friend request declined' });
-});
-
-// CANCEL A SENT REQUEST
-router.post('/requests/cancel/:id', (req, res) => {
-  const requestId = parseInt(req.params.id);
-  const requestIndex = friendRequests.findIndex(request => request.id === requestId);
-
-  if (requestIndex === -1) return res.status(404).json({ message: 'Request not found' });
-
-  friendRequests.splice(requestIndex, 1);
-  res.json({ message: 'Friend request canceled' });
-});
-
-// FETCH ALL BLOCKED USERS
-router.get('/blocked', (req, res) => {
-  const blockedUsers = blocked
-    .filter(b => b.blocker_id === CURRENT_USER_ID)
-    .map(b => {
-      const blockedUser = users.find(user => user.id === b.blocked_id);
-      return blockedUser ? { id: blockedUser.id, name: blockedUser.name, username: blockedUser.username } : null;
-    })
-    .filter(Boolean);
-
-  res.json(blockedUsers);
-});
-
-// UNBLOCK A USER
-router.post('/unblock/:id', (req, res) => {
-  const userId = parseInt(req.params.id);
-  const index = blocked.findIndex(b => b.blocker_id === CURRENT_USER_ID && b.blocked_id === userId);
-
-  if (index !== -1) {
-    blocked.splice(index, 1); // REMOVE FROM THE BLOCKED LIST
-    friendships.push({
-      id: friendships.length + 1,
-      user_id_1: CURRENT_USER_ID,
-      user_id_2: userId,
-      created_at: new Date().toISOString()
+    res.json({
+      incomingRequests: incomingRequests.map(request => ({
+        id: request._id,
+        fromUser: { id: request.from._id, name: request.from.name, username: request.from.username }
+      })),
+      outgoingRequests: outgoingRequests.map(request => ({
+        id: request._id,
+        toUser: { id: request.to._id, name: request.to.name, username: request.to.username }
+      }))
     });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 7. CANCEL AN OUTGOING REQUEST
+router.post('/requests/cancel/:id', async (req, res) => {
+  const requestId = req.params.id;
+  try {
+    await FriendRequest.deleteOne({ _id: requestId, from: CURRENT_USER_ID });
+    res.status(200).json({ message: 'Friend request canceled successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 8. ACCEPT AN INCOMING REQUEST
+router.post('/requests/accept/:id', async (req, res) => {
+  const requestId = req.params.id;
+  try {
+    await Friendship.create({ user1: request.from, user2: request.to });
+    await FriendRequest.deleteOne({ _id: requestId });
+
+    res.status(200).json({ message: 'Friend request accepted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 9. DECLINE AN INCOMING REQUEST
+router.post('/requests/decline/:id', async (req, res) => {
+  const requestId = req.params.id;
+  try {
+    await FriendRequest.deleteOne({ _id: requestId, to: CURRENT_USER_ID });
+    res.status(200).json({ message: 'Friend request declined successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 10. FETCH ALL BLOCKED USERS
+router.get('/blocked', async (req, res) => {
+  try {
+    const blockedUsers = await Blocked.find({ blocker: CURRENT_USER_ID }).populate('blocked');
+
+    const blockedList = blockedUsers.map(block => ({
+      id: block.blocked._id,
+      name: block.blocked.name,
+      username: block.blocked.username
+    }));
+
+    res.json(blockedList);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 11. UNBLOCK A USER
+router.post('/unblock/:id', async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    const blockedEntry = await Blocked.findOne({ blocker: CURRENT_USER_ID, blocked: userId });
+    if (!blockedEntry) {
+      return res.status(404).json({ message: 'User is not blocked' });
+    }
+
+    await Blocked.deleteOne({ blocker: CURRENT_USER_ID, blocked: userId });
+
     res.status(200).json({ message: 'User unblocked successfully' });
-  } else {
-    res.status(404).json({ message: 'Blocked user not found' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
