@@ -10,6 +10,7 @@ import path from "path";
 import bodyParser from "body-parser";
 import morgan from "morgan";
 import { fileURLToPath } from 'url';
+import mongoose from "mongoose";
 
 const app = express();
 const PORT = process.env.backPORT || 5000;
