@@ -5,7 +5,6 @@ const router = express.Router();
 /*
 const User = require('../models/User');
 const Post = require('../models/Post');
-const LoggedIn = require('../models/LoggedIn');
 const Friend = require('../models/Friend');
 const Blocked = require('../models/Blocked')
 */
