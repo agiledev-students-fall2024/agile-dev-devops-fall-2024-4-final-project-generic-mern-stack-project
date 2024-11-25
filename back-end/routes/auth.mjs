@@ -1,70 +1,21 @@
-import bcrypt from 'bcryptjs';
+// import jwt from 'jsonwebtoken';
 
-export let users = [];
+// function verifyToken(req, res, next) {
+//   const token = req.headers['authorization'];
+//   console.log("auth", token)
 
-export const clearUsers = () => {
-  users = [];
-};
+//   if (!token) {
+//     return res.status(403).send('Token required');
+//   }
 
-// const startAuthenticatedSession = (req, user) => {
-//   return new Promise((fulfill, reject) => {
-//     req.session.regenerate((err) => {
-//       if (!err) {
-//         req.session.user = user; 
-//         fulfill(user);
-//       } else {
-//         reject(err);
-//       }
-//     });
-//   });
-// };
+//   try {
+//     const actualToken = token.startsWith('Bearer ') ? token.split(' ')[1] : token;
+//     const decoded = jwt.verify(actualToken, process.env.SECRET_KEY);
+//     req.user = decoded;
+//     next();
+//   } catch (err) {
+//     res.status(401).send('Invalid or expired token');
+//   }
+// }
 
-// const endAuthenticatedSession = req => {
-//   return new Promise((fulfill, reject) => {
-//     req.session.destroy(err => err ? reject(err) : fulfill(null));
-//   });
-// };
-
-const register = async (username, email, password) => {
-  if (username.length < 8 || password.length < 8) {
-    throw { message: 'USERNAME/PASSWORD TOO SHORT' };
-  }
-  
-  const existing = users.find(user => user.username === username);
-  if (existing) {
-    throw { message: 'USERNAME ALREADY EXISTS' };
-  }
-  
-  const hash = bcrypt.hashSync(password, 10);
-  
-  const newUser = {
-    username,
-    email,
-    password: hash,
-  };
-
-  users.push(newUser);
-
-  return newUser;
-};
-
-const login = async (username, password) => {
-  const user = users.find(user => user.username === username);
-  if (!user) {
-    throw { message: "USER NOT FOUND" };
-  }
-
-  const isValid = bcrypt.compareSync(password, user.password);
-  if (!isValid) {
-    throw { message: "PASSWORDS DO NOT MATCH" };
-  }
-
-  return user;
-};
-
-export {
-  // startAuthenticatedSession,
-  // endAuthenticatedSession,
-  register,
-  login
-};
+// export default verifyToken;

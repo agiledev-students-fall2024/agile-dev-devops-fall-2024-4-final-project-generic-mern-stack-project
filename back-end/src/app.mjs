@@ -1,15 +1,11 @@
 import "./config.mjs";
 import express from "express";
-import session from "express-session";
-import sanitize from "mongo-sanitize";
 import multer from "multer";
 import axios from "axios";
 import cors from "cors";
-import * as auth from "../routes/auth.mjs";
 import path from "path";
 import bodyParser from "body-parser";
 import morgan from "morgan";
-import { fileURLToPath } from "url";
 import authRoutes from "../routes/authRoutes.mjs";
 import mongoose from "mongoose";
 import keys from "../keys.mjs";
@@ -17,6 +13,7 @@ import keys from "../keys.mjs";
 const app = express();
 const PORT = process.env.backPORT || 5000;
 app.use(express.json());
+
 
 // MongoDB Connection
 const mango = keys.MONGOURI;
@@ -57,16 +54,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 
-// app.use(session({
-//   secret: 'secret',
-//   resave: false,
-//   saveUninitialized: true,
-//   cookie: {
-//       secure: false,
-//       sameSite: 'lax'
-//   }
-// }));
-
 //APIs for backend
 //for sign up and login
 app.use("/api/auth", authRoutes);
@@ -106,10 +93,7 @@ app.get("/api/record-activity", async (req, res) => {
   }
 });
 
-app.post(
-  "/api/upload-recipe-image",
-  upload.array("my_files", 2),
-  (req, res, next) => {
+app.post("/api/upload-recipe-image", upload.array("my_files", 2),(req, res, next) => {
     if (!req.files || req.files.length === 0) {
       // No files uploaded
       return res.status(400).json({

@@ -8,38 +8,33 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
-  // useEffect(() => {
-  //     const checkSession = async () => {
-  //         try {
-  //             const currentPath = window.location.pathname;
-  //             const response = await axios.get(`${process.env.REACT_APP_BACK_PORT}/api/check-session`, {
-  //                 params: { path: currentPath }
-  //             });
-
-  //             if (response.data.redirect === '/home') {
-  //                 navigate('/home');
-  //             }
-  //         } catch (err) {
-  //             console.error(err);
-  //         }
-  //     };
-
-  //     checkSession();
-  // }, [navigate]);
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      // Redirect to Home if token exists
+      navigate('/home');
+    }
+  }, [navigate]);
 
   async function goToHome(e) {
     e.preventDefault();
+
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_BACK_PORT}/api/auth/login`,
         { username, password }
       );
+      const token = response.data.token;
+      localStorage.setItem('token', token);
+      console.log('Token saved:', token);
+
+      
       console.log(response.data.message);
       navigate("/home");
     } catch (err) {
-      setError(err.response?.data.message || "Login failed");
-      console.error(err);
+      const backendError = err.response?.data?.error || "Login failed";
+      setError(backendError);
+      console.error("Signup Error:", backendError);
     }
   }
 
