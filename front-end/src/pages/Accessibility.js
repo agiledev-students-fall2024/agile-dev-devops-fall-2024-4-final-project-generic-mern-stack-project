@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import TitleAndDescription from '../components/TitleAndDescription'
 import DropdownMenu from '../components/DropdownMenu'
-import axios from "axios"
+import { axiosInstance } from "../axios";
 import "./Accessibility.css"
 import { ColorContext } from '../ColorContext';
 import { FontContext } from '../FontContext';
@@ -17,7 +17,7 @@ const Accessibility = (props) => {
     const [imgOptions, setImgOptions] = useState(["Show", "Hide"])
 
     const changeColor = (event) => {
-        axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/color-mode`,
+        axiosInstance.post(`/color-mode`,
             { color: event.target.value },
         )
             .then(response => {
@@ -33,7 +33,7 @@ const Accessibility = (props) => {
     }
 
     const changeImage = (event) => {
-        axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/image-mode`,
+        axiosInstance.post(`/image-mode`,
             { image: event.target.value },
         )
             .then(response => {
@@ -48,7 +48,7 @@ const Accessibility = (props) => {
     }
 
     useEffect(() => {
-        axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/color-mode`)
+        axiosInstance.get(`/color-mode`)
             .then(response => {
                 setColor(response.data)
                 updateColor(response.data.toLowerCase())
@@ -62,7 +62,7 @@ const Accessibility = (props) => {
     }, [])
 
     useEffect(() => {
-        axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/image-mode`)
+        axiosInstance.get(`/image-mode`)
             .then(response => {
                 setImage(response.data)
                 const newOptions = (response.data === "Show") ? ["Hide"] : ["Show"];
@@ -75,7 +75,7 @@ const Accessibility = (props) => {
     }, [])
 
     useEffect(() => {
-        axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/font-size`)
+        axiosInstance.get(`/font-size`)
             .then(response => {
                 setSize(response.data)
                 updateFont(response.data)
@@ -91,7 +91,7 @@ const Accessibility = (props) => {
         evt.preventDefault();
         const font = parseFloat(evt.target.value);
 
-        axios.post(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/font-size`,
+        axiosInstance.post(`/font-size`,
             { fontSize: font },
         )
             .then(response => {

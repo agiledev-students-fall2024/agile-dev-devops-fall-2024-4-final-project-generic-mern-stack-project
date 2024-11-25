@@ -2,12 +2,13 @@
 import express from 'express'
 const router = express.Router();
 import Setting from "../models/setting.model.js";
+import { protectRouter } from "../middlewares/auth.middleware.js";
 
-router.get("/api/color-mode", async (req, res) => {
+router.get("/api/color-mode", protectRouter, async (req, res) => {
     // get user's current color-mode
     try {
-        // replace with getting user id from cookies
-        const id = '6740c351fdcb802f3f7ec5e7'
+        // getting user id from cookies
+        const id = req.user._id
 
         const user = await Setting.findOne({ userId: id });
         if (!user) {
@@ -23,11 +24,11 @@ router.get("/api/color-mode", async (req, res) => {
     }
 });
 
-router.post("/api/color-mode", async (req, res) => {
+router.post("/api/color-mode", protectRouter, async (req, res) => {
     // change user's current color-mode
     try {
-        // replace with getting user id from cookies
-        const id = '6740c351fdcb802f3f7ec5e7'
+        // getting user id from cookies
+        const id = req.user._id
 
         const color = req.body.color
 
@@ -41,11 +42,11 @@ router.post("/api/color-mode", async (req, res) => {
     }
 });
 
-router.get("/api/image-mode", async (req, res) => {
+router.get("/api/image-mode", protectRouter, async (req, res) => {
     // get user's current image mode
     try {
-        // replace with getting user id from cookies
-        const id = '6740c351fdcb802f3f7ec5e7'
+        // getting user id from cookies
+        const id = req.user._id
 
         const user = await Setting.findOne({ userId: id });
         if (!user) {
@@ -61,11 +62,11 @@ router.get("/api/image-mode", async (req, res) => {
     }
 });
 
-router.post("/api/image-mode", async (req, res) => {
+router.post("/api/image-mode", protectRouter, async (req, res) => {
     // change user's current image mode
     try {
-        // replace with getting user id from cookies
-        const id = '6740c351fdcb802f3f7ec5e7'
+        // getting user id from cookies
+        const id = req.user._id
 
         const image = req.body.image
 
@@ -79,11 +80,11 @@ router.post("/api/image-mode", async (req, res) => {
     }
 });
 
-router.get("/api/font-size", async (req, res) => {
+router.get("/api/font-size", protectRouter, async (req, res) => {
     // get user's current font size
     try {
-        // replace with getting user id from cookies
-        const id = '6740c351fdcb802f3f7ec5e7'
+        // getting user id from cookies
+        const id = req.user._id
 
         const user = await Setting.findOne({ userId: id });
         if (!user) {
@@ -99,11 +100,11 @@ router.get("/api/font-size", async (req, res) => {
     }
 });
 
-router.post("/api/font-size", async (req, res) => {
+router.post("/api/font-size", protectRouter, async (req, res) => {
     // change user's current font size
     try {
-        // replace with getting user id from cookies
-        const id = '6740c351fdcb802f3f7ec5e7'
+        // getting user id from cookies
+        const id = req.user._id
 
         const size = req.body.fontSize
 
