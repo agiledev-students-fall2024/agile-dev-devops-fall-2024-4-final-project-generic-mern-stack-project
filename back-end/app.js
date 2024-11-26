@@ -38,6 +38,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // make 'public' directory publicly readable with static content
 app.use("/public", express.static("public"));
+app.use('/uploads', express.static('public/uploads'));
 
 // use routes
 app.use(accountSettings);
