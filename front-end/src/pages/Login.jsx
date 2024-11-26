@@ -28,7 +28,7 @@ function Login() {
       localStorage.setItem('token', token);
       console.log('Token saved:', token);
 
-      
+      localStorage.removeItem('currentRecipe')
       console.log(response.data.message);
       navigate("/home");
     } catch (err) {
