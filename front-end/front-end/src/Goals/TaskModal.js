@@ -9,7 +9,10 @@ const TaskModal = ({ goal, onClose }) => {
                 <h4>Tasks:</h4>
                 <ul>
                     {goal.tasks.map((task, index) => (
-                        <li key={index}>{task}</li>
+                        <li key={index}>
+                            <p>Task: {task.name}</p>
+                            <p>Due Date: {new Date(task.due).toLocaleDateString()}</p> {/* Format due date */}
+                        </li>
                     ))}
                 </ul>
                 <button onClick={onClose}>Close</button>
