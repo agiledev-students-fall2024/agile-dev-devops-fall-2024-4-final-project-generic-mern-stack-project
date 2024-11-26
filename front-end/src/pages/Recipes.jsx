@@ -67,7 +67,7 @@ function Recipes() {
                 <img src={recipeItem.imgs} alt="oops,img problems!" />
               </div>
               <div className="recipeText">
-                <h1>Food: {recipeItem.dish}</h1>
+                <h1>Food: {recipeItem.name}</h1>
                 <p>Ingredients: {recipeItem.ingredients}</p>
               </div>
               <button

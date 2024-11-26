@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../Home.css';
+import ShareRecipe from '../components/ShareRecipe';
 
 const Home = () => {
     const [weeklyActivitiesData, setWeeklyActivitiesData] = useState([]);
@@ -11,9 +12,7 @@ const Home = () => {
     const [recipeData, setRecipeData] = useState([]);
 
     //share recipe states
-    const [recipe, setRecipe] = useState("");
-    const [story, setStory] = useState("");
-    const [foodName, setFoodName] = useState("");
+    
     const [share, setShare] = useState(false);
 
     const [error, setError] = useState('');
@@ -76,15 +75,22 @@ const Home = () => {
         fetchRecipeData();
     }, []);
 
-    async function submitShareRecipe(e){
-        // e.preventDefault();
+    async function submitShareRecipe(newRecipe) {
         try {
-            const response = await axios.post(`${process.env.REACT_APP_BACK_PORT}/api/shareRecipe`, { foodName, story, recipe });
-            console.log(response.data.message);
-            navigate('/home');
-        } catch (err) {
-            setError(err.response?.data.message || 'Login failed');
-            console.error(err);
+            console.log('submitted');
+            const response = await axios.post(
+                `${process.env.REACT_APP_BACK_PORT}/api/shareRecipe`, 
+                newRecipe, 
+                {
+                    headers: {
+                        'Content-Type': 'application/json', 
+                    },
+                }
+            );
+            console.log('Response:', response.data);
+            closeShare();
+        } catch (error) {
+            console.error('Error submitting recipe:', error.response?.data || error.message);
         }
     }
 
@@ -132,21 +138,10 @@ const Home = () => {
             </div>
 
             {share && (
-                <div className="full-page-card">
-                    <button className="share-close-button" onClick={closeShare}>X</button>
-                    <form className = "share-form" onSubmit={submitShareRecipe}>
-                        <label>Enter Food Name:
-                            <input className="input-text-area-share" type="text" placeholder="Food Name" value={foodName} onChange={(e) => setFoodName(e.target.value)} />
-                        </label>
-                        <label>Enter Story:
-                            <textarea className="share-text-area" placeholder="Optional" value={story} onChange={(e) => setStory(e.target.value)} />
-                        </label>
-                        <label>Enter Recipe:
-                            <textarea className="share-text-area" placeholder="Recipe" value={recipe} onChange={(e) => setRecipe(e.target.value)} />
-                        </label>
-                        <button type="submit" className="share-button">Share</button>
-                    </form>
-                </div>
+                <ShareRecipe
+                    closeShare = {closeShare}
+                    submitShareRecipe = {submitShareRecipe}
+                ></ShareRecipe>
             )}
 
             {recipeData.length > 0 && (

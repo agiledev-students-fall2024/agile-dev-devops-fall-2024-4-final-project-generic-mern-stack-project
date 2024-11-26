@@ -62,21 +62,14 @@ app.use(morgan("dev"));
 //for sign up and login
 app.use("/api/auth", authRoutes);
 
-const tempRecipeShareStorage = [];
-
 app.post("/api/shareRecipe", async (req, res) => {
-  const { foodName, story, recipe } = req.body;
   try {
-    const shareRecipe = {
-      foodName,
-      story,
-      recipe,
-    };
-    tempRecipeShareStorage.push(shareRecipe);
-    console.log(tempRecipeShareStorage);
-    res.status(200).json({ message: "Share Successful", shareRecipe });
+    const newRecipe = new recipe({ ...req.body });
+    console.log(newRecipe)
+
+    await newRecipe.save();
+    res.status(200).json({ message: "Share Successful", newRecipe });
   } catch (error) {
-    console.log("does not try");
     res.status(401).json({ message: error.message });
   }
 });
