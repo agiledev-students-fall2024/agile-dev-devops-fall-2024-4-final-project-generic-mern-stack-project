@@ -40,11 +40,12 @@ const Calendar_monthly = () => {
         const fetchTaskCounts = async () => {
             try {
                 const response = await fetch(`http://localhost:4000/calendar/month/${year}/${month}/tasks`);
-                const taskData = response.data.reduce((acc, { day, count }) => {
-                    acc[day] = count;
+                const taskData = await response.json();
+                const taskCounts = taskData.reduce((acc, { day, count }) => {
+                    acc[day] = count; // Map day to task count
                     return acc;
-                }, {});
-                setTaskCounts(taskData);
+                  }, {});
+                setTaskCounts(taskCounts);
             } catch (error) {
                 console.error("Error fetching task counts", error);
             }

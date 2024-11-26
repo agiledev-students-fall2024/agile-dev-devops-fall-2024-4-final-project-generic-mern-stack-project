@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const mongoose = require('mongoose');
-const Goal = require('../models/Goal');
+require('../models/goalschema');
+const Goal = mongoose.model("Goal")
 
 
 const app = new Router();

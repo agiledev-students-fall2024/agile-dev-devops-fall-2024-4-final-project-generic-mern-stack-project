@@ -66,7 +66,24 @@ router.post('/tasks', async (req, res) => {
   res.status(201).json(task1);
 });
 
+router.put('/tasks/:id/status', (req, res) => {
+  const { status } = req.body;
 
+  // Validate input
+  if (!["not_started", "ongoing", "finished"].includes(status)) {
+    return res.status(400).json({ error: "Invalid status value" });
+  }
+
+  Task.findByIdAndUpdate(req.params.id, { status }, { new: true })
+    .then(updatedTask => {
+      if (updatedTask) {
+        res.json(updatedTask);
+      } else {
+        res.status(404).json({ message: "Task not found" });
+      }
+    })
+    .catch(err => res.status(500).json({ error: err.message }));
+});
 
 router.get('/tasks/:id', async (req, res) => {
   const taskId = req.params.id;
