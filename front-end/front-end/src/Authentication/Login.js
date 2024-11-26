@@ -5,10 +5,6 @@ const Login = () => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const nav = useNavigate()
-    const submitButton = useRef({
-        username: "",
-        password: ""
-    })
 
     const handleUsername = (e) => {
         setUsername(e.target.value)
@@ -22,14 +18,27 @@ const Login = () => {
         nav('/Register');
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        submitButton.current.username = username
-        submitButton.current.password = password
-        //send to backend and get a response with user
-        //make alert if user is not found
-        //window.localStorage.setItem("session_id", JSON.stringify(user))
-        nav('/Homepage')
+        const send = {
+            username,
+            password
+        }
+        const user = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(send)
+          }
+        const response = await fetch('http://localhost:4000/login', user)
+        const responseParsed = await response.json()
+        if (responseParsed.error) {
+            alert(responseParsed.error)
+            return
+        }
+        else {
+            localStorage.setItem("session_user", JSON.stringify(responseParsed))
+            nav('/Homepage')
+        }
     }
 
     return (
