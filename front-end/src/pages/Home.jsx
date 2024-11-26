@@ -1,24 +1,3 @@
-// import '../index.css'
-// import '../Home.css'
-// import { useNavigate } from 'react-router-dom';
-
-
-// function Home(){
-//     const navigate = useNavigate();
-//     function goToActivityTracker(){
-//         navigate('/activity-tracker')
-//     }
-//     return(<>
-//         <h1>HOME PAGE</h1>
-//         <div className='weekly-acitivty-div'>
-//             <button onClick={goToActivityTracker}>(click for) See More</button>
-
-//         </div>
-//         </>
-//     );
-// }
-
-// export default Home
 
 import '../index.css';
 import React, { useState, useEffect } from "react";
@@ -27,8 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import '../Home.css';
 
 const Home = () => {
-    const [activitiesData, setActivitiesData] = useState([]);
-    const [weeklyData, setWeeklyData] = useState([]);
+    const [weeklyActivitiesData, setWeeklyActivitiesData] = useState([]);
+    const [weeklyActivitiesStats, setWeeklyActivitiesStats] = useState({date: new Date(), numActivities: 0, activityMins: 0})
     const [recipeData, setRecipeData] = useState([]);
 
     //share recipe states
@@ -39,33 +18,45 @@ const Home = () => {
 
     const [error, setError] = useState('');
 
-    
-    
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchActivitiesData = async () => {
-            try{
-            const response = await axios.get(`${process.env.REACT_APP_BACK_PORT}/api/challenges`);
-            const fetchedData = response.data || [];
-            console.log('fetchedActivitesData:', fetchedData);
+    /*const isThisWeek = (dateString, currentDate, lastWeekDate) => {
+        const [month, day, year] = dateString.split('/');
+        const date = new Date(year, month - 1, day);
+        return date >= lastWeekDate && date <= currentDate;
+    }*/
 
-            setActivitiesData([...fetchedData]);}
+    useEffect(() => {
+        const fetchWeeklyActivitiesData = async () => {
+            try{
+                const response = await axios.get(`${process.env.REACT_APP_BACK_PORT}/api/users`);
+                const fetchedData = response.data || [];
+
+                // get specific user without database implementatin
+                const activitiesData = fetchedData[0].activities
+                
+                const currentDate = new Date()
+                const lastWeekDate = new Date(currentDate)
+                lastWeekDate.setDate(currentDate.getDate() - 7)
+
+                const weeklyActivitiesData = activitiesData.filter(activity => {
+                    const [month, day, year] = activity.date.split('/');
+                    const date = new Date(year, month - 1, day);
+                    return date >= lastWeekDate && date <= currentDate;
+                })
+
+                setWeeklyActivitiesData(weeklyActivitiesData);
+                console.log(weeklyActivitiesData)
+
+                setWeeklyActivitiesStats({
+                    date: new Date(),
+                    numActivities: activitiesData.length,
+                    activityMins: activitiesData.reduce((sum, activity) => sum + activity.duration, 0)
+                })
+                console.log(weeklyActivitiesStats)
+            }
             catch(error){
                 console.error('Error fetching activitiesData:', error);
-            }
-        };
-
-        const fetchWeeklyData = async () => {
-            try{
-            const response = await axios.get(`${process.env.REACT_APP_BACK_PORT}/api/homeWeeklyActivity`);
-            const fetchedData = response.data || [];
-            console.log(fetchedData);
-
-            setWeeklyData([...fetchedData]);
-            }
-            catch(error){
-                console.error('Error fetching weekly data: ', error)
             }
         };
 
@@ -73,7 +64,7 @@ const Home = () => {
             try{
                 const response = await axios.get(`${process.env.REACT_APP_BACK_PORT}/api/basicRecipe`);
             const fetchedData = response.data || [];
-            console.log(fetchedData);
+            //console.log(fetchedData);
 
             setRecipeData([...fetchedData]);
             }catch(error){
@@ -81,8 +72,7 @@ const Home = () => {
             }
         };
 
-        fetchWeeklyData();
-        fetchActivitiesData();
+        fetchWeeklyActivitiesData();
         fetchRecipeData();
     }, []);
 
@@ -117,25 +107,24 @@ const Home = () => {
     return (
         <div className="home-container">
             <h1>Home Page</h1>
-            {activitiesData.length > 0 && (
-                <div className="activity-card" onClick={goToActivityTracker}>
+            {
+                weeklyActivitiesData.length > 0 ? (<div className="activity-card" onClick={goToActivityTracker}>
                     <h2>ACTIVITY CHART</h2>
                     <div className="activity-image">
-                        <img src={activitiesData[0].image} alt="Activity 1" />
+                        <img src={weeklyActivitiesData[0].image} alt="Activity 1" />
                     </div>
                     <h3>Weekly Activities</h3>
-                    {weeklyData.length > 0 ? (
+                    {
                         <>
-                            <p><strong>Meals Recorded:</strong> {weeklyData[0].meals_recorded}</p>
-                            <p><strong>Time Spent Cooking:</strong> {weeklyData[0].time_spent_cooking_1}:{weeklyData[0].time_spent_cooking_2}:{weeklyData[0].time_spent_cooking_3}</p>
+                            <p><strong>Meals Recorded:</strong> {weeklyActivitiesStats['numActivities']}</p>
+                            <p><strong>Time Spent Cooking:</strong> {weeklyActivitiesStats['activityMins']} min</p>
                         </>
-                    ) : (
-                        <p>Loading weekly activity data...</p>
-                    )}
+                    }
                     <button onClick={goToActivityTracker}>See More</button>
-                </div>
-                
-            )}
+                </div>)
+                :
+                <></>
+            }
             <div className="recipe-card">
                 <h2>Share A Recipe </h2>
                 <p>Sharing a recipe in our app is more than just providing a list of ingredients and steps; it's an opportunity to connect with others, celebrate culinary traditions, and foster a sense of community.</p>

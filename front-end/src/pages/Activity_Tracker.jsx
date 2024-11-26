@@ -9,8 +9,12 @@ function Activity_Tracker(){
     useEffect(() => {
         const fetchActivitiesData = async () => {
             try {  //fetch all activities
-                const response = await axios.get(`${process.env.REACT_APP_BACK_PORT}/api/activity-tracker`);
-               setActivitiesData([...response.data])
+                const response = await axios.get(`${process.env.REACT_APP_BACK_PORT}/api/users`);
+                const fetchedData = response.data || [];
+
+                // get specific user without database implementatin
+                const activitiesData = fetchedData[0].activities
+               setActivitiesData(activitiesData)
             }catch(error){
                 console.error('Error fetching activities')
             }
@@ -32,8 +36,8 @@ function Activity_Tracker(){
                 {activitiesData.map((activity, index) => (
                     <div className="activity-card" key={index}>
                         <h2>{activity.date}</h2>
-                        <h3>{activity.activity_name}</h3>
-                        <p>{activity.activity_description}</p>
+                        <h3>{activity.name}</h3>
+                        <p>{activity.description}</p>
                     </div>
                 ))}
                 </div>

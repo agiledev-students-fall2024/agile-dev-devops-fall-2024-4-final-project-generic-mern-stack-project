@@ -8,7 +8,7 @@ function Progress_Tracker(){
     useEffect(() => {
         const fetchProgressData = async () => {
 
-            const response = await axios.get(`${process.env.REACT_APP_BACK_PORT}/api/progress-tracker`);
+            const response = await axios.get(`${process.env.REACT_APP_BACK_PORT}/api/users`);
             const fetchedData = response.data || [];
             console.log(fetchedData)
             
@@ -16,18 +16,18 @@ function Progress_Tracker(){
             const myProgressData = fetchedData[0]
             console.log(myProgressData)
             
-            // when database is set up, challenges will be saved in user document by id instead of name. ids will be used to reference challenge information.
-            const completedChallenges = fetchedData[0]['challenges'].filter(challenge => {return challenge['completed']})
-            const completedChallengeNames = completedChallenges.map(challenge => challenge.name)
-            console.log(completedChallengeNames)
+            // when database is set up, recipes  will be saved in user document by id instead of name. ids will be used to reference recipe information.
+            const completedRecipes = myProgressData['recipes'].filter(recipe => {return recipe['completed']})
+            const completedRecipeNames = completedRecipes.map(recipe => recipe.name)
+            console.log(completedRecipeNames)
 
-            const incompleteChallenges = fetchedData[0]['challenges'].filter(challenge => {return !challenge['completed']})
-            const incompleteChallengeNames = incompleteChallenges.map(challenge => challenge.name)
-            console.log(incompleteChallengeNames)
+            const incompleteRecipes = myProgressData['recipes'].filter(recipe => {return !recipe['completed']})
+            const incompleteRecipeNames = incompleteRecipes.map(recipe => recipe.name)
+            console.log(incompleteRecipeNames)
 
-            const progressPercent = (((completedChallengeNames.length * 100 / (completedChallengeNames.length + incompleteChallengeNames.length))) || 0).toFixed(2)
+            const progressPercent = (((completedRecipeNames.length * 100 / (completedRecipeNames.length + incompleteRecipeNames.length))) || 0).toFixed(2)
 
-            setProgressData({'complete': completedChallengeNames, 'incomplete': incompleteChallengeNames, 'percent': progressPercent});
+            setProgressData({'complete': completedRecipeNames, 'incomplete': incompleteRecipeNames, 'percent': progressPercent});
         };
 
         fetchProgressData();
@@ -35,17 +35,20 @@ function Progress_Tracker(){
 
     return(
         <div className='progress-tracker'>
-            <h1 className='progress-tracker-title'>Progress Tracker {progressData['percent']}%</h1>
-            {progressData['complete'].map((challenge, subIndex) => (
-                <div className="progress-card" key={subIndex} complete="true">
-                    <h3>{challenge}</h3>
-                </div>
-            ))}
-            {progressData['incomplete'].map((challenge, subIndex) => (
-                <div className="progress-card" key={subIndex} complete="false">
-                    <h3>{challenge}</h3>
-                </div>
-            ))}
+            <h1 className='progress-tracker-title'>Progress Tracker</h1>
+            <h2 className='progress-tracker-amount'>Goal Recipes Completed:<br/>{progressData['percent']}%</h2>
+            <div className='progress-cards'>
+                {progressData['complete'].map((recipe, subIndex) => (
+                    <div className="progress-card" key={subIndex} complete="true">
+                        <h3>{recipe}</h3>
+                    </div>
+                ))}
+                {progressData['incomplete'].map((recipe, subIndex) => (
+                    <div className="progress-card" key={subIndex} complete="false">
+                        <h3>{recipe}</h3>
+                    </div>
+                ))}
+            </div>
         </div>
     )
     

@@ -1,19 +1,28 @@
 import "./config.mjs";
 import express from "express";
-import session from "express-session";
-import sanitize from "mongo-sanitize";
 import multer from "multer";
 import axios from "axios";
 import cors from "cors";
-import * as auth from "./auth.mjs";
 import path from "path";
 import bodyParser from "body-parser";
 import morgan from "morgan";
-import { fileURLToPath } from 'url';
+import authRoutes from "../routes/authRoutes.mjs";
 import mongoose from "mongoose";
+import keys from "../keys.mjs";
 
 const app = express();
 const PORT = process.env.backPORT || 5000;
+app.use(express.json());
+
+
+// MongoDB Connection
+const mango = keys.MONGOURI;
+mongoose.connect(mango, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connection.on("connected", () => console.log("Connected to MongoDB"));
+mongoose.connection.on("error", (err) =>
+  console.error("MongoDB connection error:", err)
+);
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "public/uploads");
@@ -45,46 +54,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 
-// app.use(session({
-//   secret: 'secret',
-//   resave: false,
-//   saveUninitialized: true,
-//   cookie: {
-//       secure: false,
-//       sameSite: 'lax'
-//   }
-// }));
-
 //APIs for backend
-
-app.post("/api/login", async (req, res) => {
-  const { username, password } = req.body;
-  try {
-    const newUser = await auth.login(sanitize(username), password);
-    // await auth.startAuthenticatedSession(req, newUser);
-    // console.log('Session User', req.session.user);
-    res.status(200).json({ message: "Login successful", newUser });
-  } catch (error) {
-    console.log("does not try");
-    res.status(401).json({ message: error.message });
-  }
-});
-
-app.post("/api/signup", async (req, res) => {
-  const { username, email, password } = req.body;
-
-  try {
-    const newUser = await auth.register(
-      sanitize(username),
-      sanitize(email),
-      password
-    );
-    // await auth.startAuthenticatedSession(req, newUser);
-    res.status(201).json({ message: "User registered successfully", newUser });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
+//for sign up and login
+app.use("/api/auth", authRoutes);
 
 const tempRecipeShareStorage = [];
 
@@ -105,32 +77,23 @@ app.post("/api/shareRecipe", async (req, res) => {
   }
 });
 
-app.get("/api/activity-tracker", async (req, res) => {
+app.get("/api/record-activity", async (req, res) => {
   try {
+    const mockError = process.env.MOCK_ERROR === "true";
+    if (mockError) {
+      throw new Error("Forced error for testing");
+    }
     const { data } = await axios.get(
-      "https://my.api.mockaroo.com/activities_tracker?key=d6450400"
+      "https://my.api.mockaroo.com/recipe_steps?key=594b4990"
     );
     res.json(data);
   } catch (error) {
     console.error("Error fetching data from API:", error.message);
-    res.status(500).json({ error: "Failed to fetch activity tracker data" });
+    res.status(500).json({ error: "Failed to fetch recipe data" });
   }
 });
 
-app.get('/api/record-activity', async (req, res)=>{
-  try{
-    const {data} = await axios.get('https://my.api.mockaroo.com/recipe_steps?key=d6450400'); 
-    res.json(data);
-  } catch (error) {
-    console.error("Error fetching data from API:", error.message);
-    res.status(500).json({ error: "Failed to fetch activity tracker data" });
-  }
-});
-
-app.post(
-  "/api/upload-recipe-image",
-  upload.array("my_files", 2),
-  (req, res, next) => {
+app.post("/api/upload-recipe-image", upload.array("my_files", 2),(req, res, next) => {
     if (!req.files || req.files.length === 0) {
       // No files uploaded
       return res.status(400).json({
@@ -158,30 +121,24 @@ app.post(
   }
 );
 
-app.get('/api/record-activity', async (req, res)=>{
-  try{
-    const {data} = await axios.get('https://my.api.mockaroo.com/recipe_steps?key=d6450400');
+app.get("/api/users", async (req, res) => {
+  try {
+    if (process.env.MOCK_ERROR === "true") {
+      throw new Error("Mocked error");
+    }
+    const { data } = await axios.get(
+      "https://my.api.mockaroo.com/users.json?key=66da8e80"
+    );
     res.json(data);
   } catch (error) {
     console.error("Error fetching data from API:", error.message);
-    res.status(500).json({ error: "Failed to fetch activity tracker data" });
+    res.status(500).json({ error: "Failed to fetch user data" });
   }
-});
-
-app.get("/api/progress-tracker", async(req, res) => {
-    try {
-        const {data} = await axios.get('https://my.api.mockaroo.com/users.json?key=66da8e80');
-        res.json(data);
-    }
-    catch(error) {
-        console.error("Error fetching data from API:", error.message);
-        res.status(500).json({error: "Failed to fetch progress data"});
-    }
 });
 
 app.get("/api/challenges", async (req, res) => {
   try {
-    const mockError = process.env.MOCK_ERROR === 'true';
+    const mockError = process.env.MOCK_ERROR === "true";
     if (mockError) {
       throw new Error("Forced error for testing");
     }
@@ -192,18 +149,6 @@ app.get("/api/challenges", async (req, res) => {
   } catch (error) {
     console.error("Error fetching data from API:", error.message);
     res.status(500).json({ error: "Failed to fetch activity tracker data" });
-  }
-});
-
-app.get("/api/homeWeeklyActivity", async (req, res) => {
-  try {
-    const { data } = await axios.get(
-      "https://my.api.mockaroo.com/home_weekly_activity.json?key=786e37d0"
-    );
-    res.json(data);
-  } catch (error) {
-    console.error("Error fetching data from API:", error.message);
-    res.status(500).json({ error: "Failed to fetch home weekly activity data" });
   }
 });
 
@@ -243,24 +188,12 @@ app.get("/api/recipes", async (req, res) => {
   }
 });
 
-app.get("/api/recipePics", async (req, res) => {
-  try {
-    const { data } = await axios.get("https://picsum.photos/400");
-    res.json(data);
-  } catch (error) {
-    console.error("Error fetching data from API:", error.message);
-    res.status(500).json({ error: "Failed to fetch recipes data" });
-  }
-});
-
 export const startServer = () => {
   app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
   });
 };
 
-
 startServer();
-
 
 export default app;

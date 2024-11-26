@@ -14,15 +14,16 @@ function Recipes() {
     const fetchRecipeData = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_BACK_PORT}/api/recipes`
+          `${process.env.REACT_APP_BACK_PORT}/api/record-activity`
         );
         const formattedData = response.data.map((item) => ({
           dish: item.recipe_name,
           difficulty: item.difficulty_level,
-          ingredients: item.ingredients,
-          steps: item.instructions ? item.instructions.split(". ") : [],
-          duration: item.total_time,
-          imgs: `${process.env.REACT_APP_BACK_PORT}/api/recipePics`,
+          ingredients: item.ingredients.item,
+          steps: item.recipe_steps.step,
+          duration: item.duration,
+          //imgs: `${process.env.REACT_APP_BACK_PORT}/api/recipePics`,
+          imgs: "https://picsum.photos/400",
         }));
         setRecipeData(formattedData);
       } catch (error) {
