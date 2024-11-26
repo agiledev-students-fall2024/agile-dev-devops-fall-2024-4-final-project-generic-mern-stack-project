@@ -19,6 +19,8 @@ import Register from './Authentication/Register';
 
 function App() {
 
+  
+
   return (
     <div className='App'>
         <BrowserRouter>
@@ -27,10 +29,7 @@ function App() {
             {/* Add any route in the same format it is defined as here */}
             <Route path='/' element={<Login/>} />
             <Route path="/Tasks" element={<Tasks />} />
-            <Route path="/EditTask" element={<EditTask />}/>
-            {/* Comment for the edit task: because of the restriction of mock data now, 
-              this function cannot fully achieved, so the way we connect it is not exactly true.
-              the page itself can be seen from http://localhost:3000/EditTask. */}
+            <Route path="/EditTask/:taskId" element={<EditTask />} />
             <Route path="/CreateTask" element={<CreateTask />} />
             <Route path="/Goals" element={<Goals />} />
             <Route path="/NewGoal" element={<NewGoal />} />

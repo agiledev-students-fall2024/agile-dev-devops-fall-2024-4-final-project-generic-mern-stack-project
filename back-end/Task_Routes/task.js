@@ -24,16 +24,16 @@ router.get('/tasks', (req, res) => {
 });
 
 
-// Get task by ID
-router.get('/tasks/:id', (req, res) => {
-  Task.findById(req.params.id)
-    .then(task => {
-      if (task) {
-        res.json(task);
-      } else {
-        res.status(404).json({ message: "Task not found" });
-      }
-    });
+
+// GET Task by ID
+router.get('/tasks/:id', async (req, res) => {
+  try {
+    const task = await Task.findById(req.params.id) // Find task by ID in MongoDB
+    if (!task) return res.status(404).json({ message: 'Task not found' })
+    res.json(task)
+} catch (error) {
+    res.status(500).json({ error: error.message })
+}
 });
 
 // router.post('/tasks', async (req, res) => {
@@ -46,6 +46,8 @@ router.get('/tasks/:id', (req, res) => {
 //   // const newTask = { name, due, status, priority, subject, recurring_period };
 //   res.status(201).json(task1);
 // });
+
+
 router.post('/tasks', async (req, res) => {
   const { title, description, subject, due_date, priority, recurring, recurring_period } = req.body;
   const status = "not_started";
@@ -97,27 +99,45 @@ router.get('/tasks/:id', async (req, res) => {
   res.json(task);
 });
 
-// Update a specific task by MongoDB ID
-router.put('/tasks/:id', async (req, res) => {
-  const taskId = req.params.id;
-  const updatedTaskData = req.body;
 
-  const updatedTask = await Task.findByIdAndUpdate(taskId, updatedTaskData, { new: true });
-  if (!updatedTask) {
-    return res.status(404).json({ error: "Task not found or could not be updated" });
-  }
-  res.json(updatedTask);
+
+// PUT Update Task
+// For the edit task page
+router.put('/tasks/:id', async (req, res) => {
+  try {
+    const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+    if (!updatedTask) {
+        return res.status(404).json({ message: 'Task not found' })
+    }
+    res.json(updatedTask)
+} catch (error) {
+    res.status(500).json({ message: 'Error updating task', error: error.message })
+}
 });
+
 
 // Delete a task by MongoDB ID
+// router.delete('/tasks/:id', async (req, res) => {
+//   const taskId = req.params.id;
+//   const deletedTask = await Task.findByIdAndDelete(taskId);
+//   if (!deletedTask) {
+//     return res.status(404).json({ error: "Task not found or could not be deleted" });
+//   }
+//   res.json({ message: "Task deleted successfully" });
+// });
 router.delete('/tasks/:id', async (req, res) => {
-  const taskId = req.params.id;
-  const deletedTask = await Task.findByIdAndDelete(taskId);
-  if (!deletedTask) {
-    return res.status(404).json({ error: "Task not found or could not be deleted" });
+  try {
+      const deletedTask = await Task.findByIdAndDelete(req.params.id)
+      if (!deletedTask) {
+          return res.status(404).json({ message: 'Task not found' })
+      }
+      res.status(204).send() // No content response
+  } catch (error) {
+      res.status(500).json({ message: 'Error deleting task', error: error.message })
   }
-  res.json({ message: "Task deleted successfully" });
-});
+})
+
+
 router.get('/tasks/due/:date', async (req, res) => {
   const tasks = await fetch('https://my.api.mockaroo.com/tasks?key=34c59640');
   const tasksDue = tasks.filter(task => task.due === req.params.date);
