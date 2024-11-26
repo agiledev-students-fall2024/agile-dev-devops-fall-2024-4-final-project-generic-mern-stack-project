@@ -17,7 +17,7 @@ const Home = () => {
   // Fetch data from the back-end
   React.useEffect(() => {
     const fetchData = async () => {
-      try {
+      try { 
         const response = await axios.get(`${apiUrl}/api/main`, {
           headers: { Authorization: `Bearer ${token}` }, // Send JWT token
         });

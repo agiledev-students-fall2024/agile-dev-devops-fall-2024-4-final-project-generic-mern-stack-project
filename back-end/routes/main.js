@@ -9,6 +9,14 @@ const Post = require('../models/Post');
 // Middleware to authenticate using JWT
 router.use(passport.authenticate('jwt', { session: false }));
 
+// Error handler for authentication
+router.use((err, req, res, next) => {
+  if (err.name === 'UnauthorizedError') {
+    return res.status(401).json({ message: 'Invalid or missing token' });
+  }
+  next(err);
+});
+
 // Route for home
 router.get('/', async (req, res) => {
   try {
