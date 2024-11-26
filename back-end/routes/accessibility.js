@@ -9,6 +9,7 @@ router.get("/api/color-mode", protectRouter, async (req, res) => {
     try {
         // getting user id from cookies
         const id = req.user._id
+        console.log(id)
 
         const user = await Setting.findOne({ userId: id });
         if (!user) {
