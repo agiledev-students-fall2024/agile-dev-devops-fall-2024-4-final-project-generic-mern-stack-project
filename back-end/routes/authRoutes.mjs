@@ -12,7 +12,7 @@ router.use(express.json());
 router.post('/signup', async (req, res) => {
   const { username, email, password } = req.body;
 
-  console.log("Request data:", req.body); // Log incoming data
+  console.log("Request data:", req.body);
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -49,7 +49,7 @@ router.post('/signup', async (req, res) => {
       { expiresIn: '1h' } 
     );
     console.log(token)
-    res.status(201).json({ token });
+    res.status(201).json({ token, userId: user._id, });
   } catch (error) {
     console.error("Error registering user:", error.message);
     res.status(500).send('Error registering user');
@@ -62,6 +62,7 @@ router.post('/login', async (req, res) => {
   console.log(username, password)
   try {
     const user = await User.findOne({ username });
+    console.log(user.email)
 
     if (!user) {
       return res.status(401).send('User not found');
@@ -78,7 +79,7 @@ router.post('/login', async (req, res) => {
       { expiresIn: '1h' }
     );
     console.log(token)
-    res.json({ token });
+    res.json({ token, userId: user._id, });
   } catch (error) {
     res.status(500).send('Error logging in');
   }

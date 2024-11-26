@@ -11,7 +11,6 @@ function Login() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      // Redirect to Home if token exists
       navigate('/home');
     }
   }, [navigate]);
@@ -24,9 +23,11 @@ function Login() {
         `${process.env.REACT_APP_BACK_PORT}/api/auth/login`,
         { username, password }
       );
-      const token = response.data.token;
+      const { token, userId } = response.data;
       localStorage.setItem('token', token);
+      localStorage.setItem('userId', userId); 
       console.log('Token saved:', token);
+      console.log('UserId saved:', userId);
 
       
       console.log(response.data.message);

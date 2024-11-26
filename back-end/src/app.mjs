@@ -159,6 +159,36 @@ app.get("/api/biteBuddyProfile", async (req, res) => {
   }
 });
 
+app.put('/api/update-profile', async (req, res) => {
+  try {
+      const { userId, firstName, lastName, age, location, bio } = req.body;
+
+      // Update the user based on the provided userId
+      console.log("thisis userID", userId)
+      const updatedUser = await User.findByIdAndUpdate(
+          userId,
+          {
+              first_name: firstName,
+              last_name: lastName,
+              age,
+              location,
+              bio,
+          },
+          { new: true }
+      );
+
+      if (!updatedUser) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+
+      res.status(200).json(updatedUser);
+  } catch (error) {
+      console.error('Error updating profile:', error);
+      res.status(500).json({ message: 'Server error while updating profile' });
+  }
+});
+
+
 app.get("/api/basicRecipe", async (req, res) => {
   try {
     const { data } = await axios.get(
