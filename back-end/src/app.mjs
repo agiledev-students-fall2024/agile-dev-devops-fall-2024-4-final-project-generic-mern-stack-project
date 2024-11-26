@@ -7,8 +7,12 @@ import path from "path";
 import bodyParser from "body-parser";
 import morgan from "morgan";
 import authRoutes from "../routes/authRoutes.mjs";
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 import keys from "../keys.mjs";
+import User from "../models/user.mjs"
+import ActivitySchema from "../models/activity.mjs"
+import Recipe from "../models/recipe.mjs"
+import recipe from "../models/recipe.mjs";
 
 const app = express();
 const PORT = process.env.backPORT || 5000;
@@ -77,15 +81,14 @@ app.post("/api/shareRecipe", async (req, res) => {
   }
 });
 
-app.get("/api/record-activity", async (req, res) => {
+app.get("/api/recipes", async (req, res) => {
   try {
     const mockError = process.env.MOCK_ERROR === "true";
     if (mockError) {
       throw new Error("Forced error for testing");
     }
-    const { data } = await axios.get(
-      "https://my.api.mockaroo.com/recipe_steps?key=594b4990"
-    );
+    const data = await recipe.find()
+    console.log(data)
     res.json(data);
   } catch (error) {
     console.error("Error fetching data from API:", error.message);
@@ -168,18 +171,6 @@ app.get("/api/basicRecipe", async (req, res) => {
   try {
     const { data } = await axios.get(
       "https://my.api.mockaroo.com/basic_recipe.json?key=786e37d0"
-    );
-    res.json(data);
-  } catch (error) {
-    console.error("Error fetching data from API:", error.message);
-    res.status(500).json({ error: "Failed to fetch recipes data" });
-  }
-});
-
-app.get("/api/recipes", async (req, res) => {
-  try {
-    const { data } = await axios.get(
-      "https://my.api.mockaroo.com/recipes.json?key=a170a060"
     );
     res.json(data);
   } catch (error) {

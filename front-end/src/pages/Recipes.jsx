@@ -14,18 +14,21 @@ function Recipes() {
     const fetchRecipeData = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_BACK_PORT}/api/record-activity`
+          `${process.env.REACT_APP_BACK_PORT}/api/recipes`
         );
+        console.log(response)
+
         const formattedData = response.data.map((item) => ({
-          dish: item.recipe_name,
+          id: item._id,
+          dish: item.name,
           difficulty: item.difficulty_level,
-          ingredients: item.ingredients.item,
-          steps: item.recipe_steps.step,
+          ingredients: item.ingredients,
+          steps: item.steps,
           duration: item.duration,
           //imgs: `${process.env.REACT_APP_BACK_PORT}/api/recipePics`,
           imgs: "https://picsum.photos/400",
         }));
-        setRecipeData(formattedData);
+        setRecipeData(formattedData)
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -41,10 +44,11 @@ function Recipes() {
   const close = () => {
     setSelectedRecipe(null);
   };
-  const handleStartRecipe = (recipeId) => {
+  const handleStartRecipe = (selectedRecipe) => {
     // Navigate to the record activity page, passing the recipe data
-    console.log("going to recipe id:" + recipeId);
-    navigate("/record", { state: { recipeId } });
+    console.log("going to recipe id:" + selectedRecipe.id);
+    console.log('selectedrecipe is', selectedRecipe)
+    navigate("/record", { state: { selectedRecipe } });
   };
 
   return (
@@ -68,11 +72,10 @@ function Recipes() {
               </div>
               <button
                 className="start-button"
-                onClick={() => handleStartRecipe(recipeItem.id)}
+                onClick={() => handleStartRecipe(recipeItem)}
               >
                 START RECIPE
               </button>
-              <Timer duration={recipeItem.duration} />
             </div>
           ))}
         </div>
@@ -87,7 +90,7 @@ function Recipes() {
             </p>
             <button
               className="start-button"
-              onClick={() => handleStartRecipe(selectedRecipe.id)}
+              onClick={() => handleStartRecipe(selectedRecipe)}
             >
               START RECIPE
             </button>

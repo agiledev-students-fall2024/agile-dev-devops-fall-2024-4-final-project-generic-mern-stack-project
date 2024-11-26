@@ -5,13 +5,16 @@
   text-align: center;
 }
 
+.timer-container h3{
+  margin: 0;
+}
 .timer-bar {
   height: 20px;
   color: black;
   background-color: white;
   transition: width 1s linear;
   border-radius: 5px;
-  margin: 10px 0;
+  margin-bottom: 10px;
 }
 
 .timer-text {

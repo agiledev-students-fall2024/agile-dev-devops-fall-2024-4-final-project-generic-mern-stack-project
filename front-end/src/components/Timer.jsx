@@ -29,10 +29,10 @@ const Timer = ({ duration }) => {
 
   return (
     <div className="timer-container">
+      <h3>Time Left:</h3>
       <div className="timer-bar" style={{ width: `${progressWidth}%` }}>
-        Time Left
+        {timeLeft}
       </div>
-      <div className="timer-text">{timeLeft}s</div>
       <button onClick={handleStart} className="timer-button">
         Start
       </button>
