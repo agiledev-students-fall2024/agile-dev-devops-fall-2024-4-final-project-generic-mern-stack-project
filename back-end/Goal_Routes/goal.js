@@ -1,19 +1,29 @@
 const { Router } = require('express');
 const mongoose = require('mongoose');
+const Goal = require('../models/Goal');
+
 
 const app = new Router();
 
-app.get("/goals", async (req, res) => {
-    let response = await fetch('https://my.api.mockaroo.com/goal?key=34c59640');
-    response = await response.json();
-    console.log(response)
-    res.json(response)
-})
+app.get('/goals', async (req, res) => {
+    try {
+      const goals = await Goal.find().populate('tasks'); // Populate associated tasks
+      res.json(goals);
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to fetch goals.' });
+    }
+  });
+  
 
-app.post("/goals/new", async (req, res) => {
-    let { title, tasks, dueDate } = req.body;
-    console.log(req.body);
-    res.json({ message: "Goal created successfully" });
-})
+  app.post('/goals/new', async (req, res) => {
+    try {
+      const { title, tasks, dueDate, priority, description } = req.body;
+      const goal = new Goal({ title, tasks, dueDate, priority, description });
+      const savedGoal = await goal.save();
+      res.status(201).json(savedGoal);
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to create goal.' });
+    }
+  });
 
 module.exports = app;
