@@ -1,25 +1,21 @@
 import mongoose from "mongoose";
 
 const activitySchema = new mongoose.Schema({
-  title: {
+  activity_name: {
     type: String,
     required: true
   },
-  description: {
+  activity_description: {
     type: String,
     required: false
   },
   date: {
     type: Date
   },
-  duration: [{
+  activity_duration: [{
     type: Number,
     required: true
   }],
-  image: [{
-    type: String,
-    required: false
-  }]
 });
 
 // const activity = mongoose.model("Activity", activitySchema);
