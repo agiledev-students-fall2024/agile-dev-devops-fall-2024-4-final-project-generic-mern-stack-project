@@ -11,20 +11,18 @@ const DailyView = () => {
 
     useEffect(() => {
         const fetchTasks = async () => {
-            const response = await fetch(`http://localhost:4000/calendar/${month}/${day}/${year}`);
-            //const response = await fetch('http://localhost:4000/');
-            const data = await response.json();
-            setTasks(data);
+            try {
+                const response = await fetch(`http://localhost:4000/calendar/${month}/${day}/${year}`);
+                const data = await response.json();
+                setTasks(data);
+            } catch (error) {
+                console.error("Error fetching tasks:", error);
+            }
         };
         fetchTasks();
-    }, [])
+    }, [month, day, year]);
+    
 
-    const handleStatusChange = (taskId) => {
-        setTasks(tasks.map(task =>
-            task.id === taskId ? 
-            { ...task, status: task.status === 'finished' ? 'not_started' : 'finished' } : task
-        ));
-    };
 
     return (
         <div className="daily-view-container">
@@ -34,12 +32,7 @@ const DailyView = () => {
                 {tasks.map((task) => (
                     <div key={task.id} className="task-item">
                         <span className="task-name">{task.name}</span>
-                        <button 
-                            onClick={() => handleStatusChange(task.id)}
-                            className={task.status === 'finished' ? 'task-done-btn' : 'task-pending-btn'}
-                        >
-                            {task.status === 'finished' ? 'Done' : 'Mark as Done'}
-                        </button>
+                        <span className={`task-status ${task.status}`}>{task.status}</span> 
                     </div>
                 ))}
             </div>

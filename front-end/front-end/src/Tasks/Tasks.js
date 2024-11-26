@@ -68,7 +68,7 @@ function Tasks() {
     });
     setTasks(prevTasks =>
       prevTasks.map(task =>
-        task.id.$oid === taskId ? { ...task, status: newStatus } : task
+        task._id === taskId ? { ...task, status: newStatus } : task
       )
     );
   };
@@ -79,7 +79,7 @@ function Tasks() {
       : task.status === 'ongoing'
       ? 'finished'
       : 'not_started';
-    updateTaskStatus(task.id.$oid, newStatus);
+    updateTaskStatus(task._id, newStatus);
   };
 
 
