@@ -78,7 +78,7 @@ const Home = () => {
         console.log(`Could not get data.`);
         console.error(err);
       });
-  }, []);
+  }, [updateColor, updateFont]);
 
   return (
     <div className="w-[100%] flex flex-col justify-center items-center gap-6 p-8 mx-auto md:w-[90%]">
