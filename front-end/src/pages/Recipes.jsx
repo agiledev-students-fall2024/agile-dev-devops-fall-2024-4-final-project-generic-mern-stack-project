@@ -20,8 +20,8 @@ function Recipes() {
 
         const formattedData = response.data.map((item) => ({
           id: item._id,
-          dish: item.name,
-          difficulty: item.difficulty_level,
+          name: item.name,
+          difficulty_level: item.difficulty_level,
           ingredients: item.ingredients,
           steps: item.steps,
           duration: item.duration,
@@ -84,7 +84,7 @@ function Recipes() {
       {selectedRecipe && (
         <div className="popup-overlay" onClick={close}>
           <div className="popup-content" onClick={(e) => e.stopPropagation()}>
-            <h1>Dish: {selectedRecipe.dish}</h1>
+            <h1>Dish: {selectedRecipe.name}</h1>
             <p>
               <strong>Ingredients:</strong> {selectedRecipe.ingredients}
             </p>
