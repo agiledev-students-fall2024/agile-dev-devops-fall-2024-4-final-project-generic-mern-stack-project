@@ -91,7 +91,7 @@ const EditProfileForm = () => {
                         type='text' 
                         onChange={handleChange}
                         value={formData.name}
-                        required
+                        // required
                         className='border border-gray-300 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-gray-400 text-base' />
                 </div>
 
