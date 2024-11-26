@@ -18,6 +18,6 @@ const activitySchema = new mongoose.Schema({
   }],
 });
 
-// const activity = mongoose.model("Activity", activitySchema);
+const activity = mongoose.model("Activity", activitySchema);
 
 export default activitySchema;

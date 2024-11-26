@@ -12,12 +12,10 @@ import Timer from "../components/Timer.jsx";
 
 Modal.setAppElement("#root");
 function Record() {
-  const [allRecipes, setAllRecipes] = useState([]);
-  const [currRecipe, setCurrRecipe] = useState({});
+  const location = useLocation();
+  const [currRecipe, setCurrRecipe] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
-  const [recipeId, setRecipeId] = useState(location.state?.recipeId || null);
   const [error, setError] = useState(null);
 
   const [completedSteps, setCompletedSteps] = useState([]);
@@ -57,8 +55,7 @@ function Record() {
 
   const closeModal = () => {
     setCompletedSteps([]);
-    setCurrRecipe({});
-    setRecipeId(null);
+    setCurrRecipe(null);
     localStorage.removeItem("currentRecipe");
     localStorage.removeItem("completedSteps");
     localStorage.removeItem("selectedIngredients");
@@ -110,36 +107,22 @@ function Record() {
   };
 
   useEffect(() => {
-    const fetchAllRecipes = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACK_PORT}/api/record-activity`
-        );
-        setAllRecipes(response.data); // Ensure duration is included here
-        console.log("Fetched all recipes:", response.data);
-      } catch (error) {
-        console.error("Error fetching all recipes", error);
-      }
-    };
-    fetchAllRecipes();
-  }, []);
-
-  useEffect(() => {
     const cachedRecipe = JSON.parse(localStorage.getItem("currentRecipe"));
     if (cachedRecipe) {
       setCurrRecipe(cachedRecipe);
-      //console.log(currRecipe);
-    } else if (recipeId) {
-      const currentRecipe = allRecipes.find((ele) => ele.id === recipeId);
-
-      if (currentRecipe) {
-        setCurrRecipe(currentRecipe);
-        localStorage.setItem("currentRecipe", JSON.stringify(currentRecipe));
-      } else {
-        console.warn(`No recipe found for ID: ${recipeId}`);
-      }
+      console.log('set cached recipe as current', cachedRecipe);
+    } else if (location.state?.selectedRecipe) {
+      setCurrRecipe(location.state.selectedRecipe);
+      console.log('set recipe from location state', location.state.selectedRecipe);
     }
-  }, [recipeId, allRecipes]);
+  }, [location.state?.selectedRecipe]);
+
+  useEffect(() => {
+    if (currRecipe) {
+      localStorage.setItem("currentRecipe", JSON.stringify(currRecipe));
+      console.log('put into local storage', currRecipe);
+    }
+  }, [currRecipe]); 
 
   useEffect(() => {
     const savedCompletedSteps = JSON.parse(
@@ -161,36 +144,43 @@ function Record() {
 
   useEffect(() => {
     // Check if all steps are completed
+    if (!currRecipe) {
+      console.log("Recipe is not available yet");
+      return; // Exit early if currRecipe is null or undefined
+    }
     const allStepsCompleted =
-      completedSteps.length === currRecipe.recipe_steps?.step?.length;
+      completedSteps.length === currRecipe.steps?.length;
 
     if (allStepsCompleted && buttonRef.current) {
       buttonRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
     }
-  }, [completedSteps.length, currRecipe?.recipe_steps?.step?.length]);
+  }, [completedSteps.length, currRecipe?.steps?.length, currRecipe]);
 
-  if (!recipeId && !currRecipe.recipe_name) {
+  if (!currRecipe) {
     return <NoRecipe navigate={navigate} />;
   }
 
   return (
     <div className="record-container">
-      <h1> {currRecipe.recipe_name || "N/A"}</h1>
-      <h2> {currRecipe.recipe_description || "N/A"}</h2>
+      <h1> {currRecipe.dish || "N/A"}</h1>
+      <hr></hr>
+      <Timer duration={currRecipe.duration || 240} />
+      
       <IngredientsList
         ingredients={currRecipe.ingredients}
         selectedIngredients={selectedIngredients}
         handleIngredientSelect={handleIngredientSelect}
       />
       <RecipeSteps
-        steps={currRecipe.recipe_steps}
+        steps={currRecipe.steps}
         completedSteps={completedSteps}
         onStepComplete={handleStepComplete}
         buttonRef={buttonRef}
         onComplete={handleRecipeComplete}
       />
-      <Timer duration={currRecipe.duration || 240} />
 
+      <button onClick={closeModal}>Quit Recipe</button>
+      
       <CompletionModal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
