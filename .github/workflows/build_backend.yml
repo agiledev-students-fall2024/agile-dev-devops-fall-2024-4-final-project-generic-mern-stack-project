@@ -30,4 +30,4 @@ jobs:
       with:
         context: ./back-end
         push: true
-        tags: ghcr.io/${{ github.repository_owner }}/back-end:${{ github.event_name == 'pull_request' && 'pr-' + github.event.number || 'latest' }}
+        tags: ghcr.io/${{ github.repository_owner }}/back-end:${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || 'latest' }}
