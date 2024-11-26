@@ -66,6 +66,7 @@ router.post('/tasks', async (req, res) => {
   res.status(201).json(task1);
 });
 
+
 router.put('/tasks/:id/status', (req, res) => {
   const { status } = req.body;
 
@@ -84,6 +85,8 @@ router.put('/tasks/:id/status', (req, res) => {
     })
     .catch(err => res.status(500).json({ error: err.message }));
 });
+
+
 
 router.get('/tasks/:id', async (req, res) => {
   const taskId = req.params.id;
