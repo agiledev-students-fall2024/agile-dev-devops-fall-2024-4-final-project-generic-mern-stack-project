@@ -2,6 +2,18 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Before You Run The Frontend
+
+Create a .env file in the front-end folder with the following content:
+- REACT_APP_BACK_PORT
+- PORT
+
+### Sample .env file
+
+REACT_APP_BACK_PORT = http://localhost:5001
+
+PORT=3000
+
 ## Available Scripts
 
 In the project directory, you can run:

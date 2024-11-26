@@ -2,6 +2,24 @@
 
 This project was bootstrapped with [Express](https://expressjs.com/).
 
+## Before You Run The Backend
+
+Create a .env file in the front-end folder with the following content:
+- backPORT
+- frontPORT
+- MOCK_ERROR
+- SECRET_KEY
+
+### Sample .env file
+
+backPORT = 5001
+
+frontPORT = http://localhost:3000
+
+MOCK_ERROR = false
+
+SECRET_KEY = thisisasecretkey
+
 ## Available Scripts
 
 In the project directory, you can run:
