@@ -112,12 +112,11 @@ function Record() {
   useEffect(() => {
     const fetchAllRecipes = async () => {
       try {
-        //fetch all activities
         const response = await axios.get(
           `${process.env.REACT_APP_BACK_PORT}/api/record-activity`
         );
-        setAllRecipes([...response.data]);
-        console.log("fetchedallrecipes");
+        setAllRecipes(response.data); // Ensure duration is included here
+        console.log("Fetched all recipes:", response.data);
       } catch (error) {
         console.error("Error fetching all recipes", error);
       }
@@ -129,8 +128,10 @@ function Record() {
     const cachedRecipe = JSON.parse(localStorage.getItem("currentRecipe"));
     if (cachedRecipe) {
       setCurrRecipe(cachedRecipe);
+      //console.log(currRecipe);
     } else if (recipeId) {
       const currentRecipe = allRecipes.find((ele) => ele.id === recipeId);
+
       if (currentRecipe) {
         setCurrRecipe(currentRecipe);
         localStorage.setItem("currentRecipe", JSON.stringify(currentRecipe));
@@ -189,6 +190,7 @@ function Record() {
         onComplete={handleRecipeComplete}
       />
       <Timer duration={currRecipe.duration || 240} />
+
       <CompletionModal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
