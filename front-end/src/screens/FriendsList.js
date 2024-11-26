@@ -11,7 +11,7 @@ const FriendsList = () => {
   useEffect(() => {
     const fetchFriends = async () => {
       try {
-        const response = await fetch(`${apiUrl}/api/friends`); // REMEMBER TO CHANGE IN ALL FILES
+        const response = await fetch(`${apiUrl}/api/friends/friends`); // REMEMBER TO CHANGE IN ALL FILES
         if (response.ok) {
           const data = await response.json();
           setFriends(data);
