@@ -4,24 +4,25 @@ import axios from 'axios';
 import { Link, Navigate } from 'react-router-dom'
 import EditProfileForm from '../components/EditProfileForm'
 
-
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const EditProfile = () => {
+    const token = localStorage.getItem('token')
     const [user, setUser] = React.useState(null)
     const [redirect, setRedirect] = React.useState(false)
 
     React.useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const response = await axios.get(`${apiUrl}/api/account/authUser`);
-                setUser(response.data)
-            } catch (error) {
+        axios
+            .get(`${apiUrl}/api/account/edit`, 
+                { headers: { Authorization: `Bearer ${token}` }, }
+            )
+            .then(res => {
+                setUser(res.data)
+            })
+            .catch(err => {
                 setRedirect(true)
-            }
-        };
-        fetchUser();
-    }, [])
+            })
+    }, [token])
 
     if (redirect) {
         return <Navigate to='/' /> 

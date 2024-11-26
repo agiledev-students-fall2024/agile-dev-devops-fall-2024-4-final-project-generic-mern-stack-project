@@ -1,58 +1,77 @@
 const express = require('express');
 const router = express.Router();
-const loggedInData = require('../fillerData/loggedIn');
-const usersData = require('../fillerData/users');
-const blockedData = require('../fillerData/blocked');
-const friendsData = require('../fillerData/friendships');
-const postsData = require('../fillerData/posts');
-const authUserId = loggedInData[0].id
+const mongoose = require('mongoose')
+const passport = require('passport')
+const User = require('../models/User.js')
+const Blocked = require('../models/Blocked.js')
+const Post = require('../models/Post.js')
 
-router.get('/authUser', (req, res) => {
-    const authId = loggedInData[0].id
-    user = usersData.find(user => user.id === authId)
-    if (user){
-        return res.status(200).json(user)
-    } 
-    return res.status(200).json(null)
+
+router.get('/edit', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    const user = JSON.parse(JSON.stringify(req.user))
+    delete user.password
+    delete user.__v
+    delete user._id
+    return res.status(200).json(user);
 })
 
-router.post('/edit', (req, res) => {
-    const { name, bio, layout, profileImg } = req.body
-    const user = usersData.find(user => user.id === authUserId)
-
-    user.name = name;
-    user.bio = bio;
-    user.layout = layout;
-
-    return res.status(200).json({ message: 'Your profile was successfully updated', username: user.username });
+router.put('/edit', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+        const user = await User.findOne({ username: req.user.username })
+        
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+    
+        user.name = req.body.name || user.name
+        user.bio = req.body.bio || user.bio
+        user.layout = req.body.layout || user.layout
+        user.profilePicture = req.body.profilePicture || user.profilePicture
+    
+        await user.save()
+        return res.status(200).json({ 
+            message: 'Your profile was successfully updated',
+            username: user.username,
+        })
+      } catch (err) {
+            return res.status(500).json({ message: 'An error occurred', error: err });
+      }
 })
 
-router.get('/user/:username', (req, res) => {
-    const username = req.params.username
-    const user = usersData.find(user => user.username === username)
-    if (!user){
-        return res.status(404).json({ error: 'User not found' })
-    } 
+router.get( '/user/:username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    const belongsToLoggedIn = req.user.username === req.params.username
+    const username = belongsToLoggedIn ? req.user.username : req.params.username
+    
+    try {
+        const user = await User.findOne({ username: username }).select('-password -__v').exec()
+        if (!user){
+            return res.status(404).json({ error: 'User not found' })
+        } 
 
-    const blockedUsers =blockedData
-        .filter(item => item.blocked_id === authUserId || item.blocker_id === authUserId)
-        .map(item => item.blocked_id === authUserId ? item.blocker_id : item.blocked_id)
+        if (!belongsToLoggedIn){
+            const blocked = (await Blocked.find({
+                $or: [
+                  { blocker: req.user._id, blocked: user.id },
+                  { blocker: user.id, blocked: req.user._id }
+                ]
+            }).exec()).length > 0
 
-    if (blockedUsers.includes(user.id)){
-        return res.status(404).json({ error: 'User not found' })
-    } 
+            if (blocked) {
+                return res.status(404).json({ error: 'User is blocked or has blocked you' });
+            }
+        }
 
-    const posts = postsData.filter(post => post.author_id === user.id).sort((a, b) => new Date(b.date) - new Date(a.date))
-
-    let friends = false
-    if (user.id !== authUserId){
-        const getFriends = friendsData
-            .filter(item => item.user_id_1 === authUserId || item.user_id_2 === authUserId)  
-            .map(item => item.user_id_1 === authUserId ? item.user_id_2 : item.user_id_1);
-        friends = getFriends.includes(user.id)
-    } 
-
-    return res.status(200).json({ belongsToLoggedIn: authUserId === user.id, user, posts, friends: friends })
+        const posts = await Post.find({author: user.id}).exec()
+        console.log(posts)
+        return res.status(200).json({ belongsToLoggedIn, user, posts})
+    
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            message: 'Error fetching user data.',
+            error: err,
+        })
+    }
 })
 
 module.exports = router;

@@ -5,6 +5,7 @@ import { Navigate } from 'react-router-dom'
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const EditProfileForm = () => {
+    const token = localStorage.getItem('token')
     const [formData, setFormData] = React.useState({
         name: '',
         bio: '',
@@ -16,19 +17,20 @@ const EditProfileForm = () => {
     const [success, setSuccess] = React.useState(null)
 
     React.useEffect(() => {
-        const fetchFormData = async () => {
-            try {
-                const response = await axios.get(`${apiUrl}/api/account/authUser`)
-                setFormData({
-                    name: response.data.name,
-                    bio: response.data.bio ? response.data.bio : '',
-                    layout: response.data.layout,
-                    file: null
-                })
-            } catch (error) {}
-        }
-        fetchFormData();
-    }, [])
+        axios
+        .get(`${apiUrl}/api/account/edit`, 
+            { headers: { Authorization: `Bearer ${token}` }, }
+        )
+        .then(res => {
+            setFormData({
+                name: res.data.name,
+                bio: res.data.bio ? res.data.bio : '',
+                layout: res.data.layout,
+                file: null
+            })
+        })
+        .catch(err => {})
+    }, [token])
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -41,7 +43,11 @@ const EditProfileForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const response = await axios.post(`${apiUrl}/api/account/edit`, formData);
+            const response = await axios
+                .put(`${apiUrl}/api/account/edit`, 
+                    formData,
+                    { headers: { Authorization: `Bearer ${token}` }, },
+                )
             setError(null)
             setSuccess(response.data.username)
         } catch (error) {

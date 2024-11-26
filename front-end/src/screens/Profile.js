@@ -9,31 +9,32 @@ const apiUrl = process.env.REACT_APP_API_URL;
 
 const Profile = () => {
     const { username } = useParams()
+    const token = localStorage.getItem('token')
     const [user, setUser] = React.useState(null)
     const [redirect, setRedirect] = React.useState(false)
     const [belongsToLoggedIn, setBelongsToLoggedIn] = React.useState(null)
     const [posts, setPosts] = React.useState([])
-    const [friends, setFriends] = React.useState(false)
+    // const [friends, setFriends] = React.useState(false)
 
     const generateRandomList = (min, max, count) => (
         Array.from({ length: count }, () => Math.floor(Math.random() * (max - min + 1)) + min)
     )
 
     React.useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`${apiUrl}/api/account/user/${username}`);
-                setBelongsToLoggedIn(response.data.belongsToLoggedIn)
-                setUser(response.data.user)
-                setPosts(response.data.posts)
-                setFriends(response.data.friends)
-            } catch (error) {
+        axios
+            .get(`${apiUrl}/api/account/user/${username}`, 
+                { headers: { Authorization: `Bearer ${token}` }, }
+            )
+            .then(res => {
+                setBelongsToLoggedIn(res.data.belongsToLoggedIn)
+                setUser(res.data.user)
+                setPosts(res.data.posts)
+                // setFriends(res.data.friends)
+            })
+            .catch(err => {
                 setRedirect(true)
-            }
-        };
-        fetchData();
-
-    }, [username])
+            })
+    }, [token, username])
 
     if (redirect) {
         return <Navigate to='/' /> 
@@ -48,11 +49,11 @@ const Profile = () => {
             return (
                 <div className={`profile-posts layout--${user.layout}`}>
                     { posts.map( post => {
-                        const dateObject = new Date(post.date)
+                        const dateObject = new Date(post.createdAt)
                         return (
                             <Link 
-                                key={`profile-${user.username}-${post.id}`} 
-                                to={`/blogpostloggedin/${post.id}`} 
+                                key={`profile-${user.username}-${post._id}`} 
+                                to={`/blogpostloggedin/${post._id}`} 
                                 className=' text-reset text-decoration-none'
                             >                                
                                 <div>
@@ -70,8 +71,8 @@ const Profile = () => {
                     { posts.map( post => {
                         return (
                             <Link 
-                                key={`profile-${user.username}-${post.id}`} 
-                                to={`/blogpostloggedin/${post.id}`} 
+                                key={`profile-${user.username}-${post._id}`} 
+                                to={`/blogpostloggedin/${post._id}`} 
                                 className='text-reset text-decoration-none'
                             >
                                 { post.imageUrl ? 
@@ -92,11 +93,11 @@ const Profile = () => {
             return (
                 <div className='profile-posts layout--masonry mt-8'>
                     { posts.map( (post, index) => {
-                        const dateObject = new Date(post.date)
+                        const dateObject = new Date(post.createdAt)
                         return (
                             <Link 
-                                key={`profile-${user.username}-${post.id}`} 
-                                to={`/blogpostloggedin/${post.id}`} 
+                                key={`profile-${user.username}-${post._id}`} 
+                                to={`/blogpostloggedin/${post._id}`} 
                                 className='text-reset text-decoration-none'
                             >   
                                 <div>
@@ -124,8 +125,8 @@ const Profile = () => {
                 <div className='profile-posts layout--masonry masonry-img'>
                     { posts.map( (post, index) => (
                         <Link 
-                            key={`profile-${user.username}-${post.id}`} 
-                            to={`/blogpostloggedin/${post.id}`} 
+                            key={`profile-${user.username}-${post._id}`} 
+                            to={`/blogpostloggedin/${post._id}`} 
                             className=' text-reset text-decoration-none'
                         >
                             { post.imageUrl ? 
@@ -147,11 +148,11 @@ const Profile = () => {
             return (
                 <div className='profile-posts layout'>
                     {posts.map( post => {
-                        const dateObject = new Date(post.date)
+                        const dateObject = new Date(post.createdAt)
                         return (
                             <Link 
-                                key={`profile-${user.username}-${post.id}`} 
-                                to={`/blogpostloggedin/${post.id}`} 
+                                key={`profile-${user.username}-${post._id}`} 
+                                to={`/blogpostloggedin/${post._id}`} 
                                 className=' text-reset text-decoration-none'
                             >
                                 <div>
@@ -179,8 +180,8 @@ const Profile = () => {
                 </Link>
                 
                 { belongsToLoggedIn && <Link to={`/createnewblogpost/${user.username}`} className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>New Post</Link> }
-                { !belongsToLoggedIn && friends && <button className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>Remove Friend</button> }
-                { !belongsToLoggedIn && !friends && <button className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>Add Friend</button> }
+                {/* { !belongsToLoggedIn && friends && <button className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>Remove Friend</button> } */}
+                {/* { !belongsToLoggedIn && !friends && <button className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>Add Friend</button> } */}
             </header>
 
             { user && <>

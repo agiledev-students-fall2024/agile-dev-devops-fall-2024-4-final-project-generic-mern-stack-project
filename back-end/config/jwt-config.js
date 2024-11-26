@@ -23,7 +23,7 @@ const jwtVerifyToken = async function (jwt_payload, done) {
     }
 
     const userId = new ObjectId(jwt_payload.id);
-    const user = await User.findOne({ _id: userId }).exec()
+    const user = await User.findOne({ _id: userId }).select('-password -__v').exec()
 
     if (user) {
       // console.log('User found:', user);
