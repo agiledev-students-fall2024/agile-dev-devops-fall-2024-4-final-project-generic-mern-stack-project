@@ -11,9 +11,9 @@
 const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema({
-    id: {
-        type: Number,
-    },
+    // id:{
+    //     type: Number,
+    // },
     title: {
         type: String,
         required: true,
@@ -24,8 +24,9 @@ const postSchema = new mongoose.Schema({
         required: true
     },
     author: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        // type: mongoose.Schema.Types.ObjectId,
+        type: String,
+        // ref: 'User',
         required: true
     },
     createdAt: {

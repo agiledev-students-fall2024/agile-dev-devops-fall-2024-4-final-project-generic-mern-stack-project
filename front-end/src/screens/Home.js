@@ -36,6 +36,8 @@ const Home = () => {
         <Link to='/explore' className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>Explore</Link>
         <button className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline' onClick={logout} >Logout</button>
         <Link to= {`/profile/${user.username}`} className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>Profile</Link>
+        {/* <Link to= {`/profile/helenblack`} className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>Profile</Link> */}
+
       </header>
       <div>
         <h1>Network</h1>

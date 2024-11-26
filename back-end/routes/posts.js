@@ -1,4 +1,3 @@
-// import postSchema from post.js
 // const express = require('express');
 // const router = express.Router();
 
@@ -60,8 +59,8 @@
 
 // // Fetch a single post (useful for editing)
 // router.get('/:id', (req, res) => {
-//     const postId = parseInt(req.params.id);
-//     const post = postsData.find(post => post.id === postId);
+    // const postId = parseInt(req.params.id);
+    // const post = postsData.find(post => post.id === postId);
 
 //     if (!post) {
 //         return res.status(404).json({ message: 'Post not found' });
@@ -79,51 +78,108 @@
 
 
 
-// //Sprint 3 code
+// //Sprint 3 code first try
+
+// const express = require('express');
+// const router = express.Router();
+// const { check, validationResult } = require('express-validator');
+// const jwt = require('jsonwebtoken'); //config
+// const auth = require('../routes/authentication');
+// const Post = require('../models/Post'); //linking to my schema here, schema is how you connect stuff
+
+// // Create a new post
+// router.post('/createnewblogpost/user',
+//   [
+//     auth,
+//     check('title', 'Title is required').not().isEmpty(),
+//     check('content', 'Content is required').not().isEmpty()
+//   ],
+//   async (req, res) => {
+//     const errors = validationResult(req);
+//     if (!errors.isEmpty()) {
+//       return res.status(400).json({ errors: errors.array() });
+//     }
+
+//     try {
+//       const newPost = new Post({
+//         title: req.body.title,
+//         content: req.body.content,
+//         author: req.user._id, // Assuming req.user is set by the auth middleware
+//         photo: req.body.photo || ''
+//       });
+
+//       await newPost.save();
+//       res.status(201).json({ message: 'Post created successfully', post: newPost });
+//     } catch (err) {
+//       console.error(err.message);
+//       res.status(500).send('Server Error');
+//     }
+//   });
+
+// // Edit an existing post
+// router.put('/edit/:id',
+//   [
+//     auth,
+//     check('title', 'Title is optional').optional().isLength({ min: 1 }),
+//     check('content', 'Content is optional').optional().isLength({ min: 1 })
+//   ],
+//   async (req, res) => {
+//     const errors = validationResult(req);
+//     if (!errors.isEmpty()) {
+//       return res.status(400).json({ errors: errors.array() });
+//     }
+
+//     try {
+//       const { title, content } = req.body;
+//       const post = await Post.findById(req.params.id);
+
+//       if (!post) {
+//         return res.status(404).json({ message: 'Post not found' });
+//       }
+
+//       if (post.author.toString() !== req.user.id) {
+//         return res.status(401).json({ message: 'User not authorized' });
+//       }
+
+//       if (title) post.title = title;
+//       if (content) post.content = content;
+
+//       await post.save();
+//       console.log(`Post updated successfully: ${post._id}`);
+//       res.status(200).json({ message: 'Post updated successfully', post });
+//     } catch (err) {
+//       console.error(err.message);
+//       res.status(500).send('Server Error');
+//     }
+//   });
+
+// module.exports = router;
+
+
+
+
+//sprint 3 second try
+
 
 const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
-const jwt = require('jsonwebtoken');
-const auth = require('../middleware/auth'); //NEED TO WAIT FOR THE AUTH FILE TO BE CREATED
-const Post = require('../models/Post'); //linking to my schema here, schema is how you connect stuff
+const passport = require('passport');
+require('../config/jwt-config'); // Ensure this correctly imports your JWT strategy
+const Post = require('../models/Post'); 
+
+// Middleware to authenticate using JWT with passport
+const authenticateJWT = passport.authenticate('jwt', { session: false });
 
 // Create a new post
-router.post('/create',
-  [
-    auth,
-    check('title', 'Title is required').not().isEmpty(),
-    check('content', 'Content is required').not().isEmpty()
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    const { title, content } = req.body;
-    try {
-      const newPost = new Post({
-        id,
-        title,
-        content,
-        author: req.user.id, // Assuming req.user is set by the auth middleware
-        createdAt,
-        photo
-      });
-
-      await newPost.save();
-      res.status(201).json({ message: 'Post created successfully', post: newPost });
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
-    }
-  });
+//NEED TO ADD AN ID SECTION TO THIS AND FIGURE OUT HOW TO INCREMENT IT
+router.post( '/create', [ check('title', 'Title is required').not().isEmpty(), check('content', 'Content is required').not().isEmpty(), ], async (req, res) => { const errors = validationResult(req); if (!errors.isEmpty()) { return res.status(400).json({ errors: errors.array() }); } try { const newPost = new Post({title: req.body.title, author: "spongebob", content: req.body.content, photo: req.body.photo || '', date: new Date().toISOString(), }); const savedPost = await newPost.save(); res.status(201).json({ message: 'Post created successfully', post: savedPost }); } catch (err) { console.error(err.message); res.status(500).send('Server Error'); } } );
 
 // Edit an existing post
-router.put('/edit/:id',
+router.put('/edit/:id', passport.authenticate('jwt', {session: false}), async (req,res) =>
+
   [
-    auth,
+    authenticateJWT,
     check('title', 'Title is optional').optional().isLength({ min: 1 }),
     check('content', 'Content is optional').optional().isLength({ min: 1 })
   ],
@@ -134,22 +190,21 @@ router.put('/edit/:id',
     }
 
     try {
-      const { title, content } = req.body;
       const post = await Post.findById(req.params.id);
 
       if (!post) {
         return res.status(404).json({ message: 'Post not found' });
       }
 
-      if (post.author.toString() !== req.user.id) {
+      if (post.author.toString() !== req.user._id.toString()) {
         return res.status(401).json({ message: 'User not authorized' });
       }
 
-      if (title) post.title = title;
-      if (content) post.content = content;
+      post.title = req.body.title || post.title;
+      post.content = req.body.content || post.content;
+      post.photo = req.body.photo || post.photo;
 
       await post.save();
-      console.log(`Post updated successfully: ${post._id}`);
       res.status(200).json({ message: 'Post updated successfully', post });
     } catch (err) {
       console.error(err.message);
@@ -157,4 +212,27 @@ router.put('/edit/:id',
     }
   });
 
+// Fetch a single post
+router.get('/:id', 
+
+  async (req, res) => {
+    try {
+      const post = await Post.findById(req.params.id);
+        // const postId = parseInt(req.params.id);
+        // const post = postsData.find(post => post.id === postId);
+      if (!post) {
+        return res.status(404).json({ message: 'Post not found' });
+      }
+
+      res.status(200).json(post);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  });
+
 module.exports = router;
+
+
+//BIG ISSUE IS HOW WE ARE GETTING THE USER ID AND HOW TO IMPLEMENT THE AUTHENTICATION
+//FIGURE OUT HOW TO CONNECT THE USER.JS FILE AND FETCH THE LOGGEDIN USER INFORMATION TO USE AS THE AUTHOR
