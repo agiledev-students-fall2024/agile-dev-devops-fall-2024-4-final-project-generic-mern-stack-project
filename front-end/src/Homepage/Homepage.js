@@ -25,7 +25,6 @@ function Homepage(){
     nav('/Goals')
   }
   const handleSignOut = () => {
-    localStorage.removeItem("session_user")
     nav('/Login');
   };
   return (
