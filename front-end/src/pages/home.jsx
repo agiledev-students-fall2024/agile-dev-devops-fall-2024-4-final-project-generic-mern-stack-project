@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Header from '../components/header';
 import BudgetProgress from '../mocks/BudgetProgress.jsx';
 import Notifications from '../components/notifications.jsx';
-import Categories from '../components/categories.jsx';
+import Categories from '../components/Categories.jsx';
 import AddTransaction from '../components/AddTransaction';
 import './home.css';
 import { Link } from 'react-router-dom';
