@@ -14,6 +14,7 @@ const communitySchema = mongoose.Schema(
     },
     communityPicture: {
       type: String,
+      required: true,
       default: "",
     },
     creator: {

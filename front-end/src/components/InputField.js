@@ -22,7 +22,17 @@ function InputField({
         <label className="text-sm text-ebony-700 font-bold">
           {inputfieldName}
         </label>
-        <input
+        {inputfieldName === "Description" ? (
+          <input
+            className="h-48 bg-lavender_blush-900 rounded-md px-2 py-1 text-md text-ebony w-full border border-[#d9d9d9]"
+            type={inputType}
+            id={inputfieldName}
+            onChange={handleChange}
+            value={inputValue}
+            name={name} 
+          />
+        ): (
+          <input
           className="bg-lavender_blush-900 rounded-md px-2 py-1 text-md text-ebony w-full border border-[#d9d9d9]"
           type={inputType}
           id={inputfieldName}
@@ -30,6 +40,7 @@ function InputField({
           value={inputValue}
           name={name} 
         />
+        )}
         {/* </div> */}
       </div>
   );

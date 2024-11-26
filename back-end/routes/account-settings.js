@@ -30,7 +30,7 @@ router.get("/api/account-settings", protectRouter, async (req, res) => {
         }
 
         return res.status(200).json(data);
-    } catch (error) {
+    } catch (err) {
         res.status(500).json({ error: "Could not get data" })
     }
 });
