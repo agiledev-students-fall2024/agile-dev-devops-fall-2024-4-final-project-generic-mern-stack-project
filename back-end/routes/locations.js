@@ -6,13 +6,15 @@ const router = express.Router();
 const locations = JSON.parse(fs.readFileSync('./mock-data/locations.json', 'utf-8'));
 
 
-//get all information for a specific location (which includes it's activities)
+//get all information for a specific location
 router.get('/:locationId', locationsController.getLocation);
 
 //get activities for location
 router.get('/activities/:locationId', locationsController.getLocationActivities);
 
-//get the location using a location id
+//post route for adding a new location
+//TODO: build the addLocation controller
+router.post('/', locationsController.addLocation);
 
   
 
