@@ -8,11 +8,10 @@ function Activity_Tracker(){
 
     useEffect(() => {
         const fetchActivitiesData = async () => {
-            try {  //fetch all activities
+            try {  
                 const response = await axios.get(`${process.env.REACT_APP_BACK_PORT}/api/users`);
                 const fetchedData = response.data || [];
 
-                // get specific user without database implementatin
                 const activitiesData = fetchedData[0].activities
                setActivitiesData(activitiesData)
             }catch(error){
