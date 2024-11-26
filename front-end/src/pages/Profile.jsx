@@ -64,6 +64,7 @@ function Profile() {
     }
 
     function signOut() {
+        localStorage.removeItem('token')
         navigate('/login');
     }
 
