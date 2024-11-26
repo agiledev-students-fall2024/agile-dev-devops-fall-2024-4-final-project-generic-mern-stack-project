@@ -2,6 +2,12 @@ const mongoose = require('mongoose');
 const express = require('express');
 const { resource } = require('../app');
 const router = express.Router();
+/* The line `require('../models/schema');` is importing the schema definition for tasks from a file
+located at '../models/schema.js' or a similar path. This schema likely defines the structure of the
+Task model used in the application, including the fields like name, description, subject, due date,
+priority, recurring, recurring period, and status. This schema is necessary for defining how tasks
+are structured and stored in the database using Mongoose, which is a MongoDB object modeling tool
+for Node.js. */
 require('../models/schema'); 
 const Task = mongoose.model("Task")
 
@@ -17,7 +23,6 @@ router.get('/tasks/urgent', async (req, res) => {
 router.get('/tasks', (req, res) => {
   Task.find().then(tasks => {
     tasks.forEach(task => {
-      console.log("Task ID:", task._id); // Logs each task's _id
     });
     res.json(tasks);
   });
