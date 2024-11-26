@@ -18,7 +18,6 @@ function Nav() {
 
     return (
         <div className='nav'>
-            <Hamburger activeTab={currentPath} />
             <Footer activeTab={currentPath} />
         </div>
     );
@@ -75,64 +74,6 @@ function Footer({ activeTab }) {
                 </Link>
             </nav>
         </footer>
-    );
-}
-
-function Hamburger({ activeTab }) {
-    const [isOpen, setIsOpen] = useState(false);
-    const dropdownRef = useRef(null);
-
-    const toggleDropdown = () => {
-        setIsOpen((prev) => !prev);
-    };
-
-    const handleClickOutside = (event) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-            setIsOpen(false);
-        }
-    };
-
-    useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside);
-        
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, []);
-
-    return (
-        <div className="hamburger-dropdown" ref={dropdownRef}>
-            <button className="hamburger" onClick={toggleDropdown}>
-                &#9776;
-            </button>
-            {isOpen && (
-                
-                <div className="dropdown-menu">
-
-                    <Link to="/home" 
-                    className="home-link" 
-                    onClick={() => { setIsOpen(false); }}>
-                    BITEBUDDY
-                    </Link>
-
-
-                    <ul>
-                        <li>
-                            <Link to="/challenges" onClick={() => { setIsOpen(false); }}><div className="navigation-icon"><CiMedal />Challenges</div></Link>
-                        </li>
-                        <li>
-                            <Link to="/progress-tracker" onClick={() => { setIsOpen(false); }}><div className="navigation-icon"><CiMedal />Progress</div></Link>
-                        </li>
-                        <li>
-                            <Link to="/record" onClick={() => { setIsOpen(false); }}><div className="navigation-icon"><BsRecord2 /> Record Activity</div></Link>
-                        </li>
-                        <li>
-                            <Link to="/profile" onClick={() => { setIsOpen(false); }}><div className="navigation-icon"><CgProfile /> Profile</div></Link>
-                        </li>
-                    </ul>
-                </div>
-            )}
-        </div>
     );
 }
 

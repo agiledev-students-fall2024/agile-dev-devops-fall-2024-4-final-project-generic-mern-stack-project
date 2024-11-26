@@ -162,7 +162,7 @@ function Record() {
 
   return (
     <div className="record-container">
-      <h1> {currRecipe.dish || "N/A"}</h1>
+      <h1> {currRecipe.name || "N/A"}</h1>
       <hr></hr>
       <Timer duration={currRecipe.duration || 240} />
       

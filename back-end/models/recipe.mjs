@@ -49,6 +49,10 @@ const recipeSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  isChallenge:{
+    type: Boolean,
+    required: true
+  }
 
 });
 

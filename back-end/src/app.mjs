@@ -96,6 +96,20 @@ app.get("/api/recipes", async (req, res) => {
   }
 });
 
+app.get("/api/challenges", async (req, res) => {
+  try {
+    const mockError = process.env.MOCK_ERROR === "true";
+    if (mockError) {
+      throw new Error("Forced error for testing");
+    }
+    const data = await recipe.find({isChallenge:true})
+    res.json(data);
+  } catch (error) {
+    console.error("Error fetching data from API:", error.message);
+    res.status(500).json({ error: "Failed to fetch activity tracker data" });
+  }
+});
+
 app.post("/api/upload-recipe-image", upload.array("my_files", 2),(req, res, next) => {
     if (!req.files || req.files.length === 0) {
       // No files uploaded
@@ -139,21 +153,6 @@ app.get("/api/users", async (req, res) => {
   }
 });
 
-app.get("/api/challenges", async (req, res) => {
-  try {
-    const mockError = process.env.MOCK_ERROR === "true";
-    if (mockError) {
-      throw new Error("Forced error for testing");
-    }
-    const { data } = await axios.get(
-      "https://my.api.mockaroo.com/challenges?key=d6450400"
-    );
-    res.json(data);
-  } catch (error) {
-    console.error("Error fetching data from API:", error.message);
-    res.status(500).json({ error: "Failed to fetch activity tracker data" });
-  }
-});
 
 app.get("/api/biteBuddyProfile", async (req, res) => {
   try {
