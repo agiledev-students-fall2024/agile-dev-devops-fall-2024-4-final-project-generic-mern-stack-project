@@ -32,6 +32,6 @@ jobs:
     - name: Build and Push Docker Image
       uses: docker/build-push-action@v4
       with:
-        context: ./backend
+        context: ./back-end
         push: true
-        tags: ghcr.io/${{ github.repository_owner }}/back-end:${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || 'latest' }}
+        tags: ghcr.io/${{ github.repository_owner }}/backend:${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || 'latest' }}
