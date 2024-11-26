@@ -5,7 +5,7 @@ function RecipeSteps({ steps, completedSteps, onStepComplete, buttonRef, onCompl
   return (
     <div className="steps-container">
       <h3>Steps:</h3>
-      {steps?.step?.map((step, index) => (
+      {steps?.map((step, index) => (
         <div key={index} className={`steps-card ${completedSteps.includes(index) ? 'completed' : 'default'}`}>
           <h4>Step {index + 1}</h4>
           <p>{step}</p>
@@ -19,7 +19,7 @@ function RecipeSteps({ steps, completedSteps, onStepComplete, buttonRef, onCompl
       ))}
       <button
         ref={buttonRef}
-        className={`finish-activity-button ${completedSteps.length === steps?.step?.length ? 'finished' : 'default'}`}
+        className={`finish-activity-button ${completedSteps.length === steps.length ? 'finished' : 'default'}`}
         onClick={onComplete}
       >
         Finish Activity

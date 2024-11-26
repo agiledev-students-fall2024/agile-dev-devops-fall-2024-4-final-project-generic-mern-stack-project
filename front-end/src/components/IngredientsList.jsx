@@ -6,7 +6,7 @@ function IngredientsList({ ingredients , selectedIngredients, handleIngredientSe
     <div>
       <h3>Ingredients:</h3>
       <ul className="ingredients-list">
-        {ingredients?.item?.map((ingredient, index) => (
+        {ingredients?.map((ingredient, index) => (
           <li key={index}>
             <label>
               <input type="checkbox" className="strikethrough" checked={selectedIngredients.includes(index)} onChange={() => handleIngredientSelect(index)}/> 
