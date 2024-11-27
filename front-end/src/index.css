@@ -597,6 +597,7 @@ h1 {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  margin-top: 10px;
 }
 
 .finish-activity-button.default{
@@ -625,4 +626,26 @@ h1 {
   100% {
     transform: scale(1); /* Return to normal size */
   }
+}
+
+.user-message {
+  background-color: #e6d8c3;
+  color: #574415;
+  padding: 10px;
+  border: 1px solid #e6d8c3;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.quit-activity-button{
+  background-color: #a73728;
+  border-color: #555;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }

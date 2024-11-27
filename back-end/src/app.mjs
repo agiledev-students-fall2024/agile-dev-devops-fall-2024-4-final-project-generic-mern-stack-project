@@ -65,8 +65,6 @@ app.use("/api/auth", authRoutes);
 app.post("/api/shareRecipe", async (req, res) => {
   try {
     const newRecipe = new recipe({ ...req.body });
-    console.log(newRecipe)
-
     await newRecipe.save();
     res.status(200).json({ message: "Share Successful", newRecipe });
   } catch (error) {
@@ -81,7 +79,6 @@ app.get("/api/recipes", async (req, res) => {
       throw new Error("Forced error for testing");
     }
     const data = await recipe.find()
-    console.log(data)
     res.json(data);
   } catch (error) {
     console.error("Error fetching data from API:", error.message);
@@ -146,6 +143,32 @@ app.get("/api/users", async (req, res) => {
   }
 });
 
+app.get("/api/user", async (req, res) => {
+  try {
+    if (process.env.MOCK_ERROR === "true") {
+      throw new Error("Mocked error");
+    }
+
+    // Access the userId from the query string
+    const thisUserId = req.query.userId;
+
+    if (!thisUserId) {
+      return res.status(400).json({ error: "User ID is required" });
+    }
+
+    // Fetch the user based on the userId
+    const user = await User.findById(thisUserId);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.error("Error fetching data from API:", error.message);
+    res.status(500).json({ error: "Failed to fetch user data" });
+  }
+});
 
 app.get("/api/biteBuddyProfile", async (req, res) => {
   try {

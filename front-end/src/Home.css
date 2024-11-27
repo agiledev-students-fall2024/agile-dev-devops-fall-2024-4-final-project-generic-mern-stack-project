@@ -32,19 +32,6 @@
     border-radius: 8px;
 }
 
-.start-button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.start-button.different-color {
-    background-color: #28a745;
-}
-
 .close-button {
     position: absolute;
     top: 20px;
@@ -208,7 +195,7 @@
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
-    width: 40%;
+    width: 50%;
     margin: 0 auto;
     margin-bottom: 10px;
   }

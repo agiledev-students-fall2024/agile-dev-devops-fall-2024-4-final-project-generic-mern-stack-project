@@ -11,20 +11,19 @@ function Profile() {
 
     useEffect(() => {
         const fetchBiteBuddyProfileData = async () => {
-            try{
-            const response = await axios.get(`${process.env.REACT_APP_BACK_PORT}/api/biteBuddyProfile`);
-            const fetchedData = response.data[0];
-            console.log("fetched data console log:" + fetchedData);
-            console.log("fetched age:" + fetchedData.age);
-
-            setProfileData(fetchedData);
-            }
-            catch(error){
-                console.error('Error bite buddy profile data: ', error)
-            }
+          try {
+            const userId = localStorage.getItem('userId');
+            const response = await axios.get(`${process.env.REACT_APP_BACK_PORT}/api/user`, { params: { userId } });
+            
+            console.log(response.data); // Log the response data
+            setProfileData(response.data); // Set the profile data
+          } catch (error) {
+            console.error('Error fetching BiteBuddy profile data:', error);
+          }
         };
+      
         fetchBiteBuddyProfileData();
-    }, []);
+      }, []);
 
     function goToSignupProfile() {
         navigate('/signup-profile');
@@ -52,9 +51,9 @@ function Profile() {
                     <p><strong>Location:</strong> {profileData.location}</p>
                 </div>
 
-                <button type="button" onClick={goToSignupProfile}>Edit Profile</button>
+                <button className='profile-button' type="button" onClick={goToSignupProfile}>Edit Profile</button>
                 <div style={{ margin: '10px 0' }}></div>
-                <button type="button" onClick={signOut}>Sign Out</button>
+                <button className='profile-button' type="button" onClick={signOut}>Sign Out</button>
             </div>
         </>
     );
