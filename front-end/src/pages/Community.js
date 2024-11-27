@@ -7,14 +7,14 @@ const Community = () => {
     //stores the data from database into data 
     const [data, setData] = useState([])
     const [input, setInput] = useState("")
-    const [filteredData, setFilteredData] = useState([])
+    const [reversedData, setReversedData] = useState([])
     const [originalData, setOriginalData] = useState([])
 
     const handleSearch = (e) => {
         console.log(e.target.value);
         setInput(e.target.value);
 
-        if (input === null || input === '') {
+        if (input === undefined || input === '') {
             setData(originalData);
             return
         }
@@ -23,11 +23,12 @@ const Community = () => {
             return
         }
         
-        const newData = data.filter(item => {
+        const newData = reversedData.filter(item => {
+            console.log(item.name.toLowerCase())
             return item.name.toLowerCase().includes(input.toLowerCase())
         })
 
-        setData(newData);
+        setReversedData(newData);
     }
 
     useEffect(() => {
@@ -39,9 +40,13 @@ const Community = () => {
          .then(response => {
             setData(response.data)
             setOriginalData(response.data)
+
+            const reversedData = [...response.data].reverse()
+            setReversedData(reversedData)
+
          })
          .catch(err => {
-            console.log("We have reached the allowed number of requests. Please try again the next day!")
+            console.log("Unable to retrieve community data.")
             console.error(err)
          })
 
@@ -111,7 +116,7 @@ const Community = () => {
             <SearchBar searchInput={input} setSearchInput={setInput} handleSearch={handleSearch}/>
             
             <section className="flex flex-col justify-center w-[100%] gap-0">
-                {data.map(item => (
+                {reversedData.map(item => (
                     <div key={item.id} className="groups">
                         <TitleAndDescriptionBox
                             link={`/community/${item.id}`}

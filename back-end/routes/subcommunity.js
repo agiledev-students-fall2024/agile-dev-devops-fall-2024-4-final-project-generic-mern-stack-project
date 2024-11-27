@@ -9,7 +9,6 @@ router.get('/api/community/:communityId', async (req, res) => {
     try {
         //find community from database
         const community = await Community.findById(req.params.communityId)
-        //console.log(community)
 
         //validate the community 
         if (!community){
