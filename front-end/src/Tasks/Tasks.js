@@ -68,7 +68,7 @@ function Tasks() {
     });
     setTasks(prevTasks =>
       prevTasks.map(task =>
-        task._id === taskId ? { ...task, status: newStatus } : task
+        task._id.toString() === taskId ? { ...task, status: newStatus } : task
       )
     );
   };
@@ -87,17 +87,11 @@ function Tasks() {
     if (status === 'finished') return '✓';
     if (status === 'ongoing') return '-';
     return '';
-  };
-  const handleEdit = (taskId) => {
-    // nav('/EditTask/${taskId}');
+  }
 
-    //This is modified for sprint 2 only.
-    // Impossible to use fake data for this page since mockaroo randomly generates data instead of storing it
-    // Comment for the edit task: because of the restriction of mock data now, 
-    // this function cannot fully achieved, so the way we connect it is not exactly true.
-    // We are directly connecting the edit to http://localhost:3000/EditTask.
-     nav('/EditTask');
-  };
+  const handleEdit = (taskId) => {
+    nav(`/EditTask/${taskId}`) // Navigate to the dynamic edit page with the task ID
+}
 
   const toggleFilterVisibility = () => setShowFilters(!showFilters);
   const toggleSortOrder = () => setSortAsc(!sortAsc);
@@ -147,24 +141,19 @@ function Tasks() {
         ) : tasks.length === 0 ? (
           <p>No tasks found.</p>
         ) : (
-          currentTasks.map((task, index) => (
-            <div className="task-item" key={index}>
-              <input
-                type="checkbox"
-                checked={task.status === 'finished'}
-                readOnly
-                onClick={() => toggleStatus(task,index)}
-              />
-              <span className="status-icon">{getStatusIcon(task.status)}</span>
-              <span className="task-name">{task.name}</span>
-              <button onClick={() => handleEdit(task.id)} className="edit-btn">Edit</button>
-              {/* Comment for the edit task: because of the restriction of mock data now, 
-              this function cannot fully achieved, so the way we connect it is not exactly true.
-              the page itself can be seen from http://localhost:3000/EditTask. */}
-              {/* Sprint2 Comment: Since there's still no way to store the real data with ID, so currently all
-               the tasks are connected to the same edit task page*/}
-              <span className="due-date">{new Date(task.due).toISOString().split("T")[0]}</span>
-            </div>
+          currentTasks.map((task) => (
+            <div className="task-item" key={task._id}>
+        <input
+            type="checkbox"
+            checked={task.status === 'finished'}
+            readOnly
+            onClick={() => toggleStatus(task)}
+        />
+        <span className="status-icon">{getStatusIcon(task.status)}</span>
+        <span className="task-name">{task.name}</span>
+        <button onClick={() => handleEdit(task._id)} className="edit-btn">Edit</button>
+        <span className="due-date">{new Date(task.due).toISOString().split("T")[0]}</span>
+    </div>
           ))
         )}
 
