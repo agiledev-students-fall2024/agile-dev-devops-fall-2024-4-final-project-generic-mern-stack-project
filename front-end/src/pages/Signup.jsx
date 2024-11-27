@@ -54,6 +54,7 @@ function Signup() {
 
   return (
     <>
+      <img className='logo'src="/file.png" alt="Logo"></img>
       <h1 className="title">Bite Buddy</h1>
       <div className="registerDiv">
         <h2>Sign Up Today!</h2>

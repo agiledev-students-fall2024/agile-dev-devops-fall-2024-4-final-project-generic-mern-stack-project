@@ -17,7 +17,7 @@
 }
 .close-button {
     width:45px;
-    background-color: red;
+    background-color: #A02334;
     height:40px;
     position: absolute;
     top: 20px;
@@ -33,10 +33,11 @@
 
 .challenges-container {
     padding: 20px;
-    background-color: #242424;
+    background-color: #FFEEAD;
     box-sizing: border-box;
     padding-bottom: 50px;
     justify-content: center;
+    border-radius: 5px;
 }
 
 .challenge-card {
@@ -46,6 +47,7 @@
     border-radius: 10px;
     padding: 15px;
     box-sizing: border-box;
+    background-color: white;
 }
 
 
@@ -53,21 +55,25 @@ h1 {
     font-size: 32px;
     font-weight: bold;
     margin-bottom: 20px;
+    color: #242424;
 }
 
 .challenge-card h2 {
     font-size: 24px;
     margin-bottom: 10px;
+    color:#242424;
 }
 
 .challenge-card h3 {
     font-size: 20px;
     margin-bottom: 5px;
+    color:#242424;
 }
 
 .challenge-card p {
     font-size: 14px;
     margin-bottom: 10px;
+    color:#242424;
 }
 
 .challenge-image {
@@ -106,7 +112,7 @@ h1 {
 
 
 .start-button {
-    background-color: black;
+    background-color: #FFAD60;
     width: 100%;
     color: white;
     border: none;
@@ -117,7 +123,7 @@ h1 {
 
 .different-color {
     width: 300px;
-    background-color: green;
+    background-color: #96CEB4;
     color: white; 
 }
 

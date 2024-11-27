@@ -1,6 +1,8 @@
 .home-container {
     padding: 20px;
-    background-color: black;
+    background-color: #FFEEAD;
+    border-radius: 5px;
+
 }
 
 .activity-card {
@@ -98,7 +100,7 @@
 }
 
 .make-recipe-button {
-    background-color: black;
+    background-color: #FFAD60;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -115,7 +117,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent background */
+    background-color: rgba(108, 147, 129, 0.9); /* Semi-transparent background */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -124,23 +126,22 @@
 }
 
 .share-close-button {
-    width:45px;
-    height:40px;
+    width:30px;
+    height:30px;
     position: absolute;
-    top: 20px;
-    right: 20px;
+    top: 65px;
+    right: 30px;
     color: white;
     border: none;
     border-radius: 4px;
-    padding: 10px 15px;
     cursor: pointer;
     font-size: 16px;
-    background-color: red;
+    background-color: #A02334;
 }
 
 /* Style for the form container */
 .share-form {
-    background: #fff;
+    background: #FFEEAD;
     padding: 2rem;
     border-radius: 8px;
     width: 75%;
@@ -153,16 +154,6 @@
     overflow-y: auto; /* Enables scrolling inside the modal */
 }
 
-/* Close button */
-.share-close-button {
-    background-color: #a73728; 
-    color: white;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 1rem;
-}
 
 .share-form input,
 .share-form textarea,
@@ -173,7 +164,8 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 14px;
-    box-sizing: border-box; /* Ensure padding is included in the element's width */
+    box-sizing: border-box; 
+    background-color: #242424;
 }
 
 .share-form label{
@@ -181,14 +173,14 @@
     font-size: 16px;
     font-weight: bold;
     margin-bottom: 5px;
-    color: #333;
+    color: #242424;
   }
   .share-form h1{
-    color: #333;
+    color: #242424;
   }
 
   .share-button {
-    background-color: #007bff;
+    background-color: #FFAD60;
     color: white;
     border: none;
     padding: 10px 15px;
@@ -205,7 +197,7 @@
   }
 
   .share-form-submit-button{
-    background-color: #007bff; 
+    background-color: #FFAD60; 
     color: white;
     padding: 0.6rem 1.2rem;
     border: none;
