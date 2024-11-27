@@ -1,0 +1,15 @@
+# Ignore Node.js modules
+node_modules/
+
+# Ignore environment variable file
+.env
+
+# Ignore coverage folder created by c8
+coverage/
+
+# Ignore log files
+*.log
+
+# Ignore system files
+.DS_Store
+Thumbs.db

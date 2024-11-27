@@ -1,0 +1,47 @@
+[
+    {
+      "id": "trip_456",
+      "name": "New York Adventure",
+      "description": "Exploring NYC.",
+      "startDate": "2024-12-01",
+      "endDate": "2024-12-10",
+      "participants": ["user_123", "user_456"],
+      "locations": ["location_001", "location_002"],
+      "status": "upcoming",
+      "image": "https://picsum.photos/200/300"
+    },
+    {
+      "id": "trip_789",
+      "name": "California Road Trip",
+      "description": "Driving through California.",
+      "startDate": "2024-11-15",
+      "endDate": "2024-11-25",
+      "participants": ["user_123", "user_789"],
+      "locations": ["location_003", "location_004"],
+      "status": "upcoming",
+      "image": "https://picsum.photos/200/301"
+    },
+    {
+      "id": "trip_123",
+      "name": "Wine and Mountains",
+      "description": "A journey through Napa and Yosemite.",
+      "startDate": "2024-10-01",
+      "endDate": "2024-10-10",
+      "participants": ["user_123", "user_456", "user_789"],
+      "locations": ["location_004", "location_005"],
+      "status": "completed",
+      "image": "https://picsum.photos/200/302"
+    },
+    {
+      "id": "trip_101",
+      "name": "West Coast Adventure",
+      "description": "Exploring the best beaches and surfing spots on the West Coast.",
+      "startDate": "2024-10-15",
+      "endDate": "2024-10-25",
+      "participants": ["user_123", "user_456", "user_789"],
+      "locations": ["location_006"],
+      "status": "ongoing",
+      "image": "https://picsum.photos/200/303"
+    }
+  ]
+  
