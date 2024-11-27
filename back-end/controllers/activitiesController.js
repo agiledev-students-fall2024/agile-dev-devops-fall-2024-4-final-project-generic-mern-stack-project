@@ -29,7 +29,6 @@ const getActivitiesByLocation = async (req, res) => {
   }
 };
 
-// Placeholder functions for other routes
 const createActivity = async (req, res) => {
 
   try{
@@ -81,11 +80,57 @@ const createActivity = async (req, res) => {
 };
 
 const upvoteActivity = async (req, res) => {
-  res.status(501).json({ message: 'Upvote activity endpoint not implemented yet' });
+  try {
+    const { activityId } = req.params;
+
+    // Fetch the activity by ID
+    const activity = await Activity.findById(activityId);
+
+    if (!activity) {
+      return res.status(404).json({ error: 'Activity not found' });
+    }
+
+    // Increment votes
+    activity.votes = (activity.votes || 0) + 1;
+
+    // Save updated activity
+    const updatedActivity = await activity.save();
+
+    res.status(200).json({ votes: updatedActivity.votes });
+  } catch (error) {
+    console.error('Error in upvoteActivity:', error);
+    res.status(500).json({ error: 'Failed to upvote activity' });
+  }
 };
 
+
+// const downvoteActivity = async (req, res) => {
+//   res.status(501).json({ message: 'Downvote activity endpoint not implemented yet' });
+// };
+
 const downvoteActivity = async (req, res) => {
-  res.status(501).json({ message: 'Downvote activity endpoint not implemented yet' });
+  try {
+    const { activityId } = req.params; // Extract the activity ID from request parameters
+
+    // Find the activity by its ID
+    const activity = await Activity.findById(activityId);
+
+    if (!activity) {
+      return res.status(404).json({ error: 'Activity not found' }); // Handle activity not found
+    }
+
+    // Decrement the votes field
+    activity.votes = (activity.votes || 0) - 1;
+
+    // Save the updated activity back to the database
+    const updatedActivity = await activity.save();
+
+    // Respond with the updated votes count
+    res.status(200).json({ votes: updatedActivity.votes });
+  } catch (error) {
+    console.error('Error downvoting activity:', error);
+    res.status(500).json({ error: 'Failed to downvote activity' }); // Handle errors
+  }
 };
 
 const addCommentToActivity = async (req, res) => {
