@@ -15,6 +15,9 @@ router.get('/', activitiesController.getActivities);
   //   fs.writeFileSync(activitiesPath, JSON.stringify(activities, null, 2), 'utf-8');
   // };
 
+//TODO: build the controller
+router.post('/', activitiesController.createActivity);
+
 
 router.get('/location/:locationId', (req, res) => {
     const locationId = req.params.locationId;
