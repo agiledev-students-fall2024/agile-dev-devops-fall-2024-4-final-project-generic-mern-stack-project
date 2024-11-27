@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../Profile.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 function Profile() {
     const [profileData, setProfileData] = useState({});
@@ -52,7 +52,7 @@ function Profile() {
                 </div>
 
                 <button className='profile-button' type="button" onClick={goToSignupProfile}>Edit Profile</button>
-                <div style={{ margin: '10px 0' }}></div>
+                <Link to ="/progress-tracker"><button className='profile-button' type="button">View Progress</button></Link>
                 <button className='profile-button' type="button" onClick={signOut}>Sign Out</button>
             </div>
         </>

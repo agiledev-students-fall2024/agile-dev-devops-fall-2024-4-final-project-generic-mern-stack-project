@@ -90,10 +90,11 @@
   padding: 15px;
   border: none;
   border-radius: 4px;
-  background-color: #000;
+  background-color: #11454a;
   color: #fff;
   font-size: 1em;
   cursor: pointer;
+  margin-top: 10px;
   transition: background-color 0.3s ease;
 }
 
