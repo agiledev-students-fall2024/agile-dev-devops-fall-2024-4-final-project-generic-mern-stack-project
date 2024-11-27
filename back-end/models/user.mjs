@@ -8,6 +8,21 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  first_name:{
+    type: String
+  },
+  last_name:{
+    type: String
+  },
+  age:{
+    type: Number
+  },
+  location:{
+    type: String
+  },
+  bio:{
+    type: String
+  },
   email: {
     type: String,
     required: true,

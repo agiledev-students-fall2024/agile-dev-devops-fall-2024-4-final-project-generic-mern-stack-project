@@ -10,6 +10,8 @@ function Login() {
   const [error, setError] = useState("");
   useEffect(() => {
     const token = localStorage.getItem('token');
+    console.log(localStorage.getItem('token'))
+    console.log(localStorage.getItem('userId'))
     if (token) {
       navigate('/home');
     }
