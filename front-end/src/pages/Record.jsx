@@ -17,6 +17,8 @@ function Record() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const [error, setError] = useState(null);
+  const [message, setMessage] = useState(""); // State for user message
+
 
   const [completedSteps, setCompletedSteps] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -110,6 +112,7 @@ function Record() {
     const cachedRecipe = JSON.parse(localStorage.getItem("currentRecipe"));
     if (cachedRecipe) {
       setCurrRecipe(cachedRecipe);
+      setMessage("You have an ongoing recipe"); // Set the user message
       console.log('set cached recipe as current', cachedRecipe);
     } else if (location.state?.selectedRecipe) {
       setCurrRecipe(location.state.selectedRecipe);
@@ -123,6 +126,13 @@ function Record() {
       console.log('put into local storage', currRecipe);
     }
   }, [currRecipe]); 
+
+  useEffect(() => {
+    if (message) {
+      const timer = setTimeout(() => setMessage(""), 3000); // Clear message after 3 seconds
+      return () => clearTimeout(timer); // Cleanup on unmount
+    }
+  }, [message]);
 
   useEffect(() => {
     const savedCompletedSteps = JSON.parse(
@@ -162,6 +172,7 @@ function Record() {
 
   return (
     <div className="record-container">
+      {message && <div className="user-message">{message}</div>} {/* Render the message */}
       <h1> {currRecipe.name || "N/A"}</h1>
       <hr></hr>
       <Timer duration={currRecipe.duration || 240} />
@@ -179,7 +190,7 @@ function Record() {
         onComplete={handleRecipeComplete}
       />
 
-      <button onClick={closeModal}>Quit Recipe</button>
+      <button className='quit-activity-button' onClick={closeModal}>Quit Recipe</button>
       
       <CompletionModal
         isOpen={isModalOpen}

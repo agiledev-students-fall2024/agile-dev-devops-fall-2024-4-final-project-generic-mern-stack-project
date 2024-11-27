@@ -29,7 +29,7 @@ function Login() {
       console.log('Token saved:', token);
       console.log('UserId saved:', userId);
 
-      
+      localStorage.removeItem('currentRecipe')
       console.log(response.data.message);
       navigate("/home");
     } catch (err) {

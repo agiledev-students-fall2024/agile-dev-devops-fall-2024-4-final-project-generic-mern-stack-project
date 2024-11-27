@@ -1,5 +1,4 @@
 import express from "express";
-import * as auth from "./auth.mjs";
 import sanitize from "mongo-sanitize";
 import bcrypt from 'bcryptjs';
 import User from "../models/user.mjs"
@@ -40,16 +39,16 @@ router.post('/signup', async (req, res) => {
 
 
 
-    console.log('saved');
+    
     await newUser.save();
-
+    console.log('saved');
     const token = jwt.sign(
       { userId: newUser._id, username: newUser.username },
       process.env.SECRET_KEY, 
       { expiresIn: '1h' } 
     );
-    console.log(token)
-    res.status(201).json({ token, userId: user._id, });
+    console.log('token is', token)
+    res.status(201).json({ token, userId: newUser._id, });
   } catch (error) {
     console.error("Error registering user:", error.message);
     res.status(500).send('Error registering user');

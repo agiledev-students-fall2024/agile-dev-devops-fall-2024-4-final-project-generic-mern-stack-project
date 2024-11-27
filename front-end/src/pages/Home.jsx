@@ -61,9 +61,9 @@ const Home = () => {
 
         const fetchRecipeData = async () => {
             try{
-                const response = await axios.get(`${process.env.REACT_APP_BACK_PORT}/api/basicRecipe`);
-            const fetchedData = response.data || [];
-            //console.log(fetchedData);
+                const response = await axios.get(`${process.env.REACT_APP_BACK_PORT}/api/recipes`);
+                const fetchedData = response.data || [];
+                console.log('fetch basic recipes', fetchedData);
 
             setRecipeData([...fetchedData]);
             }catch(error){
@@ -98,9 +98,12 @@ const Home = () => {
         navigate('/activity-tracker');
     };
 
-    const goToRecipePage = () => {
-        navigate('/recipes');
-    };
+    const handleStartRecipe = (selectedRecipe) => {
+        // Navigate to the record activity page, passing the recipe data
+        console.log("going to recipe id:" + selectedRecipe.id);
+        console.log('selectedrecipe is', selectedRecipe)
+        navigate("/record", { state: { selectedRecipe } });
+      };
 
     const handleShareRecipe = () => {
         setShare(true);
@@ -148,24 +151,24 @@ const Home = () => {
                 <>
                     <div className="recipe-card">
                         <p className="recipe-type">Suggested Recipe</p>
-                        <h2>{recipeData[0].recipe_name}</h2>
-                        <p>{recipeData[0].recipe_description}</p>
+                        <h2>{recipeData[0].name}</h2>
+                        <p>{recipeData[0].description}</p>
                         <div className="recipe-image">
-                        <img src="https://picsum.photos/100" alt={recipeData[1].recipe_name} />
+                        <img src="https://picsum.photos/100" alt={recipeData[1].name} />
                         </div>
-                        <button className="make-recipe-button" onClick={goToRecipePage}>Make Recipe</button>
+                        <button className="make-recipe-button" onClick={() => handleStartRecipe(recipeData[0])}>Make Recipe</button>
                     </div>
                     
 
                     {recipeData.length > 1 && (
                         <div className="recipe-card">
                             <p className="recipe-type">Friend's Recipe</p>
-                            <h2>{recipeData[1].recipe_name}</h2>
-                            <p>{recipeData[1].recipe_description}</p>
+                            <h2>{recipeData[1].name}</h2>
+                            <p>{recipeData[1].description}</p>
                             <div className="recipe-image">
-                                <img src="https://picsum.photos/100" alt={recipeData[1].recipe_name} />
+                                <img src="https://picsum.photos/100" alt={recipeData[1].name} />
                             </div>
-                            <button className="make-recipe-button" onClick={goToRecipePage}>Make Recipe</button>
+                            <button className="make-recipe-button" onClick={() => handleStartRecipe(recipeData[1])}>Make Recipe</button>
                         </div>
                     )}
                 </>

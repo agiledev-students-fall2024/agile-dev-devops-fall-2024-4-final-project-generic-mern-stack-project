@@ -16,8 +16,6 @@ function Recipes() {
         const response = await axios.get(
           `${process.env.REACT_APP_BACK_PORT}/api/recipes`
         );
-        console.log(response)
-
         const formattedData = response.data.map((item) => ({
           id: item._id,
           name: item.name,
