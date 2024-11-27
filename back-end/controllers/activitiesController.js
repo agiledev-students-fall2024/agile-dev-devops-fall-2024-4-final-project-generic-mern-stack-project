@@ -1,4 +1,5 @@
 import Activity from '../models/Activity.js'; // Activity model
+import Location from '../models/Location.js'; //Location model used to get the tripId
 
 // Get all activities (GET) - Retrieve and respond with a list of all activities in the system
 const getActivities = async (req, res) => {
@@ -30,7 +31,53 @@ const getActivitiesByLocation = async (req, res) => {
 
 // Placeholder functions for other routes
 const createActivity = async (req, res) => {
-  res.status(501).json({ message: 'Create activity endpoint not implemented yet' });
+
+  try{
+    //get info from submitted form
+    const { name, description, price, locationId } = req.body;
+
+    //get associated tripId
+    const location = await Location.findById(locationId);
+    if (!location) {
+      return res.status(404).json({ error: 'Location not found' });
+    }
+    const tripId = location.tripId;
+
+    //create the new activity
+    const newActivity = new Activity({
+      name,
+      description,
+      locationId,
+      tripId,
+      price,
+      description: '',
+      createdBy: '64b1c7c8f2a5b9a2d5c8f001',
+      // just took a random userId i found in the database tbh, lol, i've no idea which user this actually is hahaha
+      //maybe we set this through auth?
+      type: 'activities', //this also shouldn't be directly set to activities, but we haven't set this in the form
+      //we also might just get rid of this filter so...
+    });
+
+    //save the activity
+    const savedActivity = await newActivity.save();
+
+    //append the new activity to the associated location
+    const updatedLocation = await Location.findByIdAndUpdate(
+      locationId, //this is what we are searching by
+      { $push: { activities: savedActivity._id } }, //this is what does the appending
+      { new: true } //this returns the updated location in case we want to send it back too
+    );
+
+    res.status(201).json({
+      message: 'activity created successfully :)',
+      activity: savedActivity,
+      updatedLocation: updatedLocation
+    });
+
+  }catch(error){
+    console.error(error);
+    res.status(500).json({ error: 'failed to add activity :(' });
+  };
 };
 
 const upvoteActivity = async (req, res) => {

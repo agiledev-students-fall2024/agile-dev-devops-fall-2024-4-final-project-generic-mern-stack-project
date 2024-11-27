@@ -40,7 +40,9 @@ const AddActivityForm = ({ onSubmit }) => {
           type="text" 
           value={price} 
           onChange={(e) => setPrice(e.target.value)} 
-          required 
+          required
+          pattern="[0-4]"
+          title="Please enter a number from 0-4."  
         />
       </label>
       <button type="submit">Submit</button>
