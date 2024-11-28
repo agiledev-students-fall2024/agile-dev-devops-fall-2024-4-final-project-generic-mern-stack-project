@@ -18,6 +18,7 @@ function Recipes() {
         );
         const formattedData = response.data.map((item) => ({
           id: item._id,
+          description: item.description,
           name: item.name,
           difficulty_level: item.difficulty_level,
           ingredients: item.ingredients,
@@ -50,9 +51,10 @@ function Recipes() {
   };
 
   return (
+    <>
+    <h1 className="centered-header">RECIPES</h1>
     <div className="recipePage">
       <div className="recipeDashboardOuter">
-        <h1 className="centered-header">RECIPES</h1>
         <h2 className="recipeHeader">Novice Recipes</h2>
         <div className="recipeDashboardInner">
           {recipeData.map((recipeItem, index) => (
@@ -65,8 +67,8 @@ function Recipes() {
                 <img src={recipeItem.imgs} alt="oops,img problems!" />
               </div>
               <div className="recipeText">
-                <h1>Food: {recipeItem.name}</h1>
-                <p>Ingredients: {recipeItem.ingredients}</p>
+                <h1>{recipeItem.name}</h1>
+                <p>{recipeItem.description}</p>
               </div>
               <button
                 className="start-button"
@@ -82,10 +84,15 @@ function Recipes() {
       {selectedRecipe && (
         <div className="popup-overlay" onClick={close}>
           <div className="popup-content" onClick={(e) => e.stopPropagation()}>
-            <h1>Dish: {selectedRecipe.name}</h1>
-            <p>
-              <strong>Ingredients:</strong> {selectedRecipe.ingredients}
-            </p>
+            <h1>{selectedRecipe.name}</h1>
+            <h3 style={{color: '#242424'}}>Ingredients:</h3>
+            <ul className="recipes-ingredients-list">
+              {selectedRecipe.ingredients?.map((ingredient, index) => (
+                <li>
+                  {ingredient}
+                </li>
+              ))}
+            </ul>
             <button
               className="start-button"
               onClick={() => handleStartRecipe(selectedRecipe)}
@@ -94,8 +101,7 @@ function Recipes() {
             </button>
             {selectedRecipe.steps.map((step, index) => (
               <div key={index}>
-                <h2>Step {index + 1}:</h2>
-                <p>{step}</p>
+                <p>Step {index + 1}: {step}</p>
                 <img src={selectedRecipe.imgs} alt="oops,img problems!" />
               </div>
             ))}
@@ -106,6 +112,7 @@ function Recipes() {
         </div>
       )}
     </div>
+    </>
   );
 }
 

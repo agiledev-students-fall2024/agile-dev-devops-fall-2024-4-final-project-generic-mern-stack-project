@@ -2,7 +2,6 @@
     padding: 20px;
     background-color: #FFEEAD;
     border-radius: 5px;
-
 }
 
 .activity-card {
@@ -55,7 +54,7 @@
 /* CSS for Recipe Cards */
 .recipe-card {
     background-color: white;
-    border: 1px solid #ddd;
+    border: 1px solid #8dbda6;
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 20px;

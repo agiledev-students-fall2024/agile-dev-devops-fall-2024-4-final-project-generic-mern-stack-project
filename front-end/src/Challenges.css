@@ -30,7 +30,6 @@
     font-size: 16px;
 }
 
-
 .challenges-container {
     padding: 20px;
     background-color: #FFEEAD;
@@ -38,16 +37,19 @@
     padding-bottom: 50px;
     justify-content: center;
     border-radius: 5px;
+    border: solid #8dbda6 1px;
 }
 
 .challenge-card {
     width: 100%;
     margin-bottom: 15px;
-    border: 2px solid #ccc;
+    border: 2px solid #8dbda6;
     border-radius: 10px;
     padding: 15px;
     box-sizing: border-box;
     background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
 }
 
 

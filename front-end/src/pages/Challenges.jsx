@@ -40,8 +40,8 @@ const Challenges = () => {
       };
 
     return (
+        <><h1>CHALLENGES</h1>
         <div className="challenges-container">
-            <h1>CHALLENGES</h1>
             {challengesData.map((challenge, index) => (
                 <div className="challenge-card" onClick={() => handleStartClick(challenge)} key={index}>
                     <h2>CHALLENGE #{index + 1}</h2>
@@ -66,6 +66,7 @@ const Challenges = () => {
                 </div>
             )}
         </div>
+        </>
     );
 };
 

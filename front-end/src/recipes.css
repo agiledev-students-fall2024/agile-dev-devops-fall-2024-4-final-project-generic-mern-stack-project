@@ -3,11 +3,13 @@
 }*/
 
 .recipePage {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  position: relative;
+  padding: 20px;
+  background-color: #FFEEAD;
+  box-sizing: border-box;
+  padding-bottom: 50px;
+  justify-content: center;
+  border-radius: 5px;
+  border: solid #8dbda6 1px;
 }
 
 .centered-header {
@@ -22,13 +24,9 @@
   padding: 20px;            /* Add some padding around the header */
   font-size: 2em;           /* Adjust the font size */
   font-weight: bold;        /* Make the header bold */
+  color: #242424;
 }
 
-.recipeDashboardOuter {
-  box-sizing: border-box;
-  width: 100%;
-  padding-bottom: 20px;
-}
 
 .recipeHeader{
   box-sizing: border-box;
@@ -37,35 +35,29 @@
   font-style: italic;
   margin: 0;
   padding: 10px;
+  color: #242424;
+  text-align: center;
 }
 
 .recipeDashboardInner {
   box-sizing: border-box;
+  margin: 0 auto;
 }
 
 .recipeCard{
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
-  padding: 10px;
   width: 100%;
-  position:relative;
-  border: black;
-  border-style: solid;
-  height: 300px;
+  margin-bottom: 15px;
+  border: 2px solid #8dbda6;
+  border-radius: 10px;
+  padding: 15px;
+  box-sizing: border-box;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.recipeImg{
-  box-sizing: border-box;
-  width: 100%;
-  height: 40%;
-  flex-shrink: 0;
-  position: relative; /* Keeps it in normal document flow */
-  justify-content: flex-start;
-}
 
-.recipeImg img{
+
+.recipePage img{
   object-fit: cover;
   width: 100%;
   height: 100%;
@@ -73,6 +65,7 @@
   flex-shrink: 0;
   margin: 0;
   border: 0;
+  border-radius: 5px;
   padding: 0;
   position: relative; /* Keeps it in normal document flow */
 }
@@ -83,6 +76,7 @@
   height: 100%;
   overflow: hidden;
   justify-content: flex-start;
+  color: #242424;
 }
 
 .recipeCard h1{
@@ -101,12 +95,12 @@
 
 .popup-overlay {
     position: fixed;
-    overflow-y: hidden;
+    overflow: hidden;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgb(0, 0, 0,0.5); /* Semi-transparent background */
+    background: rgb(0, 0, 0,0.8); /* Semi-transparent background */
     backdrop-filter: blur(10px); /* Blur effect */
     display: flex;
     align-items: center;
@@ -123,7 +117,18 @@
   }
 
   .popup-overlay img{
-    color:black
+    
+    object-fit: cover;
+    width: 50%;
+    height: auto;
+    overflow: hidden;
+    flex-shrink: 0;
+    margin: 0;
+    border: 0;
+    border-radius: 5px;
+    padding: 0;
+    position: relative; /* Keeps it in normal document flow */
+    
     
   }
   .popup-overlay p{
@@ -131,19 +136,57 @@
     font-size: 1.2em;           /* Adjust the font size */
     
   }
+
+
+  .recipes-ingredients-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .recipes-ingredients-list li {
+    padding: 0.5rem 0;
+    width: 80%;
+    color: #242424;
+    background: #fef7da;
+    margin: 10px auto;
+    border-radius: 5px;
+    border: solid 1px 
+
+  }
+
   .popup-content {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    background-color: rgb(243, 238, 238);
+    background-color: #FFEEAD;
     border-radius: 8px;
-    width: 95%;
+    width: 100%;
     height: 200vw;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin-bottom:2%
+    margin-bottom: 2%;
+    padding: 15px;
+  
+    /* Initially positioned off-screen */
+    transform: translateY(100%);
+    opacity: 0;
+  
+    /* Animation applied */
+    animation: slideInFromBottom 0.5s ease-out forwards;
   }
   
+  @keyframes slideInFromBottom {
+    0% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
   .popup-content h2, .popup-content p {
     color: black;
     margin: 1%;
@@ -151,22 +194,6 @@
 
   .popup-content div {
     margin-top: 5%
-  }
-  
-  .close-button {
-    position: fixed;
-    text-align: center;
-    top: 20px; /* Distance from the top of the viewport */
-    right: 20px; /* Distance from the right side of the viewport */
-    padding: 0;
-    margin: 0;
-    background-color: #ff5555;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1%;
-    font-weight: bold;
   }
 
   .close-button:hover {

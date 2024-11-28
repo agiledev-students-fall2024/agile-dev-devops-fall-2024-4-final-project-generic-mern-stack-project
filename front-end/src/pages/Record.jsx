@@ -65,6 +65,10 @@ function Record() {
     setIsModalOpen(false);
   };
 
+  const closeModalTop = () => {
+    setIsModalOpen(false);
+  }
+
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
 
@@ -182,6 +186,7 @@ function Record() {
         selectedIngredients={selectedIngredients}
         handleIngredientSelect={handleIngredientSelect}
       />
+      <hr></hr>
       <RecipeSteps
         steps={currRecipe.steps}
         completedSteps={completedSteps}
@@ -194,7 +199,7 @@ function Record() {
       
       <CompletionModal
         isOpen={isModalOpen}
-        onRequestClose={closeModal}
+        onRequestClose={closeModalTop}
         onFileChange={handleFileChange}
         onSubmit={handleSubmit}
         error={error}
