@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useProfile } from './ProfileContext';
 import axios from "axios";
@@ -62,18 +62,42 @@ const ExistingNotes = () => {
   const navigate = useNavigate();
   const [notes, setNotes] = useState([]);
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    fetch('http://localhost:5000/api/notes', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`, 
+      },
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json(); 
+      })
+      .then(data => {
+        setNotes(data); 
+        console.log('Notes:', data);
+      })
+      .catch(error => console.error('Error fetching notes:', error));
+  }, []);
+
   // Get unique categories from notes
-  const categories = ['All', ...new Set(mockNotes.map(note => note.category))];
+  const categories = ['All', ...new Set(notes.map(note => note.category))];
+
 
   // Filter notes based on search term and category
-const filteredNotes = mockNotes.filter(note => {
+const filteredNotes = notes.filter(note => {
   const matchesSearch = note.title.toLowerCase().includes(searchTerm.trim().toLowerCase()) ||
                        note.preview.toLowerCase().includes(searchTerm.trim().toLowerCase()) ||
                        note.tags.some(tag => tag.toLowerCase().includes(searchTerm.trim().toLowerCase()));
   const matchesCategory = selectedCategory === 'All' || note.category === selectedCategory;
   const matchesUser = true; //note.author === user?.email;
 
-  return matchesSearch && matchesCategory && matchesUser;
+  return (matchesSearch && matchesCategory && matchesUser) ? note : "";
 });
 
  // Handle checkbox toggle
@@ -84,7 +108,6 @@ const filteredNotes = mockNotes.filter(note => {
       : [...prevSelected, id]
   );
 };
-
 // Handle delete action
 const handleDelete = async (noteId) => {
     const isConfirmed = window.confirm(
