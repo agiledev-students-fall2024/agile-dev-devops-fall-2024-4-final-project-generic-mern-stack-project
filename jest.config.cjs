@@ -8,5 +8,6 @@ module.exports = {
   },
   roots: ["<rootDir>/test"],  
   transformIgnorePatterns: [
+    "/node_modules/(?!some-es6-module).+\\.js$" 
   ],
 };
