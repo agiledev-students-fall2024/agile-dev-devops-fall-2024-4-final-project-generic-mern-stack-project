@@ -60,6 +60,7 @@ const Layout = () => {
           <li><Link to="/" className="nav-link" onClick={() => setIsNavOpen(false)}>Home</Link></li>
           <li><Link to="/new-note" className="nav-link" onClick={() => setIsNavOpen(false)}>New Note</Link></li>
           <li><Link to="/existing-notes" className="nav-link" onClick={() => setIsNavOpen(false)}>Existing Notes</Link></li>
+          <li><Link to="/transcription" className="nav-link" onClick={() => setIsNavOpen(false)}>Speech-to-Text</Link></li>
         </ul>
       </nav>
 
