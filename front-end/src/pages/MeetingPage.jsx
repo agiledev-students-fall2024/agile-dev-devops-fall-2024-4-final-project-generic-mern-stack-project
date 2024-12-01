@@ -363,7 +363,7 @@ function MeetingPage() {
                         }
                         {
                             whiteboardVisible &&
-                            <Whiteboard />
+                            <Whiteboard roomId={meetingId}/>
                         }
                     </div>
                     <div className="absolute top-20 right-4 w-64 h-48">
