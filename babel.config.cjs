@@ -5,5 +5,6 @@ module.exports = {
   ],
   plugins: [
     "@babel/plugin-transform-runtime", // Optional but can help with async/await syntax
+    '@babel/plugin-proposal-class-properties',
   ],
 };

@@ -6,8 +6,12 @@ module.exports = {
   moduleNameMapper: {
     "\\.css$": "identity-obj-proxy"
   },
-  roots: ["<rootDir>/test"],  
+  roots: ["test"],  
   transformIgnorePatterns: [
-    "/node_modules/(?!some-es6-module).+\\.js$" 
+    "/node_modules/(?!some-es6-module).+\\.js$",
+    '/node_modules/(?!quill)'
   ],
+  testMatch: [
+    "**/test/**/*.(test|spec).js"
+  ]
 };
