@@ -41,7 +41,7 @@ const Home = () => {
   const recentNotes = mockNotes
     .filter(note => !user?.email || note.author === user.email)
     .sort((a, b) => new Date(b.lastModified) - new Date(a.lastModified))
-    .slice(0, 5); // Show only the 5 most recent notes
+    .slice(0, 5); 
 
   return (
     <section className="home-view">
@@ -53,6 +53,8 @@ const Home = () => {
           <h2 className="notes-title">Recents</h2>
           <Link to="/new-note" className="create-button">New Note</Link>
           <Link to="/existing-notes" className="create-button">Existing Notes</Link>
+          <Link to="/transcription" className="create-button">Speech-to-Text</Link>
+
         </div>
         <ul className="notes-list">
           {recentNotes.map(note => (

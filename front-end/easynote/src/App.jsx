@@ -10,6 +10,8 @@ import Signup from './components/SignUp';
 import AuthGuard from './components/AuthGuard';
 import EditNote from './components/EditNote';
 import ViewNote from './components/ViewNote';
+import Transcription from './components/Transcription';
+
 
 const App = () => {
   return (
@@ -42,9 +44,7 @@ const App = () => {
                   <ExistingNotes />
                 </AuthGuard>
               }
-            
             />
-
             <Route
               path="edit-note"
               element={
@@ -52,14 +52,20 @@ const App = () => {
                   <EditNote />
                 </AuthGuard>
               }
-            
             />
-
-              <Route
+            <Route
               path="view-note"
               element={
                 <AuthGuard>
                   <ViewNote />
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="transcription"
+              element={
+                <AuthGuard>
+                  <Transcription />
                 </AuthGuard>
               }
             />
