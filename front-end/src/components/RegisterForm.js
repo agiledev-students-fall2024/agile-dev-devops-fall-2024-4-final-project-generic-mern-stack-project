@@ -51,7 +51,7 @@ const RegisterForm = () => {
               name='name' 
               type='text' 
               onChange={handleChange}
-              required
+              // required
               className='border border-gray-300 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-gray-400 text-base' />
         </div>
         <div className='grid'>
@@ -61,7 +61,7 @@ const RegisterForm = () => {
               type='text' 
               onChange={handleChange}
               autoComplete='username'
-              required
+              // required
               className='border border-gray-300 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-gray-400 text-base' />
         </div>
         <div className='grid'>
@@ -71,7 +71,7 @@ const RegisterForm = () => {
               type='email' 
               onChange={handleChange}
               autoComplete='username'
-              required
+              // required
               className='border border-gray-300 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-gray-400 text-base' />
         </div>
         <div className='grid'>
@@ -81,7 +81,7 @@ const RegisterForm = () => {
               type='password' 
               onChange={handleChange}
               autoComplete='new-password'
-              required
+              // required
               className='border border-gray-300 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-gray-400 text-base' />
         </div>
         <div className='grid'>
@@ -91,7 +91,7 @@ const RegisterForm = () => {
               type='password' 
               onChange={handleChange}
               autoComplete='new-password'
-              required
+              // required
               className='border border-gray-300 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-gray-400 text-base' />
         </div>
 

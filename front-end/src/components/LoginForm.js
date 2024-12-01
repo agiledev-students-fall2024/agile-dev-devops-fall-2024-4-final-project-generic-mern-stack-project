@@ -49,7 +49,7 @@ const LoginForm = () => {
             type='text' 
             onChange={handleChange}
             autoComplete='username'
-            required
+            // required
             className='border border-gray-300 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-gray-400 text-base' />
       </div>
       <div className='grid'>
@@ -59,7 +59,7 @@ const LoginForm = () => {
             type='password' 
             onChange={handleChange}
             autoComplete='current-password'
-            required
+            // required
             className='border border-gray-300 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-gray-400 text-base' />
         </div>
 
