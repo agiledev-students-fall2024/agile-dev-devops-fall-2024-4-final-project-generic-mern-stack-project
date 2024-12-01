@@ -142,5 +142,16 @@ async function rewriteText(text) {
     }
 }
 
+async function testRewriteText() {
+    try {
+        const result = await rewriteText(`She don’t likes going to the market because it’s too much peoples there`);
+        console.log(result);
+    } catch (error) {
+        console.error('Error during text rewriting:', error);
+    }
+}
+
+testRewriteText();
+
 
 
