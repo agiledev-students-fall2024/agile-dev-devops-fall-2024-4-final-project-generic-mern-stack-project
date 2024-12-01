@@ -142,19 +142,5 @@ async function rewriteText(text) {
     }
 }
 
-async function testRewriting() {
-    try {
-        const result = await rewriteText(`Contribution comment: This sprint is currently ongoing. 
-        Here are some notes on Git and GitHub activity by user GavinZhengOI in the main/master branch 
-        during the time period 10/10/2024 12:30 to 10/29/2024 12:30. Contributions made under any other 
-        username or made without the required Git/GitHub configuration settings will not be counted in 
-        this or future work.`);
-        console.log(result);
-    } catch (error) {
-        console.error('Error during rewriting:', error);
-    }
-}
-
-testRewriting();
 
 
