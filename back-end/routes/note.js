@@ -13,21 +13,15 @@ router.post('/', verifyToken, async (req, res) => {
         title,
         content,
         tags,
-        // author: req.userId,
-        author,
+        author: req.userId,
         category,
         preview,
         updatedAt,
         user,
     });
 
-    //try {
-    //    await newNote.save(); // for the database part
-    //    author: req.userId 
-    //});
-    console.log(newNote)
     try {
-        // await newNote.save(); for sprint 3
+        await newNote.save(); //for sprint 3
         res.status(201).json(newNote);
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -37,8 +31,8 @@ router.post('/', verifyToken, async (req, res) => {
 router.get('/', verifyToken, async (req, res) => {
     try {
         console.log('test localhost:5000/api/notes');
-        // const notes = await Note.find({ author: req.userId }).populate('author', 'username email'); for sprint 3
-        // res.status(200).json(notes);
+        const notes = await Note.find({ author: req.userId }).populate('author', 'username email');
+        res.status(200).json(notes);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
