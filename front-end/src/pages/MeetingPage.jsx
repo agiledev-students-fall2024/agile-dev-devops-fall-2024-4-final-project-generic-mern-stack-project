@@ -363,6 +363,7 @@ function MeetingPage() {
                         }
                         {
                             whiteboardVisible &&
+                            
                             <Whiteboard />
                         }
                     </div>
