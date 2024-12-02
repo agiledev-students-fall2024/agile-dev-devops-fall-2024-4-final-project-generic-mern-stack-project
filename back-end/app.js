@@ -5,6 +5,14 @@ import dotenv from 'dotenv';
 import path from 'path';
 import mongoose from 'mongoose';
 
+//MOCK DATA
+import budgetLimits from './mocks/budgetLimits.js';
+import recurringBills from './mocks/recurringBills.js';
+import transactionData from './mocks/transactionData.js';
+import goals from './mocks/goals.js';
+import { getNotifications } from './notifications.js'; 
+
+
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcrypt'; // Import bcrypt for hashing passwords
 
@@ -237,16 +245,47 @@ app.post('/user/:userId', async (req, res) => {
 });
 
 /* ======================= Transaction Routes ======================= */
+// Route to get all transactions
 app.get("/api/transactions", (req, res) => {
-  const userId = req.query.userId ? parseInt(req.query.userId) : MOCK_USER_ID;
-  const budgetId = req.query.budgetId ? parseInt(req.query.budgetId) : MOCK_BUDGET_ID;
-  console.log("Fetching transactions for userId:", userId, "budgetId:", budgetId);
-  
-  const userTransactions = transactionData.filter(transaction => 
-    transaction.userId === userId && transaction.budgetId === budgetId
-  );
+  res.json(transactionData);
+});
 
-  res.json(userTransactions);
+// Route to add a new transaction
+app.post("/api/transactions", (req, res) => {
+  const { merchant, category, amount, date } = req.body;
+  if (!merchant || !category || amount == null || !date) {
+    return res.status(400).json({ error: "Merchant, category, amount, and date are required" });
+  }
+  const newTransaction = { id: transactionData.length + 1, merchant, category, amount, date };
+  transactionData.push(newTransaction);
+  res.status(201).json(newTransaction);
+});
+
+// Route to update a transaction by ID
+app.put("/api/transactions/:id", (req, res) => {
+  const { id } = req.params;
+  const { merchant, category, amount, date } = req.body;
+  const transactionIndex = transactionData.findIndex((transaction) => transaction.id === parseInt(id));
+
+  if (transactionIndex === -1) {
+    return res.status(404).json({ error: "Transaction not found" });
+  }
+
+  transactions[transactionIndex] = { ...transactions[transactionIndex], merchant, category, amount, date };
+  res.json(transactionData[transactionIndex]);
+});
+
+// Route to delete a transaction by ID
+app.delete("/api/transactions/:id", (req, res) => {
+  const { id } = req.params;
+  const transactionIndex = transactionData.findIndex((transaction) => transaction.id === parseInt(id));
+
+  if (transactionIndex === -1) {
+    return res.status(404).json({ error: "Transaction not found" });
+  }
+
+  transactionData.splice(transactionIndex, 1);
+  res.status(204).send();
 });
 
 
@@ -282,6 +321,13 @@ app.get("/api/budget-limits", (req, res) => {
     }
 
     res.json(userBudgetLimit);
+});
+
+/* ======================= Notification Routes ======================= */
+// Route to get notifications
+app.get('/api/notifications', (req, res) => {
+  const notifications = getNotifications();
+  res.json(notifications);
 });
 
   
