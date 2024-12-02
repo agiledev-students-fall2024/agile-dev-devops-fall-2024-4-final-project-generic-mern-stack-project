@@ -1,0 +1,82 @@
+/* Container styling */
+.register-container {
+    max-width: 800px; /* Increased width for a larger form */
+    margin: 20px auto; /* Center the form with some space around it */
+    padding: 40px;
+    background-color: #f3e5f5; /* Light purple background */
+    border-radius: 10px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Form styling */
+.register-form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header styling */
+h1 {
+    color: #7b1fa2; /* Deep purple color for the header */
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 25px;
+}
+
+/* Form group styling */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Label styling */
+label {
+    color: #6a1b9a; /* Medium purple color for labels */
+    font-weight: bold;
+}
+
+/* Input styling */
+input {
+    width: 100%;
+    padding: 15px; /* Larger padding for inputs */
+    margin-top: 8px;
+    border: 1px solid #ba68c8; /* Light purple border */
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: #f3e5f5; /* Light purple background */
+    font-size: 1.1rem; /* Slightly larger font for readability */
+}
+
+/* Input focus styling */
+input:focus {
+    outline: none;
+    border-color: #7b1fa2; /* Darker purple on focus */
+    background-color: #f8eaf6; /* Slightly lighter purple when focused */
+}
+
+/* Button styling */
+button.register-btn {
+    padding: 15px;
+    background-color: #9c27b0; /* Vibrant purple color for the button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.2rem; /* Larger font for the button */
+    transition: background-color 0.3s ease;
+    margin-top: 15px;
+}
+
+/* Button hover and active states */
+button.register-btn:hover {
+    background-color: #7b1fa2; /* Darker purple on hover */
+}
+
+button.register-btn:active {
+    background-color: #6a1b9a; /* Even darker purple on click */
+}
+
+/* Message styling */
+p {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1rem; /* Slightly larger font for emphasis */
+}
