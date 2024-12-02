@@ -4,6 +4,7 @@ import path from "path";
 import { protectRouter } from "../middlewares/auth.middleware.js";
 import Community from "../models/community.model.js";
 import User from "../models/user.model.js";
+import { body, validationResult } from "express-validator";
 
 //handles creaing a new community and uploading a picture 
 const router = express.Router();
@@ -31,8 +32,38 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 //route for HTTP POST requests for /api/create-community (includes file upload)
-router.post("/api/create-community", protectRouter, upload.single("file"), async (req, res) => {
+router.post("/api/create-community", protectRouter, upload.single("file"), 
+[
+  body("name")
+    .trim()
+    .notEmpty().withMessage("Name needs to be provided")
+    .isLength({ min: 2 }).withMessage("Name must be at least 2 characters long"),
+  
+  body("description")
+    .trim()
+    .notEmpty().withMessage("Description should be provided")
+    .isLength({ min: 5 }).withMessage("Description must be at least 5 characters long"),
+
+  body("file")
+    .custom((value, {req}) => {
+      if (!req.file){
+        throw new Error("A file must be uploaded")
+      }
+      return true
+    })
+],
+
+async (req, res) => {
   try{
+    //data validation
+    const error = validationResult(req)
+    
+    if (!error.isEmpty()){
+      return res.status(400).json({
+        errors: error.array()
+      })
+    }
+
     //gets all the info needed to create a new community 
     const {name, description}  = req.body
     const communityPicture = req.file ? `/uploads/community/${req.file.filename}` : undefined
