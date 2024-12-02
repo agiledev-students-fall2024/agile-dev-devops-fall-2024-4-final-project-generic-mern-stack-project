@@ -6,7 +6,7 @@ import User from "../models/user.model.js";
 export const protectRouter = async (req, res, next) => {
   try {
     const cookie = req.cookies["jwt-seraphim"];
-    console.log(cookie);
+    // console.log(cookie);
     // console.log(req.cookies);
     if (!cookie) {
       return res

@@ -1,46 +1,35 @@
 import express from "express";
+import User from "../models/user.model.js";
+import Community from "../models/community.model.js";
+import { protectRouter } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
 const joinCommunity = async (req, res) => {
   try {
-    // const { communityId } = req.params;
-    const userId = 2;
-    // const userId = req.user._id;
-    // const user = await User.findById(userId); // find user by id
+    const { communityId } = req.params;
+    const userId = req.user._id;
+
+    // find user by id
+    const user = await User.findById(userId);
     // find community by id
+    const community = await Community.findById(communityId);
 
-    // hardcode info
-    const user = {
-      name: "john doe",
-      username: "john_doe",
-      email: "jd@gmail.com",
-      password: "jd1234",
-      communities: [5],
-    };
-    const community = {
-      name: "community1",
-      communityId: req.params.communityID,
-      members: [],
-    };
-
-    if (isNaN(parseInt(community.communityId, 10))) {
-      return res.status(404).json({
-        message: "Invalid community ID",
-      });
-    } else if (user.communities.includes(parseInt(community.communityId, 10))) {
+    if (
+      user.communities.includes(community.communityId) ||
+      community.members.includes(userId)
+    ) {
       return res.status(400).json({
         message: "You have already joined this community",
       });
     }
-    user.communities.push(parseInt(community.communityId, 10));
+    user.communities.push(community.communityId);
     community.members.push(userId);
     // todo: save user and community
     res.status(200).json({
       message: "You have successfully joined the community",
       user,
       community,
-      // type: typeof parseInt(community.communityId, 10),
     });
   } catch (error) {
     console.error("Error in joinCommunity", error.message);
@@ -48,5 +37,5 @@ const joinCommunity = async (req, res) => {
   }
 };
 
-router.post("/api/join-community/:communityID", joinCommunity);
+router.post("/api/join-community/:communityId", protectRouter, joinCommunity);
 export default router;
