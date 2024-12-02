@@ -134,9 +134,46 @@ export const getCurrentUser = (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+export const continueResetPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    // console.log(email);
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      return res.status(400).json({ message: "User not found!" });
+    }
+    res.status(200).json({ message: "User found", user });
+  } catch (error) {
+    console.log("Error in continueResetPassword", error.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  try {
+    const { email, newpassword, confirmpassword } = req.body;
+    const user = await User.findOne({ email: email });
+    if (!newpassword || newpassword.length < 6) {
+      return res.status(400).json({ message: "New password too short!" });
+    }
+    if (newpassword !== confirmpassword) {
+      return res.status(400).json({ message: "Passwords do not match!" });
+    }
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newpassword, salt);
+    user.password = hashedPassword;
+    await user.save();
+    res.status(200).json({ message: "Password reset successfully" });
+  } catch (error) {
+    console.log("Error in resetPassword", error.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 
 router.post("/api/signup", signup);
 router.post("/api/login", login);
 router.post("/api/logout", logout);
+router.post("/api/continueReset", continueResetPassword);
+router.post("/api/reset", resetPassword);
 
 export default router;
