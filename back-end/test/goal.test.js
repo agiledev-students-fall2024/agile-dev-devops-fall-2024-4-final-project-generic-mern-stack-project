@@ -49,7 +49,41 @@ describe("Goal API", function () {
           done();
         });
     });
+  });
 
-   
+  // Additional Tests for Invite Collaborator - Added at the end
+  describe("POST /goal/:goalId/invite", function () {
+    it("should add a collaborator to a goal", function (done) {
+      request(app)
+        .post("/goal/1/invite") // Mock goal ID
+        .send({ collaboratorEmail: 'collabuser@example.com' }) // Mock collaborator email
+        .expect(200)
+        .end((err, res) => {
+          assert.equal(res.body.message, 'Collaborator added successfully', "Expected success message");
+          done();
+        });
+    });
+
+    it("should return 404 for invalid goal ID", function (done) {
+      request(app)
+        .post("/goal/999/invite") // Invalid goal ID
+        .send({ collaboratorEmail: 'collabuser@example.com' })
+        .expect(404)
+        .end((err, res) => {
+          assert.equal(res.body.error, 'Goal not found', "Expected error for nonexistent goal");
+          done();
+        });
+    });
+
+    it("should return 404 if collaborator email does not exist", function (done) {
+      request(app)
+        .post("/goal/1/invite")
+        .send({ collaboratorEmail: 'nonexistent@example.com' }) // Invalid collaborator email
+        .expect(404)
+        .end((err, res) => {
+          assert.equal(res.body.error, 'Collaborator not found', "Expected error for nonexistent collaborator");
+          done();
+        });
+    });
   });
 });

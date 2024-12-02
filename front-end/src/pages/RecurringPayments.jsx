@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import recurringBills from '../mocks/recurringBills';
+import React, { useState, useEffect } from 'react';
 import './RecurringPayments.css';
 
 function RecurringPayments() {
-  const [payments, setPayments] = useState(recurringBills);
+  const [payments, setPayments] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false); 
   const [currentPaymentIndex, setCurrentPaymentIndex] = useState(null);
@@ -13,6 +12,21 @@ function RecurringPayments() {
     amount: '',
     dueDate: ''
   });
+
+  // fetch recurring bills from the backend
+  useEffect(() => {
+    fetch("http://localhost:3001/api/recurring-bills?userId=1&budgetId=1")
+      .then((response) => response.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setPayments(data);
+        } else {
+          console.error("Expected an array but received:", data);
+          setPayments([]);
+        }
+      })
+      .catch((error) => console.error("Failed to fetch recurring bills:", error));
+  }, []);
 
   const handleAddOrEditPayment = () => {
     if (isEditing && currentPaymentIndex !== null) {
@@ -50,7 +64,7 @@ function RecurringPayments() {
 
       <ul className="payments-list">
         {payments.map((payment, index) => (
-          <li key={index} className="payment-item">
+          <li key={payment.id} className="payment-item">
             <div className="payment-details">
               <p className="payment-name">{payment.name}</p>
               <p className="payment-category">{payment.category}</p>
