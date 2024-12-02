@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ProfileProvider } from './components/ProfileContext';
 import Layout from './components/Layout';
 import Home from './components/Home';
-import NewNote from './components/NewNote';
+import NewNote from './components/NewNote.jsx';
 import ExistingNotes from './components/ExistingNotes';
 import Login from './components/Login';
 import Signup from './components/SignUp';

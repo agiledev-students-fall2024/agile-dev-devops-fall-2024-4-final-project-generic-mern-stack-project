@@ -46,19 +46,60 @@ const NewNote = () => {
   const typingTimeoutRef = useRef(null); 
   const changeRef = useRef(new Delta());
 
-  const triggerAPI = useCallback(async (notes) => {
+  // const triggerAPI = useCallback(async (notes) => {
+  //   try {
+  //     // const fakeToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXIxMjMiLCJpYXQiOjE3MzE1MTAxNjV9.L4OTK2ffTbq0AkL8ulSr4iDytu58puNtnI_9LxUXV5s";
+  //     // localStorage.setItem("token", fakeToken); generate fake token
+  //     const token = localStorage.getItem('token');  // for database setup: sprint 3
+  //     if (!token) {
+  //     alert('Please log in again');
+  //     return;
+  //     }
+  //     const res = await axios.post(
+  //       `http://localhost:${
+  //         process.env.EXPRESS_SERVER_PORT || 5000
+  //       }/api/notes/`,
+  // const triggerAPI = useCallback(async (notes) => {
+  //   try {
+  //     // const fakeToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXIxMjMiLCJpYXQiOjE3MzE1MTAxNjV9.L4OTK2ffTbq0AkL8ulSr4iDytu58puNtnI_9LxUXV5s";
+  //     // localStorage.setItem("token", fakeToken); generate fake token
+  //     const token = localStorage.getItem('token');  // for database setup: sprint 3
+  //     if (!token) {
+  //     alert('Please log in again');
+  //     return;
+  //     }
+  //     const res = await axios.post(
+  //       `http://localhost:${
+  //         process.env.EXPRESS_SERVER_PORT || 5000
+  //       }/api/notes/`,
+  //       notes,
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+  //     console.log("Success", res);
+  //   } catch (error) {
+  //     alert(
+  //       "Failed to save note: " + 
+  //       (error.response && error.response.data ? error.response.data.message : error.response ? error.response.message : "Unknown error")
+  //     );      
+  //     console.error("Error occurred:", error);
+  //   }
+  // }, []);
+
+  async function triggerAPI(notes) {
     try {
-      // const fakeToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXIxMjMiLCJpYXQiOjE3MzE1MTAxNjV9.L4OTK2ffTbq0AkL8ulSr4iDytu58puNtnI_9LxUXV5s";
-      // localStorage.setItem("token", fakeToken); generate fake token
-      const token = localStorage.getItem('token');  // for database setup: sprint 3
+      const token = localStorage.getItem('token');
       if (!token) {
-      alert('Please log in again');
-      return;
+        alert('Please log in again');
+        return;
       }
+  
       const res = await axios.post(
-        `http://localhost:${
-          process.env.EXPRESS_SERVER_PORT || 5000
-        }/api/notes/`,
+        `http://localhost:${process.env.EXPRESS_SERVER_PORT || 5000}/api/notes/`,
         notes,
         {
           headers: {
@@ -68,16 +109,14 @@ const NewNote = () => {
         }
       );
       console.log("Success", res);
+      return res.data;
     } catch (error) {
-      alert(
-        "Failed to save note: " + error.response?.data?.message ||
-          error.response?.message ||
-          "Unknown error"
-      );
+      const errorMessage = error.response?.data?.message || error.response?.message || "Unknown error";
+      alert(`Failed to save note: ${errorMessage}`);
       console.error("Error occurred:", error);
+      throw error; // Re-throw for tests to catch
     }
-  }, []);
-
+  }
 
 
   useEffect(() => {
@@ -182,7 +221,8 @@ const saveInterval = setInterval(() => {
         .split(",")
         .map((tag) => tag.trim())
         .filter((tag) => tag),
-      author: user?._id,
+        author: user && user._id,
+      // author: user?._id,
       // author: user?.email,
       content,
     };
