@@ -91,6 +91,7 @@ const apiUrl = process.env.REACT_APP_API_URL
 
 const CreateBlogPost = () => {
   const { username } = useParams(); // Use username from URL to create back link
+  const token = localStorage.getItem('token')
 
   // State for form data
   const [title, setTitle] = useState('');
@@ -106,7 +107,9 @@ const CreateBlogPost = () => {
         imageUrl: image ? URL.createObjectURL(image) : ''
       };
 
-      const response = await axios.post(`${apiUrl}/api/posts/create`, formData);
+      const response = await axios.post(`${apiUrl}/api/posts/create`, 
+        formData,
+        { headers: { Authorization: `Bearer ${token}` }, },);
       console.log('Post created successfully:', response.data);
     } catch (error) {
       console.error('Error creating post:', error);
