@@ -38,8 +38,6 @@ app.use(express.urlencoded({ extended: true }));
 const accounts = [];
 const debts = [];
 
-// mongoose models for MongoDB data manipulation... TBD
-
 // connect to the database
 console.log(`Connecting to MongoDB at ${process.env.MONGODB_URI}`)
 try {
@@ -208,14 +206,15 @@ app.get("/api/budget-limits", (req, res) => {
   
 
 /* ======================= Serve Frontend (React App) ======================= */
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../front-end/", "index.html"));
-});
-
-// Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, "../front-end/build")));
+  app.get("*", (req, res) => {
+      res.sendFile(path.join(__dirname, "../front-end/build/index.html"));
+  });
+} else {
+  app.get("/", (req, res) => {
+      res.send("API is running... Front-end development server handles UI.");
+  });
+}
 
 export default app;
