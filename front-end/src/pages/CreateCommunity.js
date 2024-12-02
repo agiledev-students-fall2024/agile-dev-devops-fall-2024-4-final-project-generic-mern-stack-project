@@ -8,6 +8,7 @@ const CreateCommunity = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [communityPicture, setCommunityPicture] = useState("");
+  const fileField = React.useRef(null);
 
   function handleCreateCommunity(e) {
     e.preventDefault();
@@ -21,6 +22,14 @@ const CreateCommunity = () => {
       .then((response) => {
         console.log("New community:", response.data)
         toast.success("Community created successfully!");
+
+        setName("")
+        setDescription("")
+
+        if (fileField.current){
+          fileField.current.value = ""
+        }
+
       })
       .catch((err) => {
         toast.error("Failed to create community.");
@@ -56,9 +65,9 @@ const CreateCommunity = () => {
         ></InputField>
         <div className="flex flex-col gap-1 w-full p-2">
           <label className="text-sm text-ebony-700 font-bold">
-            Upload a Picture for your Community:
+            Upload a Picture for Your Community:
           </label>
-          <input type="file" className="pt-1" onChange={handlePictureUpload} />
+          <input type="file" className="pt-1" onChange={handlePictureUpload} ref={fileField}/>
         </div>
       </div>
       

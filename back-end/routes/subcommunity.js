@@ -1,15 +1,30 @@
 //import and instantiate express
 import express from "express"
+import { param, validationResult } from "express-validator";
 import Community from "../models/community.model.js";
 
 const router = express.Router();
 
 //subcommunity - sends back a specific community group data after clicking the group
-router.get('/api/community/:communityId', async (req, res) => {
+router.get('/api/community/:communityId', 
+[
+    param("communityId")
+     .isMongoId().withMessage("Invalid Community Id")
+],
+
+async (req, res) => {
     try {
+        //data validation 
+        const error = validationResult(req)
+
+        if (!error.isEmpty()){
+            return res.status(400).json({
+                errors: error.array()
+            })
+        }
+
         //find community from database
         const community = await Community.findById(req.params.communityId)
-        //console.log(community)
 
         //validate the community 
         if (!community){

@@ -23,17 +23,6 @@ const SubCommunityPage = (props) => {
             console.error(err)
          })
 
-         //backup data 
-         const secondData = [
-            {
-                id: 1,
-                name: "The Creative Collective",
-                description: "The Creative Collective is an artistic hub that brings together local painters, writers, photographers, musicians, and other creatives who are passionate about expressing their talents. Our goal is to nurture and celebrate creativity within the community by organizing collaborative projects, workshops, and public art installations. The group provides a supportive environment for individuals to share their work, receive feedback, and gain inspiration from others. We also offer opportunities for networking, mentorship, and exposure through community events like art shows, poetry readings, and music performances. The Creative Collective fosters a sense of belonging among artists, giving them the tools and support they need to thrive.",
-                communityPicture: "/uploads/community/default_pic.png"
-            },
-         ]
-         setData(secondData[0]);
-
     }, [communityId])
 
     return (

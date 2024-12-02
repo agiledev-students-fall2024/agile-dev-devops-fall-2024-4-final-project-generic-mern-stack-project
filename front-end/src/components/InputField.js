@@ -23,14 +23,14 @@ function InputField({
           {inputfieldName}
         </label>
         {inputfieldName === "Description" ? (
-          <input
-            className="h-48 bg-lavender_blush-900 rounded-md px-2 py-1 text-md text-ebony w-full border border-[#d9d9d9]"
+          <textarea
+            className="h-48 bg-lavender_blush-900 rounded-md px-2 py-1 text-md text-ebony w-full border border-[#d9d9d9] mt-0"
             type={inputType}
             id={inputfieldName}
             onChange={handleChange}
             value={inputValue}
             name={name} 
-          />
+          ></textarea>
         ): (
           <input
           className="bg-lavender_blush-900 rounded-md px-2 py-1 text-md text-ebony w-full border border-[#d9d9d9]"
