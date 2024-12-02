@@ -22,6 +22,7 @@ import home from "./routes/home.js";
 import post from "./routes/post.js";
 import profile from "./routes/profile.js";
 import multer from "./lib/multer.js";
+import userRoutes from "./routes/user.js"; //new 
 
 const app = express(); // instantiate an Express object
 
@@ -59,5 +60,6 @@ app.use(createCommunity);
 app.use(home);
 app.use(post);
 app.use(profile);
+app.use(userRoutes); //new
 
 export default app;
