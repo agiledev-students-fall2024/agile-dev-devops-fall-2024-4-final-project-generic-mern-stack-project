@@ -3,12 +3,15 @@ import morgan from 'morgan';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
+import mongoose from 'mongoose';
+=======
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcrypt'; // Import bcrypt for hashing passwords
 
 // Import User and BudgetGoal models (lowercase filenames)
 import User from './user.js';
 import BudgetGoal from './budgetGoal.js';
+
 
 dotenv.config({ silent: true });
 const __filename = fileURLToPath(import.meta.url);
@@ -29,11 +32,24 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-/* ======================= Temporary Data Storage ======================= */
+
+/* ======================= Data Storage ======================= */
+// Temporary in-memory storage for accounts and debts
 const accounts = [];
 const debts = [];
 
-// Define routes (combine both versions)
+// mongoose models for MongoDB data manipulation... TBD
+
+// connect to the database
+console.log(`Connecting to MongoDB at ${process.env.MONGODB_URI}`)
+try {
+  mongoose.connect(process.env.MONGODB_URI)
+  console.log(`Connected to MongoDB.`)
+} catch (err) {
+  console.log(
+    `Error connecting to MongoDB user account authentication will fail: ${err}`
+  )
+}
 
 // Root Route
 app.get("/", (req, res) => {
