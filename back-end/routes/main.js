@@ -24,7 +24,7 @@ router.get('/', async (req, res) => {
 
     // Fetch the authenticated user
     const user = await User.findById(authUserId);
-    if (!user) {
+    if (!authUserId || !user) {
       return res.status(401).json({ message: 'Unauthorized: User not found' });
     }
 
@@ -34,7 +34,7 @@ router.get('/', async (req, res) => {
     });
     const friendIds = friendships.map(f =>
       f.user1.toString() === authUserId ? f.user2 : f.user1
-    );    
+    );
 
     // Fetch posts by friends, sorted by date
     const posts = await Post.find({ author: { $in: friendIds } })
@@ -43,8 +43,8 @@ router.get('/', async (req, res) => {
 
     res.status(200).json({ posts, user });
   } catch (error) {
-    console.error('Error fetching posts',error);
-    res.status(500).json({ message: 'Failed to fetch posts', error: error.message });
+    console.error('Error fetching posts:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 });
 
@@ -55,7 +55,7 @@ router.get('/explore', async (req, res) => {
 
     // Fetch the authenticated user
     const user = await User.findById(authUserId);
-    if (!user) {
+    if (!authUserId || !user) {
       return res.status(401).json({ message: 'Unauthorized: User not found' });
     }
 
@@ -65,7 +65,7 @@ router.get('/explore', async (req, res) => {
     });
     const blockedIds = blocked.map(b =>
       b.blocked.toString() === authUserId ? b.blocker : b.blocked
-    );    
+    );
 
     // Fetch posts excluding the user's own and blocked users, sorted by date
     const posts = await Post.find({
@@ -76,12 +76,13 @@ router.get('/explore', async (req, res) => {
 
     res.status(200).json({ posts, user });
   } catch (error) {
-    console.error('Error fetching posts',error);
-    res.status(500).json({ message: 'Failed to fetch posts', error: error.message });
+    console.error('Error fetching explore posts:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 });
 
 module.exports = router;
+
 
 
 
