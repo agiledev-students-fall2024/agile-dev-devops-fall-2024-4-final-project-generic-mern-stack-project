@@ -161,19 +161,41 @@
 //sprint 3 second try
 
 
+
+
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const { check, validationResult } = require('express-validator');
 const passport = require('passport');
 require('../config/jwt-config'); // Ensure this correctly imports your JWT strategy
 const Post = require('../models/Post'); 
+const User = require('../models/User');
+
 
 // Middleware to authenticate using JWT with passport
-const authenticateJWT = passport.authenticate('jwt', { session: false });
+// const validateObjectId = (req, res, next) => {
+//     const { id } = req.params;
+//     if (!mongoose.Types.ObjectId.isValid(id)) {
+//       return res.status(400).json({ error: 'Invalid ID format' });
+//     }
+//     next();
+//   };
 
 // Create a new post
 //NEED TO ADD AN ID SECTION TO THIS AND FIGURE OUT HOW TO INCREMENT IT
-router.post( '/create', [ check('title', 'Title is required').not().isEmpty(), check('content', 'Content is required').not().isEmpty(), ], async (req, res) => { const errors = validationResult(req); if (!errors.isEmpty()) { return res.status(400).json({ errors: errors.array() }); } try { const newPost = new Post({title: req.body.title, author: "spongebob", content: req.body.content, photo: req.body.photo || '', date: new Date().toISOString(), }); const savedPost = await newPost.save(); res.status(201).json({ message: 'Post created successfully', post: savedPost }); } catch (err) { console.error(err.message); res.status(500).send('Server Error'); } } );
+router.post( '/create', passport.authenticate('jwt', {session: false}), 
+    [ check('title', 'Title is required').not().isEmpty(), check('content', 'Content is required').not().isEmpty(), ], 
+    async (req, res) => { const errors = validationResult(req); if (!errors.isEmpty()) { return res.status(400).json({ errors: errors.array() }); } 
+    try { 
+        const newPost = new Post({
+            title: req.body.title, 
+            author: req.user.id, 
+            content: req.body.content, 
+            photo: req.body.photo || '', 
+            date: new Date().toISOString(), }); 
+        const savedPost = await newPost.save(); res.status(201).json({ message: 'Post created successfully', post: savedPost }); } 
+    catch (err) { console.error(err.message); res.status(500).send('Server Error'); } } );
 
 // Edit an existing post
 router.put('/edit/:id', passport.authenticate('jwt', {session: false}), async (req,res) =>
@@ -213,26 +235,171 @@ router.put('/edit/:id', passport.authenticate('jwt', {session: false}), async (r
   });
 
 // Fetch a single post
-router.get('/:id', 
+router.get('/:id', passport.authenticate('jwt', {session: false}), async (req, res) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: 'Invalid Post ID format.' });
+  }
 
-  async (req, res) => {
-    try {
-      const post = await Post.findById(req.params.id);
-        // const postId = parseInt(req.params.id);
-        // const post = postsData.find(post => post.id === postId);
-      if (!post) {
-        return res.status(404).json({ message: 'Post not found' });
-      }
-
-      res.status(200).json(post);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error');
+  try {
+    const post = await Post.findById(id).populate('author');
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found.' });
     }
-  });
+    res.status(200).json(post);
+  } catch (error) {
+    console.error('Error fetching post:', error);
+    res.status(500).json({ message: 'Internal server error.' });
+  }
+});
+
 
 module.exports = router;
 
 
 //BIG ISSUE IS HOW WE ARE GETTING THE USER ID AND HOW TO IMPLEMENT THE AUTHENTICATION
 //FIGURE OUT HOW TO CONNECT THE USER.JS FILE AND FETCH THE LOGGEDIN USER INFORMATION TO USE AS THE AUTHOR
+
+
+
+
+// const express = require('express');
+// const router = express.Router();
+// const { check, validationResult } = require('express-validator');
+// const passport = require('passport');
+// require('../config/jwt-config'); // Ensure this correctly imports your JWT strategy
+// const Post = require('../models/Post'); 
+// // const User = require('../models/User');
+
+// // Middleware to authenticate using JWT with passport
+// // const authenticateJWT = passport.authenticate('jwt', { session: false });
+
+// // Create a new post
+// //NEED TO ADD AN ID SECTION TO THIS AND FIGURE OUT HOW TO INCREMENT IT
+// router.post( '/create', [ check('title', 'Title is required').not().isEmpty(), check('content', 'Content is required').not().isEmpty(), ], async (req, res) => { const errors = validationResult(req); if (!errors.isEmpty()) { return res.status(400).json({ errors: errors.array() }); } try { const newPost = new Post({title: req.body.title, author: "spongebob", content: req.body.content, photo: req.body.photo || '', date: new Date().toISOString(), }); const savedPost = await newPost.save(); res.status(201).json({ message: 'Post created successfully', post: savedPost }); } catch (err) { console.error(err.message); res.status(500).send('Server Error'); } } );
+// // router.post(
+// //     '/create',
+// //     [
+// //       check('title', 'Title is required').not().isEmpty(),
+// //       check('content', 'Content is required').not().isEmpty(),
+// //     ],
+// //     async (req, res) => {
+// //       const errors = validationResult(req);
+// //       if (!errors.isEmpty()) {
+// //         return res.status(400).json({ errors: errors.array() });
+// //       }
+  
+// //       try {
+// //         // Assuming req.user.id is available through authentication middleware
+// //         const userId = req.user?.id || req.body.author; // Either from authenticated user or passed in the body
+  
+// //         // Ensure the provided userId is a valid ObjectId
+// //         if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
+// //           return res.status(400).json({ message: 'Invalid author ID' });
+// //         }
+  
+// //         // Check if the user exists
+// //         const authorExists = await User.findById(userId);
+// //         if (!authorExists) {
+// //           return res.status(404).json({ message: 'Author not found' });
+// //         }
+  
+// //         // Create a new post
+// //         const newPost = new Post({
+// //           title: req.body.title,
+// //           author: userId, // Use the ObjectId of the user
+// //           content: req.body.content,
+// //           photo: req.body.photo || '', // Optional photo field
+// //           createdAt: new Date(),
+// //         });
+  
+// //         const savedPost = await newPost.save();
+// //         res.status(201).json({
+// //           message: 'Post created successfully',
+// //           post: savedPost,
+// //         });
+// //       } catch (err) {
+// //         console.error(err.message);
+// //         res.status(500).send('Server Error');
+// //       }
+// //     }
+// //   );
+
+// // Edit an existing post
+// router.put('/edit/:id', passport.authenticate('jwt', {session: false}), async (req,res) =>
+
+//   [
+//     // authenticateJWT,
+//     check('title', 'Title is optional').optional().isLength({ min: 1 }),
+//     check('content', 'Content is optional').optional().isLength({ min: 1 })
+//   ],
+//   async (req, res) => {
+//     const errors = validationResult(req);
+//     if (!errors.isEmpty()) {
+//       return res.status(400).json({ errors: errors.array() });
+//     }
+
+//     try {
+//       const post = await Post.findById(req.params.id);
+
+//       if (!post) {
+//         return res.status(404).json({ message: 'Post not found' });
+//       }
+
+//       if (post.author.toString() !== req.user._id.toString()) {
+//         return res.status(401).json({ message: 'User not authorized' });
+//       }
+
+//       post.title = req.body.title || post.title;
+//       post.content = req.body.content || post.content;
+//       post.photo = req.body.photo || post.photo;
+
+//       await post.save();
+//       res.status(200).json({ message: 'Post updated successfully', post });
+//     } catch (err) {
+//       console.error(err.message);
+//       res.status(500).send('Server Error');
+//     }
+//   });
+
+// // Fetch a single post
+// router.get('/:id', 
+
+//   async (req, res) => {
+//     try {
+//     //   const post = await Post.findById(req.params.id);
+//         const post = await Post.findById(req.params.id).populate('author', 'username name');
+//         // const postId = parseInt(req.params.id);
+//         // const post = postsData.find(post => post.id === postId);
+//       if (!post) {
+//         return res.status(404).json({ message: 'Post not found' });
+//       }
+
+//       res.status(200).json(post);
+//     } catch (err) {
+//       console.error(err.message);
+//       res.status(500).send('Server Error');
+//     }
+//   });
+// //     router.get('/:id', async (req, res) => {
+// //         try {
+// //         const post = await Post.findById(req.params.id).populate('author', 'username name');
+// //         if (!post) {
+// //             return res.status(404).json({ message: 'Post not found' });
+// //         }
+    
+// //         res.status(200).json(post);
+// //         } catch (err) {
+// //         console.error(err.message);
+// //         if (err.kind === 'ObjectId') {
+// //             return res.status(400).json({ message: 'Invalid post ID' });
+// //         }
+// //         res.status(500).send('Server Error');
+// //         }
+// //     });
+
+// module.exports = router;
+
+
+// //BIG ISSUE IS HOW WE ARE GETTING THE USER ID AND HOW TO IMPLEMENT THE AUTHENTICATION
+// //FIGURE OUT HOW TO CONNECT THE USER.JS FILE AND FETCH THE LOGGEDIN USER INFORMATION TO USE AS THE AUTHOR
