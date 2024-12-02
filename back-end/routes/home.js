@@ -1,3 +1,4 @@
+/*
 // Import express
 import express from "express";
 import { protectRouter } from "../middlewares/auth.middleware.js";
@@ -168,6 +169,56 @@ router.get("/api/home", protectRouter, async (req, res) => {
     res.status(500).json({
       error: err.message,
       status: "Failed to retrieve posts from hardcoded data.",
+    });
+  }
+});
+
+export default router;
+*/
+
+import express from "express";
+import { protectRouter } from "../middlewares/auth.middleware.js";
+import Post from "../models/post.model.js";
+import User from "../models/user.model.js";
+
+const router = express.Router();
+
+router.get("/api/home", protectRouter, async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { communityId } = req.query;
+
+    let posts;
+
+    if (communityId) {
+      posts = await Post.find({ community: communityId })
+        .populate("madeBy", "username name profilePicture")
+        .populate("community", "name")
+        .populate({
+          path: "replies",
+          populate: { path: "madeBy", select: "username name profilePicture" },
+        })
+        .sort({ createdAt: -1 });
+    } else {
+      const user = await User.findById(userId).populate("communities");
+      const communityIds = user.communities.map((c) => c._id);
+
+      posts = await Post.find({ community: { $in: communityIds } })
+        .populate("madeBy", "username name profilePicture")
+        .populate("community", "name")
+        .populate({
+          path: "replies",
+          populate: { path: "madeBy", select: "username name profilePicture" },
+        })
+        .sort({ createdAt: -1 });
+    }
+
+    res.json({ posts });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      error: err.message,
+      status: "Failed to retrieve posts.",
     });
   }
 });
