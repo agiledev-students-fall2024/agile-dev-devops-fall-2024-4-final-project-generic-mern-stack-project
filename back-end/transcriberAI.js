@@ -16,9 +16,6 @@ const transcribe = async (audioFile) => {
     console.error(`Transcription failed: ${transcript.error}`)
     process.exit(1)
   }
-
-  console.log(transcript.text);
-
   if (Array.isArray(transcript.utterances)) {
     for (let utterance of transcript.utterances) {
         console.log(`Speaker ${utterance.speaker}: ${utterance.text}`);
