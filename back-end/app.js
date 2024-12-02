@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
+import mongoose from 'mongoose';
 
 // /* Importing Mock Data */
 import budgetLimits from './mocks/budgetLimits.js';
@@ -22,10 +23,24 @@ app.use(cors()); // Enable Cross-Origin Requests
 app.use(express.json()); // Parse JSON requests
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded requests
 
-/* ======================= Temporary Data Storage ======================= */
-// Temporary in-memory storage for accounts and debts since no DB yet
+/* ======================= Data Storage ======================= */
+// Temporary in-memory storage for accounts and debts
 const accounts = [];
 const debts = [];
+
+// mongoose models for MongoDB data manipulation... TBD
+
+// connect to the database
+console.log(`Connecting to MongoDB at ${process.env.MONGODB_URI}`)
+try {
+  mongoose.connect(process.env.MONGODB_URI)
+  console.log(`Connected to MongoDB.`)
+} catch (err) {
+  console.log(
+    `Error connecting to MongoDB user account authentication will fail: ${err}`
+  )
+}
+
 
 /* ======================= Account Routes ======================= */
 // Route to get all accounts
