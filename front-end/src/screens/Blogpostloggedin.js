@@ -103,25 +103,23 @@ const BlogPostLoggedIn = () => {
   const { postId } = useParams(); // Extract the post ID from the URL
   const [post, setPost] = useState(null);
   const [author, setAuthor] = useState(null); // New state for the author's information
+  const [loggedin,setLoggedin] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const token = localStorage.getItem('token')
 
   useEffect(() => {
     const fetchPostData = async () => {
       try {
         setLoading(true);
 
-        // Log the API URL for debugging
-        console.log("Fetching post data from:", `${process.env.REACT_APP_API_URL}/api/posts/${postId}`);
+        const postResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/posts/${postId}`, { headers: { Authorization: `Bearer ${token}` }, },);
+        console.log(postResponse.data.loggedin)
+        setPost(postResponse.data.post);
+        setLoggedin(postResponse.data.loggedin);
+        setAuthor(postResponse.data.post.author);
+        
 
-        const postResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/posts/${postId}`);
-        setPost(postResponse.data);
-
-        if (postResponse.data.author) {
-          console.log("Fetching author data for:", postResponse.data.author);
-          const authorResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/users/${postResponse.data.author}`);
-          setAuthor(authorResponse.data);
-        }
       } catch (err) {
         console.error("Error fetching post or author data:", err);
         setError('Failed to fetch data. Please try again later.');
@@ -157,7 +155,7 @@ const BlogPostLoggedIn = () => {
         </Link>
 
         {/* Show edit button if the logged-in user matches the author */}
-        {author && post.author === author._id && (
+        {author && author._id === loggedin._id && (
           <Link to={`/updateblogpost/${postId}`}>
             <button className="bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline">Edit</button>
           </Link>
