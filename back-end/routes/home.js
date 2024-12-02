@@ -180,6 +180,7 @@ import express from "express";
 import { protectRouter } from "../middlewares/auth.middleware.js";
 import Post from "../models/post.model.js";
 import User from "../models/user.model.js";
+import Setting from "../models/setting.model.js";
 
 const router = express.Router();
 
@@ -212,6 +213,23 @@ router.get("/api/home", protectRouter, async (req, res) => {
         })
         .sort({ createdAt: -1 });
     }
+
+    // checking for blocked users
+    const blockedData = await Setting.findOne({ userId });
+    const blockedUsers = blockedData.blockedUsers
+
+    // if user has blocked users
+    if (blockedUsers.length > 0) {
+      blockedUsers.map(user => {
+        posts.map(post => {
+          // remove post from posts array
+          if (post.madeBy._id.equals(user.userId)) {
+            let index = posts.indexOf(post);
+            posts.splice(index, 1);
+          }
+        });
+      });
+    };
 
     res.json({ posts });
   } catch (err) {

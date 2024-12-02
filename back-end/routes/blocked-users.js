@@ -26,18 +26,16 @@ router.get("/api/blocked-users", protectRouter, async (req, res) => {
 });
 
 // unblock user
-router.post(
-  "/api/blocked-users",
-  protectRouter,
+router.post("/api/blocked-users", protectRouter,
   [
-    check("request")
-      .isIn(["block", "unblock"])
+    check('request')
+      .isIn(['block', 'unblock'])
       .withMessage("Request must be 'block' or 'unblock'"),
-    check("user")
+    check('user')
       .optional()
       .isString()
       .withMessage("User field must be a string if provided."),
-    check("id")
+    check('id')
       .optional()
       .isString()
       .withMessage("ID field must be a string if provided."),
@@ -50,12 +48,12 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { request } = req.body;
+    const { request } = req.body
 
     // getting user id from cookies
-    const id = req.user._id;
+    const id = req.user._id
 
-    if (request === "unblock") {
+    if (request === 'unblock') {
       try {
         const userId = req.body.id;
 
@@ -66,24 +64,22 @@ router.post(
           return res.status(404).json({ message: "User not found" });
         }
 
-        await Setting.updateOne(
-          { userId: id },
-          { $pull: { blockedUsers: { username: userId } } }
-        );
+        await Setting.updateOne({ userId: id }, { $pull: { blockedUsers: { username: userId } } });
 
         // fetch updated info
         const updatedUser = await Setting.findOne({ userId: id });
-        const updatedBlockedUserData = updatedUser.blockedUsers;
+        const updatedBlockedUserData = updatedUser.blockedUsers
 
-        res.status(200).json(updatedBlockedUserData);
+        res.status(200).json(updatedBlockedUserData)
       } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Failed to unblock user" });
+        res.status(500).json({ error: 'Failed to unblock user' });
       }
-    } else if (request === "block") {
+    }
+    else if (request === 'block') {
       try {
         // check if user to block exists
-        const name = req.body.user;
+        const name = req.body.user
         const blockUser = await User.findOne({ username: name });
 
         if (!blockUser) {
@@ -100,7 +96,7 @@ router.post(
         const blockedUserData = user.blockedUsers;
 
         // preventing duplicates
-        const userInList = blockedUserData.find((u) => u.username === name);
+        const userInList = blockedUserData.find(u => u.username === name);
 
         if (userInList) {
           return res.status(200).json({
@@ -110,25 +106,18 @@ router.post(
         }
 
         // update database
-        await Setting.findOneAndUpdate(
-          { userId: id },
-          { $push: { blockedUsers: { userId: blockUser, username: name } } }
-        );
+        await Setting.findOneAndUpdate({ userId: id }, { $push: { blockedUsers: { userId: blockUser, username: name } } });
 
         // retrieve updated information
         const updatedUser = await Setting.findOne({ userId: id });
         const updatedBlockedUserData = updatedUser.blockedUsers;
 
-        res.status(200).json({
-          users: updatedBlockedUserData,
-          message: "Blocked user successfully!",
-        });
+        res.status(200).json({ users: updatedBlockedUserData, message: "Blocked user successfully!" })
       } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Failed to unblock user" });
+        res.status(500).json({ error: 'Failed to unblock user' });
       }
     }
-  }
-);
+  });
 
 export default router;
