@@ -17,16 +17,15 @@ const postSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
-        trim: true
     },
     content: {
         type: String,
         required: true
     },
     author: {
-        // type: mongoose.Schema.Types.ObjectId,
-        type: String,
-        // ref: 'User',
+        type: mongoose.Schema.Types.ObjectId,
+        // type: String,
+        ref: 'User',
         required: true
     },
     createdAt: {
@@ -35,11 +34,11 @@ const postSchema = new mongoose.Schema({
     },
     photo: {
         type: String,
+        default: ''
     }
 });
 
 const Post = mongoose.model('Post', postSchema);
 
 module.exports = Post;
-
 //take the schema and create a model from it
