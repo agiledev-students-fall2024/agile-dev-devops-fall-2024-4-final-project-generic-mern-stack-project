@@ -16,11 +16,11 @@ const Privacy = () => {
                 title={"Blocked Communities"}
                 description={"When you block a community, you won't see their blogs in your Home page."}
             />
-            <TitleAndDescriptionBox
+            {/* <TitleAndDescriptionBox
                 link={"/muted-words"}
                 title={"Muted Words"}
                 description={"When you mute words, you won't see posts with those words in your Home page."}
-            />
+            /> */}
         </div>
     )
 }

@@ -3,26 +3,37 @@ import express from 'express'
 const router = express.Router();
 import User from "../models/user.model.js";
 import Setting from "../models/setting.model.js";
+import { protectRouter } from "../middlewares/auth.middleware.js";
+import { check, validationResult } from 'express-validator';
 
-router.post("/api/deactivate", async (req, res) => {
-    try {
-        // const id = req.body.id
-        const id = '6740c351fdcb802f3f7ec5e7'
+router.post("/api/deactivate", protectRouter,
+    [
+        check('request')
+            .isIn(['deactivate'])
+            .isString()
+            .notEmpty()
+            .withMessage("Request must be 'deactivate'")
+    ],
+    async (req, res) => {
+        const errors = validationResult(req);
 
-        const user = await Setting.findOne({ userId: id });
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
+        // validate request
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
         }
 
-        // dropping user from user database
-        // await User.findOneAndRemove({ userId: id })
-        // await Setting.findOneAndRemove({ userId: id })
+        try {
+            const id = req.user._id
 
-        res.status(200).send('User deactivated')
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to deactivate' });
-    }
-});
+            // dropping user from database
+            await User.findOneAndDelete({ _id: id })
+            await Setting.findOneAndDelete({ userId: id })
+
+            res.status(200).send('User deactivated')
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'Failed to deactivate' });
+        }
+    });
 
 export default router

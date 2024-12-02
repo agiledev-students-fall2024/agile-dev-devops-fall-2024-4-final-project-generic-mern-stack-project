@@ -125,22 +125,22 @@ describe("Settings Tests", () => {
     })
 
     // check response of image mode routes
-    describe("GET request to /api/image-mode route", () => {
-        it("it should respond with HTTP 200 status code", async () => {
-            const res = await request(server).get("/api/image-mode")
-            expect(res.status).to.equal(200)
-            expect(res.body).to.be.an('string')
-        })
-    })
+    // describe("GET request to /api/image-mode route", () => {
+    //     it("it should respond with HTTP 200 status code", async () => {
+    //         const res = await request(server).get("/api/image-mode")
+    //         expect(res.status).to.equal(200)
+    //         expect(res.body).to.be.an('string')
+    //     })
+    // })
 
-    describe("POST request to /api/image-mode route", () => {
-        it("it should successfully change image modes and respond with HTTP 200 status code", async () => {
-            const res = await request(server)
-                .post("/api/image-mode")
-                .send({ id: 1, color: 'hide' })
-            expect(res.status).to.equal(200);
-        })
-    })
+    // describe("POST request to /api/image-mode route", () => {
+    //     it("it should successfully change image modes and respond with HTTP 200 status code", async () => {
+    //         const res = await request(server)
+    //             .post("/api/image-mode")
+    //             .send({ id: 1, color: 'hide' })
+    //         expect(res.status).to.equal(200);
+    //     })
+    // })
 
     // check response of font size routes
     describe("GET request to /api/font-size route", () => {

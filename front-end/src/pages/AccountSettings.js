@@ -20,7 +20,7 @@ const AccountSettings = (props) => {
 
     const handleClick = async () => {
         axiosInstance.post("/deactivate",
-            { id: 1 },
+            { request: "deactivate" },
             { headers: { 'Content-Type': 'application/json' } }
         )
             .then(console.log('User deactivated'))
