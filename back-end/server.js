@@ -11,7 +11,7 @@ import app from './app.js';
 // });
 
 
-const PORT = process.env.PORT || 0; // 0 lets the OS assign a free port
+const PORT = process.env.PORT || 3001; // 0 lets the OS assign a free port
 const listener = app.listen(PORT, () => {
   console.log(`Server is running on port ${listener.address().port}`);
 });

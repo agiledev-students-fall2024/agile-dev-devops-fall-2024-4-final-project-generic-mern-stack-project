@@ -6,6 +6,7 @@ import path from 'path';
 import mongoose from 'mongoose';
 import { body, validationResult } from 'express-validator';
 
+
 //MOCK DATA
 import budgetLimits from './mocks/budgetLimits.js';
 import recurringBills from './mocks/recurringBills.js';
@@ -19,7 +20,7 @@ import bcrypt from 'bcrypt'; // Import bcrypt for hashing passwords
 
 // Import User and BudgetGoal models (lowercase filenames)
 import User from './models/User.js';
-// import BudgetGoal from './budgetGoal.js';
+// import BudgetGoal from './models/budgetGoal.js';
 
 
 dotenv.config({ silent: true });
@@ -30,11 +31,6 @@ const __dirname = path.dirname(__filename);
 // Define mock userId and budgetId
 const MOCK_USER_ID = 1;
 const MOCK_BUDGET_ID = 1;
-
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((error) => console.error('MongoDB connection error:', error));
 
 
 /* Initialize Express App */
@@ -53,15 +49,10 @@ const accounts = [];
 const debts = [];
 
 // connect to the database
-// console.log(`Connecting to MongoDB at ${process.env.MONGODB_URI}`)
-// try {
-//   mongoose.connect(process.env.MONGODB_URI)
-//   console.log(`Connected to MongoDB.`)
-// } catch (err) {
-//   console.log(
-//     `Error connecting to MongoDB user account authentication will fail: ${err}`
-//   )
-// }
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((error) => console.error('MongoDB connection error:', error));
 
 // Root Route
 app.get("/", (req, res) => {
