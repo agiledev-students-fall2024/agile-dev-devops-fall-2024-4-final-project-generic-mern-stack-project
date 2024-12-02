@@ -22,6 +22,7 @@ import home from "./routes/home.js";
 import post from "./routes/post.js";
 import profile from "./routes/profile.js";
 import multer from "./lib/multer.js";
+import userRoutes from "./routes/user.js"; //new 
 
 const app = express(); // instantiate an Express object
 
@@ -38,6 +39,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // make 'public' directory publicly readable with static content
 app.use("/public", express.static("public"));
+app.use('/uploads', express.static('public/uploads'));
 
 // use routes
 app.use(accountSettings);
@@ -58,5 +60,6 @@ app.use(createCommunity);
 app.use(home);
 app.use(post);
 app.use(profile);
+app.use(userRoutes); //new
 
 export default app;

@@ -8,6 +8,7 @@ const CreateCommunity = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [communityPicture, setCommunityPicture] = useState("");
+  const fileField = React.useRef(null);
 
   function handleCreateCommunity(e) {
     e.preventDefault();
@@ -21,6 +22,14 @@ const CreateCommunity = () => {
       .then((response) => {
         console.log("New community:", response.data)
         toast.success("Community created successfully!");
+
+        setName("")
+        setDescription("")
+
+        if (fileField.current){
+          fileField.current.value = ""
+        }
+
       })
       .catch((err) => {
         toast.error("Failed to create community.");
@@ -29,7 +38,7 @@ const CreateCommunity = () => {
 
   function handlePictureUpload(e) {
     const file = e.target.files[0];
-    if (file == undefined){
+    if (file === undefined){
       toast.error("Failed to upload picture.")
     }
     else{
@@ -40,25 +49,28 @@ const CreateCommunity = () => {
 
   return (
     <div className="w-[40%] flex flex-col justify-center items-center gap-4 p-8 m-[auto]">
-      <h1 className="text-xl text-ebony-700 text-center font-bold">
+      <h1 className="text-xl text-ebony-700 text-center font-bold p-4">
         Create Community
       </h1>
-      <InputField
-        inputfieldName="Name"
-        handleChange={(e) => setName(e.target.value)}
-        inputValue={name}
-      ></InputField>
-      <InputField
-        inputfieldName="Description"
-        handleChange={(e) => setDescription(e.target.value)}
-        inputValue={description}
-      ></InputField>
-      <div className="flex flex-col gap-1 w-full">
-        <label className="text-sm text-ebony-700 font-bold">
-          Upload a picture for your community:
-        </label>
-        <input type="file" onChange={handlePictureUpload} />
+      <div className="rounded bg-white p-8 border border-[#d9d9d9]">
+        <InputField
+          inputfieldName="Name"
+          handleChange={(e) => setName(e.target.value)}
+          inputValue={name}
+        ></InputField>
+        <InputField
+          inputfieldName="Description"
+          handleChange={(e) => setDescription(e.target.value)}
+          inputValue={description}
+        ></InputField>
+        <div className="flex flex-col gap-1 w-full p-2">
+          <label className="text-sm text-ebony-700 font-bold">
+            Upload a Picture for Your Community:
+          </label>
+          <input type="file" className="pt-1" onChange={handlePictureUpload} ref={fileField}/>
+        </div>
       </div>
+      
 
       <SubmitButton
         placeholder="Create"

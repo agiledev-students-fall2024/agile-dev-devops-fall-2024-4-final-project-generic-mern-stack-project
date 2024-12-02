@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import SubCommunity from '../components/SubCommunity'
 
+
 const SubCommunityPage = (props) => {
     //stores the fake data into data 
     const [data, setData] = useState([])
@@ -18,26 +19,16 @@ const SubCommunityPage = (props) => {
             setData(response.data)
          })
          .catch(err => {
-            console.log("We have reached the allowed number of requests. Please try again the next day!")
+            console.log("Unable to retrieve subcommunity data.")
             console.error(err)
          })
-
-         //backup data 
-         const secondData = [
-            {
-                id: 1,
-                name: "Youth Empowerment Group",
-                description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis."
-            },
-         ]
-         setData(secondData[0]);
 
     }, [communityId])
 
     return (
         <div className="w-[95%] m-[auto] flex flex-col justify-center items-center gap-6 p-8 md:w-[80%] lg:w-[70%]">
             <SubCommunity 
-                image={data.image}
+                image={`${process.env.REACT_APP_SERVER_HOSTNAME}${data.communityPicture}`}
                 name={data.name}
                 description={data.description}
             />

@@ -1,10 +1,9 @@
-import React, { createContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { createContext, useState } from 'react';
 
 export const ColorContext = createContext();
 
 export const ColorProvider = ({ children }) => {
-    const [color, setColor] = useState('');
+    const [color, setColor] = useState('Light');
 
     // Function to update the color
     const updateColor = (newColor) => {

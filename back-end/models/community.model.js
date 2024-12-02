@@ -12,6 +12,11 @@ const communitySchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    communityPicture: {
+      type: String,
+      required: true,
+      default: "",
+    },
     creator: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -21,12 +26,6 @@ const communitySchema = mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-      },
-    ],
-    communityPicture: [
-      {
-        type: String,
-        default: "",
       },
     ],
   },

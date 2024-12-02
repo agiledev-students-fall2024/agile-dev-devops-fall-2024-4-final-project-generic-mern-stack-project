@@ -7,14 +7,14 @@ export const protectRouter = async (req, res, next) => {
   try {
     const cookie = req.cookies["jwt-seraphim"];
     console.log(cookie);
-    console.log(req.cookies);
+    // console.log(req.cookies);
     if (!cookie) {
       return res
         .status(401)
         .json({ message: "Unauthorized: No token provided" });
     }
     const decodedCookie = jwt.verify(cookie, process.env.JWT_SECRET);
-    console.log("decodedCookie: ", decodedCookie);
+    // console.log("decodedCookie: ", decodedCookie);
     if (!decodedCookie) {
       return res.status(401).json({ message: "Unauthorized: Invalid token" });
     }
@@ -22,7 +22,7 @@ export const protectRouter = async (req, res, next) => {
     if (!user) {
       return res.status(401).json({ message: "User not found" });
     }
-    console.log("user: ", user);
+    // console.log("user: ", user);
     req.user = user;
     next();
   } catch (error) {
