@@ -33,8 +33,10 @@ const userSchema = new mongoose.Schema({
       goals: [
         {
           name: { type: String, required: true },
-          current: { type: Number, required: true, default: 0 },
+          currentAmount: { type: Number, default: 0, min: 0 }, 
+          frequency: {type: String, enum: ['daily', 'monthly', 'annual'], required: true,},
           targetAmount: { type: Number, required: true },
+          collaborators: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], 
         },
       ],
 });

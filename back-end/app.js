@@ -4,6 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import mongoose from 'mongoose';
+import { body, validationResult } from 'express-validator';
 
 //MOCK DATA
 import budgetLimits from './mocks/budgetLimits.js';
@@ -18,7 +19,7 @@ import bcrypt from 'bcrypt'; // Import bcrypt for hashing passwords
 
 // Import User and BudgetGoal models (lowercase filenames)
 import User from './models/User.js';
-import BudgetGoal from './budgetGoal.js';
+// import BudgetGoal from './budgetGoal.js';
 
 
 dotenv.config({ silent: true });
@@ -29,6 +30,11 @@ const __dirname = path.dirname(__filename);
 // Define mock userId and budgetId
 const MOCK_USER_ID = 1;
 const MOCK_BUDGET_ID = 1;
+
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((error) => console.error('MongoDB connection error:', error));
 
 
 /* Initialize Express App */
@@ -47,15 +53,15 @@ const accounts = [];
 const debts = [];
 
 // connect to the database
-console.log(`Connecting to MongoDB at ${process.env.MONGODB_URI}`)
-try {
-  mongoose.connect(process.env.MONGODB_URI)
-  console.log(`Connected to MongoDB.`)
-} catch (err) {
-  console.log(
-    `Error connecting to MongoDB user account authentication will fail: ${err}`
-  )
-}
+// console.log(`Connecting to MongoDB at ${process.env.MONGODB_URI}`)
+// try {
+//   mongoose.connect(process.env.MONGODB_URI)
+//   console.log(`Connected to MongoDB.`)
+// } catch (err) {
+//   console.log(
+//     `Error connecting to MongoDB user account authentication will fail: ${err}`
+//   )
+// }
 
 // Root Route
 app.get("/", (req, res) => {
@@ -171,6 +177,112 @@ app.get("/api/debts", (req, res) => {
 
 /* ======================= Goal Routes ======================= */
 // Route to invite collaborator
+app.get('/goals', async (req, res) => {
+  const { ownerId, collaboratorId } = req.query;
+
+  try {
+    const filter = {};
+    if (ownerId) filter.ownerId = ownerId;
+    if (collaboratorId) filter.collaborators = collaboratorId;
+
+    const goals = await BudgetGoal.find(filter).populate('collaborators', 'username email');
+    res.json(goals);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Create a new goal
+app.post(
+  '/goals',
+  [
+    body('name').notEmpty().withMessage('Name is required'),
+    body('targetAmount').isNumeric().withMessage('Target amount must be a number'),
+    body('ownerId').notEmpty().withMessage('Owner ID is required'),
+    body('frequency').notEmpty().withMessage('frequency is required')
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { name, targetAmount, ownerId, frequency } = req.body;
+
+    try {
+      const newGoal = new BudgetGoal({
+        name,
+        targetAmount,
+        frequency,
+        currentAmount: 0, // Start with 0
+        ownerId,
+      });
+
+      await newGoal.save();
+      res.status(201).json({ message: 'Goal created successfully', goal: newGoal });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+);
+
+app.delete('/goals/:goalId', async (req, res) => {
+  const { goalId } = req.params;
+
+  try {
+    const deletedGoal = await BudgetGoal.findByIdAndDelete(goalId);
+    if (!deletedGoal) {
+      return res.status(404).json({ message: 'Goal not found' });
+    }
+    res.json({ message: 'Goal deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Add a collaborator to a goal
+app.post('/goals/:goalId/collaborators', async (req, res) => {
+  const { goalId } = req.params;
+  const { collaboratorId } = req.body;
+
+  try {
+    const goal = await BudgetGoal.findById(goalId);
+    if (!goal) {
+      return res.status(404).json({ message: 'Goal not found' });
+    }
+
+    if (!goal.collaborators.includes(collaboratorId)) {
+      goal.collaborators.push(collaboratorId);
+      await goal.save();
+    }
+
+    res.json({ message: 'Collaborator added successfully', goal });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Link a transaction to a goal
+app.post('/goals/:goalId/transactions', async (req, res) => {
+  const { goalId } = req.params;
+  const { amount } = req.body;
+
+  try {
+    const goal = await BudgetGoal.findById(goalId);
+    if (!goal) {
+      return res.status(404).json({ message: 'Goal not found' });
+    }
+
+    goal.currentAmount += amount; // Increment currentAmount
+    await goal.save();
+
+    res.json({ message: 'Transaction added to goal', goal });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 app.post('/goals/:goalId/invite', async (req, res) => {
     try {
         const { goalId } = req.params;
