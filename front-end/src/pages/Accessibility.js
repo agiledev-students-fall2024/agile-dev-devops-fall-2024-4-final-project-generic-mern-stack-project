@@ -12,9 +12,7 @@ const Accessibility = (props) => {
 
     const [size, setSize] = useState("")
     const [color, setColor] = useState("")
-    const [image, setImage] = useState("")
     const [options, setOptions] = useState(["Light", "Dark"])
-    const [imgOptions, setImgOptions] = useState(["Show", "Hide"])
 
     const changeColor = (event) => {
         axiosInstance.post(`/color-mode`,
@@ -32,21 +30,6 @@ const Accessibility = (props) => {
             })
     }
 
-    const changeImage = (event) => {
-        axiosInstance.post(`/image-mode`,
-            { image: event.target.value },
-        )
-            .then(response => {
-                setImage(response.data)
-                const newOptions = (response.data === "Show") ? ["Hide"] : ["Show"];
-                setImgOptions(newOptions)
-            })
-            .catch(err => {
-                console.log('Failed to change image mode')
-                console.log(err)
-            })
-    }
-
     useEffect(() => {
         axiosInstance.get(`/color-mode`)
             .then(response => {
@@ -54,19 +37,6 @@ const Accessibility = (props) => {
                 updateColor(response.data.toLowerCase())
                 const newOptions = (response.data === "Light") ? ["Dark"] : ["Light"];
                 setOptions(newOptions)
-            })
-            .catch(err => {
-                console.log(`Could not get data.`)
-                console.error(err)
-            })
-    }, [])
-
-    useEffect(() => {
-        axiosInstance.get(`/image-mode`)
-            .then(response => {
-                setImage(response.data)
-                const newOptions = (response.data === "Show") ? ["Hide"] : ["Show"];
-                setImgOptions(newOptions)
             })
             .catch(err => {
                 console.log(`Could not get data.`)
@@ -115,25 +85,15 @@ const Accessibility = (props) => {
             <div className="w-[90%] mx-auto gap-4 bg-lavender_blush-900 p-2 rounded-md">
                 <div className="flex flex-row justify-between mx-10 my-5">
                     <p className="text-md text-ebony font-bold">Display color mode</p>
-                    <DropdownMenu
-                        name={"color-mode"}
-                        label={color}
-                        options={options}
-                        request={"color-mode"}
-                        choice={color}
-                        onChange={changeColor}
-                    />
-                </div>
-                <div className="flex flex-row justify-between mx-10 my-5">
-                    <p className="text-md text-ebony font-bold">Display Images</p>
-                    <DropdownMenu
-                        name={"display-images"}
-                        label={image}
-                        options={imgOptions}
-                        request={"image-mode"}
-                        choice={image}
-                        onChange={changeImage}
-                    />
+
+                    <div className="flex justify-center overflow-hidden px-4 py-2 bg-lavender_blush-900 border-[1px] border-rose rounded-md text-rose font-bold">
+                        <select className="bg-transparent" value={color} name={"color-mode"} onChange={changeColor}>
+                            <option>{color}</option>
+                            {options.map(x => (
+                                <option key={options.indexOf(x)} className="px-4 py-2" value={x}>{x}</option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
                 <div className="flex flex-row justify-between mx-10 my-5">
                     <p className="text-md text-ebony font-bold">Font Size</p>

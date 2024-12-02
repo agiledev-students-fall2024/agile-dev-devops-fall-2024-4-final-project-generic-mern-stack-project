@@ -42,43 +42,43 @@ router.post("/api/color-mode", protectRouter, async (req, res) => {
     }
 });
 
-router.get("/api/image-mode", protectRouter, async (req, res) => {
-    // get user's current image mode
-    try {
-        // getting user id from cookies
-        const id = req.user._id
+// router.get("/api/image-mode", protectRouter, async (req, res) => {
+//     // get user's current image mode
+//     try {
+//         // getting user id from cookies
+//         const id = req.user._id
 
-        const user = await Setting.findOne({ userId: id });
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
+//         const user = await Setting.findOne({ userId: id });
+//         if (!user) {
+//             return res.status(404).json({ message: "User not found" });
+//         }
 
-        const image = user.imagePreference;
+//         const image = user.imagePreference;
 
-        res.status(200).json(image)
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to get image mode' });
-    }
-});
+//         res.status(200).json(image)
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ error: 'Failed to get image mode' });
+//     }
+// });
 
-router.post("/api/image-mode", protectRouter, async (req, res) => {
-    // change user's current image mode
-    try {
-        // getting user id from cookies
-        const id = req.user._id
+// router.post("/api/image-mode", protectRouter, async (req, res) => {
+//     // change user's current image mode
+//     try {
+//         // getting user id from cookies
+//         const id = req.user._id
 
-        const image = req.body.image
+//         const image = req.body.image
 
-        // update information
-        await Setting.updateOne({ userId: id }, { imagePreference: image });
+//         // update information
+//         await Setting.updateOne({ userId: id }, { imagePreference: image });
 
-        res.status(200).json(image)
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to change image mode' });
-    }
-});
+//         res.status(200).json(image)
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ error: 'Failed to change image mode' });
+//     }
+// });
 
 router.get("/api/font-size", protectRouter, async (req, res) => {
     // get user's current font size
