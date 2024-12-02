@@ -119,12 +119,10 @@ router.post(
         const updatedUser = await Setting.findOne({ userId: id });
         const updatedBlockedUserData = updatedUser.blockedUsers;
 
-        res
-          .status(200)
-          .json({
-            users: updatedBlockedUserData,
-            message: "Blocked user successfully!",
-          });
+        res.status(200).json({
+          users: updatedBlockedUserData,
+          message: "Blocked user successfully!",
+        });
       } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Failed to unblock user" });
