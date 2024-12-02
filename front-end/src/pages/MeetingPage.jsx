@@ -7,7 +7,7 @@ import '../assets/meeting.css';
 
 import { v4 as uuidv4 } from 'uuid';
 
-import { getAllMessages, listenForNewMessages, partialEditMessage, sendDataToMeetingRoom } from '../services/firebaseApi';
+import { getAllMessages, listenForNewMessages, partialEditMessage, sendDataToMeetingRoom, getMeeting } from '../services/firebaseApi';
 
 import Chat from "../components/Chat";
 import CodeEditor from "../components/CodeEditor";
@@ -291,6 +291,12 @@ function MeetingPage() {
 
     useEffect(() => {
         (async () => {
+            // handle meeting that dont exist, as user can still nav directly to this page
+            const meetingInfo = await getMeeting()
+            if (!meetingInfo) {
+                alert('The meeting you are trying to enter does not exist, or something has gone wrong while joining the meeting')
+                navgiate('/login')
+            }
             let unsub = null;
             let closePeerConnection = null;
             console.log('initializing...');
@@ -363,7 +369,7 @@ function MeetingPage() {
                         }
                         {
                             whiteboardVisible &&
-                            <Whiteboard roomId={meetingId}/>
+                            <Whiteboard roomId={meetingId} />
                         }
                     </div>
                     <div className="absolute top-20 right-4 w-64 h-48">

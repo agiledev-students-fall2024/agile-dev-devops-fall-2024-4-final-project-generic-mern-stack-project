@@ -61,7 +61,7 @@ export async function createWhiteboard(wbName) {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ wbName: wbName}),
+        body: JSON.stringify({ wbName: wbName }),
     });
 
     const data = await response.json();
@@ -69,7 +69,7 @@ export async function createWhiteboard(wbName) {
 }
 
 export async function deleteWhiteboard(wbName) {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/whiteboard`+ new URLSearchParams({
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/whiteboard` + new URLSearchParams({
         name: wbName
     }), {
         method: 'DELETE',
@@ -80,4 +80,24 @@ export async function deleteWhiteboard(wbName) {
 
     const data = await response.json();
     return data;
+}
+
+
+export async function getMeeting(meetingId) {
+    if (meetingId.trim()) {
+        try {
+            const response = await fetch(`http://localhost:8080/meeting/${meetingId}`); // FIXME: environmentize the host, or use api.js
+            if (response.ok) {
+                return response
+            } else {
+                // Handle meeting not found
+                setunfoundMeeting(true)
+            }
+        } catch (error) {
+            setunfoundMeeting(true)
+            console.error('Error joining meeting:', error);
+            return false
+        }
+    }
+    return false
 }

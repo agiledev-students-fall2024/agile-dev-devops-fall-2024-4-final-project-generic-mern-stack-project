@@ -6,6 +6,8 @@ const JoinCreateMeetingPage = () => {
   const [showJoinForm, setShowJoinForm] = useState(false);
   const [meetingId, setMeetingId] = useState('');
 
+  const [unfoundMeeting, setunfoundMeeting] = useState(false)
+
   const handleLogout = (e) => {
     e.preventDefault();
     navigate('/login');
@@ -13,35 +15,37 @@ const JoinCreateMeetingPage = () => {
 
   const handleCreateMeeting = async () => {
     try {
-        const response = await fetch('http://localhost:8080/meeting', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        const data = await response.json();
-        navigate(`/meetings/${data.id}`);
+      const response = await fetch('http://localhost:8080/meeting', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      const data = await response.json();
+      navigate(`/meetings/${data.id}`);
     } catch (error) {
-        console.error('Error creating meeting:', error);
+      console.error('Error creating meeting:', error);
     }
-};
+  };
 
-const handleJoinMeeting = async (e) => {
-  e.preventDefault();
-  if (meetingId.trim()) {
+  const handleJoinMeeting = async (e) => {
+    e.preventDefault();
+    if (meetingId.trim()) {
       try {
-          const response = await fetch(`http://localhost:8080/meeting/${meetingId}`);
-          if (response.ok) {
-              navigate(`/meetings/${meetingId}`);
-          } else {
-              // Handle meeting not found
-              alert('Meeting not found');
-          }
+        const response = await fetch(`http://localhost:8080/meeting/${meetingId}`); // FIXME: environmentize the host, or use api.js
+        if (response.ok) {
+          navigate(`/meetings/${meetingId}`);
+        } else {
+          // Handle meeting not found
+          setunfoundMeeting(true)
+
+        }
       } catch (error) {
-          console.error('Error joining meeting:', error);
+        setunfoundMeeting(true)
+        console.error('Error joining meeting:', error);
       }
-  }
-};
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -90,10 +94,15 @@ const handleJoinMeeting = async (e) => {
                     id="meetingId"
                     value={meetingId}
                     onChange={(e) => setMeetingId(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    onFocus={(e) => setunfoundMeeting(false)}
+                    className={`w-full px-3 py-2 border ${!unfoundMeeting ? 'border-gray-900' : 'ring-2 ring-red-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
                     placeholder="Enter meeting ID"
                     required
                   />
+                  {
+                    unfoundMeeting &&
+                    <p className='text-gray-600 text-xs'>There was a problem joining the meeting. Check to make sure you have the right meeting ID.</p>
+                  }
                 </div>
                 <div className="flex justify-end space-x-3">
                   <button
@@ -101,6 +110,7 @@ const handleJoinMeeting = async (e) => {
                     onClick={() => {
                       setShowJoinForm(false);
                       setMeetingId('');
+                      setunfoundMeeting(false)
                     }}
                     className="px-4 py-2 text-gray-600 hover:text-gray-900"
                   >
