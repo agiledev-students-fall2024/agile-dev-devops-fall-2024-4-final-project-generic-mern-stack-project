@@ -21,6 +21,8 @@ const monthlyData = {
     { category: 'Rent', amount: 1000 },
     { category: 'Transportation', amount: 150 },
     { category: 'Entertainment', amount: 200 },
+    { category: 'Healthcare', amount: 170 },
+    { category: 'Subscriptions', amount: 77 },
     { category: 'Other', amount: 200 },
   ];
   

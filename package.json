@@ -6,5 +6,8 @@
     "react-select": "^5.8.2",
     "react-share": "^5.1.0",
     "react-share-social": "^0.1.60"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
 }

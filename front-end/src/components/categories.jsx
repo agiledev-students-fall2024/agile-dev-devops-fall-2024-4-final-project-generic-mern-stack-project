@@ -1,26 +1,14 @@
 import React from 'react';
-import budgetLimits from '../mocks/budgetLimits';
 import './categories.css';
 
-function categories({ categoryTotals, isEditing, handleLimitChange }) {
+function Categories({ categoryTotals, categoryLimits, isEditing, handleLimitChange }) {
   const calculateProgress = (spent, limit) => Math.min((spent / limit) * 100, 100);
-
-  const definedCategoryLimitTotal = Object.keys(budgetLimits)
-    .filter((category) => category !== "MonthlyBudget")
-    .reduce((sum, category) => sum + (budgetLimits[category] || 0), 0);
-
-  const otherLimit = budgetLimits.MonthlyBudget - definedCategoryLimitTotal;
-  const otherSpent = categoryTotals.Other || 0;
-
-  const categoriesToDisplay = { ...budgetLimits, Other: otherLimit };
 
   return (
     <div className="category-breakdown-grid">
-      {Object.keys(categoriesToDisplay).map((category) => {
-        if (category === "MonthlyBudget") return null; 
-        
-        const spent = categoryTotals[category] || (category === "Other" ? otherSpent : 0);
-        const limit = categoriesToDisplay[category] || 100;
+      {Object.keys(categoryLimits).map((category) => {
+        const spent = categoryTotals[category] || 0;
+        const limit = categoryLimits[category] || 100;
         const percentage = calculateProgress(spent, limit);
 
         return (
@@ -33,7 +21,7 @@ function categories({ categoryTotals, isEditing, handleLimitChange }) {
               <input
                 type="number"
                 value={limit}
-                onChange={(e) => handleLimitChange(category, e.target.value)}
+                onChange={(e) => handleLimitChange(category, Number(e.target.value))}
                 className="category-limit-input"
               />
             ) : (
@@ -46,4 +34,4 @@ function categories({ categoryTotals, isEditing, handleLimitChange }) {
   );
 }
 
-export default categories;
+export default Categories;

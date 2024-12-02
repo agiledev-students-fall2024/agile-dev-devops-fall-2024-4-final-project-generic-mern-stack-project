@@ -3,17 +3,27 @@ import morgan from 'morgan';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
+import mongoose from 'mongoose';
+
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcrypt'; // Import bcrypt for hashing passwords
 
 // Import User and BudgetGoal models (lowercase filenames)
-import User from './user.js';
+import User from './models/User.js';
 import BudgetGoal from './budgetGoal.js';
+
 
 dotenv.config({ silent: true });
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+/* MOCK USER SESSION WHILE AWAITING LOGIN IMPLEMENTATION */
+// Define mock userId and budgetId
+const MOCK_USER_ID = 1;
+const MOCK_BUDGET_ID = 1;
+
+
+/* Initialize Express App */
 const app = express();
 
 /* ======================= Middleware ======================= */
@@ -22,11 +32,22 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-/* ======================= Temporary Data Storage ======================= */
+
+/* ======================= Data Storage ======================= */
+// Temporary in-memory storage for accounts and debts
 const accounts = [];
 const debts = [];
 
-// Define routes (combine both versions)
+// connect to the database
+console.log(`Connecting to MongoDB at ${process.env.MONGODB_URI}`)
+try {
+  mongoose.connect(process.env.MONGODB_URI)
+  console.log(`Connected to MongoDB.`)
+} catch (err) {
+  console.log(
+    `Error connecting to MongoDB user account authentication will fail: ${err}`
+  )
+}
 
 // Root Route
 app.get("/", (req, res) => {
@@ -135,17 +156,65 @@ app.post('/user/:userId', async (req, res) => {
 });
 
 /* ======================= Transaction Routes ======================= */
-// Define transaction routes...
+app.get("/api/transactions", (req, res) => {
+  const userId = req.query.userId ? parseInt(req.query.userId) : MOCK_USER_ID;
+  const budgetId = req.query.budgetId ? parseInt(req.query.budgetId) : MOCK_BUDGET_ID;
+  console.log("Fetching transactions for userId:", userId, "budgetId:", budgetId);
+  
+  const userTransactions = transactionData.filter(transaction => 
+    transaction.userId === userId && transaction.budgetId === budgetId
+  );
 
-/* ======================= Serve Frontend ======================= */
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../front-end/", "index.html"));
+  res.json(userTransactions);
 });
 
-// Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+
+/* ======================= Recurring Payments Routes ======================= */
+
+app.get("/api/recurring-bills", (req, res) => {
+    // Get userId and budgetId from query or use defaults
+    const userId = req.query.userId ? parseInt(req.query.userId) : MOCK_USER_ID;
+    const budgetId = req.query.budgetId ? parseInt(req.query.budgetId) : MOCK_BUDGET_ID;
+
+    if (!userId) {
+        return res.status(400).json({ error: "User ID is required" });
+    }
+
+    const userRecurringBills = recurringBills.filter(bill => 
+        bill.userId === userId && (!budgetId || bill.budgetId === budgetId)
+  );
+
+  res.json(userRecurringBills);
 });
+
+/* ======================= Budget Limits Routes ======================= */
+app.get("/api/budget-limits", (req, res) => {
+    const userId = req.query.userId ? parseInt(req.query.userId) : MOCK_USER_ID;
+    const budgetId = req.query.budgetId ? parseInt(req.query.budgetId) : MOCK_BUDGET_ID;
+
+    const userBudgetLimit = budgetLimits.find(
+        (limit) => limit.userId === userId && limit.budgetId === budgetId
+    );
+
+    if (!userBudgetLimit) {
+        return res.status(404).json({ error: "Budget limits not found for this user and budget." });
+    }
+
+    res.json(userBudgetLimit);
+});
+
+  
+
+/* ======================= Serve Frontend (React App) ======================= */
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, "../front-end/build")));
+  app.get("*", (req, res) => {
+      res.sendFile(path.join(__dirname, "../front-end/build/index.html"));
+  });
+} else {
+  app.get("/", (req, res) => {
+      res.send("API is running... Front-end development server handles UI.");
+  });
+}
 
 export default app;

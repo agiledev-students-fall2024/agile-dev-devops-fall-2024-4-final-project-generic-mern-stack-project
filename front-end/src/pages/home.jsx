@@ -8,21 +8,39 @@ import Categories from '../components/categories.jsx';
 import AddTransaction from '../components/AddTransaction';
 import './home.css';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 
 function Home() {
-  const BASE_URL = process.env.REACT_APP_SERVER_HOSTNAME; 
   const { overall } = BudgetProgress();
   const [showBreakdown, setShowBreakdown] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [categoryLimits, setCategoryLimits] = useState(budgetLimits);
+  const [categoryLimits, setCategoryLimits] = useState({});
   const [showAddTransaction, setShowAddTransaction] = useState(false);
   const [transactions, setTransactions] = useState([]);
-
-  const totalBudget = categoryLimits.MonthlyBudget || 0;
-  const totalSpent = overall.totalSpent || 0;
+  const [totalBudget, setTotalBudget] = useState(0);
   
+  const userId = 1; // Replace with the actual user ID
+  const budgetId = 1; // Replace with the actual budget ID
+  
+  const totalSpent = overall.totalSpent || 0;
 
+  useEffect(() => {
+    // Fetch transactions for the user
+    fetch(`http://localhost:3001/api/transactions?userId=${userId}&budgetId=${budgetId}`)
+      .then(response => response.json())
+      .then(data => setTransactions(data))
+      .catch(err => console.error("Error fetching transactions:", err));
+
+    // Fetch budget limits
+    fetch(`http://localhost:3001/api/budget-limits?userId=${userId}&budgetId=${budgetId}`)
+      .then(response => response.json())
+      .then(data => {
+        setCategoryLimits(data.categoryLimits || {}); // Set category limits
+        setTotalBudget(data.monthlyLimit || 0);       // Set total budget from monthlyLimit
+      })
+      .catch(err => console.error("Error fetching budget limits:", err));
+  }, []);
+
+  // Calculate category totals based on transactions
   const categoryTotals = transactions.reduce((acc, transaction) => {
     const { category, amount } = transaction;
     if (categoryLimits[category]) {
@@ -44,20 +62,14 @@ function Home() {
   const handleLimitChange = (category, value) => {
     setCategoryLimits((prevLimits) => ({
       ...prevLimits,
-      [category]: Number(value),
+      [category]: value,
     }));
-  };
+  };  
 
   const saveBudgetLimits = () => {
     setIsEditing(false);
   };
 
-  useEffect(() => {
-    axios.get(`${BASE_URL}/api/transactions`)
-      .then(res => setTransactions(res.data)) // Set transactions from the server
-      .catch(err => console.error("Error fetching transactions:", err));
-  }, [BASE_URL]);
-  
   return (
     <div className="home-container">
       <Header />
@@ -77,8 +89,8 @@ function Home() {
           {isEditing ? (
             <input
               type="number"
-              value={categoryLimits.MonthlyBudget}
-              onChange={(e) => handleLimitChange('MonthlyBudget', e.target.value)}
+              value={totalBudget}
+              onChange={(e) => setTotalBudget(Number(e.target.value))}
               className="total-budget-input"
             />
           ) : (
