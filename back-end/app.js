@@ -4,12 +4,12 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import mongoose from 'mongoose';
-=======
+
 import { fileURLToPath } from 'url';
 import bcrypt from 'bcrypt'; // Import bcrypt for hashing passwords
 
 // Import User and BudgetGoal models (lowercase filenames)
-import User from './user.js';
+import User from './models/User.js';
 import BudgetGoal from './budgetGoal.js';
 
 
