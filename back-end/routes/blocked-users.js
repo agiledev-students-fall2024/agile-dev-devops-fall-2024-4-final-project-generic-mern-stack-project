@@ -4,7 +4,7 @@ const router = express.Router();
 import Setting from "../models/setting.model.js";
 import User from "../models/user.model.js";
 import { protectRouter } from "../middlewares/auth.middleware.js";
-import { check, validationResult } from 'express-validator';
+import { check, validationResult } from "express-validator";
 
 // blocked users
 router.get("/api/blocked-users", protectRouter, async (req, res) => {
