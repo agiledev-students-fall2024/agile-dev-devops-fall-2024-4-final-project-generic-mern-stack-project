@@ -129,7 +129,19 @@ app.get("/api/recipes", async (req, res) => {
 });
 
 // Other APIs (e.g., challenges, user profiles) remain unchanged...
-
+app.get("/api/challenges", async (req, res) => {
+  try {
+    const mockError = process.env.MOCK_ERROR === "true";
+    if (mockError) {
+      throw new Error("Forced error for testing");
+    }
+    const data = await Recipe.find({ isChallenge: true });
+    res.json(data);
+  } catch (error) {
+    console.error("Error fetching data from API:", error.message);
+    res.status(500).json({ error: "Failed to fetch activity tracker data" });
+  }
+});
 // Start the server
 export const startServer = () => {
   app.listen(PORT, () => {
