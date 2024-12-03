@@ -4,7 +4,16 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../Home.css";
 import ShareRecipe from "../components/ShareRecipe";
-import FileUpload from "../components/FileUpload";
+
+function shuffleArray(array) {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 const Home = () => {
   const [weeklyActivitiesData, setWeeklyActivitiesData] = useState([]);
   const [weeklyActivitiesStats, setWeeklyActivitiesStats] = useState({
@@ -13,20 +22,10 @@ const Home = () => {
     activityMins: 0,
   });
   const [recipeData, setRecipeData] = useState([]);
-
-  //share recipe states
+  const [randomRecipes, setRandomRecipes] = useState([]);
 
   const [share, setShare] = useState(false);
-
-  const [error, setError] = useState("");
-
   const navigate = useNavigate();
-
-  /*const isThisWeek = (dateString, currentDate, lastWeekDate) => {
-        const [month, day, year] = dateString.split('/');
-        const date = new Date(year, month - 1, day);
-        return date >= lastWeekDate && date <= currentDate;
-    }*/
 
   useEffect(() => {
     const fetchWeeklyActivitiesData = async () => {
@@ -36,8 +35,8 @@ const Home = () => {
         );
         const fetchedData = response.data || [];
 
-        // get specific user without database implementatin
-        const activitiesData = fetchedData[0].activities;
+        // Simulate a specific user's data without database implementation
+        const activitiesData = fetchedData[0]?.activities || [];
 
         const currentDate = new Date();
         const lastWeekDate = new Date(currentDate);
@@ -50,19 +49,17 @@ const Home = () => {
         });
 
         setWeeklyActivitiesData(weeklyActivitiesData);
-        console.log(weeklyActivitiesData);
 
         setWeeklyActivitiesStats({
           date: new Date(),
-          numActivities: activitiesData.length,
-          activityMins: activitiesData.reduce(
+          numActivities: weeklyActivitiesData.length,
+          activityMins: weeklyActivitiesData.reduce(
             (sum, activity) => sum + activity.duration,
             0
           ),
         });
-        console.log(weeklyActivitiesStats);
       } catch (error) {
-        console.error("Error fetching activitiesData:", error);
+        console.error("Error fetching activities data:", error);
       }
     };
 
@@ -72,11 +69,12 @@ const Home = () => {
           `${process.env.REACT_APP_BACK_PORT}/api/recipes`
         );
         const fetchedData = response.data || [];
-        console.log("fetch basic recipes", fetchedData);
+        setRecipeData(fetchedData);
 
-        setRecipeData([...fetchedData]);
+        // Shuffle and pick up to 4 random recipes
+        setRandomRecipes(shuffleArray(fetchedData).slice(0, 4));
       } catch (error) {
-        console.error("error fetching recipe data: ", error);
+        console.error("Error fetching recipe data:", error);
       }
     };
 
@@ -86,17 +84,13 @@ const Home = () => {
 
   async function submitShareRecipe(newRecipe) {
     try {
-      console.log("submitted");
       const response = await axios.post(
         `${process.env.REACT_APP_BACK_PORT}/api/shareRecipe`,
         newRecipe,
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
         }
       );
-      console.log("Response:", response.data);
       closeShare();
     } catch (error) {
       console.error(
@@ -111,9 +105,6 @@ const Home = () => {
   };
 
   const handleStartRecipe = (selectedRecipe) => {
-    // Navigate to the record activity page, passing the recipe data
-    console.log("going to recipe id:" + selectedRecipe.id);
-    console.log("selectedrecipe is", selectedRecipe);
     navigate("/record", { state: { selectedRecipe } });
   };
 
@@ -129,36 +120,30 @@ const Home = () => {
     <>
       <h1>Home</h1>
       <div className="home-container">
-        {weeklyActivitiesData.length > 0 ? (
+        {weeklyActivitiesData.length > 0 && (
           <div className="activity-card" onClick={goToActivityTracker}>
             <h2>ACTIVITY CHART</h2>
             <div className="activity-image">
               <img src={weeklyActivitiesData[0].image} alt="Activity 1" />
             </div>
             <h3>Weekly Activities</h3>
-            {
-              <>
-                <p>
-                  <strong>Meals Recorded:</strong>{" "}
-                  {weeklyActivitiesStats["numActivities"]}
-                </p>
-                <p>
-                  <strong>Time Spent Cooking:</strong>{" "}
-                  {weeklyActivitiesStats["activityMins"]} min
-                </p>
-              </>
-            }
+            <p>
+              <strong>Meals Recorded:</strong>{" "}
+              {weeklyActivitiesStats.numActivities}
+            </p>
+            <p>
+              <strong>Time Spent Cooking:</strong>{" "}
+              {weeklyActivitiesStats.activityMins} min
+            </p>
             <button onClick={goToActivityTracker}>See More</button>
           </div>
-        ) : (
-          <></>
         )}
+
         <div className="recipe-card">
-          <h2>Share A Recipe </h2>
+          <h2>Share A Recipe</h2>
           <p>
-            Sharing a recipe in our app is more than just providing a list of
-            ingredients and steps; it's an opportunity to connect with others,
-            celebrate culinary traditions, and foster a sense of community.
+            Sharing a recipe is an opportunity to connect with others, celebrate
+            culinary traditions, and foster a sense of community.
           </p>
           <button className="make-recipe-button" onClick={handleShareRecipe}>
             Share Recipe
@@ -169,47 +154,28 @@ const Home = () => {
           <ShareRecipe
             closeShare={closeShare}
             submitShareRecipe={submitShareRecipe}
-          ></ShareRecipe>
+          />
         )}
 
-        {recipeData.length > 0 && (
-          <>
-            <div className="recipe-card">
-              <p className="recipe-type">Suggested Recipe</p>
-              <h2>{recipeData[0].name}</h2>
-              <p>{recipeData[0].description}</p>
+        {randomRecipes.length > 0 &&
+          randomRecipes.map((recipe, index) => (
+            <div key={recipe.id} className="recipe-card">
+              <p className="recipe-type">
+                {index === 0 ? "Suggested Recipe" : "Friend's Recipe"}
+              </p>
+              <h2>{recipe.name}</h2>
+              <p>{recipe.description}</p>
               <div className="recipe-image">
-                <img src="https://picsum.photos/100" alt={recipeData[1].name} />
+                <img src="https://picsum.photos/100" alt={recipe.name} />
               </div>
               <button
                 className="make-recipe-button"
-                onClick={() => handleStartRecipe(recipeData[0])}
+                onClick={() => handleStartRecipe(recipe)}
               >
                 Make Recipe
               </button>
             </div>
-
-            {recipeData.length > 1 && (
-              <div className="recipe-card">
-                <p className="recipe-type">Friend's Recipe</p>
-                <h2>{recipeData[1].name}</h2>
-                <p>{recipeData[1].description}</p>
-                <div className="recipe-image">
-                  <img
-                    src="https://picsum.photos/100"
-                    alt={recipeData[1].name}
-                  />
-                </div>
-                <button
-                  className="make-recipe-button"
-                  onClick={() => handleStartRecipe(recipeData[1])}
-                >
-                  Make Recipe
-                </button>
-              </div>
-            )}
-          </>
-        )}
+          ))}
       </div>
     </>
   );
