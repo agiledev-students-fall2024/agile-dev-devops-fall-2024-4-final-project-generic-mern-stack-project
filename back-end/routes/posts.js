@@ -3,6 +3,170 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const { check, validationResult } = require('express-validator');
 const passport = require('passport');
+const multer = require('multer');
+const path = require('path');
+const Post = require('../models/Post');
+
+// Multer configuration for file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+const upload = multer({ storage });
+
+// Create a new post
+router.post(
+  '/create',
+  passport.authenticate('jwt', { session: false }),
+  upload.single('image'),
+  [
+    check('title', 'Title is required').not().isEmpty(),
+    check('content', 'Content is required').not().isEmpty(),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    try {
+      const photo = req.file ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}` : '';
+
+      const newPost = new Post({
+        title: req.body.title,
+        author: req.user.id,
+        content: req.body.content,
+        photo,
+        createdAt: new Date(),
+      });
+
+      const savedPost = await newPost.save();
+      console.log('Post created:', savedPost); // Debug log
+      res.status(201).json({ message: 'Post created successfully', post: savedPost });
+    } catch (err) {
+      console.error('Error creating post:', err);
+      res.status(500).send('Server Error');
+    }
+  }
+);
+
+// Fetch a single post
+router.get('/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: 'Invalid Post ID format.' });
+  }
+
+  try {
+    const post = await Post.findById(id).populate('author').exec();
+    console.log('Fetched post:', post); // Debug log
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found.' });
+    }
+    res.status(200).json({ post, loggedin: req.user });
+  } catch (error) {
+    console.error('Error fetching post:', error);
+    res.status(500).json({ message: 'Internal server error.' });
+  }
+});
+
+module.exports = router;
+
+
+/*
+const express = require('express');
+const router = express.Router();
+const mongoose = require('mongoose');
+const { check, validationResult } = require('express-validator');
+const passport = require('passport');
+const multer = require('multer');
+const path = require('path');
+const Post = require('../models/Post');
+
+// Multer configuration for file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+const upload = multer({ storage });
+
+// Create a new post
+router.post(
+  '/create',
+  passport.authenticate('jwt', { session: false }),
+  upload.single('image'),
+  [
+    check('title', 'Title is required').not().isEmpty(),
+    check('content', 'Content is required').not().isEmpty(),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    try {
+      const photo = req.file ? `/uploads/${req.file.filename}` : '';
+
+      const newPost = new Post({
+        title: req.body.title,
+        author: req.user.id,
+        content: req.body.content,
+        photo,
+        date: new Date().toISOString(),
+      });
+
+      const savedPost = await newPost.save();
+      res.status(201).json({ message: 'Post created successfully', post: savedPost });
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
+
+// Fetch a single post
+router.get('/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: 'Invalid Post ID format.' });
+  }
+
+  try {
+    const post = await Post.findById(id).populate('author').exec();
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found.' });
+    }
+    res.status(200).json({ post, loggedin: req.user });
+  } catch (error) {
+    console.error('Error fetching post:', error);
+    res.status(500).json({ message: 'Internal server error.' });
+  }
+});
+
+module.exports = router;
+*/
+
+
+
+/*
+const express = require('express');
+const router = express.Router();
+const mongoose = require('mongoose');
+const { check, validationResult } = require('express-validator');
+const passport = require('passport');
 const Post = require('../models/Post'); 
 const User = require('../models/User');
 
@@ -85,3 +249,4 @@ router.get('/:id', passport.authenticate('jwt', {session: false}), async (req, r
 
 
 module.exports = router;
+*/

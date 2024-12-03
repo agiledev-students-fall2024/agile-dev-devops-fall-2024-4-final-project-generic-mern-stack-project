@@ -75,9 +75,9 @@ const Profile = () => {
                                 to={`/blogpostloggedin/${post._id}`} 
                                 className='text-reset text-decoration-none'
                             >
-                                { post.imageUrl ? 
+                                { post.photo ? 
                                     <img 
-                                        src={post.imageUrl} 
+                                        src={post.photo} 
                                         alt='User-submitted' />: 
                                     <img 
                                         src={noImgSrc}
@@ -101,9 +101,9 @@ const Profile = () => {
                                 className='text-reset text-decoration-none'
                             >   
                                 <div>
-                                    { post.imageUrl ? 
+                                    { post.photo ? 
                                         <img 
-                                            src={post.imageUrl} 
+                                            src={post.photo} 
                                             alt='User-submitted' 
                                             style={{'--masonry-img-height': `${randomNumbers[index]}rem`}} />: 
                                         <img 
@@ -129,9 +129,9 @@ const Profile = () => {
                             to={`/blogpostloggedin/${post._id}`} 
                             className=' text-reset text-decoration-none'
                         >
-                            { post.imageUrl ? 
+                            { post.photo ? 
                                 <img 
-                                    src={post.imageUrl} 
+                                    src={post.photo} 
                                     alt='User-submitted' 
                                     style={{'--masonry-img-height': `${randomNumbers[index]}rem`}} />: 
                                 <img 
@@ -156,8 +156,8 @@ const Profile = () => {
                                 className=' text-reset text-decoration-none'
                             >
                                 <div>
-                                    { post.imageUrl ? 
-                                        <img src={post.imageUrl} alt='User-submitted' />: 
+                                    { post.photo ? 
+                                        <img src={post.photo} alt='User-submitted' />: 
                                         <img src={noImgSrc} alt='Not provided by user' className='no-img' />
                                     }
                                     <h2>{post.title}</h2>
