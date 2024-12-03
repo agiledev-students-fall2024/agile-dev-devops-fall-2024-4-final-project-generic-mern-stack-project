@@ -1,5 +1,6 @@
+// services/codeService.js
 const { initializeApp } = require('firebase/app');
-const { getFirestore, collection, addDoc } = require('firebase/firestore');
+const { getFirestore, collection, addDoc, getDocs, query, orderBy } = require('firebase/firestore');
 require('dotenv').config();
 
 const firebaseConfig = {
@@ -12,25 +13,42 @@ const firebaseConfig = {
     measurementId: process.env.FIREBASE_MEASUREMENT_ID
 };
 
-const app = initializeApp(firebaseConfig);
-let db = getFirestore(app); // Default Firestore instance
+// Initialize Firebase
+const firebaseApp = initializeApp(firebaseConfig);
+const db = getFirestore(firebaseApp);
 
 const codeService = {
-    setDb: (testDb) => {
-        db = testDb; // Inject a mock Firestore instance for testing
+    db,  // Export the Firestore instance
+
+    async getCodeHistory(meetingId) {
+        try {
+            const messagesRef = collection(db, 'meetings', meetingId, 'messages');
+            const q = query(messagesRef, orderBy('timestamp'));
+            const snapshot = await getDocs(q);
+            
+            return snapshot.docs
+                .filter(doc => doc.data().service === 'code')
+                .map(doc => doc.data());
+        } catch (error) {
+            console.error('Error getting code history:', error);
+            throw error;
+        }
     },
 
-    async testConnection() {
+    async sendCodeUpdate(meetingId, code, language, timestamp) {
         try {
-            const testRef = collection(db, 'test_connection');
-            const testDoc = await addDoc(testRef, {
-                test: 'Connection test',
-                timestamp: Date.now()
+            const messagesRef = collection(db, 'meetings', meetingId, 'messages');
+            await addDoc(messagesRef, {
+                service: 'code',
+                data: {
+                    code,
+                    language
+                },
+                timestamp
             });
-            console.log('Test document written with ID:', testDoc.id);
             return true;
         } catch (error) {
-            console.error('Connection test failed:', error);
+            console.error('Error sending code update:', error);
             return false;
         }
     }

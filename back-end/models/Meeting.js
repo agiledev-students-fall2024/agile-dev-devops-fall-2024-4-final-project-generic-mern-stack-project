@@ -1,22 +1,5 @@
+// models/Meeting.js
 const mongoose = require('mongoose');
-
-const meetingSchema = new mongoose.Schema({
-    id: {
-        type: UUID,
-        unique: true,
-        required: true,
-        default: () => randomUUID()
-    },
-    participants: {
-        type: Array,
-        required: false
-    },
-    messages: {
-        type: [messageSchema],
-        required: true,
-
-    },
-});
 
 // Define the sub-schema for messages
 const messageSchema = new mongoose.Schema({
@@ -34,5 +17,38 @@ const messageSchema = new mongoose.Schema({
     }
 });
 
+const meetingSchema = new mongoose.Schema({
+    meetingId: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
+    endedAt: {
+        type: Date,
+    },
+    participants: [{
+        type: String  // Participant IDs/names?
+    }],
+    codeHistory: [{
+        code: String,
+        language: String,
+        timestamp: Date,
+        author: String  // Stretch goal: to track who made the changes
+    }],
+    status: {
+        type: String,
+        enum: ['active', 'ended'],
+        default: 'active'
+    },
+    messages: {
+        type: [messageSchema],
+        required: true,
+
+    }
+});
 
 module.exports = mongoose.model('Meeting', meetingSchema);

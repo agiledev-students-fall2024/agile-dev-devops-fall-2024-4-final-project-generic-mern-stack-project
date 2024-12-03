@@ -14,7 +14,7 @@ import CodeEditor from "../components/CodeEditor";
 import Whiteboard from "../components/Whiteboard";
 
 function MeetingPage() {
-    const navgiate = useNavigate();
+    const navigate = useNavigate();
 
     const [dataStreamingMessages, setDataStreamingMessages] = React.useState([]);
 
@@ -119,16 +119,41 @@ function MeetingPage() {
         setVideoVisible(false);
     };
 
-    const handleLeave = () => {
-        userStream.getTracks().forEach(track => {
-            track.stop();
-        });
-        navgiate('/joincreatemeeting');
-
+    const handleLeave = async () => {
+        try {
+            // Stop media tracks if they exist
+            if (userStream) {
+                userStream.getTracks().forEach(track => {
+                    track.stop();
+                });
+            }
+    
+            // End meeting in MongoDB
+            await fetch(`http://localhost:8080/meeting/${meetingId}/end`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+    
+            // Close event source if it exists
+            if (eventSourceRef.current) {
+                eventSourceRef.current.close();
+            }
+    
+            // Close peer connection if it exists
+            if (peerConnection.current) {
+                peerConnection.current.close();
+            }
+    
+            // Navigate to join/create page using the imported navigate function
+            navigate('/joincreatemeeting');
+        } catch (error) {
+            console.error('Error leaving meeting:', error);
+            // Still navigate away even if saving fails
+            navigate('/joincreatemeeting');
+        }
     };
-
-
-
 
     const initializeVideoConnection = async (messages) => {
 

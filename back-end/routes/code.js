@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const { collection, onSnapshot } = require('firebase/firestore');
 const codeService = require('../services/codeService');
+const meetingService = require('../services/meetingService');
 
 // Get code history for a meeting
 router.get('/:meetingId', async (req, res) => {
@@ -22,18 +23,20 @@ router.post('/:meetingId', async (req, res) => {
         const { meetingId } = req.params;
         const { code, language } = req.body;
         const timestamp = Date.now();
-        
-        const success = await codeService.sendCodeUpdate(
-            meetingId,
-            code,
-            language,
-            timestamp
-        );
 
+        // Save to Firebase
+        const success = await codeService.sendCodeUpdate(meetingId, code, language, timestamp);
+
+        // Save to MongoDB if Firebase update was successful
         if (success) {
+            await meetingService.saveCodeHistory(meetingId, {
+                code,
+                language,
+                timestamp: new Date(timestamp)
+            });
             res.status(201).json({ message: 'Code update sent successfully' });
         } else {
-            res.status(500).json({ error: 'Failed to send code update' });
+            throw new Error('Failed to send code update to Firebase');
         }
     } catch (error) {
         console.error('Error sending code update:', error);
@@ -41,7 +44,7 @@ router.post('/:meetingId', async (req, res) => {
     }
 });
 
-// Stream updates route
+// Stream updates
 router.get('/:meetingId/stream', (req, res) => {
     const { meetingId } = req.params;
 
@@ -56,27 +59,31 @@ router.get('/:meetingId/stream', (req, res) => {
     // Send initial connection message
     res.write('data: {"type":"connected"}\n\n');
 
-    // Set up Firebase listener
-    const messagesRef = collection(codeService.db, 'meetings', meetingId, 'messages');
-    const unsubscribe = onSnapshot(messagesRef, 
-        (snapshot) => {
+    try {
+        // Set up Firebase listener
+        const messagesRef = collection(codeService.db, 'meetings', meetingId, 'messages');
+        const unsubscribe = onSnapshot(messagesRef, (snapshot) => {
             snapshot.docChanges().forEach((change) => {
                 if (change.type === 'added' || change.type === 'modified') {
                     const data = change.doc.data();
-                    res.write(`data: ${JSON.stringify(data)}\n\n`);
+                    if (data.service === 'code') {
+                        res.write(`data: ${JSON.stringify(data)}\n\n`);
+                    }
                 }
             });
-        },
-        (error) => {
+        }, (error) => {
             console.error('Snapshot listener error:', error);
             res.write(`data: ${JSON.stringify({ type: 'error', message: error.message })}\n\n`);
-        }
-    );
+        });
 
-    // Clean up when client disconnects
-    req.on('close', () => {
-        unsubscribe();
-    });
+        // Clean up when client disconnects
+        req.on('close', () => {
+            unsubscribe();
+        });
+    } catch (error) {
+        console.error('Error setting up SSE:', error);
+        res.write(`data: ${JSON.stringify({ type: 'error', message: 'Failed to setup connection' })}\n\n`);
+    }
 });
 
 module.exports = router;
