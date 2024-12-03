@@ -4,7 +4,9 @@ const bcrypt = require('bcryptjs');
 const User = mongoose.model("User")
 
 const app = new Router();
-
+// IMPORTANT Comment for Sprint3: Up to end of sprint 3, we're not sure whether we need further maintain 
+// the Authentication part. For now we will leave the designed login/register logic at here, but we don't integrate 
+// it with other parts. You can Register and login as normal, but it WILL NOT AFFECT ANYTHING!!!
 app.post("/login", async (req, res) => {
     const { username, password } = req.body
     let user
