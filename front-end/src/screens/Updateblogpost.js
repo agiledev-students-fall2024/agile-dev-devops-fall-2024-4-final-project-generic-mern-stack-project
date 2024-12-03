@@ -8,14 +8,17 @@ const apiUrl = process.env.REACT_APP_API_URL;
 
 const UpdateBlogPost = () => {
   const { postId } = useParams(); // Extract the post ID from the URL
+  const token = localStorage.getItem('token')
   const [post, setPost] = useState(null);
+
 
   useEffect(() => {
     // Fetch the post by ID from the backend
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/api/posts/${postId}`);
-        setPost(response.data);
+        const response = await axios.get(`${apiUrl}/api/posts/${postId} `, { headers: { Authorization: `Bearer ${token}` }, });
+        setPost(response.data.post);
+        
       } catch (error) {
         console.error('Error fetching post:', error);
       }
@@ -31,7 +34,7 @@ const UpdateBlogPost = () => {
     };
 
     try {
-      const response = await axios.put(`${apiUrl}/api/posts/edit/${postId}`, updatedData);
+      const response = await axios.put(`${apiUrl}/api/posts/edit/${postId}`, updatedData, { headers: { Authorization: `Bearer ${token}` }, });
       console.log('Post updated successfully:', response.data);
     } catch (error) {
       console.error('Error updating post:', error);
