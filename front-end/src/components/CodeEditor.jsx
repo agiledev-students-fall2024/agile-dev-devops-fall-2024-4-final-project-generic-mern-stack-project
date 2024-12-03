@@ -7,14 +7,20 @@ const CodeEditor = () => {
     const [language, setLanguage] = useState('javascript');
     const [code, setCode] = useState('// Welcome!');
     const [output, setOutput] = useState('');
+    const [error, setError] = useState(null);
     const editorRef = useRef(null);
     const eventSourceRef = useRef(null);
 
     useEffect(() => {
-        // Initial code fetch
+        let timeoutId;
+
         const fetchCodeHistory = async () => {
             try {
+                setError(null);
                 const response = await fetch(`http://localhost:8080/code/${meetingId}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch code history');
+                }
                 const history = await response.json();
                 if (history.length > 0) {
                     const lastUpdate = history[history.length - 1];
@@ -23,13 +29,24 @@ const CodeEditor = () => {
                 }
             } catch (error) {
                 console.error('Error fetching code history:', error);
+                setError('Failed to load code history');
+                // Retry after 5 seconds
+                timeoutId = setTimeout(fetchCodeHistory, 5000);
             }
         };
 
-        // Set up SSE connection
         const setupSSE = () => {
+            if (eventSourceRef.current) {
+                eventSourceRef.current.close();
+            }
+
             const eventSource = new EventSource(`http://localhost:8080/code/${meetingId}/stream`);
             
+            eventSource.onopen = () => {
+                console.log('SSE connection established');
+                setError(null);
+            };
+
             eventSource.onmessage = (event) => {
                 try {
                     const data = JSON.parse(event.data);
@@ -44,10 +61,12 @@ const CodeEditor = () => {
 
             eventSource.onerror = (error) => {
                 console.error('SSE Error:', error);
+                setError('Connection lost. Retrying...');
                 eventSource.close();
+                // Retry after 5 seconds
+                timeoutId = setTimeout(setupSSE, 5000);
             };
 
-            // Store the eventSource in ref for cleanup
             eventSourceRef.current = eventSource;
         };
 
@@ -59,12 +78,15 @@ const CodeEditor = () => {
             if (eventSourceRef.current) {
                 eventSourceRef.current.close();
             }
+            if (timeoutId) {
+                clearTimeout(timeoutId);
+            }
         };
     }, [meetingId]);
 
     const sendCodeUpdate = async (newCode) => {
         try {
-            await fetch(`http://localhost:8080/code/${meetingId}`, {
+            const response = await fetch(`http://localhost:8080/code/${meetingId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -74,24 +96,27 @@ const CodeEditor = () => {
                     language
                 }),
             });
+
+            if (!response.ok) {
+                throw new Error('Failed to send code update');
+            }
         } catch (error) {
             console.error('Error sending code update:', error);
+            setError('Failed to sync code changes');
         }
     };
 
-    // Handle editor mount
     const handleEditorDidMount = (editor) => {
         editorRef.current = editor;
     };
 
-    // Debounce code updates
     const debouncedCodeUpdate = (newCode) => {
         if (window.codeUpdateTimeout) {
             clearTimeout(window.codeUpdateTimeout);
         }
         window.codeUpdateTimeout = setTimeout(() => {
             sendCodeUpdate(newCode);
-        }, 500);
+        }, 1000); // Increased debounce time to 1 second
     };
 
     const handleCodeChange = (newCode) => {
@@ -136,6 +161,11 @@ const CodeEditor = () => {
                     Run Code
                 </button>
             </div>
+            {error && (
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2">
+                    {error}
+                </div>
+            )}
             <Editor
                 height="70%"
                 language={language}
