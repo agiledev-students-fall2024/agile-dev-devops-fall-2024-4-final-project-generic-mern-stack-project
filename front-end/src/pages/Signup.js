@@ -25,7 +25,7 @@ export default function Signup() {
       .then((response) => {
         console.log(response.data);
         toast.success("User created successfully");
-        navigate("/");
+        navigate("/home");
       })
       .catch((error) => {
         // console.log("a real error", error.message);

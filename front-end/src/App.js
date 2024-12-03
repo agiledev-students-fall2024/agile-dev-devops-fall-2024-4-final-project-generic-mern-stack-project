@@ -31,12 +31,13 @@ import { FontContext, FontProvider } from "./FontContext";
 
 function AppContent() {
   const noNavRoutes = [
+    "/",
     "/login",
     "/signup",
     "/forgotpassword",
     "/resetpassword",
     "/verifyemail",
-    "/landing",
+    //"/landing",
   ];
 
   const { color } = useContext(ColorContext);
@@ -49,8 +50,8 @@ function AppContent() {
 
         <div className={"dark:bg-lavender_blush-1000 flex-1 p-4 z-0 overflow-y-auto h-screen text-" + font}>
           <Routes>
-            <Route path="/landing" element={<LandingPage />} />
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/create-community" element={<CreateCommunity />} />
             <Route path="/community" element={<Community />} />
             <Route

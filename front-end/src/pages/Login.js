@@ -27,7 +27,7 @@ export default function Login() {
         toast.success("Logged in successfully");
       })
       .then(() => {
-        navigate("/");
+        navigate("/home");
       })
       .catch((error) => {
         console.error("Error in login: ", error.response.data.message);
