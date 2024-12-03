@@ -1,7 +1,6 @@
-// models/Meeting.js
 const mongoose = require('mongoose');
+const { randomUUID } = require('crypto');
 
-// Define the sub-schema for messages
 const messageSchema = new mongoose.Schema({
     service: {
         type: String,
@@ -23,6 +22,12 @@ const meetingSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    id: {
+        type: String,
+        unique: true,
+        required: true,
+        default: randomUUID
+    },
     createdAt: {
         type: Date,
         default: Date.now,
@@ -31,13 +36,13 @@ const meetingSchema = new mongoose.Schema({
         type: Date,
     },
     participants: [{
-        type: String  // Participant IDs/names?
+        type: String
     }],
     codeHistory: [{
         code: String,
         language: String,
         timestamp: Date,
-        author: String  // Stretch goal: to track who made the changes
+        author: String
     }],
     status: {
         type: String,
@@ -46,8 +51,7 @@ const meetingSchema = new mongoose.Schema({
     },
     messages: {
         type: [messageSchema],
-        required: true,
-
+        default: [],  // Changed from required: true to default: [] for better usability
     }
 });
 

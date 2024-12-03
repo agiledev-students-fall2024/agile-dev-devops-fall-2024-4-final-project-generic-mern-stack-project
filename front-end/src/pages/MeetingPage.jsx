@@ -320,11 +320,11 @@ function MeetingPage() {
     useEffect(() => {
         (async () => {
             // handle meeting that dont exist, as user can still nav directly to this page
-            const meetingInfo = await getMeeting(meetingId)
-            if (!meetingInfo) {
-                alert('The meeting you are trying to enter does not exist, or something has gone wrong while joining the meeting')
-                navgiate('/login')
-                return
+            const response = await fetch(`http://localhost:8080/meeting/${meetingId}`);
+            if (!response.ok) {
+                alert('The meeting you are trying to enter does not exist, or something has gone wrong while joining the meeting');
+                navigate('/login');
+                return;
             }
             let unsub = null;
             let closePeerConnection = null;
@@ -378,15 +378,13 @@ function MeetingPage() {
 
 
     return (
-        <div className="flex meeting-container">
-
+<div className="flex meeting-container">
             <div className={`flex flex-col w-full bg-grey-900`}>
                 <div className="flex bg-grey-900">
-                    {/* Video Box for "other guy" at the top */}
-                    <div className="h-[90vh] w-full">
-                        {
+                    {/* Main content area */}
+                    <div className="h-[90vh] w-full relative"> {/* Added relative positioning */}
+                        {videoVisible && (
                             connected ? (
-                                videoVisible &&
                                 <VideoBox
                                     mediaSource={remoteStream}
                                     displayName={"Other guy"}
@@ -405,16 +403,21 @@ function MeetingPage() {
                                     </p>
                                 </div>
                             )
-                        }
-                        {
-                            editorVisible &&
-                            <CodeEditor />
-                        }
-                        {
-                            whiteboardVisible &&
-                            <Whiteboard roomId={meetingId} />
-                        }
+                        )}
+                        {/* Render CodeEditor and Whiteboard in the same space as video */}
+                        {editorVisible && (
+                            <div className="absolute inset-0">
+                                <CodeEditor />
+                            </div>
+                        )}
+                        {whiteboardVisible && (
+                            <div className="absolute inset-0">
+                                <Whiteboard roomId={meetingId} />
+                            </div>
+                        )}
                     </div>
+                    
+                    {/* PiP video box */}
                     <div className="absolute top-20 right-4 w-64 h-48">
                         <VideoBox
                             mediaSource={videoVisible ? userStream : remoteStream}
@@ -425,11 +428,11 @@ function MeetingPage() {
                             collapsible={true}
                         />
                     </div>
-
                 </div>
-                {/* nav bar */}
+                
+                {/* Navigation bar */}
                 <div className="bg-gray-700 rounded-xl px-4 flex self-end justify-between items-center w-full shadow-md">
-                    <div className="flex">
+                <div className="flex">
                         <NavBarButton
                             icon={!isAudioOn ? FaMicrophoneSlash : FaMicrophone}
                             text={"Audio"}
@@ -454,6 +457,8 @@ function MeetingPage() {
 
                 </div>
             </div>
+            
+            {/* Chat sidebar */}
             <div className={`transition-all duration-300 ${chatVisible ? 'w-3/10' : 'w-0'} h-full bg-gray-900 overflow-y-auto`}>
                 {chatVisible && <Chat meetingId={meetingId} ref={chatRef} />}
             </div>

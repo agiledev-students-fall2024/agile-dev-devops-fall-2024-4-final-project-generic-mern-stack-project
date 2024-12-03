@@ -1,12 +1,8 @@
 // routes/join-create-meeting.js
 const express = require('express');
 const router = express.Router();
-<<<<<<< HEAD
 const fb = require('../services/firebaseApi');
-=======
 const Meeting = require('../models/Meeting');
-const fb = require('../services/firebase');
->>>>>>> 032d0dd9b14576b4c236d6000fc41601b3fd03e6
 
 // Get list of past meetings
 router.get('/past/list', async (req, res) => {
@@ -39,35 +35,31 @@ router.post('/', async (req, res) => {
     try {
         // Generate a random 9-digit meeting ID
         const meetingId = Math.random().toString().slice(2, 11);
-        
+       
         // Create meeting in MongoDB
         const meeting = new Meeting({
             meetingId,
             status: 'active',
             participants: [],
-            codeHistory: []
+            codeHistory: [],
+            messages: []  // Initialize empty messages array
         });
 
-<<<<<<< HEAD
-    // Store meeting in our temporary Map
-
-    fb.createMeeting(meetingId, newMeeting);
-
-
-    res.status(201).json(newMeeting);
-});
-=======
-        await meeting.save();
->>>>>>> 032d0dd9b14576b4c236d6000fc41601b3fd03e6
-
-        res.status(201).json({ 
-            meetingId,
-            createdAt: meeting.createdAt,
-            status: meeting.status
+        const savedMeeting = await meeting.save();
+        
+        res.status(201).json({
+            meetingId: savedMeeting.meetingId,
+            id: savedMeeting.id,
+            createdAt: savedMeeting.createdAt,
+            status: savedMeeting.status
         });
     } catch (error) {
         console.error('Error creating meeting:', error);
-        res.status(500).json({ error: 'Failed to create meeting' });
+        // Send more detailed error information in development
+        res.status(500).json({ 
+            error: 'Failed to create meeting',
+            details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
     }
 });
 
