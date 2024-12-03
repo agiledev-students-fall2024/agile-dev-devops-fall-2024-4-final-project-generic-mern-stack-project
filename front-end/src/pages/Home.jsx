@@ -136,6 +136,12 @@ const Home = () => {
               <img src={weeklyActivitiesData[0].image} alt="Activity 1" />
             </div>
             <h3>Weekly Activities</h3>
+
+    console.log("weeklyActivitiesData.length:" + weeklyActivitiesData.length)
+    return (
+        <>
+        <h1>Home</h1>
+        <div className="home-container">
             {
               <>
                 <p>
