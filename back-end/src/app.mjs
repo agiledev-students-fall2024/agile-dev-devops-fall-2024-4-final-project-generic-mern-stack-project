@@ -142,20 +142,23 @@ app.get("/api/challenges", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch activity tracker data" });
   }
 });
-app.get("/api/users", async (req, res) => {
-  try {
-    if (process.env.MOCK_ERROR === "true") {
-      throw new Error("Mocked error");
-    }
-    const { data } = await axios.get(
-      "https://my.api.mockaroo.com/users.json?key=66da8e80"
-    );
-    res.json(data);
-  } catch (error) {
-    console.error("Error fetching data from API:", error.message);
-    res.status(500).json({ error: "Failed to fetch user data" });
-  }
-});
+
+// Commented out users API (uses mock data)
+
+// app.get("/api/users", async (req, res) => {
+//   try {
+//     if (process.env.MOCK_ERROR === "true") {
+//       throw new Error("Mocked error");
+//     }
+//     const { data } = await axios.get(
+//       "https://my.api.mockaroo.com/users.json?key=66da8e80"
+//     );
+//     res.json(data);
+//   } catch (error) {
+//     console.error("Error fetching data from API:", error.message);
+//     res.status(500).json({ error: "Failed to fetch user data" });
+//   }
+// });
 
 app.get("/api/user", async (req, res) => {
   try {
