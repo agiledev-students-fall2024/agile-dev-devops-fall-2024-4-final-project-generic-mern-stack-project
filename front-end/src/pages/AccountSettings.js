@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react"
 import TitleAndDescription from '../components/TitleAndDescription'
 import AccountInfo from '../components/AccountInfo'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { axiosInstance } from "../axios";
+import toast from "react-hot-toast";
 
 const AccountSettings = (props) => {
-
+    const navigate = useNavigate();
     const [data, setData] = useState([])
     const [popup, setPopup] = useState(false)
 
@@ -41,6 +42,18 @@ const AccountSettings = (props) => {
                 console.error(err)
             })
     }, [])
+
+    const handleLogout = (req, res) => {
+      axiosInstance
+        .post("/logout")
+        .then((response) => {
+          toast.success("Logout successful");
+          navigate("/");
+        })
+        .catch((error) => {
+          console.error("Error in logout", error.message);
+        });
+    };
 
     // if user clicked the link to the popup: render popup
     if (popup) {
@@ -87,10 +100,16 @@ const AccountSettings = (props) => {
                     {/* <AccountInfo title={"Password"} text={data.password} /> */}
                 </div>
 
-                <div className="w-[60%] flex justify-center md:w-[40%] lg:w-[30%]">
+                <div className="w-[60%] flex flex-col gap-5 justify-center md:w-[40%] lg:w-[30%]">
                     <button
                         className="w-[100%] p-2 bg-ebony border-ebony rounded-lg text-rose-700 font-semibold hover:bg-rose-700 hover:text-ebony hover:border-rose-700"
                         onClick={openPopup}>Delete your data and account
+                    </button>
+                    <button
+                        className="w-[100%] p-2 bg-ebony border-ebony rounded-lg text-rose-700 font-semibold hover:bg-rose-700 hover:text-ebony hover:border-rose-700"
+                        onClick={handleLogout}
+                        >
+                        Log out
                     </button>
                 </div>
             </div>
