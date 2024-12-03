@@ -1,5 +1,5 @@
 const { initializeApp } = require('firebase/app');
-const { getFirestore, doc, getDoc, collection, getDocs, onSnapshot } = require('firebase/firestore');
+const { getFirestore, doc, getDoc, setDoc, collection, getDocs, onSnapshot } = require('firebase/firestore');
 
 const firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY,
@@ -21,6 +21,15 @@ const getMeeting = async (meetingId) => {
         return docSnap.data();
     } else {
         return false;
+    }
+}
+
+const createMeeting = async (meetingId, details) => {
+    const docRef = doc(db, 'meetings', meetingId);
+    try {
+        await setDoc(docRef, details);
+    } catch (error) {
+        console.error('Error creating meeting:', error);
     }
 }
 
@@ -50,4 +59,4 @@ const listenForNewMessages = async (meetingId, callback, all = false) => {
     return unsub;
 }
 
-module.exports = { getMeeting, getAllMessages, listenForNewMessages };
+module.exports = { getMeeting, getAllMessages, listenForNewMessages, createMeeting };

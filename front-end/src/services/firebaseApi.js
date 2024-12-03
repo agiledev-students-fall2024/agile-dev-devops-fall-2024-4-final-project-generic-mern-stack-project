@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, doc, getDoc, collection, getDocs, onSnapshot, addDoc, query, orderBy } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, collection, getDocs, onSnapshot, addDoc, setDoc, updateDoc, query, orderBy, arrayUnion } from 'firebase/firestore';
 
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -28,6 +28,19 @@ const getMeeting = async (meetingId) => {
     } catch (error) {
         console.log('Firebase error while trying to get meeting: ', meetingId)
         return false
+    }
+}
+
+const joinAsParticipant = async (meetingId, participant) => {
+    const docRef = doc(db, 'meetings', meetingId);
+    try {
+        await updateDoc(docRef, {
+            participants: arrayUnion(participant)
+        });
+        const docSnap = await getDoc(docRef);
+        return docSnap.data().participants;
+    } catch (error) {
+        console.error('Error joining as participant:', error);
     }
 }
 
@@ -67,7 +80,7 @@ const partialEditMessage = async (meetingId, data) => {
     await docRef.update(data);
 }
 
-export { getMeeting, getAllMessages, listenForNewMessages, sendDataToMeetingRoom, partialEditMessage };
+export { getMeeting, getAllMessages, listenForNewMessages, sendDataToMeetingRoom, partialEditMessage, joinAsParticipant };
 
 // test
 // (async () => {

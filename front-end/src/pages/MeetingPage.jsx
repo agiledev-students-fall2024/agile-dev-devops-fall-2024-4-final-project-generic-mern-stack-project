@@ -7,7 +7,7 @@ import '../assets/meeting.css';
 
 import { v4 as uuidv4 } from 'uuid';
 
-import { getAllMessages, listenForNewMessages, partialEditMessage, sendDataToMeetingRoom, getMeeting } from '../services/firebaseApi';
+import { getAllMessages, listenForNewMessages, partialEditMessage, sendDataToMeetingRoom, getMeeting, joinAsParticipant } from '../services/firebaseApi';
 
 import Chat from "../components/Chat";
 import CodeEditor from "../components/CodeEditor";
@@ -43,6 +43,8 @@ function MeetingPage() {
     const [whiteboardVisible, setWhiteboardVisible] = React.useState(false);
     const [screenshareVisible, setScreenshareVisible] = React.useState(false);
     const [videoVisible, setVideoVisible] = React.useState(true);
+
+
 
     const chatRef = useRef(null);
 
@@ -192,6 +194,7 @@ function MeetingPage() {
             console.log('Received remote track:', event.track.kind);
             _remoteStream.addTrack(event.track);
             setRemoteStream(_remoteStream);
+            setConnected(true);
         };
 
 
@@ -317,14 +320,17 @@ function MeetingPage() {
     useEffect(() => {
         (async () => {
             // handle meeting that dont exist, as user can still nav directly to this page
-            const meetingInfo = await getMeeting()
+            const meetingInfo = await getMeeting(meetingId)
             if (!meetingInfo) {
                 alert('The meeting you are trying to enter does not exist, or something has gone wrong while joining the meeting')
                 navgiate('/login')
+                return
             }
             let unsub = null;
             let closePeerConnection = null;
             console.log('initializing...');
+
+            console.log('attempting to be added as participant');
 
             const [u, messages] = await initializeFirebase();
             unsub = u;
@@ -379,14 +385,26 @@ function MeetingPage() {
                     {/* Video Box for "other guy" at the top */}
                     <div className="h-[90vh] w-full">
                         {
-                            videoVisible &&
-                            <VideoBox
-                                mediaSource={remoteStream}
-                                displayName={"Other guy"}
-                                videoOn={isOtherCameraOn}
-                                audioOn={isOtherAudioOn}
-                                flipHorizontal={true}
-                            />
+                            connected ? (
+                                videoVisible &&
+                                <VideoBox
+                                    mediaSource={remoteStream}
+                                    displayName={"Other guy"}
+                                    videoOn={isOtherCameraOn}
+                                    audioOn={isOtherAudioOn}
+                                    flipHorizontal={true}
+                                />
+                            ) : (
+                                <div className="flex flex-col justify-center items-center h-full w-full text-white">
+                                    <p>No one is connected.</p>
+                                    <p>Invite others using this link:</p>
+                                    <p>
+                                        <a href={`http://localhost:3000/meetings/${meetingId}`} className="text-blue-500 underline">
+                                            http://localhost:3000/meetings/{meetingId}
+                                        </a>
+                                    </p>
+                                </div>
+                            )
                         }
                         {
                             editorVisible &&
