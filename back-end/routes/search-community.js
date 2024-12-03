@@ -6,7 +6,7 @@ const router = express.Router();
 
 //community - sends back community group data for searching 
 router.get('/api/community', async (req, res) => {
-    try{
+    try {
         //fetch all communities' names and descriptions from database
         const communities = await Community.find({}, "name description").exec()
 
@@ -15,15 +15,15 @@ router.get('/api/community', async (req, res) => {
             const firstSentence = community.description.split(".")[0]
             const completeFirstSentence = firstSentence + (community.description.includes(".") ? "." : "")
 
-            return{
+            return {
                 id: community._id.toString(),
                 name: community.name,
-                description: completeFirstSentence   
+                description: completeFirstSentence
             }
-            
+
         })
 
-        res.status(200).json(completeCommunities)     
+        res.status(200).json(completeCommunities)
 
     } catch (err) {
         console.error(err)
