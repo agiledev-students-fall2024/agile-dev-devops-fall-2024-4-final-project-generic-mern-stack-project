@@ -26,7 +26,7 @@ const NavigationBar = (props) => {
       <ul className="flex flex-col space-y-8">
         <li>
           <Link
-            to="/"
+            to="/home"
             className="flex items-center gap-4 text-rose hover:text-ebony"
           >
             <GiFluffyWing size="28" />
