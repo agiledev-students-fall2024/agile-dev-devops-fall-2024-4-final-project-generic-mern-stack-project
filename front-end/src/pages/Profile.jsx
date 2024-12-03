@@ -39,7 +39,7 @@ function Profile() {
             <h1 className='title'>Profile</h1>
             <div className='profileDiv'>
                 <h2>{profileData.first_name} {profileData.last_name}</h2>
-                <img className='profile-pic' src="https://picsum.photos/100" alt="profile-pic" />
+                <img className='profile-pic' src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="profile-pic" />
 
                 <div className='bioSection'>
                     <h3>About {profileData.first_name}</h3>

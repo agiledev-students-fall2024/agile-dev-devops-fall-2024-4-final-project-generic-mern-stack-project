@@ -184,18 +184,6 @@ app.get("/api/user", async (req, res) => {
   }
 });
 
-app.get("/api/biteBuddyProfile", async (req, res) => {
-  try {
-    const { data } = await axios.get(
-      "https://my.api.mockaroo.com/bite_buddy_profile.json?key=786e37d0"
-    );
-    res.json(data);
-  } catch (error) {
-    console.error("Error fetching data from API:", error.message);
-    res.status(500).json({ error: "Failed to fetch bite buddy profile data" });
-  }
-});
-
 app.post('/api/user/add-recipe', async(req, res) => {
     try{
         const {userId, userRecipe} = req.body;
