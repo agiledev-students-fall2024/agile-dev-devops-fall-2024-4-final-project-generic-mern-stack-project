@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 import { axiosInstance } from "../axios";
+import { Link } from "react-router-dom";
 
 const HomePost = ({ post, isReply = false }) => {
   const [user, setUser] = useState(null);
@@ -9,6 +10,7 @@ const HomePost = ({ post, isReply = false }) => {
   const [newReply, setNewReply] = useState("");
   const [replies, setReplies] = useState(post.replies || []);
   const [postState, setPostState] = useState(post);
+  const [postUser, setPostUser] = useState(null);
 
   useEffect(() => {
     axiosInstance
@@ -25,11 +27,18 @@ const HomePost = ({ post, isReply = false }) => {
       });
   }, [post.likedBy]);
 
+  useEffect(() => {
+    // Update postUser whenever postState changes
+    if (postState && postState.madeBy) {
+      setPostUser(postState.madeBy);
+    }
+    console.log(postUser)
+  }, [postState]);
+
   const toggleLike = () => {
     if (!user) return;
 
     if (liked) {
-      // Unlike the post
       axiosInstance
         .post(`/posts/${post._id}/unlike`)
         .then(() => {
@@ -43,7 +52,6 @@ const HomePost = ({ post, isReply = false }) => {
           console.error("Failed to unlike post:", err);
         });
     } else {
-      // Like the post
       axiosInstance
         .post(`/posts/${post._id}/like`)
         .then(() => {
@@ -81,12 +89,13 @@ const HomePost = ({ post, isReply = false }) => {
     return likes >= 1000 ? `${(likes / 1000).toFixed(1)}K` : likes;
   };
 
-  // Extract necessary data from the post object
-  const postUser = postState.madeBy;
-  const profilePic = postUser.profilePicture || "/uploads/default_pic.png";
-  const displayName = postUser.name || "Anonymous";
-  const username = postUser.username || "unknown";
+  // Extract necessary data from postUser
+  /*
+  const profilePic = postUser?.profilePicture || "/default_pic.png";
+  const displayName = postUser?.name || "Anonymous";
+  const username = postUser?.username || "unknown";
   const communityName = postState.community?.name || "General";
+  */
 
   return (
     <div
@@ -96,20 +105,35 @@ const HomePost = ({ post, isReply = false }) => {
           : "shadow-md shadow-ebony-900"
       } ${isReply ? "m-0" : "m-auto"} `}
     >
-      <div className="flex flex-row items-center">
-        <img
-          src={`${process.env.REACT_APP_SERVER_HOSTNAME}${profilePic}`}
-          alt="Profile"
-          className="w-20 h-20 object-cover rounded-lg my-4 mx-2"
-        />
-        <div className="flex flex-col justify-start items-start text-md my-4 ml-2">
-          <span className="font-bold text-ebony text-left">{displayName}</span>
-          <span className="text-rose opacity-[75%]">@{username}</span>
-          {!isReply && (
-            <span className="text-ebony opacity-[75%]">in {communityName}</span>
-          )}
-        </div>
-      </div>
+      {postUser && (
+        <Link to={`/profile/${postUser._id}`}>
+          <div className="flex flex-row items-center">
+            <img
+              src={postUser.profilePicture}
+              alt="Profile"
+              className="w-20 h-20 object-cover rounded-lg my-4 mx-2"
+              onError={(e) => {
+                console.error('Image failed to load:', e.target.src);
+                e.target.src = '/default_pic.png'; 
+              }}
+            />
+            <div className="flex flex-col justify-start items-start text-md my-4 ml-2">
+              <span className="font-bold text-ebony text-left">
+                {postUser.name}
+              </span>
+              <div>
+                <span className="text-rose opacity-[75%]">@{postUser.username}</span>
+                {!isReply && (
+                  <span className="text-ebony opacity-[75%]">
+                    {" "}
+                    in {postState.community.name || "General"}
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+        </Link>
+      )}
 
       <div className="w-[95%] m-auto text-lg text-ebony">
         {postState.content}

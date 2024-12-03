@@ -50,6 +50,7 @@ export const signup = async (req, res) => {
       username,
       email,
       password: hashedPassword,
+      profilePicture: "default_pic.png",
     });
 
     await user.save();
@@ -122,7 +123,7 @@ export const login = async (req, res) => {
 };
 
 export const logout = async (req, res) => {
-  res.clearCookie("jwt-vocationsphere");
+  res.clearCookie("jwt-seraphim");
   res.status(200).json({ message: "Logged out successfully" });
 };
 
