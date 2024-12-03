@@ -109,9 +109,9 @@ function Recipes() {
                 onClick={() => handleStartClick(recipeItem)}
                 key={index}
               >
-                <div className="recipeImg">
+                {/*<div className="recipeImg">
                   <img src={recipeItem.imgs} alt="oops,img problems!" />
-                </div>
+                </div>*/}
                 <div className="recipeText">
                   <h1>{recipeItem.name}</h1>
                   <p>{recipeItem.description}</p>

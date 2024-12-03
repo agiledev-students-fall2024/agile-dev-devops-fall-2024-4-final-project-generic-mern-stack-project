@@ -164,9 +164,9 @@ const Home = () => {
               </p>
               <h2>{recipe.name}</h2>
               <p>{recipe.description}</p>
-              <div className="recipe-image">
+              {/*<div className="recipe-image">
                 <img src="https://picsum.photos/100" alt={recipe.name} />
-              </div>
+              </div>*/}
               <button
                 className="make-recipe-button"
                 onClick={() => handleStartRecipe(recipe)}
