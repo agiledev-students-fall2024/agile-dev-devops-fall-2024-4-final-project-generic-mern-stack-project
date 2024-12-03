@@ -66,6 +66,10 @@ const SubCommunity = (props) => {
         className="rounded-full w-[35%] ring-[6px] ring-rose-700 mb-10"
         src={props.image}
         alt="group logo"
+        onError={(e) => {
+          console.error('Image failed to load:', e.target.src);
+          e.target.src = '/default_pic.png'; 
+        }}
       />
 
       <h2 className="text-lg font-bold text-ebony-600">{props.name}</h2>

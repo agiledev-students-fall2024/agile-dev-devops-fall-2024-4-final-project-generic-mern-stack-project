@@ -11,7 +11,6 @@ const SubCommunityPage = (props) => {
   useEffect(() => {
     console.log("Currently getting subcommunity group's data...");
 
-    //getting hardcoded data from back-end
     axios
       .get(
         `${process.env.REACT_APP_SERVER_HOSTNAME}/api/community/${communityId}`
