@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from '../axiosInstance'; // Centralized axios instance for API calls
+import axios from 'axios'; // Centralized axios instance for API calls
 import './loginPage.css';
 
 const LoginPage = ({ onLogin }) => {
