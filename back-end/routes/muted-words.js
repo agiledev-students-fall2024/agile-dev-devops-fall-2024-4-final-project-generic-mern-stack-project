@@ -3,7 +3,7 @@ import express from 'express'
 const router = express.Router();
 import Setting from "../models/setting.model.js";
 import { protectRouter } from "../middlewares/auth.middleware.js";
-import jwt from "jsonwebtoken";
+import { check, validationResult } from "express-validator";
 
 // muted words
 router.get("/api/muted-words", protectRouter, async (req, res) => {
@@ -25,60 +25,70 @@ router.get("/api/muted-words", protectRouter, async (req, res) => {
 });
 
 // mute and unmute words
-router.post("/api/muted-words", protectRouter, async (req, res) => {
-    const request = req.body.request
+router.post("/api/muted-words", protectRouter,
+    [
+        check('request')
+            .isIn(['mute', 'unmute'])
+            .withMessage("Request must be 'mute' or 'unmute'"),
+        check('id')
+            .optional()
+            .isString()
+            .withMessage("ID field must be a string if provided."),
+    ],
+    async (req, res) => {
+        const request = req.body.request
 
-    // getting user id from cookies
-    const id = req.user._id
+        // getting user id from cookies
+        const id = req.user._id
 
-    if (request === 'unmute') {
-        try {
-            const wordId = req.body.id.trim().toLowerCase();
+        if (request === 'unmute') {
+            try {
+                const wordId = req.body.id.trim().toLowerCase();
 
-            // update muted word data
-            await Setting.updateOne({ userId: id }, { $pull: { mutedWords: wordId } });
+                // update muted word data
+                await Setting.updateOne({ userId: id }, { $pull: { mutedWords: wordId } });
 
-            // fetch updated user information
-            const user = await Setting.findOne({ userId: id });
-            const mutedWordData = user.mutedWords;
+                // fetch updated user information
+                const user = await Setting.findOne({ userId: id });
+                const mutedWordData = user.mutedWords;
 
-            res.status(200).json({ words: mutedWordData, message: "Muted word successfully!" })
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: 'Failed to unmute word' });
-        }
-    }
-    else if (request === 'mute') {
-        try {
-            const word = req.body.word.trim().toLowerCase();
-
-            // get current information
-            const user = await Setting.findOne({ userId: id });
-            const mutedWordData = user.mutedWords;
-
-            // preventing duplicates
-            const wordInList = mutedWordData.find(w => w === word);
-
-            if (wordInList) {
-                return res.status(200).json({
-                    words: mutedWordData,
-                    message: "You have already blocked this word.",
-                });
+                res.status(200).json({ words: mutedWordData, message: "Muted word successfully!" })
+            } catch (error) {
+                console.error(error);
+                res.status(500).json({ error: 'Failed to unmute word' });
             }
-
-            // update muted word data
-            await Setting.updateOne({ userId: id }, { $push: { mutedWords: word } });
-
-            // fetch updated data 
-            const updatedUser = await Setting.findOne({ userId: id });
-            const newData = updatedUser.mutedWords;
-
-            res.status(200).json({ words: newData, message: "Muted word successfully!" })
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: 'Failed to mute word' });
         }
-    }
-});
+        else if (request === 'mute') {
+            try {
+                const word = req.body.word.trim().toLowerCase();
+
+                // get current information
+                const user = await Setting.findOne({ userId: id });
+                const mutedWordData = user.mutedWords;
+
+                // preventing duplicates
+                const wordInList = mutedWordData.find(w => w === word);
+
+                if (wordInList) {
+                    return res.status(200).json({
+                        words: mutedWordData,
+                        message: "You have already blocked this word.",
+                    });
+                }
+
+                // update muted word data
+                await Setting.updateOne({ userId: id }, { $push: { mutedWords: word } });
+
+                // fetch updated data 
+                const updatedUser = await Setting.findOne({ userId: id });
+                const newData = updatedUser.mutedWords;
+
+                res.status(200).json({ words: newData, message: "Muted word successfully!" })
+            } catch (error) {
+                console.error(error);
+                res.status(500).json({ error: 'Failed to mute word' });
+            }
+        }
+    });
 
 export default router;
