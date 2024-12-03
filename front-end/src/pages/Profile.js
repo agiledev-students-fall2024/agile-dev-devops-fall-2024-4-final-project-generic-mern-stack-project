@@ -68,7 +68,7 @@ const Profile = (props) => {
             {onCommunities && (
                 <section className="flex flex-col justify-center w-[100%] sm:w-[95%] gap-0">
                     {user.communities.length > 0 ? (
-                        user.communities.map(item => (
+                        user.communities.slice().reverse().map(item => (
                             <div key={item.id}>
                                 <TitleAndDescriptionBox
                                     link={`/community/${item.id}`}
@@ -89,7 +89,7 @@ const Profile = (props) => {
             {onBlogs && (
                 <section className="flex flex-col justify-center w-[85%] gap-2">
                     {user.posts.length > 0 ? (
-                        user.posts.map(post => (
+                        user.posts.slice().reverse().map(post => (
                         <div key={post._id}>
                             <HomePost post={post} />
                         </div>
