@@ -47,9 +47,9 @@ const Challenges = () => {
                     <h2>CHALLENGE #{index + 1}</h2>
                     <h3>{challenge.name}</h3>
                     <p>{challenge.description}</p>
-                    <div className="challenge-image">
+                    {/*<div className="challenge-image">
                         <img src={challenge.image} alt={`Challenge ${index + 1}`} />
-                    </div>
+                    </div>*/}
                     <button className="start-button" onClick={() => handleStartChallenge(challenge)}>START CHALLENGE</button>
                 </div>
             ))}
@@ -59,9 +59,9 @@ const Challenges = () => {
                     <button className="close-button" onClick={closeFullCard}>X</button>
                     <h2>{selectedChallenge.name}</h2>
                     <p>{selectedChallenge.description}</p>
-                    <div className="challenge-image-popup">
+                   {/* <div className="challenge-image-popup">
                         <img src={selectedChallenge.image} alt={`Challenge image`} />
-                    </div>
+                    </div>*/}
                     <button className="start-button different-color" onClick={() => handleStartChallenge(selectedChallenge)}>START CHALLENGE</button>
                 </div>
             )}

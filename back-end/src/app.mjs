@@ -142,7 +142,7 @@ app.get("/api/challenges", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch activity tracker data" });
   }
 });
-app.get("/api/users", async (req, res) => {
+/*app.get("/api/users", async (req, res) => {
   try {
     if (process.env.MOCK_ERROR === "true") {
       throw new Error("Mocked error");
@@ -155,7 +155,7 @@ app.get("/api/users", async (req, res) => {
     console.error("Error fetching data from API:", error.message);
     res.status(500).json({ error: "Failed to fetch user data" });
   }
-});
+});*/
 
 app.get("/api/user", async (req, res) => {
   try {
@@ -184,7 +184,7 @@ app.get("/api/user", async (req, res) => {
   }
 });
 
-app.get("/api/biteBuddyProfile", async (req, res) => {
+/*app.get("/api/biteBuddyProfile", async (req, res) => {
   try {
     const { data } = await axios.get(
       "https://my.api.mockaroo.com/bite_buddy_profile.json?key=786e37d0"
@@ -194,7 +194,7 @@ app.get("/api/biteBuddyProfile", async (req, res) => {
     console.error("Error fetching data from API:", error.message);
     res.status(500).json({ error: "Failed to fetch bite buddy profile data" });
   }
-});
+});*/
 
 app.post('/api/user/add-recipe', async(req, res) => {
     try{
@@ -270,7 +270,7 @@ app.put('/api/update-profile', async (req, res) => {
   }
 });
 
-app.get("/api/basicRecipe", async (req, res) => {
+/*app.get("/api/basicRecipe", async (req, res) => {
   try {
     const { data } = await axios.get(
       "https://my.api.mockaroo.com/basic_recipe.json?key=786e37d0"
@@ -281,7 +281,7 @@ app.get("/api/basicRecipe", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch recipes data" });
   }
 });
-// Start the server
+*/// Start the server
 export const startServer = () => {
   app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
