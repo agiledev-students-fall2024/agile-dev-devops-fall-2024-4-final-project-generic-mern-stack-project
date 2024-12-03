@@ -6,6 +6,7 @@ export const AuthContext = React.createContext();
 const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
   const [token, setToken] = React.useState(localStorage.getItem('token') || null);
+  const [username, setUsername] = React.useState(localStorage.getItem('username') || null);
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -14,22 +15,25 @@ const AuthProvider = ({ children }) => {
     }
   }, [token]);
 
-  const login = (newToken) => {
+  const login = (newToken, newUsername) => {
     localStorage.setItem('token', newToken);
+    localStorage.setItem('username', newUsername);
     setToken(newToken); // Update the token state
+    setUsername(newUsername); // Update the username state
     setIsAuthenticated(true);
     navigate('/'); // Redirect to home
   };
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('username');
     setToken(null); // Clear the token state
     setIsAuthenticated(false);
     navigate('/login'); // Redirect to login
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, token, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, token, username, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

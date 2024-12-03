@@ -28,8 +28,8 @@ const LoginForm = () => {
       const response = await axios.post(`${apiUrl}/api/authentication/login`, formData);
       setError(null)
 
-      if (response.data.token) {
-        login(response.data.token)
+      if (response.data.token && response.data.username) {
+        login(response.data.token, response.data.username)
       }
     } catch (error) {
       if (error.response) {
