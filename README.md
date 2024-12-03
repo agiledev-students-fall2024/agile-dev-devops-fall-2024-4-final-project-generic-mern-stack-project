@@ -12,7 +12,7 @@ The target audience for Seraphim is creative people who want to showcase their u
 
 ## Product Vision Statement
 
-Seraphim is a creative social platform designed to foster authentic self-expression and connection in a supportive, secure environment. We envision a digital space where users can confidently share their creativity and interests—be it music, fashion, art, or personal anecdotes—without fear of harassment, objectification, or negativity. Our MVP will enable thorough profile customization, robust safety features, creative showcasing through blogging, and genuine interaction through unique communities and direct messaging. Seraphim aims to cultivate a positive online community where each individual is valued and respected, empowering users to express their true selves freely.
+Seraphim is a creative social platform designed to foster authentic self-expression and connection in a supportive, secure environment. We envision a digital space where users can confidently share their creativity and interests—be it music, fashion, art, or personal anecdotes—without fear of harassment, objectification, or negativity. Our MVP will enable thorough profile customization, robust safety features, creative showcasing through blogging, and genuine interaction through unique communities. Seraphim aims to cultivate a positive online community where each individual is valued and respected, empowering users to express their true selves freely.
 
 ## Usage
 
