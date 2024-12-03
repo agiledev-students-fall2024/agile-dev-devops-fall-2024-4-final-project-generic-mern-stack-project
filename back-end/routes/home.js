@@ -71,7 +71,7 @@ router.get("/api/home", protectRouter, async (req, res) => {
       mutedWords.map(word => {
         posts.map(post => {
           // remove post from posts array
-          if (post.content.includes(word)) {
+          if (post.content.toLowerCase().includes(word.toLowerCase())) {
             let index = posts.indexOf(post);
             posts.splice(index, 1);
           }

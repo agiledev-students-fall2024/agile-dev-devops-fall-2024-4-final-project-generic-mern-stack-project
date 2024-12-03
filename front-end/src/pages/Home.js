@@ -105,7 +105,7 @@ const Home = () => {
       <SearchBar
         searchInput={searchInput}
         onChange={handleChange}
-        handleSearch={() => {}}
+        handleSearch={() => { }}
       />
 
       <DropdownMenu
