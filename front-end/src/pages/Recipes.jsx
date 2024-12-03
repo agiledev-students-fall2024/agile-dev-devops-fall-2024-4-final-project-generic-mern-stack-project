@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Timer from "../components/Timer.jsx";
+import mongoose from "mongoose";
 
 function Recipes() {
   const [selectedRecipe, setSelectedRecipe] = useState(null);
@@ -43,11 +44,37 @@ function Recipes() {
   const close = () => {
     setSelectedRecipe(null);
   };
-  const handleStartRecipe = (selectedRecipe) => {
+  const handleStartRecipe = async (selectedRecipe) => {
     // Navigate to the record activity page, passing the recipe data
     console.log("going to recipe id:" + selectedRecipe.id);
     console.log('selectedrecipe is', selectedRecipe)
-    navigate("/record", { state: { selectedRecipe } });
+    try {
+      const token = localStorage.getItem('token');
+      const userId = localStorage.getItem('userId'); 
+      console.log("user id", userId)
+      const response = await axios.post(
+          `${process.env.REACT_APP_BACK_PORT}/api/user/add-recipe`,
+          {
+            userId,
+            userRecipe: {
+              _id: new mongoose.Types.ObjectId(),
+              id: selectedRecipe.id
+
+            }
+          },
+          {
+              headers: {
+                  Authorization: `Bearer ${token}`,
+              },
+          }
+      );
+
+      console.log('User recipes updated successfully:', response.data);
+      navigate("/record", { state: { selectedRecipe } });
+    } catch (error) {
+        console.error('Error updating user recipes:', error);
+        console.error(error.response.data)
+    }
   };
 
   return (
