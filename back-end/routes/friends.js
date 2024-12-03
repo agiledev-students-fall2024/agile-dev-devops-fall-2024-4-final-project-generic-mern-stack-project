@@ -1,29 +1,30 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
 
 const User = require('../models/User');
 const Friendship = require('../models/Friendship');
 const FriendRequest = require('../models/FriendRequest');
 const Blocked = require('../models/Blocked');
 
-const CURRENT_USER_ID = '673f858d5fc4b9efe8ac6266';
+// const CURRENT_USER_ID = '673f858d5fc4b9efe8ac6266';
 
 // 1. FETCH AVAILABLE USERS (ex. Blocked & Users that sent me a friend request)
-router.get('/potential-friends', async (req, res) => {
+router.get('/potential-friends', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
-    const blockedUsers = await Blocked.find({ blocker: CURRENT_USER_ID }).select('blocked');
+    const blockedUsers = await Blocked.find({ blocker: req.user.id }).select('blocked');
     const blockedIds = blockedUsers.map(block => block.blocked);
-    const incomingRequests = await FriendRequest.find({ to: CURRENT_USER_ID }).select('from');
+    const incomingRequests = await FriendRequest.find({ to: req.user.id }).select('from');
     const incomingRequestIds = incomingRequests.map(request => request.from);
-    const outgoingRequests = await FriendRequest.find({ from: CURRENT_USER_ID }).select('to');
+    const outgoingRequests = await FriendRequest.find({ from: req.user.id }).select('to');
     const outgoingRequestIds = outgoingRequests.map(request => request.to);
     const currentFriends = await Friendship.find({
-      $or: [{ user1: CURRENT_USER_ID }, { user2: CURRENT_USER_ID }]
+      $or: [{ user1: req.user.id }, { user2: req.user.id }]
     }).select('user1 user2');
     const friendIds = currentFriends.map(friendship =>
-      friendship.user1.toString() === CURRENT_USER_ID ? friendship.user2 : friendship.user1
+      friendship.user1.toString() === req.user.id ? friendship.user2 : friendship.user1
     );
-    const excludedIds = [...blockedIds, ...incomingRequestIds, ...outgoingRequestIds, ...friendIds, CURRENT_USER_ID];
+    const excludedIds = [...blockedIds, ...incomingRequestIds, ...outgoingRequestIds, ...friendIds, req.user.id];
     const users = await User.find({ _id: { $nin: excludedIds } });
 
     res.json(users.map(user => ({ id: user._id, name: user.name, username: user.username })));
@@ -33,14 +34,14 @@ router.get('/potential-friends', async (req, res) => {
 });
 
 // 2. FETCH FRIENDSHIPS
-router.get('/friends', async (req, res) => {
+router.get('/friends', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
     const friendships = await Friendship.find({
-      $or: [{ user1: CURRENT_USER_ID }, { user2: CURRENT_USER_ID }]
+      $or: [{ user1: req.user.id }, { user2: req.user.id }]
     }).populate('user1 user2');
 
     const friendList = friendships.map(friendship => {
-      const friend = friendship.user1._id.equals(CURRENT_USER_ID) ? friendship.user2 : friendship.user1;
+      const friend = friendship.user1._id.equals(req.user.id) ? friendship.user2 : friendship.user1;
       return { id: friend._id, name: friend.name, username: friend.username };
     });
 
@@ -51,13 +52,13 @@ router.get('/friends', async (req, res) => {
 });
 
 // 3. REMOVE A FRIEND
-router.post('/remove/:id', async (req, res) => {
+router.post('/remove/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const userId = req.params.id;
   try {
     await Friendship.deleteOne({
       $or: [
-        { user1: CURRENT_USER_ID, user2: userId },
-        { user2: CURRENT_USER_ID, user1: userId }
+        { user1: req.user.id, user2: userId },
+        { user2: req.user.id, user1: userId }
       ]
     });
     res.status(200).json({ message: 'Friend removed successfully' });
@@ -67,19 +68,19 @@ router.post('/remove/:id', async (req, res) => {
 });
 
 // 4. BLOCK A USER
-router.post('/block/:id', async (req, res) => {
+router.post('/block/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const userId = req.params.id;
   try {
     await Friendship.deleteOne({
       $or: [
-        { user1: CURRENT_USER_ID, user2: userId },
-        { user2: CURRENT_USER_ID, user1: userId }
+        { user1: req.user.id, user2: userId },
+        { user2: req.user.id, user1: userId }
       ]
     });
 
-    const isBlocked = await Blocked.findOne({ blocker: CURRENT_USER_ID, blocked: userId });
+    const isBlocked = await Blocked.findOne({ blocker: req.user.id, blocked: userId });
     if (!isBlocked) {
-      await Blocked.create({ blocker: CURRENT_USER_ID, blocked: userId });
+      await Blocked.create({ blocker: req.user.id, blocked: userId });
     }
 
     res.status(200).json({ message: 'User blocked successfully' });
@@ -89,15 +90,15 @@ router.post('/block/:id', async (req, res) => {
 });
 
 // 5. ADD A FRIEND (SEND AN OUTGOING FRIEND REQUEST)
-router.post('/request/:id', async (req, res) => {
+router.post('/request/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const friendId = req.params.id;
   try {
-    const existingRequest = await FriendRequest.findOne({ from: CURRENT_USER_ID, to: friendId });
+    const existingRequest = await FriendRequest.findOne({ from: req.user.id, to: friendId });
     if (existingRequest) {
       return res.status(400).json({ message: 'Friend request already sent' });
     }
 
-    await FriendRequest.create({ from: CURRENT_USER_ID, to: friendId });
+    await FriendRequest.create({ from: req.user.id, to: friendId });
     res.status(200).json({ message: 'Friend request sent successfully' });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -105,10 +106,10 @@ router.post('/request/:id', async (req, res) => {
 });
 
 // 6. FETCH ALL FRIEND REQUESTS
-router.get('/requests', async (req, res) => {
+router.get('/requests', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
-    const incomingRequests = await FriendRequest.find({ to: CURRENT_USER_ID }).populate('from');
-    const outgoingRequests = await FriendRequest.find({ from: CURRENT_USER_ID }).populate('to');
+    const incomingRequests = await FriendRequest.find({ to: req.user.id }).populate('from');
+    const outgoingRequests = await FriendRequest.find({ from: req.user.id }).populate('to');
 
     res.json({
       incomingRequests: incomingRequests.map(request => ({
@@ -126,10 +127,10 @@ router.get('/requests', async (req, res) => {
 });
 
 // 7. CANCEL AN OUTGOING REQUEST
-router.post('/requests/cancel/:id', async (req, res) => {
+router.post('/requests/cancel/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const requestId = req.params.id;
   try {
-    await FriendRequest.deleteOne({ _id: requestId, from: CURRENT_USER_ID });
+    await FriendRequest.deleteOne({ _id: requestId, from: req.user.id });
     res.status(200).json({ message: 'Friend request canceled successfully' });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -137,7 +138,7 @@ router.post('/requests/cancel/:id', async (req, res) => {
 });
 
 // 8. ACCEPT AN INCOMING REQUEST
-router.post('/requests/accept/:id', async (req, res) => {
+router.post('/requests/accept/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const requestId = req.params.id;
   try {
     const friendRequest = await FriendRequest.findById(requestId);
@@ -153,10 +154,10 @@ router.post('/requests/accept/:id', async (req, res) => {
 });
 
 // 9. DECLINE AN INCOMING REQUEST
-router.post('/requests/decline/:id', async (req, res) => {
+router.post('/requests/decline/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const requestId = req.params.id;
   try {
-    await FriendRequest.deleteOne({ _id: requestId, to: CURRENT_USER_ID });
+    await FriendRequest.deleteOne({ _id: requestId, to: req.user.id });
     res.status(200).json({ message: 'Friend request declined successfully' });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -164,9 +165,9 @@ router.post('/requests/decline/:id', async (req, res) => {
 });
 
 // 10. FETCH ALL BLOCKED USERS
-router.get('/blocked', async (req, res) => {
+router.get('/blocked', passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
-    const blockedUsers = await Blocked.find({ blocker: CURRENT_USER_ID }).populate('blocked');
+    const blockedUsers = await Blocked.find({ blocker: req.user.id }).populate('blocked');
 
     const blockedList = blockedUsers.map(block => ({
       id: block.blocked._id,
@@ -181,16 +182,16 @@ router.get('/blocked', async (req, res) => {
 });
 
 // 11. UNBLOCK A USER
-router.post('/unblock/:id', async (req, res) => {
+router.post('/unblock/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const userId = req.params.id;
 
   try {
-    const blockedEntry = await Blocked.findOne({ blocker: CURRENT_USER_ID, blocked: userId });
+    const blockedEntry = await Blocked.findOne({ blocker: req.user.id, blocked: userId });
     if (!blockedEntry) {
       return res.status(404).json({ message: 'User is not blocked' });
     }
 
-    await Blocked.deleteOne({ blocker: CURRENT_USER_ID, blocked: userId });
+    await Blocked.deleteOne({ blocker: req.user.id, blocked: userId });
 
     res.status(200).json({ message: 'User unblocked successfully' });
   } catch (error) {
