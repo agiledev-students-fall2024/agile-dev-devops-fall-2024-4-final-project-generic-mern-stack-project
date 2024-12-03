@@ -28,7 +28,7 @@ function Homepage(){
     // IMPORTANT Comment for Sprint3: Up to end of sprint 3, we're not sure whether we need further maintain 
     // the Authentication part. For now we will leave the designed login/register logic at here, but we don't integrate 
     // it with other parts. You can Register and login as normal, but it WILL NOT AFFECT ANYTHING!!!
-    localStorage.removeItem("session_user");
+    window.localStorage.removeItem("session_user");
     nav('/Login');
   };
   return (

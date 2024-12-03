@@ -46,7 +46,7 @@ const Login = () => {
                 return
             }
             else {
-                localStorage.setItem("session_user", JSON.stringify(responseParsed))
+                window.localStorage.setItem("session_user", JSON.stringify(responseParsed))
                 nav('/Homepage')
             }
         }
