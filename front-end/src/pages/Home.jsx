@@ -135,6 +135,24 @@ const Home = () => {
               <strong>Time Spent Cooking:</strong>{" "}
               {weeklyActivitiesStats.activityMins} min
             </p>
+
+    console.log("weeklyActivitiesData.length:" + weeklyActivitiesData.length)
+    return (
+        <>
+        <h1>Home</h1>
+        <div className="home-container">
+            {
+              <>
+                <p>
+                  <strong>Meals Recorded:</strong>{" "}
+                  {weeklyActivitiesStats["numActivities"]}
+                </p>
+                <p>
+                  <strong>Time Spent Cooking:</strong>{" "}
+                  {weeklyActivitiesStats["activityMins"]} min
+                </p>
+              </>
+            }
             <button onClick={goToActivityTracker}>See More</button>
           </div>
         )}
