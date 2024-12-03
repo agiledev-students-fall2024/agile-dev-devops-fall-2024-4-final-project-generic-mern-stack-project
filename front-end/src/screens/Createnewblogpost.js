@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios'; // Import axios
 import '../styles/Createnewblogpost.css';
 const apiUrl = process.env.REACT_APP_API_URL
 
 const CreateBlogPost = () => {
   const { username } = useParams(); // Use username from URL to create back link
+  const navigate = useNavigate();
   const token = localStorage.getItem('token')
 
   // State for form data
@@ -26,6 +27,7 @@ const CreateBlogPost = () => {
         formData,
         { headers: { Authorization: `Bearer ${token}` }, },);
       console.log('Post created successfully:', response.data);
+      navigate(`/profile/${username}`);
     } catch (error) {
       console.error('Error creating post:', error);
     }
