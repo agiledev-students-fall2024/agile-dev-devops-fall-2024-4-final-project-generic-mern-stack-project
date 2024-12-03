@@ -54,6 +54,12 @@ router.get('/api/profile/:userId', protectRouter, async (req, res) => {
     try {
         const { userId } = req.params;
 
+        const loggedInUserId = req.user._id.toString();
+        if (userId === loggedInUserId) {
+            console.log('here')
+            return res.status(200).json({ redirectTo: '/api/profile' });
+        }
+
         const user = await User.findById(userId)
             .populate("communities", "name description")
             .populate({
