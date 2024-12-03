@@ -5,6 +5,48 @@ export const AuthContext = React.createContext();
 
 const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+  const [token, setToken] = React.useState(localStorage.getItem('token') || null);
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (token) {
+      setIsAuthenticated(true);
+    }
+  }, [token]);
+
+  const login = (newToken) => {
+    localStorage.setItem('token', newToken);
+    setToken(newToken); // Update the token state
+    setIsAuthenticated(true);
+    navigate('/'); // Redirect to home
+  };
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    setToken(null); // Clear the token state
+    setIsAuthenticated(false);
+    navigate('/login'); // Redirect to login
+  };
+
+  return (
+    <AuthContext.Provider value={{ isAuthenticated, token, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export default AuthProvider;
+
+
+
+/*
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
+export const AuthContext = React.createContext();
+
+const AuthProvider = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -34,3 +76,4 @@ const AuthProvider = ({ children }) => {
 }
 
 export default AuthProvider
+*/
