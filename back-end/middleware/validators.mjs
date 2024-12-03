@@ -1,5 +1,6 @@
 import { body, validationResult } from "express-validator";
 
+// Not used yet
 // User validation rules
 export const validateUser = [
   body("username")
@@ -14,6 +15,7 @@ export const validateUser = [
     .withMessage("Password must be at least 6 characters long"),
 ];
 
+// Not used yet
 // Recipe validation rules
 export const validateRecipe = [
   body("name")
@@ -33,6 +35,33 @@ export const validateRecipe = [
   body("rating")
     .isFloat({ min: 0, max: 5 })
     .withMessage("Rating must be between 0 and 5"),
+];
+
+// Validation rules for updating user profile
+export const validateUpdateProfile = [
+  body("userId")
+    .isMongoId()
+    .withMessage("Valid user ID is required"),
+  body("firstName")
+    .optional()
+    .isString()
+    .withMessage("First name must be a string"),
+  body("lastName")
+    .optional()
+    .isString()
+    .withMessage("Last name must be a string"),
+  body("age")
+    .optional()
+    .isInt({ min: 13 })
+    .withMessage("Age must be a positive integer"),
+  body("location")
+    .optional()
+    .isString()
+    .withMessage("Location must be a string"),
+  body("bio")
+    .optional()
+    .isString()
+    .withMessage("Bio must be a string"),
 ];
 
 // Handle validation errors

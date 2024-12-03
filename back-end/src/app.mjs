@@ -14,7 +14,7 @@ import User from "../models/user.mjs";
 import ActivitySchema from "../models/activity.mjs";
 import Recipe from "../models/recipe.mjs";
 import path from "path";
-import { validateUser, validateRecipe, handleValidationErrors } from "../middleware/validators.mjs";
+import { validateUser, validateRecipe, validateUpdateProfile, handleValidationErrors } from "../middleware/validators.mjs";
 
 // Set up paths and directories
 const __filename = fileURLToPath(import.meta.url);
@@ -242,34 +242,68 @@ app.put('/api/user/complete-recipe', async(req, res) => {
     }
 })
 
-app.put('/api/update-profile', async (req, res) => {
-  try {
-    const { userId, firstName, lastName, age, location, bio } = req.body;
+app.put(
+  "/api/update-profile",
+  validateUpdateProfile,
+  handleValidationErrors,
+  async (req, res) => {
+    try {
+      const { userId, firstName, lastName, age, location, bio } = req.body;
 
-    // Update the user based on the provided userId
-    console.log("thisis userID", userId);
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      {
-        first_name: firstName,
-        last_name: lastName,
-        age,
-        location,
-        bio,
-      },
-      { new: true }
-    );
+      // Update the user based on the provided userId
+      console.log("this is userID", userId);
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        {
+          first_name: firstName,
+          last_name: lastName,
+          age,
+          location,
+          bio,
+        },
+        { new: true }
+      );
 
-    if (!updatedUser) {
-      return res.status(404).json({ message: "User not found" });
+      if (!updatedUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      res.status(200).json(updatedUser);
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      res.status(500).json({ message: "Server error while updating profile" });
     }
-
-    res.status(200).json(updatedUser);
-  } catch (error) {
-    console.error("Error updating profile:", error);
-    res.status(500).json({ message: "Server error while updating profile" });
   }
-});
+);
+
+// app.put('/api/update-profile', async (req, res) => {
+//   try {
+//     const { userId, firstName, lastName, age, location, bio } = req.body;
+
+//     // Update the user based on the provided userId
+//     console.log("thisis userID", userId);
+//     const updatedUser = await User.findByIdAndUpdate(
+//       userId,
+//       {
+//         first_name: firstName,
+//         last_name: lastName,
+//         age,
+//         location,
+//         bio,
+//       },
+//       { new: true }
+//     );
+
+//     if (!updatedUser) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     res.status(200).json(updatedUser);
+//   } catch (error) {
+//     console.error("Error updating profile:", error);
+//     res.status(500).json({ message: "Server error while updating profile" });
+//   }
+// });
 
 /*app.get("/api/basicRecipe", async (req, res) => {
   try {
