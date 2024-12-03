@@ -113,6 +113,7 @@ const Home = () => {
         setShare(false);
     }
 
+    console.log("weeklyActivitiesData.length:" + weeklyActivitiesData.length)
     return (
         <>
         <h1>Home</h1>
