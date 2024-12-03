@@ -20,7 +20,7 @@ const NavigationBar = (props) => {
         }`}
     >
       <div className="text-left font-2xl font-bold mb-4 ml-[-20px] bg-gradient-to-br from-ebony to-rose text-transparent bg-clip-text flex flex-row items-center">
-        <img src="seraphim-logo.PNG" />
+        <img src="/seraphim-logo.PNG" />
         Seraphim
       </div>
       <ul className="flex flex-col space-y-8">

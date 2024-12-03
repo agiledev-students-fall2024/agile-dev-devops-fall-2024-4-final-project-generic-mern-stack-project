@@ -96,6 +96,10 @@ function AppContent() {
               element={<Blocked type={"muted_words"} text={"Muted Words"} />}
             />
             <Route path="/post" element={<Post />} />
+            <Route
+              path="/profile/:userId"
+              element={<Profile />}
+            />
           </Routes>
           <Toaster />
         </div>

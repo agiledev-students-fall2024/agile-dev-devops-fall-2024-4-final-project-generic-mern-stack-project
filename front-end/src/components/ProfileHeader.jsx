@@ -34,23 +34,21 @@ const ProfileHeader = ({
   return (
     <div className="flex flex-col justify-center items-center border-none rounded-xl p-4 w-full md:w-4/5 m-auto bg-lavender_blush-900 shadow-md shadow-[#fedae7] min-h-[300px]">
       <div className="w-full flex flex-col md:flex-row justify-evenly items-center">
-        {profileUser.profile_pic && (
-          <img
-            className="w-32 h-32 md:w-44 md:h-44 rounded-lg shadow-sm shadow-[#fedae7] bg-ebony-800 object-cover m-4"
-            src={profileUser.profile_pic}
-            alt="Profile"
-          />
-        )}
+        <img
+          className="w-32 h-32 md:w-44 md:h-44 rounded-lg shadow-sm shadow-[#fedae7] bg-ebony-800 object-cover m-4"
+          src={profileUser.profilePicture}
+          alt="Profile"
+          onError={(e) => {
+            console.error('Image failed to load:', e.target.src);
+            e.target.src = '/default_pic.png'; 
+          }}
+        />
         <div className="w-[90%] md:w-[60%] flex flex-col">
           {profileLoggedIn ? (
             <div className="w-full flex flex-col sm:flex-row justify-between items-center">
               <p className="flex gap-2 text-sm sm:text-md md:text-lg pl-2 mb-2">
-                <span className="font-bold text-ebony">
-                  {profileUser.display_name}
-                </span>
-                <span className="text-rose opacity-75">
-                  @{profileUser.username}
-                </span>
+                <span className="font-bold text-ebony">{profileUser.name}</span>
+                <span className="text-rose opacity-75">@{profileUser.username}</span>
               </p>
               <div className="flex flex-row gap-2">
                 <Link to="/settings">
@@ -78,12 +76,8 @@ const ProfileHeader = ({
           ) : (
             <div className="w-full flex justify-between items-center">
               <p className="flex gap-2 text-sm sm:text-md md:text-lg pl-2">
-                <span className="font-bold text-ebony">
-                  {profileUser.display_name}
-                </span>
-                <span className="text-rose opacity-75">
-                  @{profileUser.username}
-                </span>
+                <span className="font-bold text-ebony">{profileUser.name}</span>
+                <span className="text-rose opacity-75">@{profileUser.username}</span>
               </p>
               <button
                 className={`py-1 px-2 mb-1 border rounded-md text-xs md:text-sm ${
