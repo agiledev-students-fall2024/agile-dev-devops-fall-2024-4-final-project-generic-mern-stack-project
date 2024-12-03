@@ -88,45 +88,6 @@ app.post("/api/upload-recipe-image", upload.single("my_file"), (req, res) => {
       status: "error",
       message: "Invalid file type. Only images are allowed.",
     });
-    
-app.post('/api/activities', async (req, res) => {
-  try {
-    const { activity_name, activity_description, date, activity_duration } = req.body;
-
-    // Validate required fields
-    if (!activity_name || !activity_duration || !Array.isArray(activity_duration)) {
-      return res.status(400).json({ error: 'Invalid input data' });
-    }
-
-    // Create a new activity document
-    const activity = new Activity({
-      activity_name,
-      activity_description,
-      date,
-      activity_duration,
-    });
-
-    // Save the activity to the database
-    const savedActivity = await activity.save();
-    res.status(201).json(savedActivity);
-  } catch (error) {
-    console.error('Error saving activity:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
-app.get("/api/users", async (req, res) => {
-  try {
-    if (process.env.MOCK_ERROR === "true") {
-      throw new Error("Mocked error");
-    }
-    const { data } = await axios.get(
-      "https://my.api.mockaroo.com/users.json?key=66da8e80"
-    );
-    res.json(data);
-  } catch (error) {
-    console.error("Error fetching data from API:", error.message);
-    res.status(500).json({ error: "Failed to fetch user data" });
   }
 
   res.status(200).json({

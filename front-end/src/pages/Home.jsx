@@ -23,8 +23,8 @@ const Home = () => {
   });
   const [recipeData, setRecipeData] = useState([]);
   const [randomRecipes, setRandomRecipes] = useState([]);
-
   const [share, setShare] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,8 +34,6 @@ const Home = () => {
           `${process.env.REACT_APP_BACK_PORT}/api/users`
         );
         const fetchedData = response.data || [];
-
-        // Simulate a specific user's data without database implementation
         const activitiesData = fetchedData[0]?.activities || [];
 
         const currentDate = new Date();
@@ -49,7 +47,6 @@ const Home = () => {
         });
 
         setWeeklyActivitiesData(weeklyActivitiesData);
-
         setWeeklyActivitiesStats({
           date: new Date(),
           numActivities: weeklyActivitiesData.length,
@@ -70,8 +67,6 @@ const Home = () => {
         );
         const fetchedData = response.data || [];
         setRecipeData(fetchedData);
-
-        // Shuffle and pick up to 4 random recipes
         setRandomRecipes(shuffleArray(fetchedData).slice(0, 4));
       } catch (error) {
         console.error("Error fetching recipe data:", error);
@@ -84,7 +79,7 @@ const Home = () => {
 
   async function submitShareRecipe(newRecipe) {
     try {
-      const response = await axios.post(
+      await axios.post(
         `${process.env.REACT_APP_BACK_PORT}/api/shareRecipe`,
         newRecipe,
         {
@@ -120,6 +115,7 @@ const Home = () => {
     <>
       <h1>Home</h1>
       <div className="home-container">
+        {/* Activity Section */}
         {weeklyActivitiesData.length > 0 && (
           <div className="activity-card" onClick={goToActivityTracker}>
             <h2>ACTIVITY CHART</h2>
@@ -135,28 +131,11 @@ const Home = () => {
               <strong>Time Spent Cooking:</strong>{" "}
               {weeklyActivitiesStats.activityMins} min
             </p>
-
-    console.log("weeklyActivitiesData.length:" + weeklyActivitiesData.length)
-    return (
-        <>
-        <h1>Home</h1>
-        <div className="home-container">
-            {
-              <>
-                <p>
-                  <strong>Meals Recorded:</strong>{" "}
-                  {weeklyActivitiesStats["numActivities"]}
-                </p>
-                <p>
-                  <strong>Time Spent Cooking:</strong>{" "}
-                  {weeklyActivitiesStats["activityMins"]} min
-                </p>
-              </>
-            }
             <button onClick={goToActivityTracker}>See More</button>
           </div>
         )}
 
+        {/* Share Recipe Section */}
         <div className="recipe-card">
           <h2>Share A Recipe</h2>
           <p>
@@ -168,6 +147,7 @@ const Home = () => {
           </button>
         </div>
 
+        {/* Share Modal */}
         {share && (
           <ShareRecipe
             closeShare={closeShare}
@@ -175,6 +155,7 @@ const Home = () => {
           />
         )}
 
+        {/* Suggested Recipes Section */}
         {randomRecipes.length > 0 &&
           randomRecipes.map((recipe, index) => (
             <div key={recipe.id} className="recipe-card">
