@@ -128,6 +128,32 @@ app.post("/api/upload-recipe-image", upload.array("my_files", 2),(req, res, next
   }
 );
 
+app.post('/api/activities', async (req, res) => {
+  try {
+    const { activity_name, activity_description, date, activity_duration } = req.body;
+
+    // Validate required fields
+    if (!activity_name || !activity_duration || !Array.isArray(activity_duration)) {
+      return res.status(400).json({ error: 'Invalid input data' });
+    }
+
+    // Create a new activity document
+    const activity = new Activity({
+      activity_name,
+      activity_description,
+      date,
+      activity_duration,
+    });
+
+    // Save the activity to the database
+    const savedActivity = await activity.save();
+    res.status(201).json(savedActivity);
+  } catch (error) {
+    console.error('Error saving activity:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 app.get("/api/users", async (req, res) => {
   try {
     if (process.env.MOCK_ERROR === "true") {

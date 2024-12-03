@@ -12,13 +12,12 @@ Create a .env file in the front-end folder with the following content:
 
 ### Sample .env file
 
-backPORT = 5001
+    backPORT = 5001
+    frontPORT = http://localhost:3000
+    MOCK_ERROR = false
+    SECRET_KEY = thisisasecretkey
 
-frontPORT = http://localhost:3000
-
-MOCK_ERROR = false
-
-SECRET_KEY = thisisasecretkey
+Note that if the backPORT 5001 doesn't work try to change both the .env files in the backend and frontend to have backPORT = 5000
 
 ## Available Scripts
 
