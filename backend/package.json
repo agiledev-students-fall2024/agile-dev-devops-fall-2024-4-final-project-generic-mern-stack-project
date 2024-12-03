@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon src/server.js",
-    "test": "c8 mocha --recursive --exit"
+    "test": "c8 mocha 'test/**/*.test.js' --recursive --exit"
   },
   "repository": {
     "type": "git",
@@ -28,6 +28,11 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.7"
+    "c8": "^10.1.2",
+    "chai": "^5.1.2",
+    "chai-http": "^4.3.0",
+    "mocha": "^11.0.1",
+    "nodemon": "^3.1.7",
+    "sinon": "^19.0.2"
   }
 }
