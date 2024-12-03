@@ -1,6 +1,6 @@
-// src/pages/registration.jsx
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
 import './registration.css';
 
 const Registration = () => {
@@ -10,25 +10,33 @@ const Registration = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleRegistration = async (e) => {
     e.preventDefault();
+    setErrorMessage('');
+    setSuccessMessage('');
 
-    setError(''); // Clear previous errors
-
-    if (!username || !email || !password) {
-      setError('All fields are required.');
+    if (!firstName || !lastName || !username || !email || !password) {
+      setErrorMessage('All fields are required.');
       return;
     }
 
     try {
-      await axios.post('/api/signup', { username, email, password });
-      setSuccess(true);
+      await axios.post('/api/signup', {
+        firstName,
+        lastName,
+        username,
+        email,
+        password,
+      });
+      setSuccessMessage('Registration successful! Redirecting to login...');
       setTimeout(() => {
-        navigate('/login'); // Redirect to login page
-      }, 2000); // Delay for user feedback
+        navigate('/login');
+      }, 2000);
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed.');
+      setErrorMessage(err.response?.data?.message || 'Registration failed.');
     }
   };
 
@@ -69,10 +77,9 @@ const Registration = () => {
         <button type="submit">Register</button>
       </form>
 
-      {/* Error message displayed after attempting registration */}
       {errorMessage && <p className="error-message">{errorMessage}</p>}
+      {successMessage && <p className="success-message">{successMessage}</p>}
 
-      {/* Back to Login link */}
       <div className="login-link-container">
         <Link to="/login" className="login-link">
           Already have an account? Go back to login
