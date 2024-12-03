@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from '../axiosConfig';
 // import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import './Challenges.css';
+import '../Challenges.css';
 
 const Challenges = () => {
     const [challengesData, setChallengesData] = useState([]);
@@ -40,8 +40,8 @@ const Challenges = () => {
       };
 
     return (
+        <><h1>CHALLENGES</h1>
         <div className="challenges-container">
-            <h1>CHALLENGES</h1>
             {challengesData.map((challenge, index) => (
                 <div className="challenge-card" onClick={() => handleStartClick(challenge)} key={index}>
                     <h2>CHALLENGE #{index + 1}</h2>
@@ -66,6 +66,7 @@ const Challenges = () => {
                 </div>
             )}
         </div>
+        </>
     );
 };
 

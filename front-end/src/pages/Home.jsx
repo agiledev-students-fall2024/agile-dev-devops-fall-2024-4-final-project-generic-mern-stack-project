@@ -114,8 +114,9 @@ const Home = () => {
     }
 
     return (
+        <>
+        <h1>Home</h1>
         <div className="home-container">
-            <h1>Home Page</h1>
             {
                 weeklyActivitiesData.length > 0 ? (<div className="activity-card" onClick={goToActivityTracker}>
                     <h2>ACTIVITY CHART</h2>
@@ -174,6 +175,7 @@ const Home = () => {
                 </>
             )}
         </div>
+        </>
     );
 };
 

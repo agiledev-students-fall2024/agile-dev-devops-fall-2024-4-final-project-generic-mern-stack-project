@@ -15,16 +15,18 @@
   transition: width 1s linear;
   border-radius: 5px;
   margin-bottom: 10px;
+  border: 1px solid #8dbda6;
 }
 
 .timer-text {
   font-size: 1.5em;
   margin-bottom: 10px;
+  color: #242424;
 }
 
 .timer-button {
   padding: 10px 20px;
-  background-color: #4caf50;
+  background-color: #96CEB4;
   color: white;
   border: none;
   border-radius: 5px;

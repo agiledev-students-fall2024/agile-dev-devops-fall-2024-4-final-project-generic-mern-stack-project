@@ -48,7 +48,7 @@ const Timer = ({ duration }) => {
 
   return (
     <div className="timer-container">
-      <h2>Time Left</h2>
+      <h2 className= "timer-text">Time Left</h2>
       <div
         className="timer-bar"
         style={{ width: `100%`, backgroundColor: "white" }}

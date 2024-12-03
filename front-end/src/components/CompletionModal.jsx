@@ -11,6 +11,7 @@ function CompletionModal({ isOpen, onRequestClose, onFileChange, onSubmit, error
       className="modal-content"
       overlayClassName="modal-overlay"
     >
+      <button onClick={onRequestClose} className="close-modal-button">X</button>
       <h2>Recipe Completed!</h2>
       <p>Congratulations on finishing this recipe!</p>
       <form onSubmit={onSubmit}>
@@ -18,10 +19,10 @@ function CompletionModal({ isOpen, onRequestClose, onFileChange, onSubmit, error
           Upload an image of your finished dish!
           <input type="file" name="my_files" accept="image/*" onChange={onFileChange} />
         </label>
-        {error && <div style={{ color: 'red' }}>{error}</div>}
-        <button type="submit" className="upload-image-button">Upload Image</button>
+          {error && <div className = 'upload-error'>{error}</div>}
+          <button type="submit" className="upload-image-button">Upload Image</button>
       </form>
-      <button onClick={onRequestClose} className="close-modal-button">Close</button>
+      
     </Modal>
   );
 }
