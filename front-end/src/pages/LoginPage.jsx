@@ -8,8 +8,8 @@ const LoginPage = () => {
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
-        navigate('/joincreatemeeting');
-        return
+        // navigate('/joincreatemeeting');
+        // return
         e.preventDefault();
         try {
             const response = await fetch('http://localhost:8080/auth/login', {
