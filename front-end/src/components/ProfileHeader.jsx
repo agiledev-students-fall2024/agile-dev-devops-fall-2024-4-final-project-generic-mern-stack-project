@@ -6,8 +6,8 @@ import toast from "react-hot-toast";
 const ProfileHeader = ({
   user,
   loggedIn,
-  onFollow,
-  hasFollowed,
+  //onFollow,
+  //hasFollowed,
   toggleBlogs,
   toggleCommunities,
 }) => {
@@ -79,6 +79,7 @@ const ProfileHeader = ({
                 <span className="font-bold text-ebony">{profileUser.name}</span>
                 <span className="text-rose opacity-75">@{profileUser.username}</span>
               </p>
+              {/*
               <button
                 className={`py-1 px-2 mb-1 border rounded-md text-xs md:text-sm ${
                   hasFollowed
@@ -89,6 +90,7 @@ const ProfileHeader = ({
               >
                 {hasFollowed ? "Following" : "Follow"}
               </button>
+              */}
             </div>
           )}
 

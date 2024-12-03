@@ -42,16 +42,11 @@ router.get("/api/home", protectRouter, async (req, res) => {
 
     // if user has blocked users
     if (blockedUsers.length > 0) {
-      blockedUsers.map(user => {
-        posts.map(post => {
-          // remove post from posts array
-          if (post.madeBy._id.equals(user.userId)) {
-            let index = posts.indexOf(post);
-            posts.splice(index, 1);
-          }
-        });
+      const blockedUsernames = blockedUsers.map((user) => user.username);
+      posts = posts.filter((post) => {
+        return post.madeBy && !blockedUsernames.includes(post.madeBy.username);
       });
-    };
+    }
 
     const blockedComms = blockedData.blockedCommunities;
 
