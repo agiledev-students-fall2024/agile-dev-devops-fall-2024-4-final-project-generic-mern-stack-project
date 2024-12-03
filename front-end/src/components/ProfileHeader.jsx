@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { axiosInstance } from "../axios";
+import toast from "react-hot-toast";
 
 const ProfileHeader = ({
   user,
@@ -11,6 +13,18 @@ const ProfileHeader = ({
 }) => {
   const [profileUser, setProfileUser] = useState({});
   const [profileLoggedIn, setProfileLoggedIn] = useState(false);
+  const navigate = useNavigate();
+  const handleLogout = (req, res) => {
+    axiosInstance
+      .post("/logout")
+      .then((response) => {
+        toast.success("Logout successful");
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("Error in logout", error.message);
+      });
+  };
 
   useEffect(() => {
     setProfileUser(user);
@@ -31,8 +45,12 @@ const ProfileHeader = ({
           {profileLoggedIn ? (
             <div className="w-full flex flex-col sm:flex-row justify-between items-center">
               <p className="flex gap-2 text-sm sm:text-md md:text-lg pl-2 mb-2">
-                <span className="font-bold text-ebony">{profileUser.display_name}</span>
-                <span className="text-rose opacity-75">@{profileUser.username}</span>
+                <span className="font-bold text-ebony">
+                  {profileUser.display_name}
+                </span>
+                <span className="text-rose opacity-75">
+                  @{profileUser.username}
+                </span>
               </p>
               <div className="flex flex-row gap-2">
                 <Link to="/settings">
@@ -45,13 +63,27 @@ const ProfileHeader = ({
                     Edit Profile
                   </div>
                 </Link>
+                {/* <SubmitButton
+                  placeholder="Log out"
+                  handleClick={handleLogout}
+                /> */}
+                <button
+                  className="py-1 px-2 mb-1 border border-rose text-rose rounded-md hover:border-ebony hover:text-ebony text-xs lg:text-sm text-center"
+                  onClick={handleLogout}
+                >
+                  Log out
+                </button>
               </div>
             </div>
           ) : (
             <div className="w-full flex justify-between items-center">
               <p className="flex gap-2 text-sm sm:text-md md:text-lg pl-2">
-                <span className="font-bold text-ebony">{profileUser.display_name}</span>
-                <span className="text-rose opacity-75">@{profileUser.username}</span>
+                <span className="font-bold text-ebony">
+                  {profileUser.display_name}
+                </span>
+                <span className="text-rose opacity-75">
+                  @{profileUser.username}
+                </span>
               </p>
               <button
                 className={`py-1 px-2 mb-1 border rounded-md text-xs md:text-sm ${
