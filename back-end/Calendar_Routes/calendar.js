@@ -52,14 +52,14 @@ router.get('/calendar/:month/:day/:year', async (req, res) => {
   const { month, day, year } = req.params;
 
   try {
-    const startOfDay = new Date(Date.UTC(year, month - 1, day, 0, 0, 0)); // Midnight UTC
-    const endOfDay = new Date(Date.UTC(year, month - 1, day, 23, 59, 59)); // 23:59:59 UTC
+    const startOfDay = new Date(Date.UTC(year, month - 1, day, 0, 0, 0)); 
+    const endOfDay = new Date(Date.UTC(year, month - 1, day, 23, 59, 59)); 
     const tasks = await Task.find({
       due: { $gte: startOfDay, $lte: endOfDay }
     });
     res.json(tasks);
   } catch (error) {
-    console.error("Error fetching tasks for the day:", error);
+    console.error("Error fetching tasks:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });

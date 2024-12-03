@@ -21,6 +21,9 @@ app.use(express.json());
 app.use(task)
 app.use(goal)
 app.use(calendarRoutes);
+// IMPORTANT Comment for Sprint3: Up to end of sprint 3, we're not sure whether we need further maintain 
+// the Authentication part. For now we will leave the designed login/register logic at here, but we don't integrate 
+// it with other parts. You can Register and login as normal, but it WILL NOT AFFECT ANYTHING!!!
 app.use(auth)
 
 // export the express app we created to make it available to other modules

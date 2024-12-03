@@ -25,21 +25,20 @@ app.get('/goals', async (req, res) => {
 
   const Task = mongoose.model('Task');
 
-  app.get('/tasks', async (req, res) => {
-      try {
-          const tasks = await Task.find();
-          res.json(tasks);
-      } catch (error) {
-          res.status(500).json({ error: 'Failed to fetch tasks.' });
-      }
-  });
+app.get('/tasks', async (req, res) => {
+    try {
+        const tasks = await Task.find();
+        res.json(tasks);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch tasks.' });
+    }
+});
   
 
 app.post('/goals/new', async (req, res) => {
     try {
         const { title, tasks, dueDate } = req.body;
 
-        // Ensure all task IDs are valid
         const existingTasks = await Task.find({ _id: { $in: tasks } });
         if (existingTasks.length !== tasks.length) {
             return res.status(400).json({ error: 'Some tasks do not exist.' });
@@ -59,7 +58,6 @@ app.post('/goals/new', async (req, res) => {
         res.status(500).json({ error: 'Failed to create goal.' });
     }
 });
-
 
 
 

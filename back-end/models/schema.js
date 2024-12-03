@@ -14,7 +14,9 @@ const TaskSchema = new mongoose.Schema({
     recurring_period: {type: String},
     user_id: {type: Schema.Types.ObjectId, ref: 'User'}
   })
-
+// IMPORTANT Comment for Sprint3: Up to end of sprint 3, we're not sure whether we need further maintain 
+// the Authentication part. For now we will leave the designed login/register logic at here, but we don't integrate 
+// it with other parts. You can Register and login as normal, but it WILL NOT AFFECT ANYTHING!!!
   const UserSchema = new mongoose.Schema({
     username: {required: true, type: String},
     password_hash: {required: true, type: String},

@@ -125,7 +125,6 @@ function CreateTask() {
                         <option value="Weekly">Weekly</option>
                         <option value="Biweekly">Biweekly</option>
                         <option value="Monthly">Monthly</option>
-                        <option value="Bimonthly">Bimonthly</option>
                     </select>
                 </div>
             )}
