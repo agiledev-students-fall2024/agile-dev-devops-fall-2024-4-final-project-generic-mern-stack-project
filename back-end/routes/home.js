@@ -231,6 +231,21 @@ router.get("/api/home", protectRouter, async (req, res) => {
       });
     };
 
+    const blockedComms = blockedData.blockedCommunities;
+
+    // if user has blocked users
+    if (blockedComms.length > 0) {
+      blockedComms.map(comm => {
+        posts.map(post => {
+          // remove post from posts array
+          if (post.community.equals(comm.cid)) {
+            let index = posts.indexOf(post);
+            posts.splice(index, 1);
+          }
+        });
+      });
+    };
+
     // checking for muted words
     const mutedWords = blockedData.mutedWords;
 
