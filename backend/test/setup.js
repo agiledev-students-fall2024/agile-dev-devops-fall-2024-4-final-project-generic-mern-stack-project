@@ -1,29 +1,38 @@
-import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import { MongoMemoryServer } from 'mongodb-memory-server';
+import dotenv from 'dotenv';
 
-let mongoServer;
+// Load environment variables
+dotenv.config();
 
 before(async () => {
-  if (process.env.NODE_ENV === 'test') {
-    dotenv.config({ path: '.env.test' });
-  } else {
-    dotenv.config();
+  try {
+    if (mongoose.connection.readyState === 0) {
+      await mongoose.connect(process.env.MONGO_URI);
+      console.log('Connected to test database');
+    }
+  } catch (error) {
+    console.error('Error connecting to test database:', error);
+    process.exit(1);
   }
-  
-  mongoServer = await MongoMemoryServer.create();
-  const mongoUri = mongoServer.getUri();
-  await mongoose.connect(mongoUri);
 });
 
 after(async () => {
-  await mongoose.disconnect();
-  await mongoServer.stop();
+  try {
+    if (mongoose.connection.readyState !== 0) {
+      await mongoose.connection.dropDatabase();
+      await mongoose.connection.close();
+      console.log('Test database cleaned and connection closed');
+    }
+  } catch (error) {
+    console.error('Error cleaning test database:', error);
+  }
 });
 
-afterEach(async () => {
-  const collections = mongoose.connection.collections;
-  for (const key in collections) {
-    await collections[key].deleteMany();
+beforeEach(async () => {
+  if (mongoose.connection.readyState !== 0) {
+    const collections = mongoose.connection.collections;
+    for (const key in collections) {
+      await collections[key].deleteMany({});
+    }
   }
 });

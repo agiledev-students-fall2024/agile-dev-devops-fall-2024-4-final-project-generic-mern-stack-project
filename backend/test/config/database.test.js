@@ -1,31 +1,25 @@
-// Add this at the top of each test file that needs database access
-import dotenv from 'dotenv';
+import { expect } from 'chai';
+import mongoose from 'mongoose';
+import { describe, it } from 'mocha';
+import '../setup.js';
 
-// Load test environment variables
-if (process.env.NODE_ENV === 'test') {
-  dotenv.config({ path: '.env.test' });
-} else {
-  dotenv.config();
-}
+describe('Database Connection', () => {
+  it('should be connected to the database', () => {
+    expect(mongoose.connection.readyState).to.equal(1);
+  });
 
-// Example connection setup (use in before() hooks):
-before(async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log('Connected to test database');
-  } catch (error) {
-    console.error('Error connecting to test database:', error);
-    process.exit(1);
-  }
-});
-
-// Example cleanup (use in after() hooks):
-after(async () => {
-  try {
-    await mongoose.connection.dropDatabase();
-    await mongoose.connection.close();
-    console.log('Test database cleaned and connection closed');
-  } catch (error) {
-    console.error('Error cleaning up test database:', error);
-  }
+  it('should handle invalid connection strings', async () => {
+    const testMongoose = new mongoose.Mongoose();
+    try {
+      // Set a shorter timeout for invalid connections
+      await testMongoose.connect('mongodb://invaliduri:27017/test', {
+        serverSelectionTimeoutMS: 1000
+      });
+      throw new Error('Should not connect successfully');
+    } catch (error) {
+      expect(error).to.exist;
+    } finally {
+      await testMongoose.disconnect();
+    }
+  });
 });

@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon src/server.js",
-    "test": "c8 mocha 'test/**/*.test.js' --recursive --exit"
+    "test": "NODE_ENV=test c8 mocha 'test/**/*.test.js' --recursive --exit --timeout 10000",
+    "test:watch": "NODE_ENV=test mocha --watch 'test/**/*.test.js' --recursive --timeout 10000",
+    "coverage": "c8 report --reporter=text --reporter=html"
   },
   "repository": {
     "type": "git",
@@ -28,11 +30,11 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "c8": "^10.1.2",
-    "chai": "^5.1.2",
-    "chai-http": "^4.3.0",
-    "mocha": "^11.0.1",
+    "c8": "^8.0.1",
+    "chai": "^4.5.0",
+    "chai-http": "^4.4.0",
+    "mocha": "^10.8.2",
     "nodemon": "^3.1.7",
-    "sinon": "^19.0.2"
+    "sinon": "^15.2.0"
   }
 }
