@@ -102,7 +102,7 @@ const Profile = (props) => {
                         ))
                     ) : (
                         <div className="m-auto bg-lavender_blush-900 w-[90%] md:w-[70%] p-8 rounded-lg text-center text-sm md:text-lg text-ebony font-semibold shadow-md shadow-[#fedae7]">
-                            Make your first post and connect with others <Link to="/post" className="text-rose text-bold hover:underline hover:text-rose">here</Link>
+                            No posts yet! Post and connect with others <Link to="/post" className="text-rose text-bold hover:underline hover:text-rose">here</Link>
                         </div>
                     )}
                 </section>
