@@ -1,5 +1,5 @@
-import { initializeApp } from 'firebase/app';
-import { getFirestore, doc, getDoc, collection, getDocs, onSnapshot } from 'firebase/firestore';
+const { initializeApp } = require('firebase/app');
+const { getFirestore, doc, getDoc, collection, getDocs, onSnapshot } = require('firebase/firestore');
 
 const firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY,
@@ -11,9 +11,8 @@ const firebaseConfig = {
     measurementId: process.env.FIREBASE_MEASUREMENT_ID
 };
 
-
 const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+const db = getFirestore(app);
 
 const getMeeting = async (meetingId) => {
     const docRef = doc(db, 'meetings', meetingId);
@@ -21,7 +20,7 @@ const getMeeting = async (meetingId) => {
     if (docSnap.exists()) {
         return docSnap.data();
     } else {
-        return null;
+        return false;
     }
 }
 
@@ -51,21 +50,4 @@ const listenForNewMessages = async (meetingId, callback, all = false) => {
     return unsub;
 }
 
-const sendDataToMeetingRoom = async (meetingId, service, data) => {
-    const messagesRef = collection(db, 'meetings', meetingId, 'messages');
-    await messagesRef.add({ service, data, timestamp: Date.now() });
-}
-
-export { getMeeting, getAllMessages, listenForNewMessages, sendDataToMeetingRoom };
-
-// test
-// (async () => {
-//     const meetingId = 'deezzznut';
-//     const meeting = await getMeeting(meetingId);
-//     const messages = await getAllMessages(meetingId);
-//     console.log('Meeting:', meeting);
-//     console.log('Messages:', messages);
-//     listenForNewMessages(meetingId, (messages) => {
-//         console.log('Messages:', messages);
-//     });
-// })();
+module.exports = { getMeeting, getAllMessages, listenForNewMessages };

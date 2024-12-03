@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const fb = require('../services/firebase');
 
 // Store meetings in memory for now (will be replaced with database later)
 const meetings = new Map();
@@ -37,24 +38,33 @@ router.post('/', (req, res) => {
     res.status(201).json(newMeeting);
 });
 
-// // POST /meeting/:id/save - save the meeting data at that point of time
-// router.post('/:id/save', (req, res) => {
-//     const meetingId = req.params.id;
-//     const meeting = meetings.get(meetingId);
-//     if (!meeting) {
-//         return res.status(404).json({
-//             error: 'Meeting not found',
-//             success: false
-//         });
-//     }
-//     const savedMeeting = req.body;
+// POST /meeting/:id/save - save the meeting data at that point of time
+router.post('/:id/save', async (req, res) => {
+    const meetingId = req.params.id;
+    const meeting = await fb.getMeeting(meetingId);
+    if (!meeting) {
+        return res.status(404).json({
+            error: 'Meeting not found',
+            success: false
+        });
+    }
 
-//     res.json({
-//         message: 'Meeting saved successfully',
-//         id: meetingId,
-//         success: true,
-//         meeting: savedMeeting
-//     });
-// });
+    // save meeting to mongo
+    try {
+        const Meeting = require('../models/Meeting');
+        const meetingModel = new Meeting(savedMeeting);
+        const savedMeeting = await meetingModel.save();
+
+        res.json({
+            message: 'Meeting saved successfully',
+            id: meetingId,
+            success: true,
+            meeting: savedMeeting
+        });
+    } catch (error) {
+        console.error('Error saving meeting:', error);
+        res.status(500).json({ error: 'Failed to save meeting' });
+    }
+});
 
 module.exports = router;
