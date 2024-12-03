@@ -11,11 +11,25 @@ const Registration = () => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleRegistration = (e) => {
+  const handleRegistration = async (e) => {
     e.preventDefault();
 
-    // Display message indicating no backend functionality
-    setErrorMessage("Sorry, can't do that. There's no backend yet.");
+    setError(''); // Clear previous errors
+
+    if (!username || !email || !password) {
+      setError('All fields are required.');
+      return;
+    }
+
+    try {
+      await axios.post('/api/signup', { username, email, password });
+      setSuccess(true);
+      setTimeout(() => {
+        navigate('/login'); // Redirect to login page
+      }, 2000); // Delay for user feedback
+    } catch (err) {
+      setError(err.response?.data?.message || 'Registration failed.');
+    }
   };
 
   return (

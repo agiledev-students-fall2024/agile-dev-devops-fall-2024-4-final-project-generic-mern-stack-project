@@ -5,7 +5,8 @@ import dotenv from 'dotenv';
 import path from 'path';
 import mongoose from 'mongoose';
 import { body, validationResult } from 'express-validator';
-
+import jwt from 'jsonwebtoken';
+import { authenticateToken } from './middleware/auth.js';
 
 //MOCK DATA
 import budgetLimits from './mocks/budgetLimits.js';
@@ -447,4 +448,55 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
+//POST route for login
+app.post('/api/login', async (req, res) => {
+    const { email, password } = req.body;
+  
+    try {
+      // Check if the user exists
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res.status(400).json({ message: 'Invalid email or password' });
+      }
+  
+      // Verify the password
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        return res.status(400).json({ message: 'Invalid email or password' });
+      }
+  
+      // Generate JWT token
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: '1h', // Token expires in 1 hour
+      });
+  
+      res.status(200).json({
+        token,
+        user: { id: user._id, username: user.username, email: user.email },
+      });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  let tokenBlacklist = []; // Use a database in production
+
+  // POST route for logout
+  app.post('/api/logout', (req, res) => {
+    const token = req.header('Authorization');
+    if (!token) {
+      return res.status(400).json({ message: 'No token provided' });
+    }
+  
+    // Add the token to the blacklist
+    tokenBlacklist.push(token);
+    res.status(200).json({ message: 'Successfully logged out' });
+  });
+  
+// Example: Protect a sensitive route
+app.get('/api/protected', authenticateToken, (req, res) => {
+    res.json({ message: 'You have access!', user: req.user });
+  });
+
+  
 export default app;
