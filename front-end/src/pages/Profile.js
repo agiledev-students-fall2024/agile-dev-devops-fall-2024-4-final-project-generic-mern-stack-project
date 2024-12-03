@@ -15,7 +15,7 @@ const Profile = (props) => {
         communities: [],
         posts: [],   
     });    
-    const [hasFollowed, setHasFollowed] = useState(false); 
+    //const [hasFollowed, setHasFollowed] = useState(false); 
     const [onCommunities, setOnCommunities] = useState(true);
     const [onBlogs, setOnBlogs] = useState(false);
 
@@ -41,6 +41,7 @@ const Profile = (props) => {
         fetchProfile();
     }, [userId]); 
 
+    /*
     const handleFollow = () => {
         setUser((prevUser) => ({
             ...prevUser,
@@ -48,6 +49,7 @@ const Profile = (props) => {
         }));
         setHasFollowed(!hasFollowed); 
     };
+    */
 
     const toggleCommunities = () => {
         setOnCommunities(true);
@@ -64,8 +66,8 @@ const Profile = (props) => {
             <ProfileHeader 
                 user={user}
                 loggedIn={user.signedIn} 
-                onFollow={handleFollow} 
-                hasFollowed={hasFollowed} 
+                //onFollow={handleFollow} 
+                //hasFollowed={hasFollowed} 
                 toggleBlogs={toggleBlogs}
                 toggleCommunities={toggleCommunities}
             />
