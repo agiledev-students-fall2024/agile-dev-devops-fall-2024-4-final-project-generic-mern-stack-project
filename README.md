@@ -40,6 +40,8 @@ To set up the project locally, follow these steps:
    npm install
    npm install browser-image-compression
    npm install leaflet
+   npm install mongoose
+   npm install express-validator
    ```
 
 ### Running the Application Locally
