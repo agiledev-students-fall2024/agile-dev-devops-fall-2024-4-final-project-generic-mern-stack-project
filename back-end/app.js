@@ -106,21 +106,40 @@ app.delete("/api/accounts/:id", (req, res) => {
 
 /* ======================= Sign-Up Route ======================= */
 app.post('/api/signup', async (req, res) => {
-    const { username, email, password } = req.body;
+    const { firstName, lastName, username, email, password } = req.body;
 
     try {
-        const existingUser = await User.findOne({ $or: [{ email }, { username }] });
-        if (existingUser) {
-            return res.status(400).json({ message: 'Username or email already in use' });
+        // Validate required fields
+        if (!firstName || !lastName || !username || !email || !password) {
+            return res.status(400).json({ message: 'All fields are required.' });
         }
 
-        const newUser = new User({ username, email, password: await bcrypt.hash(password, 10) });
+        // Check if user already exists
+        const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+        if (existingUser) {
+            return res.status(400).json({ message: 'Username or email already in use.' });
+        }
+
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Create and save the new user
+        const newUser = new User({
+            firstName,
+            lastName,
+            username,
+            email,
+            password: hashedPassword,
+        });
+
         await newUser.save();
-        res.status(201).json({ message: 'User registered successfully' });
+
+        res.status(201).json({ message: 'User registered successfully.' });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 });
+
 
 /* ======================= Debt Routes ======================= */
 // Route to update a debt by ID
@@ -498,5 +517,5 @@ app.get('/api/protected', authenticateToken, (req, res) => {
     res.json({ message: 'You have access!', user: req.user });
   });
 
-  
+
 export default app;
