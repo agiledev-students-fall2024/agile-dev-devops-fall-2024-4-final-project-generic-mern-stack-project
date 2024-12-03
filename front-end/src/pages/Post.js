@@ -120,7 +120,7 @@ const Post = () => {
       .post(`/post`, formData)
       .then((response) => {
         console.log(response.data);
-        navigate("/");
+        navigate("/home");
       })
       .catch((err) => {
         console.error("Error posting data:", err);

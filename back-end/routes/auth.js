@@ -50,6 +50,7 @@ export const signup = async (req, res) => {
       username,
       email,
       password: hashedPassword,
+      profilePicture: "default_pic.png",
     });
 
     await user.save();

@@ -1,36 +1,41 @@
-import axios from 'axios';
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import ProfileHeader from "../components/ProfileHeader";
-import BlogPost from "../components/BlogPost";
 import TitleAndDescriptionBox from "../components/TitleAndDescriptionBox";
+import { axiosInstance } from "../axios";
+import toast from "react-hot-toast";
+import HomePost from '../components/HomePost';
 
 const Profile = (props) => {
+    const { userId } = useParams();
     const [user, setUser] = useState({
-        name: '',
-        userName: '',
-        about: [],
-        posts: [],
-        communities: [],
-        profilePic: '',
+        profilePicture: 'default_pic.png',
         signedIn: false,
-        followers: 0
-    });
+        communities: [],
+        posts: [],   
+    });    
     const [hasFollowed, setHasFollowed] = useState(false); 
     const [onCommunities, setOnCommunities] = useState(true);
     const [onBlogs, setOnBlogs] = useState(false);
 
     useEffect(() => {
-        axios
-            .get(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/profile`)
-            .then(response => {
-                setUser(response.data)
-            })
-            .catch(err => {
-                console.log(`Error fetching data.`)
-                console.error(err)
-            })
-    }, []);
+        const fetchProfile = async () => {
+            try {
+                const endpoint = userId ? `/profile/${userId}` : "/profile";
+                const response = await axiosInstance.get(endpoint);
+                const newUser = response.data;
+                setUser((prevUser) => ({
+                    ...prevUser,
+                    ...newUser
+                }));
+            } catch (error) {
+                console.error('Error in getting profile data.');
+                toast.error(error.response?.data?.message || "Something went wrong");
+            }
+        };
+
+        fetchProfile();
+    }, [userId]); 
 
     const handleFollow = () => {
         setUser((prevUser) => ({
@@ -85,8 +90,8 @@ const Profile = (props) => {
                 <section className="flex flex-col justify-center w-[85%] gap-2">
                     {user.posts.length > 0 ? (
                         user.posts.map(post => (
-                        <div key={post.id}>
-                            <BlogPost post={post} />
+                        <div key={post._id}>
+                            <HomePost post={post} />
                         </div>
                         ))
                     ) : (

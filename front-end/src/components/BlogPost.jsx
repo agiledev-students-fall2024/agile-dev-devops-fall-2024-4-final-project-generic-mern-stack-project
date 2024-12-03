@@ -1,17 +1,11 @@
-import axios from 'axios'
 import React, { useState, useEffect } from "react";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
+import { axiosInstance } from "../axios";
+import toast from "react-hot-toast";
 
 const BlogPost = ({ post, isReply = false }) => {
   const [user, setUser] = useState({
-    name: '',
-    userName: '',
-    about: [],
-    posts: [],
-    communities: [],
-    profilePic: '',
     signedIn: false,
-    followers: 0
   });
 
   const [blogPost, setBlogPost] = useState(post);
@@ -25,13 +19,18 @@ const BlogPost = ({ post, isReply = false }) => {
   }, [post]);
 
   useEffect(() => {
-    axios(`${process.env.REACT_APP_SERVER_HOSTNAME}/api/profile`)
+    axiosInstance
+      .get("/profile")
       .then(response => {
-        setUser(response.data)
+        const newUser = response.data;
+        setUser((prevUser) => ({
+            ...prevUser,
+            ...newUser
+        }));
       })
-      .catch(err => {
-          console.log(`Error fetching data.`)
-          console.error(err)
+      .catch(error => {
+        console.error('Error in getting blogpost data.')
+        toast.error(error.response.data.message)
       })
   }, []);
 
@@ -79,7 +78,7 @@ const BlogPost = ({ post, isReply = false }) => {
       } ${isReply ? "m-0" : "m-auto"} `}
     >
       <div className="flex flex-row items-center">
-        <img src={blogPost.user.profile_pic} alt="Profile" className="w-20 h-20 object-cover rounded-lg my-4 mx-2" />
+        <img src={blogPost.user.profilePic} alt="Profile" className="w-20 h-20 object-cover rounded-lg my-4 mx-2" />
         <p className="flex flex-col justify-start items-start text-md my-4 ml-2">
           <span className="font-bold text-ebony text-left">{blogPost.user.display_name}</span>
           <span className="text-rose opacity-[75%]">@{blogPost.user.username}</span>

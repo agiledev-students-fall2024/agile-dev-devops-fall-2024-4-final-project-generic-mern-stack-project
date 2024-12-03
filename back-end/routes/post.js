@@ -68,7 +68,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// Route to create a new post
 router.post(
   "/api/post",
   protectRouter,
@@ -102,6 +101,13 @@ router.post(
       });
 
       await newPost.save();
+
+      // Add the post to the user's posts array
+      await User.findByIdAndUpdate(
+        userId,
+        { $push: { posts: newPost._id } },
+        { new: true }
+      );
 
       res.status(201).json({
         message: "Post created successfully",

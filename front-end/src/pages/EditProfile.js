@@ -8,11 +8,11 @@ import toast from "react-hot-toast";
 
 const EditProfile = (props) => {
   const [user, setUser] = useState({
-    display_name: "",
+    name: "",
     username: "",
     about: "",
     email: "",
-    profile_pic: "default_pic.png",
+    profilePicture: "default_pic.png",
   });
   const [selectedFile, setSelectedFile] = useState(null);
   const navigate = useNavigate();
@@ -20,14 +20,11 @@ const EditProfile = (props) => {
   useEffect(() => {
     axiosInstance.get("/profile")
       .then(response => {
-        const { display_name, username, about, email, profile_pic } = response.data;
-        setUser({
-          display_name,
-          username,
-          about,
-          email,
-          profile_pic: profile_pic || "default_pic.png",
-        });
+        const newUser = response.data;
+        setUser((prevUser) => ({
+          ...prevUser,
+          ...newUser
+      }));
       })
       .catch(error => {
         console.error("Error fetching user data:", error);
@@ -45,7 +42,7 @@ const EditProfile = (props) => {
           toast.success("Profile picture uploaded successfully!");
           setUser(prevUser => ({
             ...prevUser,
-            profile_pic: `${process.env.REACT_APP_SERVER_HOSTNAME}/${response.data.file.path}`,
+            profilePicture: `${process.env.REACT_APP_SERVER_HOSTNAME}/${response.data.file.path}`,
           }));
         })
         .catch(error => {
@@ -93,7 +90,7 @@ const EditProfile = (props) => {
 
       <div className="flex flex-col justify-center items-center w-[100%] mx-auto gap-2 p-6 rounded-md md:w-[80%] lg:w-[60%]">
         <h2 className="text-xl text-ebony-600 text-center mb-2">
-          <img className="w-32 h-32 md:w-44 md:h-44 rounded-lg object-cover" src={user.profile_pic} alt="profile pic" />
+          <img className="w-32 h-32 md:w-44 md:h-44 rounded-lg object-cover" src={user.profilePicture} alt="profile pic" />
         </h2>
         <input type="file" onChange={handleProfilePicInput} />
 
@@ -109,8 +106,8 @@ const EditProfile = (props) => {
             inputfieldName="Name"
             inputType="text"
             handleChange={handleChange}
-            inputValue={user.display_name}
-            name="display_name"
+            inputValue={user.name}
+            name="name"
           />
           <InputField
             inputfieldName="Email"
