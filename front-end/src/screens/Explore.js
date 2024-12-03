@@ -67,8 +67,8 @@ const Explore = () => {
                 className="text-reset text-decoration-none"
               >
                 <div>
-                  {post.imageUrl ? (
-                    <img src={post.imageUrl} alt="User-submitted" className="post-image" />
+                  {post.photo ? (
+                    <img src={post.photo} alt="User-submitted" className="post-image" />
                   ) : (
                     <img src={noImgSrc} alt="Not provided by user" className="no-img" />
                   )}

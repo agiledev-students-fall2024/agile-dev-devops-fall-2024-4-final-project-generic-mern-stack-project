@@ -73,9 +73,9 @@ const Home = () => {
                 className="text-reset text-decoration-none"
               >
                 <div>
-                  {post.imageUrl ? (
+                  {post.photo ? (
                     <img
-                      src={post.imageUrl}
+                      src={post.photo}
                       alt="User-submitted"
                       className="post-image"
                     />
