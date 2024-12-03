@@ -17,7 +17,7 @@ const UpdateBlogPost = () => {
     const fetchPost = async () => {
       try {
         const response = await axios.get(`${apiUrl}/api/posts/${postId} `, { headers: { Authorization: `Bearer ${token}` }, });
-        setPost(response.data);
+        setPost(response.data.post);
         
       } catch (error) {
         console.error('Error fetching post:', error);

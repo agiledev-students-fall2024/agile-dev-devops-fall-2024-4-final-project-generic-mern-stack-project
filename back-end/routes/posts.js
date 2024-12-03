@@ -25,7 +25,7 @@ router.post( '/create', passport.authenticate('jwt', {session: false}),
 
 // Edit an existing post
 
-router.put('/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.put('/edit/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const {id} = req.params;
   const { title, content, photo } = req.body;
 
@@ -43,8 +43,7 @@ router.put('/:id', passport.authenticate('jwt', { session: false }), async (req,
     }
 
     // Ensure the logged-in user is the author of the post
-    const userID = mongoose.Types.ObjectId(req.user._id);
-    if (!post.author.equals(userId)) {
+    if (!post.author.equals(req.user._id)) {
       return res.status(403).json({ message: 'You are not authorized to edit this post.' });
     }
 
