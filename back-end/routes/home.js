@@ -216,7 +216,7 @@ router.get("/api/home", protectRouter, async (req, res) => {
 
     // checking for blocked users
     const blockedData = await Setting.findOne({ userId });
-    const blockedUsers = blockedData.blockedUsers
+    const blockedUsers = blockedData.blockedUsers;
 
     // if user has blocked users
     if (blockedUsers.length > 0) {
@@ -224,6 +224,22 @@ router.get("/api/home", protectRouter, async (req, res) => {
         posts.map(post => {
           // remove post from posts array
           if (post.madeBy._id.equals(user.userId)) {
+            let index = posts.indexOf(post);
+            posts.splice(index, 1);
+          }
+        });
+      });
+    };
+
+    // checking for muted words
+    const mutedWords = blockedData.mutedWords;
+
+    // if user has muted words
+    if (mutedWords.length > 0) {
+      mutedWords.map(word => {
+        posts.map(post => {
+          // remove post from posts array
+          if (post.content.includes(word)) {
             let index = posts.indexOf(post);
             posts.splice(index, 1);
           }

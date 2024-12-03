@@ -10,6 +10,7 @@ router.get("/api/user-communities", protectRouter, async (req, res) => {
   try {
     const userId = req.user._id;
     const user = await User.findById(userId).populate("communities");
+
     res.json({ communities: user.communities });
   } catch (err) {
     console.error(err);
