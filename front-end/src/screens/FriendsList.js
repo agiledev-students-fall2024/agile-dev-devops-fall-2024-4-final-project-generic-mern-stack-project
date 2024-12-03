@@ -1,35 +1,47 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { AuthContext } from '../components/authContext';
 import '../styles/FriendsList.css';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const FriendsList = () => {
   const [friends, setFriends] = useState([]);
+  const { token } = useContext(AuthContext);
 
   // FETCH FRIENDS FROM BACKEND
   useEffect(() => {
     const fetchFriends = async () => {
+      if (!token) {
+        console.error('No token available');
+        return;
+      }
+
       try {
-        const response = await fetch(`${apiUrl}/api/friends/friends`); // REMEMBER TO CHANGE IN ALL FILES
-        if (response.ok) {
-          const data = await response.json();
-          setFriends(data);
-        } else {
-          console.error('Failed to fetch friends');
-        }
+        const response = await axios.get(`${apiUrl}/api/friends/friends`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setFriends(response.data);
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error Fetching Friends:', error.response?.status, error.message);
       }
     };
+
     fetchFriends();
-  }, []);
+  }, [token]);
 
   // HANDLE BLOCK USER
   const handleBlock = async (friendId) => {
     try {
-      const response = await fetch(`${apiUrl}/api/friends/block/${friendId}`, { method: 'POST' });
-      if (response.ok) {
+      const response = await axios.post(`${apiUrl}/api/friends/block/${friendId}`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
         setFriends(friends.filter(friend => friend.id !== friendId)); // REMOVE BLOCKED FRIEND FROM DISPLAY
       } else {
         console.error('Failed to block friend');
@@ -42,8 +54,12 @@ const FriendsList = () => {
   // HANDLE REMOVE FRIEND
   const handleRemove = async (friendId) => {
     try {
-      const response = await fetch(`${apiUrl}/api/friends/remove/${friendId}`, { method: 'POST' });
-      if (response.ok) {
+      const response = await axios.post(`${apiUrl}/api/friends/remove/${friendId}`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
         setFriends(friends.filter(friend => friend.id !== friendId)); // REMOVE DELETED FRIEND FROM DISPLAY
       } else {
         console.error('Failed to remove friend');
