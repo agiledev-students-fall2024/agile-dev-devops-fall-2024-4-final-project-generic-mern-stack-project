@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import ProfileHeader from "../components/ProfileHeader";
 import TitleAndDescriptionBox from "../components/TitleAndDescriptionBox";
 import { axiosInstance } from "../axios";
@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import HomePost from '../components/HomePost';
 
 const Profile = (props) => {
+    const navigate = useNavigate();
     const { userId } = useParams();
     const [user, setUser] = useState({
         profilePicture: 'default_pic.png',
@@ -23,6 +24,9 @@ const Profile = (props) => {
             try {
                 const endpoint = userId ? `/profile/${userId}` : "/profile";
                 const response = await axiosInstance.get(endpoint);
+                if (response.data.redirectTo) {
+                    navigate("/profile");
+                }
                 const newUser = response.data;
                 setUser((prevUser) => ({
                     ...prevUser,
