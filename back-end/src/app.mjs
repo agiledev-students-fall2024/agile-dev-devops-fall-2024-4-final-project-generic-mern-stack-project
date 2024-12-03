@@ -14,6 +14,7 @@ import User from "../models/user.mjs";
 import ActivitySchema from "../models/activity.mjs";
 import Recipe from "../models/recipe.mjs";
 import path from "path";
+import { body, validationResult } from 'express-validator';
 
 // Set up paths and directories
 const __filename = fileURLToPath(import.meta.url);

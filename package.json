@@ -1,7 +1,6 @@
 {
   "dependencies": {
+    "express-validator": "^7.2.0",
     "react-modal": "^3.16.1"
-  },
-  "devDependencies": {
   }
 }
