@@ -51,25 +51,35 @@ function Recipes() {
     try {
       const token = localStorage.getItem('token');
       const userId = localStorage.getItem('userId'); 
-      console.log("user id", userId)
-      const response = await axios.post(
-          `${process.env.REACT_APP_BACK_PORT}/api/user/add-recipe`,
-          {
-            userId,
-            userRecipe: {
-              _id: new mongoose.Types.ObjectId(),
-              id: selectedRecipe.id
-
-            }
-          },
-          {
-              headers: {
-                  Authorization: `Bearer ${token}`,
-              },
+      const userRecipes = (await axios.get(
+        `${process.env.REACT_APP_BACK_PORT}/api/user`,
+        {
+          params: {
+            userId: userId
           }
-      );
+        }
+      )).data.recipes;
+      console.log("user info", userRecipes)
+      if(!userRecipes.some((recipe) => recipe.id === selectedRecipe.id)) {
+        await axios.post(
+            `${process.env.REACT_APP_BACK_PORT}/api/user/add-recipe`,
+            {
+              userId,
+              userRecipe: {
+                _id: new mongoose.Types.ObjectId(),
+                id: selectedRecipe.id
+  
+              }
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+      }
 
-      console.log('User recipes updated successfully:', response.data);
+      console.log('User recipes updated successfully');
       navigate("/record", { state: { selectedRecipe } });
     } catch (error) {
         console.error('Error updating user recipes:', error);
