@@ -51,8 +51,30 @@ function Record() {
     });
   };
 
-  const handleRecipeComplete = () => {
+  const handleRecipeComplete = async () => {
     setIsModalOpen(true);
+    console.log("completed recipe:", currRecipe)
+    try {
+        const token = localStorage.getItem('token');
+        const userId = localStorage.getItem('userId');
+        const recipeId = currRecipe.id;
+        await axios.put(
+        `${process.env.REACT_APP_BACK_PORT}/api/user/complete-recipe`,
+        {
+          userId,
+          recipeId
+        },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+        );
+  
+      } catch (error) {
+        console.error('Error completing recipe:', error);
+        console.error(error.response.data)
+      }
   };
 
   const closeModal = () => {

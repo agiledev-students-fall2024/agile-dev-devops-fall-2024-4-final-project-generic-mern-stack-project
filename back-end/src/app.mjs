@@ -196,7 +196,52 @@ app.get("/api/biteBuddyProfile", async (req, res) => {
   }
 });
 
-app.put("/api/update-profile", async (req, res) => {
+app.post('/api/user/add-recipe', async(req, res) => {
+    try{
+        const {userId, userRecipe} = req.body;
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { $push: { recipes: userRecipe } }, 
+            { new: true }
+        );
+  
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+  
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        console.error('Error updating profile:', error);
+        res.status(500).json({ message: 'Failed to update user recipe list' });
+    }
+})
+
+app.put('/api/user/complete-recipe', async(req, res) => {
+    console.log("route hit")
+    try{
+        const {userId, recipeId} = req.body;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        
+        const recipe = user.recipes.find((r) => r.id.toString() === recipeId);
+        if (!recipe) {
+            return res.status(404).json({ error: "Recipe not found" });
+        }
+
+        recipe["completed"] = true;
+
+        await user.save();
+        res.json({ message: "Recipe completed successfully", updatedRecipe: recipe });
+        
+    } catch (error) {
+        console.error('Error updating profile:', error);
+        res.status(500).json({ message: 'Failed to update user recipe list' });
+    }
+})
+
+app.put('/api/update-profile', async (req, res) => {
   try {
     const { userId, firstName, lastName, age, location, bio } = req.body;
 
