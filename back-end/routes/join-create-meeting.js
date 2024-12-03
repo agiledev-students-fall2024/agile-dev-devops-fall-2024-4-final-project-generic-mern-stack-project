@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const Meeting = require('../models/Meeting');
+const fb = require('../services/firebase');
 
 // Get list of past meetings
 router.get('/past/list', async (req, res) => {
@@ -99,6 +100,7 @@ router.post('/:id/end', async (req, res) => {
     } catch (error) {
         console.error('Error ending meeting:', error);
         res.status(500).json({ error: 'Failed to end meeting' });
+
     }
 });
 

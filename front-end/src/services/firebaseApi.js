@@ -16,12 +16,18 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
 const getMeeting = async (meetingId) => {
-    const docRef = doc(db, 'meetings', meetingId);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-        return docSnap.data();
-    } else {
-        return null;
+    try {
+
+        const docRef = doc(db, 'meetings', meetingId);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            return docSnap.data();
+        } else {
+            return false;
+        }
+    } catch (error) {
+        console.log('Firebase error while trying to get meeting: ', meetingId)
+        return false
     }
 }
 

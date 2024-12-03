@@ -1,6 +1,22 @@
 // models/Meeting.js
 const mongoose = require('mongoose');
 
+// Define the sub-schema for messages
+const messageSchema = new mongoose.Schema({
+    service: {
+        type: String,
+        required: true
+    },
+    data: {
+        type: Object,
+        required: true
+    },
+    timestamp: {
+        type: Date,
+        default: Date.now
+    }
+});
+
 const meetingSchema = new mongoose.Schema({
     meetingId: {
         type: String,
@@ -27,6 +43,11 @@ const meetingSchema = new mongoose.Schema({
         type: String,
         enum: ['active', 'ended'],
         default: 'active'
+    },
+    messages: {
+        type: [messageSchema],
+        required: true,
+
     }
 });
 
