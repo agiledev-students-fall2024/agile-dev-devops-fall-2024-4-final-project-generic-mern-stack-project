@@ -14,6 +14,7 @@ const JoinCreateMeetingPage = () => {
   };
 
   const handleCreateMeeting = async () => {
+    navigate(`/meetings/${120}`);
     try {
       const response = await fetch('http://localhost:8080/meeting', {
         method: 'POST',
@@ -130,7 +131,7 @@ const JoinCreateMeetingPage = () => {
       </main>
     </div>
   );
-};
+}
 
 const ActionButton = ({ text, color, onClick }) => (
   <button

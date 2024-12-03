@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const fb = require('../services/firebase');
+const fb = require('../services/firebaseApi');
 
 // Store meetings in memory for now (will be replaced with database later)
 const meetings = new Map();
@@ -34,7 +34,10 @@ router.post('/', (req, res) => {
     };
 
     // Store meeting in our temporary Map
-    meetings.set(meetingId, newMeeting);
+
+    fb.createMeeting(meetingId, newMeeting);
+
+
     res.status(201).json(newMeeting);
 });
 
