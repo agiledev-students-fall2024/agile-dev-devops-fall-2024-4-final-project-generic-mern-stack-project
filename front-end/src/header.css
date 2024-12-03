@@ -1,0 +1,27 @@
+.header {
+display: flex;
+justify-content: center;
+align-items: center;
+position: relative;
+border-radius: 5px; 
+margin: 20px auto;
+width: auto; 
+width: 350px;
+}
+
+.header a {
+margin-top: 100px;
+padding: 5px 24px;
+text-decoration: none;
+color: rgb(2, 71, 247);
+font-weight: bold;
+font-family: 'Arial', sans-serif;
+border: 1px solid rgb(2, 71, 247);
+border-radius: 5px;
+}
+
+.header a:hover {
+background-color: rgb(2, 71, 247);
+color: white; 
+transition: background-color 0.3s ease;
+}

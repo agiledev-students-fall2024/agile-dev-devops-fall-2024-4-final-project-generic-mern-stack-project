@@ -1,0 +1,83 @@
+
+.create-task-container {
+width: 400px;
+margin: 0 auto;
+padding: 20px;
+background-color: white;
+border-radius: 10px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+margin: 50px auto;
+}
+
+.create-task-container h3 {
+font-size: 18px;
+margin-bottom: 8px;
+color: #333;
+}
+
+.create-task-container input[type="text"], 
+.create-task-container select {
+width: 100%;
+padding: 10px;
+margin-bottom: 15px;
+border: 1px solid #ccc;
+border-radius: 5px;
+box-sizing: border-box;
+font-size: 16px;
+background-color: white;
+color: #333;
+}
+
+.create-task-container input[type="text"]:focus, 
+.create-task-container select:focus {
+border-color: #007bff;
+outline: none;
+}
+
+
+.create-task-container button {
+width: 100%;
+padding: 12px;
+background-color: #007bff;
+color: white;
+border: none;
+border-radius: 5px;
+font-size: 16px;
+cursor: pointer;
+transition: background-color 0.3s ease;
+}
+
+.create-task-container div {
+margin-bottom: 15px;
+}
+
+.create-task-buttons {
+display: flex;
+justify-content: space-between;
+margin-top: 20px;
+}
+.cancel-btn {
+margin-right: 50px;
+flex: 1;
+padding: 10px 20px;
+background-color: #007BFF;
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+}
+.create-btn{
+flex: 1;
+padding: 10px 20px;
+background-color: #007BFF;
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+margin-left: 30px;
+}
+
+.cancel-btn:hover,
+.create-btn:hover {
+background-color: purple;
+}
