@@ -258,17 +258,6 @@ app.put('/api/update-profile', async (req, res) => {
   }
 });
 
-app.get("/api/basicRecipe", async (req, res) => {
-  try {
-    const { data } = await axios.get(
-      "https://my.api.mockaroo.com/basic_recipe.json?key=786e37d0"
-    );
-    res.json(data);
-  } catch (error) {
-    console.error("Error fetching data from API:", error.message);
-    res.status(500).json({ error: "Failed to fetch recipes data" });
-  }
-});
 // Start the server
 export const startServer = () => {
   app.listen(PORT, () => {
