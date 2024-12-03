@@ -142,6 +142,100 @@ app.get("/api/challenges", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch activity tracker data" });
   }
 });
+app.get("/api/users", async (req, res) => {
+  try {
+    if (process.env.MOCK_ERROR === "true") {
+      throw new Error("Mocked error");
+    }
+    const { data } = await axios.get(
+      "https://my.api.mockaroo.com/users.json?key=66da8e80"
+    );
+    res.json(data);
+  } catch (error) {
+    console.error("Error fetching data from API:", error.message);
+    res.status(500).json({ error: "Failed to fetch user data" });
+  }
+});
+
+app.get("/api/user", async (req, res) => {
+  try {
+    if (process.env.MOCK_ERROR === "true") {
+      throw new Error("Mocked error");
+    }
+
+    // Access the userId from the query string
+    const thisUserId = req.query.userId;
+
+    if (!thisUserId) {
+      return res.status(400).json({ error: "User ID is required" });
+    }
+
+    // Fetch the user based on the userId
+    const user = await User.findById(thisUserId);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.error("Error fetching data from API:", error.message);
+    res.status(500).json({ error: "Failed to fetch user data" });
+  }
+});
+
+app.get("/api/biteBuddyProfile", async (req, res) => {
+  try {
+    const { data } = await axios.get(
+      "https://my.api.mockaroo.com/bite_buddy_profile.json?key=786e37d0"
+    );
+    res.json(data);
+  } catch (error) {
+    console.error("Error fetching data from API:", error.message);
+    res.status(500).json({ error: "Failed to fetch bite buddy profile data" });
+  }
+});
+
+app.put("/api/update-profile", async (req, res) => {
+  try {
+    const { userId, firstName, lastName, age, location, bio } = req.body;
+
+    // Update the user based on the provided userId
+    console.log("thisis userID", userId);
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        first_name: firstName,
+        last_name: lastName,
+        age,
+        location,
+        bio,
+      },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res.status(500).json({ message: "Server error while updating profile" });
+  }
+});
+
+app.get("/api/basicRecipe", async (req, res) => {
+  try {
+    const { data } = await axios.get(
+      "https://my.api.mockaroo.com/basic_recipe.json?key=786e37d0"
+    );
+    res.json(data);
+  } catch (error) {
+    console.error("Error fetching data from API:", error.message);
+    res.status(500).json({ error: "Failed to fetch recipes data" });
+  }
+});
 // Start the server
 export const startServer = () => {
   app.listen(PORT, () => {
