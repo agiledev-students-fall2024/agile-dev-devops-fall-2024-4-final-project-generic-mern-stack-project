@@ -12,7 +12,7 @@ const monthlyData = {
   October: { expenses: 500, income: 1600 },
   November: { expenses: 400, income: 1600 },
   December: { expenses: 690, income: 1600 },
-  // Add more months if needed
+  
 };
 
 // Mock data for spending categories
@@ -26,61 +26,17 @@ const categoryData = [
   { category: 'Other', amount: 200 },
 ];
 
-// Function to calculate the monthly net balance
+// Function to calculate monthly net balance
 function calculateMonthlyBalance(month) {
   const data = monthlyData[month];
-  
-  // Handle invalid month input
   if (!data) {
-    return { error: 'Month not found. Please provide a valid month.' };
+    return { error: 'Month not found' };
   }
-
-  // Calculate net balance
-  const netBalance = data.income - data.expenses;
-
   return {
     ...data,
-    netBalance,
+    netBalance: data.income - data.expenses,
   };
 }
 
-// Function to calculate the total expenses and income for the year
-function calculateYearlySummary() {
-  const totals = Object.values(monthlyData).reduce(
-    (acc, month) => {
-      acc.totalIncome += month.income;
-      acc.totalExpenses += month.expenses;
-      return acc;
-    },
-    { totalIncome: 0, totalExpenses: 0 }
-  );
-
-  // Add net savings to the summary
-  totals.netSavings = totals.totalIncome - totals.totalExpenses;
-
-  return totals;
-}
-
-// Function to categorize spending
-function getCategorySummary() {
-  const totalSpending = categoryData.reduce(
-    (sum, category) => sum + category.amount,
-    0
-  );
-
-  const categorySummary = categoryData.map((category) => ({
-    ...category,
-    percentage: ((category.amount / totalSpending) * 100).toFixed(2) + '%',
-  }));
-
-  return { totalSpending, categorySummary };
-}
-
-// Export the data and calculation functions
-export default {
-  monthlyData,
-  categoryData,
-  calculateMonthlyBalance,
-  calculateYearlySummary,
-  getCategorySummary,
-};
+// Export the data and calculation function
+export default { monthlyData, categoryData, calculateMonthlyBalance };
