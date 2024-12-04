@@ -5,7 +5,8 @@ import dotenv from 'dotenv';
 import path from 'path';
 import mongoose from 'mongoose';
 import { body, validationResult } from 'express-validator';
-
+import jwt from 'jsonwebtoken';
+import { authenticateToken } from './middleware/auth.js';
 
 //MOCK DATA
 import budgetLimits from './mocks/budgetLimits.js';
@@ -105,21 +106,40 @@ app.delete("/api/accounts/:id", (req, res) => {
 
 /* ======================= Sign-Up Route ======================= */
 app.post('/api/signup', async (req, res) => {
-    const { username, email, password } = req.body;
+    const { firstName, lastName, username, email, password } = req.body;
 
     try {
-        const existingUser = await User.findOne({ $or: [{ email }, { username }] });
-        if (existingUser) {
-            return res.status(400).json({ message: 'Username or email already in use' });
+        // Validate required fields
+        if (!firstName || !lastName || !username || !email || !password) {
+            return res.status(400).json({ message: 'All fields are required.' });
         }
 
-        const newUser = new User({ username, email, password: await bcrypt.hash(password, 10) });
+        // Check if user already exists
+        const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+        if (existingUser) {
+            return res.status(400).json({ message: 'Username or email already in use.' });
+        }
+
+        // Hash the password
+        // const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Create and save the new user
+        const newUser = new User({
+            firstName,
+            lastName,
+            username,
+            email,
+            password:password,
+        });
+
         await newUser.save();
-        res.status(201).json({ message: 'User registered successfully' });
+
+        res.status(201).json({ message: 'User registered successfully.' });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 });
+
 
 /* ======================= Debt Routes ======================= */
 // Route to update a debt by ID
@@ -446,5 +466,60 @@ if (process.env.NODE_ENV === 'production') {
       res.send("API is running... Front-end development server handles UI.");
   });
 }
+
+//POST route for login
+app.post('/api/login', async (req, res) => {
+    const { email, password } = req.body;
+  
+    try {
+      // Check if the user exists
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res.status(400).json({ message: 'Invalid email or password' });
+      }
+  
+      // Verify the password
+      const isMatch = await bcrypt.compare(password, user.password);
+      console.log('logging password',password);
+      console.log('logging DBpassword',user.password);
+      console.log('logging DBpassword',bcrypt.hash(password, 10));
+
+      if (!isMatch) {
+        return res.status(400).json({ message: 'Invalid email or password' });
+      }
+  
+      // Generate JWT token
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: '1h', // Token expires in 1 hour
+      });
+  
+      res.status(200).json({
+        token,
+        user: { id: user._id, username: user.username, email: user.email },
+      });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  let tokenBlacklist = []; // Use a database in production
+
+  // POST route for logout
+  app.post('/api/logout', (req, res) => {
+    const token = req.header('Authorization');
+    if (!token) {
+      return res.status(400).json({ message: 'No token provided' });
+    }
+  
+    // Add the token to the blacklist
+    tokenBlacklist.push(token);
+    res.status(200).json({ message: 'Successfully logged out' });
+  });
+  
+// Example: Protect a sensitive route
+app.get('/api/protected', authenticateToken, (req, res) => {
+    res.json({ message: 'You have access!', user: req.user });
+  });
+
 
 export default app;
