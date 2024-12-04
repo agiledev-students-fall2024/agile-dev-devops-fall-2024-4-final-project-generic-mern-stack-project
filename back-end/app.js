@@ -121,7 +121,7 @@ app.post('/api/signup', async (req, res) => {
         }
 
         // Hash the password
-        const hashedPassword = await bcrypt.hash(password, 10);
+        // const hashedPassword = await bcrypt.hash(password, 10);
 
         // Create and save the new user
         const newUser = new User({
@@ -129,7 +129,7 @@ app.post('/api/signup', async (req, res) => {
             lastName,
             username,
             email,
-            password: hashedPassword,
+            password:password,
         });
 
         await newUser.save();
@@ -480,6 +480,10 @@ app.post('/api/login', async (req, res) => {
   
       // Verify the password
       const isMatch = await bcrypt.compare(password, user.password);
+      console.log('logging password',password);
+      console.log('logging DBpassword',user.password);
+      console.log('logging DBpassword',bcrypt.hash(password, 10));
+
       if (!isMatch) {
         return res.status(400).json({ message: 'Invalid email or password' });
       }

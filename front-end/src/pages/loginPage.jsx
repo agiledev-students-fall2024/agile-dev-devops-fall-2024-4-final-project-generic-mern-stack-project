@@ -17,7 +17,7 @@ const LoginPage = ({ onLogin }) => {
     }
 
     try {
-      const response = await axios.post('api/login', { email, password }); // Call backend API
+      const response = await axios.post('http://localhost:3001/api/login', { email, password }); // Call backend API
       const { token } = response.data;
 
       // Save token and trigger onLogin callback
