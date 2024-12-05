@@ -3,7 +3,7 @@ const { randomUUID } = require('crypto');
 
 const whiteboardSchema = new mongoose.Schema({
     id: {
-        type: UUID,
+        type: String,
         unique: true,
         required: true,
         default: () => randomUUID()
