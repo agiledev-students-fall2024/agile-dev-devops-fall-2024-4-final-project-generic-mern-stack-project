@@ -99,72 +99,142 @@ Passwords are hashed with bcrypt and stored securely in MongoDB.
 * sendDataToMeetingRoom(meetingId, service, data): Send specific data (e.g., code updates, chat messages) to a meeting room.
 
 ### API Endpoint Reference
-Authentication API
+API Endpoint Reference
+##### Authentication API
+Register a New User
 Endpoint: /auth/user
 Method: POST
-Description: Register a new user
-Request Body:
+Description: Creates a new user in the system with a username and password.
 
+Request Body:
 json
-{ "username": "test", "password": "123456" }
+{
+  "username": "test",
+  "password": "123456"
+}
+
+Response:
+Status 201: User successfully created.
+Status 400: Validation error (e.g., missing fields or invalid data).
+
+##### Login with Existing Credentials
 Endpoint: /auth/login
 Method: POST
-Description: Login with existing credentials
+Description: Logs in a user by validating the provided username and password.
 Request Body:
 
 json
-{ "username": "test", "password": "123456" }
+{
+  "username": "test",
+  "password": "123456"
+}
+Response:
+Status 200: Login successful. Returns a JSON Web Token (JWT).
+Status 401: Unauthorized access due to invalid credentials.
+
+##### Update User Password
 Endpoint: /auth/user
 Method: PATCH
-Description: Update user password
+Description: Updates the password for an existing user.
 Request Body:
 
 json
-{ "username": "test", "password": "newpassword123" }
-Code Editor API
+{
+  "username": "test",
+  "password": "newpassword123"
+}
+
+Response:
+Status 200: Password updated successfully.
+Status 404: User not found.
+
+
+##### Code Editor API
+Get Code History for a Meeting
 Endpoint: /code/:meetingId
 Method: GET
-Description: Get code history for a meeting
+Description: Retrieves the code history for a specific meeting session.
 Query Params:
+meetingId (string): The unique identifier of the meeting.
 
-meetingId
+Response:
+Status 200: Returns the code history as a JSON object.
+Status 404: Meeting not found.
+Send a Code Update
 Endpoint: /code/:meetingId
 Method: POST
-Description: Send a code update
+Description: Updates the code for a specific meeting session.
 Request Body:
-
 json
-{ "code": "console.log()", "language": "javascript" }
+
+{
+  "code": "console.log('Hello, World!')",
+  "language": "javascript"
+}
+
+Response:
+Status 200: Code updated successfully.
+Status 404: Meeting not found.
+
+##### Stream Real-Time Code Updates
 Endpoint: /code/:meetingId/stream
 Method: GET
-Description: Stream real-time code updates
+Description: Streams real-time updates for collaborative code editing.
 Query Params:
+meetingId (string): The unique identifier of the meeting.
 
-meetingId
+Response:
+Status 200: Returns a stream of code changes in real time.
+Status 404: Meeting not found.
 Meeting API
+
+##### Fetch Meeting Room by ID
 Endpoint: /meeting/:id
 Method: GET
-Description: Fetch meeting room by ID
+Description: Fetches the details of a specific meeting room using its unique ID.
 Path Parameter:
+id (string): The unique identifier of the meeting room.
 
-meetingId
+Response:
+Status 200: Returns the meeting details.
+Status 404: Meeting not found.
+
+##### Create a New Meeting Room
 Endpoint: /meeting
 Method: POST
-Description: Create a new meeting room
-Request Body: N/A
+Description: Creates a new meeting room with a unique identifier.
+Request Body: None
 
+Response:
+Status 201: Meeting room created successfully. Returns the meeting ID.
 Whiteboard API
+
+##### Access Existing Whiteboard ID
 Endpoint: /whiteboard
 Method: GET
-Description: Access existing whiteboard ID
-Request Body: N/A
+Description: Retrieves an existing whiteboard session ID.
+Request Body: None
 
+Response:
+Status 200: Returns the whiteboard session ID.
+Status 404: Whiteboard session not found.
+
+##### Create a New Whiteboard
 Endpoint: /whiteboard
 Method: POST
-Description: Create a new whiteboard
-Request Body: N/A
+Description: Creates a new whiteboard session.
+Request Body: None
 
+Response:
+Status 201: Whiteboard session created successfully.
+
+##### Delete an Existing Whiteboard
 Endpoint: /whiteboard
 Method: DELETE
-Description: Delete a whiteboard
-Request Body: N/A
+
+Description: Deletes an existing whiteboard session.
+Request Body: None
+
+Response:
+Status 200: Whiteboard session deleted successfully.
+Status 404: Whiteboard session not found.
