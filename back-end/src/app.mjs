@@ -197,6 +197,7 @@ app.get("/api/user", async (req, res) => {
   }
 });*/
 
+// NOT TESTED YET because route is not used yet
 app.post(
   "/api/user/add-recipe",
   validateRecipe, // Validate recipe data
@@ -223,6 +224,7 @@ app.post(
     }
   }
 );
+
 
 /*
 app.post('/api/user/add-recipe', async(req, res) => {
