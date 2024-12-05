@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './me.css';
-
+ 
 const Me = () => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState('');
@@ -14,46 +14,76 @@ const Me = () => {
     password: false,
   });
   const [updatedData, setUpdatedData] = useState({});
-
+ 
+  // Fetch user data on component mount
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(
-          'https://my.api.mockaroo.com/tracker.json?key=a3c50f90'
+        const token = localStorage.getItem('token'); // Retrieve token from localStorage
+        if (!token) throw new Error('User not authenticated.');
+        const userId = localStorage.getItem('id');
+        console.log(
+          'Stored userId in localStorage:',
+          localStorage.getItem('id')
         );
-        setUser(response.data[0]); // Assuming the response is an array with user objects
-        setUpdatedData(response.data[0]);
+        const response = await axios.get(
+          `http://localhost:3001/user/${userId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` }, // Send token in headers
+          }
+        );
+ 
+        setUser(response.data); // Set user data
+        setUpdatedData(response.data); // Prepare editable data
       } catch (error) {
-        setError('Unable to load user data');
-        console.error('Error fetching user data from Mockaroo:', error);
+        setError('Unable to load user data.');
+        console.error('Error fetching user data:', error);
       }
     };
-
+ 
     fetchUserData();
   }, []);
-
+ 
   const toggleEditField = (field) => {
     setEditFields((prev) => ({ ...prev, [field]: !prev[field] }));
   };
-
+ 
   const handleChange = (e, field) => {
     setUpdatedData({ ...updatedData, [field]: e.target.value });
   };
-
-  const handleSave = (field) => {
-    setMessage(`"${field}" has been updated!`);
-    toggleEditField(field);
-    // In a real app, you would also send the updated data to the backend here.
+ 
+  const handleSave = async (field) => {
+    try {
+      const token = localStorage.getItem('token');
+      const userId = localStorage.getItem('id');
+      if (!token) throw new Error('User not authenticated.');
+ 
+      const updatePayload = { [field]: updatedData[field] };
+ 
+      const response = await axios.put(
+        `http://localhost:3001/user/${userId}/update`,
+        updatePayload,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+ 
+      setMessage(response.data.message || `"${field}" has been updated!`);
+      toggleEditField(field);
+    } catch (error) {
+      setError('Failed to update user information.');
+      console.error('Error updating user data:', error);
+    }
   };
-
+ 
   if (error) {
-    return <div>{error}</div>;
+    return <div className="error">{error}</div>;
   }
-
+ 
   if (!user) {
     return <div>Loading...</div>;
   }
-
+ 
   return (
     <div className="me-container">
       <h2>My Account</h2>
@@ -62,7 +92,7 @@ const Me = () => {
         src={`https://picsum.photos/seed/${user.username}/100`}
         alt="Profile"
       />
-
+ 
       {/* Editable Fields */}
       {['first_name', 'last_name', 'username', 'email', 'password'].map(
         (field) => (
@@ -99,11 +129,11 @@ const Me = () => {
           </div>
         )
       )}
-
+ 
       {/* Display Info Message */}
       {message && <p className="info-message">{message}</p>}
     </div>
   );
 };
-
+ 
 export default Me;

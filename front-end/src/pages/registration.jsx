@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import './registration.css';
-
+ 
 const Registration = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -12,19 +12,19 @@ const Registration = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
-
+ 
   const handleRegistration = async (e) => {
     e.preventDefault();
     setErrorMessage('');
     setSuccessMessage('');
-
+ 
     if (!firstName || !lastName || !username || !email || !password) {
       setErrorMessage('All fields are required.');
       return;
     }
-
+ 
     try {
-      await axios.post('http://localhost:3001/api/signup', {
+      await axios.post('http://localhost:3001/user/signup', {
         firstName,
         lastName,
         username,
@@ -39,7 +39,7 @@ const Registration = () => {
       setErrorMessage(err.response?.data?.message || 'Registration failed.');
     }
   };
-
+ 
   return (
     <div className="registration-container">
       <h2>Register</h2>
@@ -76,10 +76,10 @@ const Registration = () => {
         />
         <button type="submit">Register</button>
       </form>
-
+ 
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       {successMessage && <p className="success-message">{successMessage}</p>}
-
+ 
       <div className="login-link-container">
         <Link to="/login" className="login-link">
           Already have an account? Go back to login
@@ -88,5 +88,5 @@ const Registration = () => {
     </div>
   );
 };
-
+ 
 export default Registration;
