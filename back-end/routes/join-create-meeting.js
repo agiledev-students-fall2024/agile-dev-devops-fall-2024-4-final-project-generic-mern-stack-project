@@ -44,7 +44,6 @@ router.post('/', async (req, res) => {
             codeHistory: [],
             messages: []  // Initialize empty messages array
         });
-
         const savedMeeting = await meeting.save();
         
         res.status(201).json({
