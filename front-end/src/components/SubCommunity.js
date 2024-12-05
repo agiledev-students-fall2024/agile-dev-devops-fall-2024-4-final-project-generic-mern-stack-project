@@ -15,19 +15,15 @@ const SubCommunity = (props) => {
   const { communityId } = useParams();
 
   const handleJoinButton = () => {
-    // console.log(communityId);
     setStatus(true);
     axiosInstance
       .post(`/join-community/${communityId}`)
       .then((res) => {
         console.log(res.data);
-        // toast.success("You successfully joined the community");
       })
       .catch((err) => {
         if (err.response.status === 400) {
           setIsJoinedBefore(true);
-          // console.log("You have already joined this community");
-          // toast.error("You have already joined this community");
         }
         console.log("error in joining community");
         console.error(err);
