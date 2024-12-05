@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
 import TitleAndDescription from '../components/TitleAndDescription'
-import DropdownMenu from '../components/DropdownMenu'
 import { axiosInstance } from "../axios";
 import "./Accessibility.css"
 import { ColorContext } from '../ColorContext';
