@@ -43,6 +43,7 @@ router.post(
         content: req.body.content,
         photo,
         createdAt: new Date(),
+        name: req.user.name,
       });
 
       const savedPost = await newPost.save();
