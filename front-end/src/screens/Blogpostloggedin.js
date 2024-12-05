@@ -45,7 +45,7 @@ const BlogPostLoggedIn = () => {
   }
 
   const imageURL = post.photo;
-
+ 
   return (
     <div className="blog-post-container">
       <header className="blog-post-header">
