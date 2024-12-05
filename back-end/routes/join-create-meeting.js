@@ -1,12 +1,8 @@
 // routes/join-create-meeting.js
 const express = require('express');
 const router = express.Router();
-<<<<<<< HEAD
-const fb = require('../services/firebaseApi');
-=======
 const Meeting = require('../models/Meeting');
 const fb = require('../services/firebase');
->>>>>>> 032d0dd9b14576b4c236d6000fc41601b3fd03e6
 
 // Get list of past meetings
 router.get('/past/list', async (req, res) => {
@@ -48,17 +44,7 @@ router.post('/', async (req, res) => {
             codeHistory: []
         });
 
-<<<<<<< HEAD
-    // Store meeting in our temporary Map
-
-    fb.createMeeting(meetingId, newMeeting);
-
-
-    res.status(201).json(newMeeting);
-});
-=======
         await meeting.save();
->>>>>>> 032d0dd9b14576b4c236d6000fc41601b3fd03e6
 
         res.status(201).json({ 
             meetingId,
