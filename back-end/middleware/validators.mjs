@@ -63,7 +63,7 @@ export const validateUpdateProfile = [
     .withMessage("Bio must be a string"),
 ];
 
-// Activity duration check disabled until implementation is changed from int to int array
+// Activity duration check for int until implementation is changed from int to int array
 // Validation rules for activity creation or update
 export const validateActivity = [
   body("activity_name")
@@ -79,10 +79,12 @@ export const validateActivity = [
     .isISO8601()
     .withMessage("Date must be a valid ISO 8601 date"),
   body("activity_duration")
+    .isInt({ min: 0 })
+    .withMessage("Activity duration must be a non-negative integer"),
     // .isArray()
     // .withMessage("Activity duration must be an array of numbers")
     // .custom((arr) => arr.every((num) => typeof num === "number"))
-    .withMessage("All items in activity duration must be numbers"),
+    // .withMessage("All items in activity duration must be numbers"),
 ];
 
 // Handle validation errors
