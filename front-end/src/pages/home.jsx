@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Header from '../components/header';
 import BudgetProgress from '../mocks/BudgetProgress.jsx';
 import Notifications from '../components/notifications.jsx';
-import transactionData from '../mocks/transactionData';
-import budgetLimits from '../mocks/budgetLimits';
 import Categories from '../components/Categories.jsx';
 import AddTransaction from '../components/AddTransaction';
 import './home.css';
@@ -18,23 +16,26 @@ function Home() {
   const [transactions, setTransactions] = useState([]);
   const [totalBudget, setTotalBudget] = useState(0);
  
-  const userId = 1; // Replace with the actual user ID
-  const budgetId = 1; // Replace with the actual budget ID
+  const userId = localStorage.getItem('id');
  
   const totalSpent = overall.totalSpent || 0;
  
   useEffect(() => {
+    if (!userId) {
+      console.error('No logged-in user found');
+      return;
+    }
     // Fetch transactions for the user
     fetch(
-      `http://localhost:3001/api/transactions?userId=${userId}&budgetId=${budgetId}`
+      `http://localhost:3001/api/transactions?userId=${userId}`
     )
       .then((response) => response.json())
-      .then((data) => setTransactions(data))
+      .then((data) => setTransactions(data || []))
       .catch((err) => console.error('Error fetching transactions:', err));
  
     // Fetch budget limits
     fetch(
-      `http://localhost:3001/api/budget-limits?userId=${userId}&budgetId=${budgetId}`
+      `http://localhost:3001/api/budget-limits?userId=${userId}`
     )
       .then((response) => response.json())
       .then((data) => {
@@ -42,7 +43,7 @@ function Home() {
         setTotalBudget(data.monthlyLimit || 0); // Set total budget from monthlyLimit
       })
       .catch((err) => console.error('Error fetching budget limits:', err));
-  }, []);
+  }, [userId]);
  
   // Calculate category totals based on transactions
   const categoryTotals = transactions.reduce((acc, transaction) => {

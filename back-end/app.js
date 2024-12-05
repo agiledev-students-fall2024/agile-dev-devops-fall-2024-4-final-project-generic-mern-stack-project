@@ -7,6 +7,7 @@ import mongoose from 'mongoose';
 import { body, validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
 import { authenticateToken } from './middleware/auth.js';
+
  
 //MOCK DATA
 import budgetLimits from './mocks/budgetLimits.js';
@@ -28,10 +29,6 @@ dotenv.config({ silent: true });
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
  
-/* MOCK USER SESSION WHILE AWAITING LOGIN IMPLEMENTATION */
-// Define mock userId and budgetId
-const MOCK_USER_ID = 1;
-const MOCK_BUDGET_ID = 1;
  
 /* Initialize Express App */
 const app = express();
@@ -57,7 +54,7 @@ mongoose
 app.get('/', (req, res) => {
   res.send('Hello!');
 });
- 
+
 // use the specialized routing files
 app.use('/user', router); // all requests for /user/* will be handled by the user router
  
@@ -321,9 +318,27 @@ app.get('/goals/:userId', async (req, res) => {
  
 /* ======================= Transaction Routes ======================= */
 // Route to get all transactions
-app.get('/api/transactions', (req, res) => {
-  res.json(transactionData);
+app.get("/api/transactions", async (req, res) => {
+  const { userId } = req.query;
+  if (!userId) {
+    return res.status(400).json({ error: "User ID is required" });
+  }
+
+  try {
+    const user = await User.findById(userId).select('transactions');
+    if (!user) {
+      console.error("User not found for ID:", userId);
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    console.log("Fetched transactions:", user.transactions);
+    res.json(user.transactions || []);
+  } catch (error) {
+    console.error("Error fetching transactions:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
+
  
 // Route to add a new transaction
 app.post('/api/transactions', (req, res) => {

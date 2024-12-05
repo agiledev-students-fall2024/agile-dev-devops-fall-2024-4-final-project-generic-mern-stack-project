@@ -36,6 +36,8 @@ async function createMockUser() {
     };
 
     const newUser = new User({
+      firstName: 'john',
+      lastName: 'doe',
       username: 'johndoe',
       email: 'johndoe@example.com',
       profilePicture: '', 
