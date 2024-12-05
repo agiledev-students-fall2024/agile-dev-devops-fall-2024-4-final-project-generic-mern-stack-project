@@ -21,9 +21,10 @@ function Tasks() {
   useEffect(() => {
     const collect = async () => {
       setLoading(true);
-      //const session = window.localStorage.getItem("session_id")
+      const session = window.localStorage.getItem("session_user")
+      const session_parsed = await JSON.parse(session)
       //this is to retrieve a logged in user's object, if null no user is signed in
-      const response = await fetch('http://localhost:4000/tasks');
+      const response = await fetch(`http://localhost:4000/tasks/${session_parsed._id}`);
       const data = await response.json();
       setTasks(data);
       console.log(data)

@@ -32,9 +32,13 @@ router.get('/tasks', (req, res) => {
 
 router.get('/tasks/:id', async (req, res) => {
   try {
-    const task = await Task.findById(req.params.id) 
-    if (!task) return res.status(404).json({ message: 'Task not found' })
-    res.json(task)
+    const task = await Task.find({"user_id": req.params.id}) 
+    if (!task) {
+        return res.json([])
+    }
+    else {
+        res.json(task)
+    }
 } catch (error) {
     res.status(500).json({ error: error.message })
 }
