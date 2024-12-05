@@ -8,7 +8,7 @@ import Categories from '../components/Categories.jsx';
 import AddTransaction from '../components/AddTransaction';
 import './home.css';
 import { Link } from 'react-router-dom';
-
+ 
 function Home() {
   const { overall } = BudgetProgress();
   const [showBreakdown, setShowBreakdown] = useState(false);
@@ -17,29 +17,33 @@ function Home() {
   const [showAddTransaction, setShowAddTransaction] = useState(false);
   const [transactions, setTransactions] = useState([]);
   const [totalBudget, setTotalBudget] = useState(0);
-  
+ 
   const userId = 1; // Replace with the actual user ID
   const budgetId = 1; // Replace with the actual budget ID
-  
+ 
   const totalSpent = overall.totalSpent || 0;
-
+ 
   useEffect(() => {
     // Fetch transactions for the user
-    fetch(`http://localhost:3001/api/transactions?userId=${userId}&budgetId=${budgetId}`)
-      .then(response => response.json())
-      .then(data => setTransactions(data))
-      .catch(err => console.error("Error fetching transactions:", err));
-
+    fetch(
+      `http://localhost:3001/api/transactions?userId=${userId}&budgetId=${budgetId}`
+    )
+      .then((response) => response.json())
+      .then((data) => setTransactions(data))
+      .catch((err) => console.error('Error fetching transactions:', err));
+ 
     // Fetch budget limits
-    fetch(`http://localhost:3001/api/budget-limits?userId=${userId}&budgetId=${budgetId}`)
-      .then(response => response.json())
-      .then(data => {
+    fetch(
+      `http://localhost:3001/api/budget-limits?userId=${userId}&budgetId=${budgetId}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
         setCategoryLimits(data.categoryLimits || {}); // Set category limits
-        setTotalBudget(data.monthlyLimit || 0);       // Set total budget from monthlyLimit
+        setTotalBudget(data.monthlyLimit || 0); // Set total budget from monthlyLimit
       })
-      .catch(err => console.error("Error fetching budget limits:", err));
+      .catch((err) => console.error('Error fetching budget limits:', err));
   }, []);
-
+ 
   // Calculate category totals based on transactions
   const categoryTotals = transactions.reduce((acc, transaction) => {
     const { category, amount } = transaction;
@@ -50,42 +54,43 @@ function Home() {
     }
     return acc;
   }, {});
-
+ 
   const handleAddTransaction = (transaction) => {
     setTransactions([transaction, ...transactions]);
   };
-
+ 
   const toggleEdit = () => {
     setIsEditing(!isEditing);
   };
-
+ 
   const handleLimitChange = (category, value) => {
     setCategoryLimits((prevLimits) => ({
       ...prevLimits,
       [category]: value,
     }));
-  };  
-
+  };
+ 
   const saveBudgetLimits = () => {
     setIsEditing(false);
   };
-
+ 
   return (
     <div className="home-container">
-      <Header />
-
       <section className="budget-overview">
         <div className="budget-header">
           <h2>Monthly Spending Progress</h2>
           {showBreakdown && (
-            <button className="edit-button" onClick={isEditing ? saveBudgetLimits : toggleEdit}>
+            <button
+              className="edit-button"
+              onClick={isEditing ? saveBudgetLimits : toggleEdit}
+            >
               {isEditing ? 'Save' : 'Edit'}
             </button>
           )}
         </div>
-
+ 
         <p>
-          <strong>Total Budget:</strong> 
+          <strong>Total Budget:</strong>
           {isEditing ? (
             <input
               type="number"
@@ -97,17 +102,25 @@ function Home() {
             ` $${totalSpent} / $${totalBudget}`
           )}
         </p>
-        
+ 
         <div className="progress-bar-container">
-          <div className="progress-bar" style={{ width: `${Math.min((totalSpent / totalBudget) * 100, 100)}%` }}>
+          <div
+            className="progress-bar"
+            style={{
+              width: `${Math.min((totalSpent / totalBudget) * 100, 100)}%`,
+            }}
+          >
             {Math.round((totalSpent / totalBudget) * 100)}% Spent
           </div>
         </div>
-
-        <button className="view-breakdown" onClick={() => setShowBreakdown(!showBreakdown)}>
+ 
+        <button
+          className="view-breakdown"
+          onClick={() => setShowBreakdown(!showBreakdown)}
+        >
           {showBreakdown ? 'Hide Breakdown' : 'View Breakdown'}
         </button>
-
+ 
         {showBreakdown && (
           <Categories
             categoryTotals={categoryTotals}
@@ -117,15 +130,18 @@ function Home() {
           />
         )}
       </section>
-
+ 
       <Notifications />
-
+ 
       <section className="transactions">
         <div className="transactions-header">
           <Link to="/transactions" className="transactions-link">
             <h2>Transactions</h2>
           </Link>
-          <button id="add-transaction-button" onClick={() => setShowAddTransaction(true)}>
+          <button
+            id="add-transaction-button"
+            onClick={() => setShowAddTransaction(true)}
+          >
             +
           </button>
         </div>
@@ -146,15 +162,15 @@ function Home() {
           ))}
         </ul>
       </section>
-
+ 
       {showAddTransaction && (
-        <AddTransaction 
-          onAddTransaction={handleAddTransaction} 
-          onClose={() => setShowAddTransaction(false)} 
+        <AddTransaction
+          onAddTransaction={handleAddTransaction}
+          onClose={() => setShowAddTransaction(false)}
         />
       )}
     </div>
   );
 }
-
+ 
 export default Home;
