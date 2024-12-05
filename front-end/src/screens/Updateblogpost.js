@@ -101,12 +101,19 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 
+// Assuming you have defined REACT_APP_API_URL in your .env file and it's loaded correctly
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const UpdateBlogPost = () => {
+<<<<<<< HEAD
   const { postId } = useParams(); // Extract the post ID from the URL
   const token = localStorage.getItem('token')
   const [post, setPost] = useState(null);
+=======
+  const { postId } = useParams(); // Extract the post ID from the URL
+  const token = localStorage.getItem('token')
+  const [post, setPost] = useState(null);
+>>>>>>> fdbde592df76745f03d69824107c28eaacf088f8
 
 
   useEffect(() => {
