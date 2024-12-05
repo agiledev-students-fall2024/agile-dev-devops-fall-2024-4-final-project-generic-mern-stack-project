@@ -1,191 +1,75 @@
-// import '../styles/Blogpostloggedin.css';
-// import React, { useState, useEffect } from 'react';
-// import { useParams, Link } from 'react-router-dom';
-// import axios from 'axios';
-// import userData from '../fillerData/users.json';
-// import loggedInData from '../fillerData/loggedIn.json'; // Import logged-in user data
-
-// const BlogPostLoggedIn = () => {
-//   const { postId } = useParams(); // Use post ID from URL to get specific post data
-//   const [post, setPost] = useState(null);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-
-//   useEffect(() => {
-//     const fetchPostData = async () => {
-//       try {
-//         setLoading(true);
-//         // Fetch post data
-//         const postResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/posts/${postId}`);
-//         setPost(postResponse.data);
-//       } catch (err) {
-//         setError('Failed to fetch data. Please try again later.');
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchPostData();
-//   }, [postId]);
-
-//   if (loading) {
-//     return <p>Loading...</p>;
-//   }
-
-//   if (error) {
-//     return <p>{error}</p>;
-//   }
-
-//   if (!post) {
-//     return <p>Post not found</p>;
-//   }
-
-//   // Find author details from users.json using author_id from post
-//   const author = userData.find(user => user.id === post.author_id);
-//   const loggedInUser = loggedInData[0]; // Get the logged-in user details
-
-//   const dateObject = new Date(post.date);
-
-//   return (
-//     <div className="blog-post-container">
-//       <header className="blog-post-header">
-//         <Link to="/">
-//           <svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' fill='currentColor' className='bi bi-arrow-left-short' viewBox='0 0 16 16'>
-//             <path fillRule='evenodd' d='M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5'/>
-//           </svg>
-//         </Link>
-
-//         {/* Show edit button only if logged-in user is the author of the post */}
-//         {author && loggedInUser && author.id === loggedInUser.id && (
-//           <Link to={`/updateblogpost/${postId}`}>
-//             <button className="bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline">Edit</button>
-//           </Link>
-//         )}
-//       </header>
-      
-//       <div className="blog-post-content">
-//         {post.imageUrl ? (
-//           <img src={post.imageUrl} alt="Post Image" className="blog-post-image" />
-//         ) : (
-//           <img src="https://cdn.vectorstock.com/i/500p/50/20/no-photography-sign-image-vector-23665020.jpg" alt="Not provided by user" className="blog-post-image no-img" />
-//         )}
-
-//         <div className="blog-post-details">
-//           <h1 className="blog-post-title">{post.title}</h1>
-//           <p className="author-name">
-//             by {author ? (
-//               <Link to={`/profile/${author.username}`}>
-//                 {author.name}
-//               </Link>
-//             ) : (
-//               "Unknown Author"
-//             )}
-//           </p>
-//           <p className="post-date">{dateObject.toLocaleDateString('en-US')}</p>
-//           <p className="post-content">{post.content}</p>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default BlogPostLoggedIn;
-
-
-
-
 import '../styles/Blogpostloggedin.css';
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 
 const BlogPostLoggedIn = () => {
-  const { postId } = useParams(); // Extract the post ID from the URL
-  const [post, setPost] = useState(null);
-  const [author, setAuthor] = useState(null); // New state for the author's information
-  const [loggedin,setLoggedin] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const token = localStorage.getItem('token')
+  const { postId } = useParams();
+  const [post, setPost] = useState(null);
+  const [loggedin, setLoggedin] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const token = localStorage.getItem('token');
 
-  useEffect(() => {
-    const fetchPostData = async () => {
-      try {
-        setLoading(true);
+  useEffect(() => {
+    const fetchPostData = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/posts/${postId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        console.log('API Response:', response.data); // Debug log
+        setPost(response.data.post);
+        setLoggedin(response.data.loggedin);
+      } catch (err) {
+        console.error('Error fetching post:', err);
+        setError('Failed to fetch data. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-        const postResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/posts/${postId}`, { headers: { Authorization: `Bearer ${token}` }, },);
-        setPost(postResponse.data.post);
-        setLoggedin(postResponse.data.loggedin);
-        setAuthor(postResponse.data.post.author);
-        
+    fetchPostData();
+  }, [postId]);
 
-      } catch (err) {
-        console.error("Error fetching post or author data:", err);
-        setError('Failed to fetch data. Please try again later.');
-      } finally {
-        setLoading(false);
-      }
-    };
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
-    fetchPostData();
-  }, [postId]);
+  if (error) {
+    return <p>{error}</p>;
+  }
 
+  if (!post) {
+    return <p>Post not found</p>;
+  }
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  const imageURL = post.photo;
+ 
+  return (
+    <div className="blog-post-container">
+      <header className="blog-post-header">
+        <Link to="/">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" className="bi bi-arrow-left-short" viewBox="0 0 16 16">
+            <path fillRule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z" />
+          </svg>
+        </Link>
+      </header>
 
-  if (error) {
-    return <p>{error}</p>;
-  }
+      <div className="blog-post-content">
+        {imageURL ? (
+          <img src={imageURL} alt="Post" className="blog-post-image" />
+        ) : (
+          <img src="https://cdn.vectorstock.com/i/500p/50/20/no-photography-sign-image-vector-23665020.jpg" alt="No Image Provided" className="blog-post-image no-img" />
+        )}
 
-  if (!post) {
-    return <p>Post not found</p>;
-  }
-
-  const dateObject = new Date(post.createdAt); // Ensure correct date parsing
-
-  return (
-    <div className="blog-post-container">
-      <header className="blog-post-header">
-        <Link to="/">
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" className="bi bi-arrow-left-short" viewBox="0 0 16 16">
-            <path fillRule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z" />
-          </svg>
-        </Link>
-
-        {/* Show edit button if the logged-in user matches the author */}
-        {author && author._id === loggedin._id && (
-          <Link to={`/updateblogpost/${postId}`}>
-            <button className="bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline">Edit</button>
-          </Link>
-        )}
-      </header>
-
-      <div className="blog-post-content">
-        {post.imageUrl ? (
-          <img src={post.imageUrl} alt="Post Image" className="blog-post-image" />
-        ) : (
-          <img src="https://cdn.vectorstock.com/i/500p/50/20/no-photography-sign-image-vector-23665020.jpg" alt="Not provided by user" className="blog-post-image no-img" />
-        )}
-
-        <div className="blog-post-details">
-          <h1 className="blog-post-title">{post.title}</h1>
-          <p className="author-name">
-            by {author ? (
-              <Link to={`/profile/${author.username}`}>
-                {author.name}
-              </Link>
-            ) : (
-              "Unknown Author"
-            )}
-          </p>
-          <p className="post-date">{dateObject.toLocaleDateString('en-US')}</p>
-          <p className="post-content">{post.content}</p>
-        </div>
-      </div>
-    </div>
-  );
+        <h1>{post.title}</h1>
+        <h3>By {post.name}</h3>
+        <br />
+        <p>{post.content}</p>
+      </div>
+    </div>
+  );
 };
 
 export default BlogPostLoggedIn;
