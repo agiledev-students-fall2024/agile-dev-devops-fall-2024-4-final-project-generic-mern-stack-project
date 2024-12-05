@@ -22,6 +22,10 @@ const postSchema = new mongoose.Schema({
     type: String,
     default: '', 
   },
+  name: {
+    type: String,
+    default:'',
+  },
 });
 
 const Post = mongoose.model('Post', postSchema);

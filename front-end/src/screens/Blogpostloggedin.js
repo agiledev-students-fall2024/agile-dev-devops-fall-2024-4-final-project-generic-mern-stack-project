@@ -64,6 +64,7 @@ const BlogPostLoggedIn = () => {
         )}
 
         <h1>{post.title}</h1>
+        <h3>By {post.name}</h3>
         <p>{post.content}</p>
       </div>
     </div>
