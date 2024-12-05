@@ -53,7 +53,7 @@ export const validateUpdateProfile = [
   body("age")
     .optional()
     .isInt({ min: 13 })
-    .withMessage("Age must be a positive integer"),
+    .withMessage("Age must be at integer of at least 13"),
   body("location")
     .optional()
     .isString()
