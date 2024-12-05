@@ -105,15 +105,9 @@ import axios from 'axios';
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const UpdateBlogPost = () => {
-<<<<<<< HEAD
   const { postId } = useParams(); // Extract the post ID from the URL
   const token = localStorage.getItem('token')
   const [post, setPost] = useState(null);
-=======
-  const { postId } = useParams(); // Extract the post ID from the URL
-  const token = localStorage.getItem('token')
-  const [post, setPost] = useState(null);
->>>>>>> fdbde592df76745f03d69824107c28eaacf088f8
 
 
   useEffect(() => {
