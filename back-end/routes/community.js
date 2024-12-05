@@ -31,7 +31,7 @@ const joinCommunity = async (req, res) => {
 
     // todo: save user and community
     res.status(200).json({
-      message: "You have successfully joined the community",
+      message: "You successfully joined the community",
       user,
       community,
     });
