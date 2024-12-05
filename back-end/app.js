@@ -49,6 +49,8 @@ const accounts = [];
 const debts = [];
  
 // connect to the database
+console.log('MongoDB URI:', process.env.MONGODB_URI);
+
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))
