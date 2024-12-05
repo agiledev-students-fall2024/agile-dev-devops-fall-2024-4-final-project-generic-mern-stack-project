@@ -52,7 +52,7 @@ const SubCommunity = (props) => {
             Join <FaPlusCircle />
           </button>
         ) : (
-          <Link to="/">
+          <Link to="/home">
             <button className="bg-ebony-700 px-4 py-2 rounded-lg font-light text-rose-700 hover:text-ebony-700 hover:bg-rose-700 flex flex-row items-center gap-2">
               Visit <IoNavigateCircleOutline className="w-5 h-5" />
             </button>
