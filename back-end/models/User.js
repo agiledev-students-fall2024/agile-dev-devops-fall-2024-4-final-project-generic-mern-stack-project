@@ -34,11 +34,12 @@ const userSchema = new mongoose.Schema({
       ],
       goals: [
         {
+          _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
           name: { type: String, required: true },
           currentAmount: { type: Number, default: 0, min: 0 }, 
           frequency: {type: String, enum: ['daily', 'monthly', 'annual'], required: true,},
           targetAmount: { type: Number, required: true },
-          collaborators: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], 
+          // collaborators: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], 
         },
       ],
 });
@@ -51,4 +52,5 @@ userSchema.pre('save', async function (next) {
     next();
 });
 
-export default mongoose.model('User', userSchema);
+// export default mongoose.model('User', userSchema);
+export default mongoose.model('User', userSchema, 'users');
