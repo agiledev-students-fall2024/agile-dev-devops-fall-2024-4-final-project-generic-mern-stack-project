@@ -40,28 +40,8 @@ const Balances = () => {
   };
 
   useEffect(() => {
-    // Fetch updated accounts and debts after adding or editing an item
-    const fetchData = async () => {
-      const token = localStorage.getItem('token');
-      if (token) {
-        try {
-          const responseAccounts = await axios.get(`${BASE_URL}/api/accounts`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          setAccounts(responseAccounts.data);
-  
-          const responseDebts = await axios.get(`${BASE_URL}/api/debts`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          setDebts(responseDebts.data);
-        } catch (error) {
-          console.error("Error fetching updated data:", error);
-        }
-      }
-    };
-  
     fetchData();
-  }, [accounts, debts]); // Ensure it triggers after accounts or debts update
+  }, []); // Ensure it triggers after accounts or debts update
   
 
   const handleAddOrEditItem = () => {
@@ -98,11 +78,12 @@ const Balances = () => {
             } else {
               setAccounts([...accounts, response.data]);
             }
+            // After adding the new account, re-fetch the data to ensure everything is in sync
+            fetchData();
           })
           .catch(err => console.error("Error adding item:", err));
       }
       resetForm();
-      fetchData();
     } else {
       console.error("Please log in.");
     }
