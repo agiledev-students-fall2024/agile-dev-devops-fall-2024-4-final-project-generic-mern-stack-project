@@ -137,9 +137,6 @@ const Balances = () => {
     setIsDebtModal(false);
   };
 
-  const handlePlaidButtonClick = () => {
-    alert("This button doesn't work yet!");
-  };
 
   return (
     <main className="Home">
@@ -166,9 +163,6 @@ const Balances = () => {
           <div className="add-accounts">
             <button className="add-more-button" onClick={() => { setShowModal(true); setIsDebtModal(false) }}>
               Add More Accounts
-            </button>
-            <button className="plaid-button" onClick={handlePlaidButtonClick}>
-              Link Account with Plaid
             </button>
           </div>
         </section>
