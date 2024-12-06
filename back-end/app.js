@@ -484,21 +484,27 @@ app.get('/api/recurring-bills', (req, res) => {
 });
  
 /* ======================= Budget Limits Routes ======================= */
-app.get('/api/budget-limits', (req, res) => {
-  const userId = req.query.userId ? parseInt(req.query.userId) : MOCK_USER_ID;
- 
-  const userBudgetLimit = budgetLimits.find(
-    (limit) => limit.userId === userId && limit.budgetId === budgetId
-  );
- 
-  if (!userBudgetLimit) {
-    return res
-      .status(404)
-      .json({ error: 'Budget limits not found for this user and budget.' });
+app.get('/api/budget-limits', async (req, res) => {
+  const { userId } = req.query;
+
+  if (!userId) {
+    return res.status(400).json({ error: 'User ID is required.' });
   }
- 
-  res.json(userBudgetLimit);
+
+  try {
+    // Fetch the user and their budget limits
+    const user = await User.findById(userId).select('budgetLimits');
+    if (!user) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    res.json(user.budgetLimits); // Send the budget limits
+  } catch (error) {
+    console.error('Error fetching budget limits:', error);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
 });
+
  
 /* ======================= Notification Routes ======================= */
 // Route to get notifications
