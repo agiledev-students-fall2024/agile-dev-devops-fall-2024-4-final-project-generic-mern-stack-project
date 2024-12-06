@@ -1,3 +1,4 @@
+/* Adjust the .me-container to have a margin at the bottom */
 .me-container {
   display: flex;
   flex-direction: column;
@@ -12,20 +13,24 @@
   position: relative;
   top: 50px;
   box-sizing: border-box;
+  margin-bottom: 120px; /* Add margin at the bottom to create space for the banner */
 }
-
+ 
+/* Profile Picture Styling */
 .profile-pic {
   border-radius: 50%;
   margin-bottom: 20px;
 }
-
+ 
+/* Field Container for Editing Fields */
 .field-container {
   display: flex;
   flex-direction: column;
   margin: 10px 0;
   width: 100%;
 }
-
+ 
+/* Container for Displaying the Value */
 .display-container {
   display: flex;
   justify-content: space-between;
@@ -36,18 +41,21 @@
   border-radius: 5px;
   box-sizing: border-box;
 }
-
+ 
+/* Field Value Styling */
 .field-value {
   color: #333;
 }
-
+ 
+/* Edit Input Container */
 .edit-input-container {
   display: flex;
   align-items: center;
   gap: 10px;
   width: 100%;
 }
-
+ 
+/* Edit Input Styling */
 .edit-input {
   padding: 10px;
   width: 70%;
@@ -55,7 +63,8 @@
   border: 1px solid #ddd;
   box-sizing: border-box;
 }
-
+ 
+/* Edit and Save Button Styling */
 .edit-btn,
 .save-btn {
   padding: 5px 10px;
@@ -67,16 +76,38 @@
   font-size: 0.9em;
   text-align: center;
 }
-
+ 
+/* Hover Effect for Buttons */
 .edit-btn:hover,
 .save-btn:hover {
   background-color: #72c7ff;
 }
-
+ 
+/* Info Message Styling */
 .info-message {
+  color: #050101;
+  margin-top: 10px;
+  font-size: 0.9em;
+  text-align: center;
+  width: 100%;
+}
+/* Info Message Styling */
+.error-message {
   color: rgb(234, 98, 98);
   margin-top: 10px;
   font-size: 0.9em;
   text-align: center;
   width: 100%;
+}
+/* Low Banner Styling (Fixed Position at the Bottom) */
+.low-banner {
+  position: fixed;
+  bottom: 0; /* Fix the banner at the bottom */
+  left: 0;
+  width: 100%;
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  z-index: 1000; /* Ensure it stays on top */
 }

@@ -6,6 +6,7 @@ const Me = () => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [editFields, setEditFields] = useState({
     first_name: false,
     last_name: false,
@@ -53,6 +54,10 @@ const Me = () => {
   };
  
   const handleSave = async (field) => {
+    // Clear previous messages
+    setMessage('');
+    setErrorMessage('');
+    setError('');
     try {
       const token = localStorage.getItem('token');
       const userId = localStorage.getItem('id');
@@ -70,9 +75,18 @@ const Me = () => {
  
       setMessage(response.data.message || `"${field}" has been updated!`);
       toggleEditField(field);
-    } catch (error) {
-      setError('Failed to update user information.');
-      console.error('Error updating user data:', error);
+    } catch (err) {
+      const errorResponse = err.response?.data;
+      if (errorResponse?.errors) {
+        // If there are validation errors, format them into a readable message
+        const formattedErrors = errorResponse.errors
+          .map((error) => error.msg) // Extract error messages
+          .join('\n'); // Join them into a single string
+        setErrorMessage(formattedErrors);
+      } else {
+        setError('Failed to update user information.');
+        console.error('Error updating user data:', error);
+      }
     }
   };
  
@@ -129,9 +143,21 @@ const Me = () => {
           </div>
         )
       )}
- 
       {/* Display Info Message */}
       {message && <p className="info-message">{message}</p>}
+      {/* Display error Message */}
+      {errorMessage && (
+        <div className="error-message">
+          <p>
+            {errorMessage.split('\n').map((msg, idx) => (
+              <span key={idx}>
+                {msg}
+                <br />
+              </span>
+            ))}
+          </p>
+        </div>
+      )}
     </div>
   );
 };
