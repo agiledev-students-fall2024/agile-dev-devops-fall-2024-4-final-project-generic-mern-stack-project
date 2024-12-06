@@ -1,42 +1,66 @@
-// Mock data for monthly expenses and income
-const monthlyData = {
-  January: { expenses: 500, income: 1900 },
-  February: { expenses: 400, income: 1600 },
-  March: { expenses: 700, income: 1600 },
-  April: { expenses: 389, income: 1600 },
-  May: { expenses: 400, income: 1600 },
-  June: { expenses: 1100, income: 1800 },
-  July: { expenses: 500, income: 1600 },
-  August: { expenses: 400, income: 1600 },
-  September: { expenses: 700, income: 1600 },
-  October: { expenses: 500, income: 1600 },
-  November: { expenses: 400, income: 1600 },
-  December: { expenses: 690, income: 1600 },
-  
+import { Bar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+// Register Chart.js components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+/**
+ * Generate Bar Chart Configuration
+ * @param {Array} labels - Array of labels (e.g., months)
+ * @param {Array} budgetLimits - Array of budget limits
+ * @param {Array} overallSpent - Array of overall spent values
+ * @returns {Object} - Chart.js configuration object
+ */
+export const getBarChartConfig = (labels, budgetLimits, overallSpent) => ({
+  labels,
+  datasets: [
+    {
+      label: 'Budget Limit',
+      data: budgetLimits,
+      backgroundColor: 'rgba(54, 162, 235, 0.6)', // Blue
+    },
+    {
+      label: 'Overall Spent',
+      data: overallSpent,
+      backgroundColor: 'rgba(255, 99, 132, 0.6)', // Red
+    },
+  ],
+});
+
+/**
+ * Default Chart Options
+ * @param {String} title - Title of the chart
+ * @returns {Object} - Chart.js options object
+ */
+export const getDefaultChartOptions = (title) => ({
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'top',
+    },
+    title: {
+      display: true,
+      text: title,
+    },
+  },
+});
+
+export default {
+  getBarChartConfig,
+  getDefaultChartOptions,
 };
-
-// Mock data for spending categories
-const categoryData = [
-  { category: 'Food', amount: 300 },
-  { category: 'Rent', amount: 1000 },
-  { category: 'Transportation', amount: 150 },
-  { category: 'Entertainment', amount: 200 },
-  { category: 'Healthcare', amount: 170 },
-  { category: 'Subscriptions', amount: 77 },
-  { category: 'Other', amount: 200 },
-];
-
-// Function to calculate monthly net balance
-function calculateMonthlyBalance(month) {
-  const data = monthlyData[month];
-  if (!data) {
-    return { error: 'Month not found' };
-  }
-  return {
-    ...data,
-    netBalance: data.income - data.expenses,
-  };
-}
-
-// Export the data and calculation function
-export default { monthlyData, categoryData, calculateMonthlyBalance };
