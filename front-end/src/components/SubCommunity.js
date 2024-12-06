@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CommunityPopup from "./CommunityPopup";
-import { FaPlusCircle } from "react-icons/fa";
+import { FaPlusCircle, FaMinusCircle } from "react-icons/fa";
 import { IoNavigateCircleOutline } from "react-icons/io5";
 import BackButton from "./BackButton";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { axiosInstance } from "../axios";
+import { set } from "mongoose";
 
 const SubCommunity = (props) => {
   //join and visit button
@@ -14,21 +15,47 @@ const SubCommunity = (props) => {
   const [isJoined, setIsJoined] = useState(false);
   const { communityId } = useParams();
 
+  useEffect(() => {
+    // Check if the user has already joined the community
+    axiosInstance
+      .get(`/check-community-membership/${communityId}`)
+      .then((response) => {
+        if (response.data.isMember) {
+          setIsJoinedBefore(true);
+        }
+      })
+      .catch((err) => {
+        console.error("Error checking community membership", err);
+      });
+  }, []);
+
   const handleJoinButton = () => {
     setStatus(true);
     axiosInstance
       .post(`/join-community/${communityId}`)
       .then((res) => {
         console.log(res.data);
+        setIsJoined(true);
+        setIsJoinedBefore(true);
       })
       .catch((err) => {
-        if (err.response.status === 400) {
-          setIsJoinedBefore(true);
-        }
         console.log("error in joining community");
         console.error(err);
       });
-    setIsJoined(true);
+  };
+
+  const handleLeaveButton = () => {
+    setStatus(true);
+    axiosInstance
+      .post(`/leave-community/${communityId}`)
+      .then((res) => {
+        console.log(res.data);
+        setIsJoined(false);
+        setIsJoinedBefore(false);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   const closePopup = () => {
@@ -48,12 +75,21 @@ const SubCommunity = (props) => {
       <BackButton backButtonHandler={handleBackButton} />
       <div className="flex justify-end w-[100%] mb-6">
         {!isVisitButton ? (
-          <button
-            onClick={handleJoinButton}
-            className="bg-ebony-700 px-4 py-2 rounded-lg font-light text-rose-700 hover:text-ebony-700 hover:bg-rose-700 flex flex-row items-center gap-2"
-          >
-            Join <FaPlusCircle />
-          </button>
+          !isJoinedBefore ? (
+            <button
+              onClick={handleJoinButton}
+              className="bg-ebony-700 px-4 py-2 rounded-lg font-light text-rose-700 hover:text-ebony-700 hover:bg-rose-700 flex flex-row items-center gap-2"
+            >
+              Join <FaPlusCircle />
+            </button>
+          ) : (
+            <button
+              onClick={handleLeaveButton}
+              className="bg-ebony-700 px-4 py-2 rounded-lg font-light text-rose-700 hover:text-ebony-700 hover:bg-rose-700 flex flex-row items-center gap-2"
+            >
+              Leave <FaMinusCircle />
+            </button>
+          )
         ) : (
           <Link to={"/home"}>
             <button className="bg-ebony-700 px-4 py-2 rounded-lg font-light text-rose-700 hover:text-ebony-700 hover:bg-rose-700 flex flex-row items-center gap-2">
