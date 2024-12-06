@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Header from '../components/header';
 import BudgetProgress from '../mocks/BudgetProgress.jsx';
 import Notifications from '../components/notifications.jsx';
+import transactionData from '../mocks/transactionData';
+import budgetLimits from '../mocks/budgetLimits';
 import Categories from '../components/Categories.jsx';
 import AddTransaction from '../components/AddTransaction';
 import './home.css';
@@ -56,9 +58,46 @@ function Home() {
     return acc;
   }, {});
  
-  const handleAddTransaction = (transaction) => {
-    setTransactions([transaction, ...transactions]);
+  // const handleAddTransaction = (transaction) => {
+  //   setTransactions([transaction, ...transactions]);
+  // };
+  const handleAddTransaction = async (transaction) => {
+    const userId = localStorage.getItem('id'); // Retrieve userId from localStorage
+    const budgetId = 1; // Replace with actual budget ID or fetch dynamically if needed
+  
+    if (!userId) {
+      console.error('User ID not found in localStorage.');
+      return;
+    }
+  
+    try {
+      const response = await fetch('http://localhost:3001/api/transactions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...transaction,
+          userId,
+          budgetId,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to add transaction');
+      }
+  
+      const newTransaction = await response.json();
+  
+      // Update local state with the newly added transaction
+      setTransactions([newTransaction, ...transactions]);
+      setShowAddTransaction(false); // Close the AddTransaction modal
+    } catch (error) {
+      console.error('Error adding transaction:', error);
+    }
   };
+  
+  
  
   const toggleEdit = () => {
     setIsEditing(!isEditing);
