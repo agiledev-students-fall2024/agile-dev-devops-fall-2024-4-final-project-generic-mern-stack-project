@@ -159,61 +159,23 @@ app.delete('/api/accounts/:id', async (req, res) => {
 });
 
 /* ======================= Debt Routes ======================= */
-// Route to update a debt by ID
-app.put("/api/debts/:userId/:debtId", async (req, res) => {
-  const { userId, debtId } = req.params;
-  const { type, amount, dueDate, paymentSchedule } = req.body;
 
+// Route to get all debts
+app.get("/api/debts", authenticateToken, async (req, res) => {
   try {
-    const user = await User.findById(userId);
+    // Find the user by their ID and only return the debts field
+    const user = await User.findById(req.user.id, 'debts'); 
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-
-    const debt = user.debts.id(debtId); 
-    if (!debt) {
-      return res.status(404).json({ error: "Debt not found" });
-    }
-
-    // Update debt fields
-    if (type) debt.type = type;
-    if (amount != null) debt.amount = amount;
-    if (dueDate) debt.dueDate = dueDate;
-    if (paymentSchedule) debt.paymentSchedule = paymentSchedule;
-
-    await user.save(); 
-    res.json(debt);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Route to delete a debt by ID
-app.delete("/api/debts/:userId/:debtId", async (req, res) => {
-  const { userId, debtId } = req.params;
-
-  try {
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    const debt = user.debts.id(debtId); 
-    if (!debt) {
-      return res.status(404).json({ error: "Debt not found" });
-    }
-
-    debt.remove(); 
-    await user.save(); 
-    res.status(204).send();
+    res.json(user.debts);  // Send the debts data
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
 // Route to add a new debt
-app.post("/api/debts/:userId", async (req, res) => {
-  const { userId } = req.params;
+app.post("/api/debts", authenticateToken, async (req, res) => {
   const { type, amount, dueDate, paymentSchedule } = req.body;
 
   if (!type || amount == null || !dueDate || !paymentSchedule) {
@@ -221,34 +183,76 @@ app.post("/api/debts/:userId", async (req, res) => {
   }
 
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
+
+    console.log('Authenticated User ID:', req.user.id);
 
     const newDebt = { type, amount, dueDate, paymentSchedule };
-    user.debts.push(newDebt); 
+    user.debts.push(newDebt);  // Add the new debt to the user's debts array
     await user.save();
-    res.status(201).json(newDebt);
+    res.status(201).json(newDebt);  // Return the newly created debt
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
-
-// Route to get all debts
-app.get("/api/debts/:userId", async (req, res) => {
-  const { userId } = req.params;
+// Route to update a debt by ID
+app.put("/api/debts/:debtId", authenticateToken, async (req, res) => {
+  const { debtId } = req.params;
+  const { type, amount, dueDate, paymentSchedule } = req.body;
 
   try {
-    const user = await User.findById(userId, 'debts'); 
+    const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-    res.json(user.debts);
+
+    const debt = user.debts.id(debtId);  // Find the debt by its ID
+    if (!debt) {
+      return res.status(404).json({ error: "Debt not found" });
+    }
+
+    // Update debt fields if provided
+    if (type) debt.type = type;
+    if (amount != null) debt.amount = amount;
+    if (dueDate) debt.dueDate = dueDate;
+    if (paymentSchedule) debt.paymentSchedule = paymentSchedule;
+
+    await user.save();
+    res.json(debt);  // Return the updated debt
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
+// Route to delete a debt by ID
+app.delete("/api/debts/:debtId", authenticateToken, async (req, res) => {
+  const { debtId } = req.params;
+
+  try {
+    // Convert the debtId to ObjectId format to match Mongoose documents
+    const debtIdObject = new mongoose.Types.ObjectId(debtId);
+
+    // Find the user and remove the debt by its ID from the debts array
+    const user = await User.findOneAndUpdate(
+      { 'debts._id': debtIdObject },  // Find the user with the debt
+      { $pull: { debts: { _id: debtIdObject } } },  // Pull the debt from the debts array
+      { new: true }  // Return the updated user
+    );
+
+    if (!user) {
+      return res.status(404).json({ error: "Debt not found" });
+    }
+
+    res.status(200).json({ message: "Debt deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 /* ======================= Goal Routes ======================= */
 // Route to invite collaborator
 app.get('/goals', async (req, res) => {
