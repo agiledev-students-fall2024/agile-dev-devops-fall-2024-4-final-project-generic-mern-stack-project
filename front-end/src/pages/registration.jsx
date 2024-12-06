@@ -36,10 +36,18 @@ const Registration = () => {
         navigate('/login');
       }, 2000);
     } catch (err) {
-      setErrorMessage(err.response?.data?.message || 'Registration failed.');
+      const errorResponse = err.response?.data;
+      if (errorResponse?.errors) {
+        // If there are validation errors, format them into a readable message
+        const formattedErrors = errorResponse.errors
+          .map((error) => error.msg) // Extract error messages
+          .join('\n'); // Join them into a single string
+        setErrorMessage(formattedErrors);
+      } else {
+        setErrorMessage(errorResponse?.message || 'Registration failed.');
+      }
     }
   };
- 
   return (
     <div className="registration-container">
       <h2>Register</h2>
@@ -76,10 +84,22 @@ const Registration = () => {
         />
         <button type="submit">Register</button>
       </form>
- 
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      {/*errorMessage && <p className="error-message">{errorMessage}</p>*/}
+      <div>
+        {errorMessage && (
+          <div className="error-message">
+            <p>
+              {errorMessage.split('\n').map((msg, idx) => (
+                <span key={idx}>
+                  {msg}
+                  <br />
+                </span>
+              ))}
+            </p>
+          </div>
+        )}
+      </div>
       {successMessage && <p className="success-message">{successMessage}</p>}
- 
       <div className="login-link-container">
         <Link to="/login" className="login-link">
           Already have an account? Go back to login
@@ -90,3 +110,4 @@ const Registration = () => {
 };
  
 export default Registration;
+ 
