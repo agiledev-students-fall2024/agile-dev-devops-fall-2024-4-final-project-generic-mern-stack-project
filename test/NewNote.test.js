@@ -66,7 +66,7 @@ describe("triggerAPI", () => {
 
     expect(result).toEqual(mockData);
     expect(axios.post).toHaveBeenCalledWith(
-      "http://localhost:5000/api/notes/",
+      `https://easynote-aivlj.ondigitalocean.app/api/notes/`,
       notes,
       expect.objectContaining({
         headers: {
