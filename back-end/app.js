@@ -430,19 +430,40 @@ app.put('/api/transactions/:id', async (req, res) => {
 
  
 // Route to delete a transaction by ID
-app.delete('/api/transactions/:id', (req, res) => {
-  const { id } = req.params;
-  const transactionIndex = transactionData.findIndex(
-    (transaction) => transaction.id === parseInt(id)
-  );
- 
-  if (transactionIndex === -1) {
-    return res.status(404).json({ error: 'Transaction not found' });
+// Route to delete a transaction by ID
+app.delete('/api/transactions/:id', async (req, res) => {
+  const { id } = req.params; // Transaction ID
+  const { userId } = req.body; // User ID from the request body
+
+  if (!userId) {
+    return res.status(400).json({ error: 'User ID is required.' });
   }
- 
-  transactionData.splice(transactionIndex, 1);
-  res.status(204).send();
+
+  try {
+    // Find the user and remove the transaction by ID
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    const transactionIndex = user.transactions.findIndex(t => t._id.toString() === id);
+    if (transactionIndex === -1) {
+      return res.status(404).json({ error: 'Transaction not found.' });
+    }
+
+    // Remove the transaction
+    user.transactions.splice(transactionIndex, 1);
+
+    // Save the updated user document
+    await user.save();
+
+    res.status(200).json({ message: 'Transaction deleted successfully.' });
+  } catch (error) {
+    console.error('Error deleting transaction:', error);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
 });
+
  
 /* ======================= Recurring Payments Routes ======================= */
  

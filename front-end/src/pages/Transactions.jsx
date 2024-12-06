@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import EditTransaction from '../components/EditTransaction'; 
+import AddTransaction from '../components/AddTransaction'; // Import AddTransaction component
 import './Transactions.css';
 
 function Transactions() {
@@ -9,6 +10,7 @@ function Transactions() {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [editTransaction, setEditTransaction] = useState(null); // Track transaction to edit
+  const [showAddTransaction, setShowAddTransaction] = useState(false); // AddTransaction modal state
   const navigate = useNavigate();
 
   const userId = localStorage.getItem('id');
@@ -36,7 +38,6 @@ function Transactions() {
       })
       .catch((err) => console.error("Error fetching transactions:", err));
   }, [userId]);
-  
 
   const handleCategoryChange = (event) => {
     const category = event.target.value;
@@ -61,12 +62,56 @@ function Transactions() {
     setEditTransaction(null); // Close the modal
   };
 
+  const handleDeleteTransaction = (transactionId) => {
+    // Remove the transaction from the state
+    setTransactions(transactions.filter(t => t._id !== transactionId));
+    setFilteredTransactions(filteredTransactions.filter(t => t._id !== transactionId));
+  };
+
+  const handleAddTransaction = async (transaction) => {
+    try {
+      const response = await fetch('http://localhost:3001/api/transactions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...transaction,
+          userId,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to add transaction');
+      }
+  
+      const newTransaction = await response.json();
+  
+      // Update state with the new transaction and sort
+      const updatedTransactions = [newTransaction, ...transactions];
+      const sortedTransactions = updatedTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+      setTransactions(sortedTransactions);
+      setFilteredTransactions(sortedTransactions);
+      setShowAddTransaction(false); // Close the AddTransaction modal
+    } catch (error) {
+      console.error('Error adding transaction:', error);
+    }
+  };
+
   return (
     <div className="transactions-page">
-      <button className="back-button" onClick={() => navigate('/')}>
-        ← Back
-      </button>
-      <h2>{getCurrentMonth()} Transactions</h2>
+      <div className="transactions-header">
+        <button className="back-button" onClick={() => navigate('/')}>
+          ← Back
+        </button>
+        <h2>{getCurrentMonth()} Transactions</h2>
+        <button
+          id="add-transaction-button"
+          onClick={() => setShowAddTransaction(true)}
+        >
+          +
+        </button>
+      </div>
 
       {filteredTransactions.length > 0 && (
         <>
@@ -113,7 +158,15 @@ function Transactions() {
         <EditTransaction
           transaction={editTransaction}
           onUpdateTransaction={handleUpdateTransaction}
+          onDeleteTransaction={handleDeleteTransaction} // Pass delete handler
           onClose={() => setEditTransaction(null)}
+        />
+      )}
+
+      {showAddTransaction && (
+        <AddTransaction
+          onAddTransaction={handleAddTransaction}
+          onClose={() => setShowAddTransaction(false)}
         />
       )}
     </div>

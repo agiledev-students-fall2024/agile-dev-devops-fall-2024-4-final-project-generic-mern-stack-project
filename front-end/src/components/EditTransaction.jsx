@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import './EditTransaction.css';
 import axios from 'axios';
+import { FaTrash } from 'react-icons/fa'; // Import trash icon from react-icons
 
-function EditTransaction({ transaction, onUpdateTransaction, onClose }) {
+function EditTransaction({ transaction, onUpdateTransaction, onClose, onDeleteTransaction }) {
   const BASE_URL = process.env.REACT_APP_SERVER_HOSTNAME;
 
   const [updatedTransaction, setUpdatedTransaction] = useState({
@@ -36,10 +38,30 @@ function EditTransaction({ transaction, onUpdateTransaction, onClose }) {
       });
     }
   };
-  
+
+  const handleDeleteTransaction = () => {
+    const userId = localStorage.getItem('id');
+    axios.delete(`${BASE_URL}/api/transactions/${transaction._id}`, {
+      data: { userId }, // Pass userId in the request body
+    })
+    .then(() => {
+      onDeleteTransaction(transaction._id); // Notify parent component to remove the transaction
+      onClose(); // Close the modal
+    })
+    .catch((err) => {
+      console.error("Error deleting transaction:", err);
+    });
+  };
+
   return (
     <div className="modal">
       <div className="modal-content">
+        {/* Trash Icon for Delete */}
+        <FaTrash
+          className="trash-icon"
+          onClick={handleDeleteTransaction}
+          title="Delete Transaction"
+        />
         <h2>Edit Transaction</h2>
         <label>
           Merchant:
