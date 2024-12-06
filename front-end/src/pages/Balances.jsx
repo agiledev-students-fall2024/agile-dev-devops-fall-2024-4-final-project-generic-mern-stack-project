@@ -103,11 +103,9 @@ const Balances = () => {
       axios.delete(`${route}/${id}`, { headers })
         .then(() => {
           if (isDebt) {
-            // Delete the item from the local state using the _id
             const updatedDebts = debts.filter(debt => debt._id !== id);
             setDebts(updatedDebts);
           } else {
-            // Delete the item from the local state using the _id
             const updatedAccounts = accounts.filter(account => account._id !== id);
             setAccounts(updatedAccounts);
           }
