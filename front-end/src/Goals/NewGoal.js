@@ -34,7 +34,9 @@ const NewGoal = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const newGoal = { title, tasks: selectedTasks, dueDate };
+        //window.localStorage.getItem('session_user')
+        const user = await JSON.parse(window.localStorage.getItem('session_user'))
+        const newGoal = { title, tasks: selectedTasks, dueDate, "user_id": user._id };
         const response = await fetch('http://localhost:4000/goals/new', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

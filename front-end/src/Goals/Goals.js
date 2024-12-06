@@ -10,7 +10,8 @@ const Goals = () => {
     useEffect(() => {
         const collect = async () => {
             setLoading(true);
-            const response = await fetch('http://localhost:4000/goals');
+            const user = await JSON.parse(window.localStorage.getItem('session_user'));
+            const response = await fetch(`http://localhost:4000/goals/${user._id}`);
             const data = await response.json();
             setGoals(data);
             setLoading(false);
