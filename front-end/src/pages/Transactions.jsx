@@ -8,13 +8,21 @@ function Transactions() {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const navigate = useNavigate();
-  
-  const userId = 1; // Replace with the actual user ID
-  const budgetId = 1; // Replace with the actual budget ID
+
+  const userId = localStorage.getItem('id');
+
+  // Get the current month name
+  const getCurrentMonth = () => {
+    const monthNames = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    return monthNames[new Date().getMonth()];
+  };
 
   useEffect(() => {
     // Fetch transactions from the backend
-    fetch(`http://localhost:3001/api/transactions?userId=${userId}&budgetId=${budgetId}`)
+    fetch(`http://localhost:3001/api/transactions?userId=${userId}`)
       .then(response => response.json())
       .then(data => {
         setTransactions(data);
@@ -30,7 +38,7 @@ function Transactions() {
   const handleCategoryChange = (event) => {
     const category = event.target.value;
     setSelectedCategory(category);
-    
+
     if (category === "All") {
       setFilteredTransactions(transactions);
     } else {
@@ -44,37 +52,46 @@ function Transactions() {
       <button className="back-button" onClick={() => navigate('/')}>
         ← Back
       </button>
-      <h2>October Transactions</h2>
+      <h2>{getCurrentMonth()} Transactions</h2>
 
-      {/* Category Filter Dropdown */}
-      <label htmlFor="categoryFilter">Filter by Category:</label>
-      <select 
-        id="categoryFilter" 
-        value={selectedCategory} 
-        onChange={handleCategoryChange}
-        className="category-filter"
-      >
-        {categories.map(category => (
-          <option key={category} value={category}>{category}</option>
-        ))}
-      </select>
+      {/* Category Filter Dropdown (conditionally rendered) */}
+      {filteredTransactions.length > 0 && (
+        <>
+          <label htmlFor="categoryFilter">Filter by Category:</label>
+          <select 
+            id="categoryFilter" 
+            value={selectedCategory} 
+            onChange={handleCategoryChange}
+            className="category-filter"
+          >
+            {categories.map(category => (
+              <option key={category} value={category}>{category}</option>
+            ))}
+          </select>
+        </>
+      )}
 
-      <ul className="transaction-list">
-        <li className="transaction-item header">
-          <span>Merchant</span>
-          <span>Category</span>
-          <span>Amount</span>
-          <span>Date</span>
-        </li>
-        {filteredTransactions.map((transaction) => (
-          <li key={transaction.id} className="transaction-item">
-            <span>{transaction.merchant}</span>
-            <span>{transaction.category}</span>
-            <span>${transaction.amount.toFixed(2)}</span>
-            <span>{transaction.date}</span>
+      {/* Transactions List */}
+      {filteredTransactions.length === 0 ? (
+        <p className="no-transactions-message">Nothing here yet</p>
+      ) : (
+        <ul className="transaction-list">
+          <li className="transaction-item header">
+            <span>Merchant</span>
+            <span>Category</span>
+            <span>Amount</span>
+            <span>Date</span>
           </li>
-        ))}
-      </ul>
+          {filteredTransactions.map((transaction) => (
+            <li key={transaction.id} className="transaction-item">
+              <span>{transaction.merchant}</span>
+              <span>{transaction.category}</span>
+              <span>${transaction.amount.toFixed(2)}</span>
+              <span>{transaction.date}</span>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
