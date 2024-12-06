@@ -41,7 +41,7 @@ const Balances = () => {
 
   useEffect(() => {
     fetchData();
-  }, []); // Ensure it triggers after accounts or debts update
+  }, []); 
   
 
   const handleAddOrEditItem = () => {
@@ -78,8 +78,7 @@ const Balances = () => {
             } else {
               setAccounts([...accounts, response.data]);
             }
-            // After adding the new account, re-fetch the data to ensure everything is in sync
-            fetchData();
+             fetchData();
           })
           .catch(err => console.error("Error adding item:", err));
       }
@@ -93,7 +92,6 @@ const Balances = () => {
     const token = localStorage.getItem('token');
     const route = isDebt ? `${BASE_URL}/api/debts` : `${BASE_URL}/api/accounts`;
 
-    // Ensure you're accessing the correct _id
     const id = isDebt ? debts[index]._id : accounts[index]._id;
 
     if (token) {
