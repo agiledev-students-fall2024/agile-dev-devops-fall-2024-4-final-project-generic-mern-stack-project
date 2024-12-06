@@ -27,18 +27,19 @@ function Home() {
       console.error('No logged-in user found');
       return;
     }
+  
     // Fetch transactions for the user
-    fetch(
-      `http://localhost:3001/api/transactions?userId=${userId}`
-    )
+    fetch(`http://localhost:3001/api/transactions?userId=${userId}`)
       .then((response) => response.json())
-      .then((data) => setTransactions(data || []))
+      .then((data) => {
+        // Sort transactions by date (most recent first)
+        const sortedTransactions = (data || []).sort((a, b) => new Date(b.date) - new Date(a.date));
+        setTransactions(sortedTransactions);
+      })
       .catch((err) => console.error('Error fetching transactions:', err));
- 
+  
     // Fetch budget limits
-    fetch(
-      `http://localhost:3001/api/budget-limits?userId=${userId}`
-    )
+    fetch(`http://localhost:3001/api/budget-limits?userId=${userId}`)
       .then((response) => response.json())
       .then((data) => {
         setCategoryLimits(data.categoryLimits || {}); // Set category limits
@@ -46,6 +47,7 @@ function Home() {
       })
       .catch((err) => console.error('Error fetching budget limits:', err));
   }, [userId]);
+    
  
   // Calculate category totals based on transactions
   const categoryTotals = transactions.reduce((acc, transaction) => {
@@ -63,7 +65,6 @@ function Home() {
   // };
   const handleAddTransaction = async (transaction) => {
     const userId = localStorage.getItem('id'); // Retrieve userId from localStorage
-    const budgetId = 1; // Replace with actual budget ID or fetch dynamically if needed
   
     if (!userId) {
       console.error('User ID not found in localStorage.');
@@ -79,7 +80,6 @@ function Home() {
         body: JSON.stringify({
           ...transaction,
           userId,
-          budgetId,
         }),
       });
   
@@ -89,13 +89,16 @@ function Home() {
   
       const newTransaction = await response.json();
   
-      // Update local state with the newly added transaction
-      setTransactions([newTransaction, ...transactions]);
+      // Update local state with the newly added transaction and sort
+      const updatedTransactions = [newTransaction, ...transactions];
+      const sortedTransactions = updatedTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+      setTransactions(sortedTransactions);
       setShowAddTransaction(false); // Close the AddTransaction modal
     } catch (error) {
       console.error('Error adding transaction:', error);
     }
   };
+  
   
   
  
