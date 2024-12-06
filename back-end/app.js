@@ -7,6 +7,7 @@ import mongoose from 'mongoose';
 import { body, validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
 import { authenticateToken } from './middleware/auth.js';
+
  
 //MOCK DATA
 import budgetLimits from './mocks/budgetLimits.js';
@@ -28,10 +29,6 @@ dotenv.config({ silent: true });
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
  
-/* MOCK USER SESSION WHILE AWAITING LOGIN IMPLEMENTATION */
-// Define mock userId and budgetId
-const MOCK_USER_ID = 1;
-const MOCK_BUDGET_ID = 1;
  
 /* Initialize Express App */
 const app = express();
@@ -57,7 +54,7 @@ mongoose
 app.get('/', (req, res) => {
   res.send('Hello!');
 });
- 
+
 // use the specialized routing files
 app.use('/user', router); // all requests for /user/* will be handled by the user router
  
@@ -329,74 +326,150 @@ app.post('/goals/:goalId/transactions', async (req, res) => {
  
 /* ======================= Transaction Routes ======================= */
 // Route to get all transactions
-app.get('/api/transactions', (req, res) => {
-  res.json(transactionData);
+app.get('/api/transactions', async (req, res) => {
+  const { userId } = req.query;
+
+  if (!userId) {
+    return res.status(400).json({ error: 'User ID is required' });
+  }
+
+  try {
+    const user = await User.findById(userId).select('transactions');
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json(user.transactions || []); // Return the user's transactions
+  } catch (error) {
+    console.error('Error fetching transactions:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
+
+
  
 // Route to add a new transaction
-app.post('/api/transactions', (req, res) => {
-  const { merchant, category, amount, date } = req.body;
-  if (!merchant || !category || amount == null || !date) {
+app.post('/api/transactions', async (req, res) => {
+  const { merchant, category, amount, date, userId } = req.body;
+
+  if (!userId || !merchant || !category || amount == null || !date) {
     return res
       .status(400)
-      .json({ error: 'Merchant, category, amount, and date are required' });
+      .json({ error: 'User ID, merchant, category, amount, and date are required.' });
   }
-  const newTransaction = {
-    id: transactionData.length + 1,
-    merchant,
-    category,
-    amount,
-    date,
-  };
-  transactionData.push(newTransaction);
-  res.status(201).json(newTransaction);
+
+  try {
+    // Find the user in the database
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Create a new transaction object
+    const newTransaction = {
+      merchant,
+      category,
+      amount,
+      date: new Date(date), // Ensure the date is stored correctly
+      _id: new mongoose.Types.ObjectId(), // Generate a unique ID for the transaction
+    };
+
+    // Add the transaction to the user's transactions array
+    user.transactions.push(newTransaction);
+
+    // Save the updated user document
+    await user.save();
+
+    // Respond with the newly added transaction
+    res.status(201).json(newTransaction);
+  } catch (error) {
+    console.error('Error adding transaction:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
+
  
 // Route to update a transaction by ID
-app.put('/api/transactions/:id', (req, res) => {
-  const { id } = req.params;
-  const { merchant, category, amount, date } = req.body;
-  const transactionIndex = transactionData.findIndex(
-    (transaction) => transaction.id === parseInt(id)
-  );
- 
-  if (transactionIndex === -1) {
-    return res.status(404).json({ error: 'Transaction not found' });
+// Route to update a transaction by ID
+app.put('/api/transactions/:id', async (req, res) => {
+  const { id } = req.params; // Transaction ID from the request parameters
+  const { merchant, category, amount, date, userId } = req.body; // Updated data and userId
+
+  if (!userId) {
+    return res.status(400).json({ error: 'User ID is required.' });
   }
- 
-  transactions[transactionIndex] = {
-    ...transactions[transactionIndex],
-    merchant,
-    category,
-    amount,
-    date,
-  };
-  res.json(transactionData[transactionIndex]);
+
+  try {
+    // Find the user and the transaction by ID
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    const transaction = user.transactions.id(id);
+    if (!transaction) {
+      return res.status(404).json({ error: 'Transaction not found.' });
+    }
+
+    // Update the transaction fields
+    if (merchant) transaction.merchant = merchant;
+    if (category) transaction.category = category;
+    if (amount !== undefined) transaction.amount = amount;
+    if (date) transaction.date = new Date(date);
+
+    // Save the updated user document
+    await user.save();
+
+    // Return the updated transaction
+    res.status(200).json(transaction);
+  } catch (error) {
+    console.error('Error updating transaction:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
+
  
 // Route to delete a transaction by ID
-app.delete('/api/transactions/:id', (req, res) => {
-  const { id } = req.params;
-  const transactionIndex = transactionData.findIndex(
-    (transaction) => transaction.id === parseInt(id)
-  );
- 
-  if (transactionIndex === -1) {
-    return res.status(404).json({ error: 'Transaction not found' });
+// Route to delete a transaction by ID
+app.delete('/api/transactions/:id', async (req, res) => {
+  const { id } = req.params; // Transaction ID
+  const { userId } = req.body; // User ID from the request body
+
+  if (!userId) {
+    return res.status(400).json({ error: 'User ID is required.' });
   }
- 
-  transactionData.splice(transactionIndex, 1);
-  res.status(204).send();
+
+  try {
+    // Find the user and remove the transaction by ID
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    const transactionIndex = user.transactions.findIndex(t => t._id.toString() === id);
+    if (transactionIndex === -1) {
+      return res.status(404).json({ error: 'Transaction not found.' });
+    }
+
+    // Remove the transaction
+    user.transactions.splice(transactionIndex, 1);
+
+    // Save the updated user document
+    await user.save();
+
+    res.status(200).json({ message: 'Transaction deleted successfully.' });
+  } catch (error) {
+    console.error('Error deleting transaction:', error);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
 });
+
  
 /* ======================= Recurring Payments Routes ======================= */
  
 app.get('/api/recurring-bills', (req, res) => {
   // Get userId and budgetId from query or use defaults
   const userId = req.query.userId ? parseInt(req.query.userId) : MOCK_USER_ID;
-  const budgetId = req.query.budgetId
-    ? parseInt(req.query.budgetId)
-    : MOCK_BUDGET_ID;
  
   if (!userId) {
     return res.status(400).json({ error: 'User ID is required' });
@@ -411,24 +484,27 @@ app.get('/api/recurring-bills', (req, res) => {
 });
  
 /* ======================= Budget Limits Routes ======================= */
-app.get('/api/budget-limits', (req, res) => {
-  const userId = req.query.userId ? parseInt(req.query.userId) : MOCK_USER_ID;
-  const budgetId = req.query.budgetId
-    ? parseInt(req.query.budgetId)
-    : MOCK_BUDGET_ID;
- 
-  const userBudgetLimit = budgetLimits.find(
-    (limit) => limit.userId === userId && limit.budgetId === budgetId
-  );
- 
-  if (!userBudgetLimit) {
-    return res
-      .status(404)
-      .json({ error: 'Budget limits not found for this user and budget.' });
+app.get('/api/budget-limits', async (req, res) => {
+  const { userId } = req.query;
+
+  if (!userId) {
+    return res.status(400).json({ error: 'User ID is required.' });
   }
- 
-  res.json(userBudgetLimit);
+
+  try {
+    // Fetch the user and their budget limits
+    const user = await User.findById(userId).select('budgetLimits');
+    if (!user) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    res.json(user.budgetLimits); // Send the budget limits
+  } catch (error) {
+    console.error('Error fetching budget limits:', error);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
 });
+
  
 /* ======================= Notification Routes ======================= */
 // Route to get notifications
