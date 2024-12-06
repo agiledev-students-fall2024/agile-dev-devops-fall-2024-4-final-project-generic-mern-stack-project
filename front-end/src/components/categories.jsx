@@ -1,7 +1,7 @@
 import React from 'react';
 import './categories.css';
 
-function Categories({ categoryTotals, categoryLimits, isEditing, handleLimitChange }) {
+function categories({ categoryTotals, categoryLimits, isEditing, handleLimitChange }) {
   const calculateProgress = (spent, limit) => Math.min((spent / limit) * 100, 100);
 
   return (
@@ -34,4 +34,4 @@ function Categories({ categoryTotals, categoryLimits, isEditing, handleLimitChan
   );
 }
 
-export default Categories;
+export default categories;
