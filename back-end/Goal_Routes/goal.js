@@ -2,13 +2,17 @@ const { Router } = require('express');
 const mongoose = require('mongoose');
 require('../models/goalschema');
 const Goal = mongoose.model("Goal")
+const Task = mongoose.model('Task');
 
 
 const app = new Router();
 
-app.get('/goals', async (req, res) => {
+app.get('/goals/:id', async (req, res) => {
+    const userId = req.params.id;
+    console.log("userId", userId)
     try {
-      const goals = await Goal.find().populate('tasks'); 
+      const goals = await Goal.find({"user_id": userId}).populate('tasks');
+      console.log("goals", goals) 
       const enrichedGoals = goals.map(goal => {
         const completedTasks = goal.tasks.filter(task => task.status === 'finished');
         console.log("taskscomplete", completedTasks)
@@ -19,25 +23,14 @@ app.get('/goals', async (req, res) => {
     });
       res.json(enrichedGoals);
     } catch (error) {
-      res.status(500).json({ error: 'Failed to fetch goals.' });
+      res.status(500).json([]);
     }
   });
-
-  const Task = mongoose.model('Task');
-
-app.get('/tasks', async (req, res) => {
-    try {
-        const tasks = await Task.find();
-        res.json(tasks);
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch tasks.' });
-    }
-});
   
 
 app.post('/goals/new', async (req, res) => {
     try {
-        const { title, tasks, dueDate } = req.body;
+        const { title, tasks, dueDate, user_id } = req.body;
 
         const existingTasks = await Task.find({ _id: { $in: tasks } });
         if (existingTasks.length !== tasks.length) {
@@ -49,6 +42,7 @@ app.post('/goals/new', async (req, res) => {
             tasks,
             dueDate,
             completed_tasks: [],
+            user_id
         });
 
         const savedGoal = await goal.save();
