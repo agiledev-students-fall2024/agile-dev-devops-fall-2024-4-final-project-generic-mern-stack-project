@@ -11,13 +11,17 @@ for Node.js. */
 require('../models/schema'); 
 const Task = mongoose.model("Task")
 
-router.get('/tasks/urgent', async (req, res) => {
+router.get('/tasks/urgent/:id', async (req, res) => {
   const today = new Date();
+  const userId = req.params.id;
   today.setHours(0, 0, 0, 0);
-  Task.find({ due: { $gte: today } }) 
-    .sort({ due: 1 }) 
-    .limit(3) 
-    .then(urgentTasks => res.json(urgentTasks));
+  const urgentTasks = await Task.find({ 
+    user_id: userId, 
+    due: { $gte: today } 
+  })
+  .sort({ due: 1 }) 
+  .limit(3);
+  res.json(urgentTasks);
 });
 
 router.get('/tasks', (req, res) => {
@@ -30,7 +34,7 @@ router.get('/tasks', (req, res) => {
 
 
 
-router.get('/tasks/:id', async (req, res) => {
+router.get('/task/:id', async (req, res) => {
   try {
     const task = await Task.find({"user_id": req.params.id}) 
     if (!task) {
@@ -47,7 +51,7 @@ router.get('/tasks/:id', async (req, res) => {
 
 
 router.post('/tasks', async (req, res) => {
-  const { title, description, subject, due_date, priority, recurring, recurring_period} = req.body;
+  const { title, description, subject, due_date, priority, recurring, recurring_period, user_id} = req.body;
   const due = new Date(due_date);
   const tasksToCreate = [];
 
@@ -63,7 +67,7 @@ router.post('/tasks', async (req, res) => {
     return dates;
   };
   try {
-    if (recurring) {
+    if (recurring === "Yes") {
       const futureDates = nextDue(due, recurring_period);
 
       futureDates.forEach((futureDate) => {
@@ -76,6 +80,7 @@ router.post('/tasks', async (req, res) => {
           recurring,
           recurring_period,
           status: 'not_started',
+          user_id,
         });
       });
     } else {
@@ -83,11 +88,12 @@ router.post('/tasks', async (req, res) => {
         name: title,
         description,
         subject,
-        due: initialDue,
+        due,
         priority,
         recurring: false,
         recurring_period: null,
         status: 'not_started',
+        user_id,
       });
     }
 

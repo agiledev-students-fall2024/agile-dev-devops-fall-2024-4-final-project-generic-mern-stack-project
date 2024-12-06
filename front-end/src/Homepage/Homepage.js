@@ -8,7 +8,9 @@ function Homepage(){
 
   useEffect(() => {
     const fetchUrgentTasks = async () => {
-      const response = await fetch('http://localhost:4000/tasks/urgent');
+      const session = window.localStorage.getItem("session_user");
+      const sessionParsed = JSON.parse(session);
+      const response = await fetch(`http://localhost:4000/tasks/urgent/${sessionParsed._id}`);
       const data = await response.json();
       setUrgentTasks(data);
     };

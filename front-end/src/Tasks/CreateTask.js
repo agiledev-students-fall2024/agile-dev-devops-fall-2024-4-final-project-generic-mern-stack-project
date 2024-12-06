@@ -59,7 +59,8 @@ function CreateTask() {
           alert("Please fill out all required fields.");
           return;
         }
-      
+        const session = window.localStorage.getItem("session_user");
+        const session_parsed = JSON.parse(session);
         const newTask = {
           title,
           description,
@@ -68,6 +69,7 @@ function CreateTask() {
           priority,
           recurring,
           recurring_period: recurring === "Yes" ? recurringPeriod : "",
+          user_id: session_parsed._id,
         };
       
         fetch('http://localhost:4000/tasks', {
