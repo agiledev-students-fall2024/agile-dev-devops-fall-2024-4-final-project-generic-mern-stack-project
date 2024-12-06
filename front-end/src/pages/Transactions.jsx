@@ -20,6 +20,13 @@ function Transactions() {
     return monthNames[new Date().getMonth()];
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // MM
+    const day = String(date.getDate()).padStart(2, '0'); // DD
+    return `${month}/${day}`;
+  };
+
   useEffect(() => {
     // Fetch transactions from the backend
     fetch(`http://localhost:3001/api/transactions?userId=${userId}`)
@@ -87,7 +94,7 @@ function Transactions() {
               <span>{transaction.merchant}</span>
               <span>{transaction.category}</span>
               <span>${transaction.amount.toFixed(2)}</span>
-              <span>{transaction.date}</span>
+              <span>{new Date(transaction.date).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit' })}</span>
             </li>
           ))}
         </ul>

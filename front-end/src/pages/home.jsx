@@ -197,7 +197,7 @@ function Home() {
               <span>{transaction.merchant}</span>
               <span>{transaction.category}</span>
               <span>${transaction.amount.toFixed(2)}</span>
-              <span>{transaction.date}</span>
+              <span>{new Date(transaction.date).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit' })}</span>
             </li>
           ))}
         </ul>
