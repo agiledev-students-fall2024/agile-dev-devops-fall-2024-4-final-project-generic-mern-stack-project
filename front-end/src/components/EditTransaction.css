@@ -2,12 +2,14 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    font-size: 1.5rem;
-    color: red;
+    color: #ff6b6b; /* Red color to indicate delete */
+    font-size: 1.5em;
     cursor: pointer;
+    transition: transform 0.2s, color 0.2s;
   }
   
   .trash-icon:hover {
-    color: darkred;
+    color: #e63946; /* Slightly darker red on hover */
+    transform: scale(1.1); /* Slightly enlarge the icon on hover */
   }
   

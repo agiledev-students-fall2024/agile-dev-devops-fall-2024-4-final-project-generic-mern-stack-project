@@ -20,45 +20,46 @@ function Home() {
  
   const userId = localStorage.getItem('id');
  
-  const totalSpent = overall.totalSpent || 0;
- 
+  const [totalSpent, setTotalSpent] = useState(0); // For tracking total spent
+  const [totalLimit, setTotalLimit] = useState(0); // For tracking total budget limit
+
   useEffect(() => {
     if (!userId) {
       console.error('No logged-in user found');
       return;
     }
-  
+
     // Fetch transactions for the user
     fetch(`http://localhost:3001/api/transactions?userId=${userId}`)
       .then((response) => response.json())
       .then((data) => {
-        // Sort transactions by date (most recent first)
         const sortedTransactions = (data || []).sort((a, b) => new Date(b.date) - new Date(a.date));
         setTransactions(sortedTransactions);
+
+        // Calculate total spent
+        const spent = sortedTransactions.reduce((total, transaction) => total + transaction.amount, 0);
+        setTotalSpent(spent);
       })
       .catch((err) => console.error('Error fetching transactions:', err));
-  
+
     // Fetch budget limits
     fetch(`http://localhost:3001/api/budget-limits?userId=${userId}`)
       .then((response) => response.json())
       .then((data) => {
-        setCategoryLimits(data.categoryLimits || {}); // Set category limits
-        setTotalBudget(data.monthlyLimit || 0); // Set total budget from monthlyLimit
+        setCategoryLimits(data.categoryLimits || {});
+        setTotalLimit(data.monthlyLimit || 0);
       })
       .catch((err) => console.error('Error fetching budget limits:', err));
   }, [userId]);
-    
+
  
   // Calculate category totals based on transactions
   const categoryTotals = transactions.reduce((acc, transaction) => {
     const { category, amount } = transaction;
-    if (categoryLimits[category]) {
-      acc[category] = (acc[category] || 0) + amount;
-    } else {
-      acc['Other'] = (acc['Other'] || 0) + amount;
-    }
+    acc[category] = (acc[category] || 0) + amount;
     return acc;
   }, {});
+  
  
   // const handleAddTransaction = (transaction) => {
   //   setTransactions([transaction, ...transactions]);
@@ -98,10 +99,7 @@ function Home() {
       console.error('Error adding transaction:', error);
     }
   };
-  
-  
-  
- 
+    
   const toggleEdit = () => {
     setIsEditing(!isEditing);
   };
@@ -196,7 +194,7 @@ function Home() {
             <span>Date</span>
           </li>
           {transactions.slice(0, 5).map((transaction) => (
-            <li key={transaction.id} className="transaction-item">
+            <li key={transaction._id || transaction.id} className="transaction-item">
               <span>{transaction.merchant}</span>
               <span>{transaction.category}</span>
               <span>${transaction.amount.toFixed(2)}</span>
@@ -204,6 +202,7 @@ function Home() {
             </li>
           ))}
         </ul>
+
       </section>
  
       {showAddTransaction && (
