@@ -20,67 +20,100 @@ const Balances = () => {
   // Base URL from environment variable
   const BASE_URL = process.env.REACT_APP_SERVER_HOSTNAME;
 
-  // Fetch accounts and debts on initial load
+  const fetchData = async () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const responseAccounts = await axios.get(`${BASE_URL}/api/accounts`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setAccounts(responseAccounts.data);
+
+        const responseDebts = await axios.get(`${BASE_URL}/api/debts`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setDebts(responseDebts.data);
+      } catch (error) {
+        console.error("Error fetching updated data:", error);
+      }
+    }
+  };
+
   useEffect(() => {
-    axios.get(`${BASE_URL}/api/accounts`)
-      .then(res => setAccounts(res.data))
-      .catch(err => console.error("Error fetching accounts:", err));
-      
-    axios.get(`${BASE_URL}/api/debts`)
-      .then(res => setDebts(res.data))
-      .catch(err => console.error("Error fetching debts:", err));
-  }, [BASE_URL]);
+    fetchData();
+  }, []); 
+  
 
   const handleAddOrEditItem = () => {
+    const token = localStorage.getItem('token');
     const route = isDebtModal ? `${BASE_URL}/api/debts` : `${BASE_URL}/api/accounts`;
     const payload = { ...newItem, amount: Number(newItem.amount) };
-
-    if (isEditing) {
-      // Editing existing item
-      const id = isDebtModal ? debts[currentItemIndex].id : accounts[currentItemIndex].id;
-      axios.put(`${route}/${id}`, payload)
-        .then(response => {
-          if (isDebtModal) {
-            const updatedDebts = [...debts];
-            updatedDebts[currentItemIndex] = response.data;
-            setDebts(updatedDebts);
-          } else {
-            const updatedAccounts = [...accounts];
-            updatedAccounts[currentItemIndex] = response.data;
-            setAccounts(updatedAccounts);
-          }
-        })
-        .catch(err => console.error("Error updating item:", err));
+  
+    if (token) {
+      const headers = {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      };
+  
+      if (isEditing) {
+        const id = isDebtModal ? debts[currentItemIndex]._id : accounts[currentItemIndex]._id;
+        axios.put(`${route}/${id}`, payload, { headers })
+          .then(response => {
+            if (isDebtModal) {
+              const updatedDebts = [...debts];
+              updatedDebts[currentItemIndex] = response.data;
+              setDebts(updatedDebts);
+            } else {
+              const updatedAccounts = [...accounts];
+              updatedAccounts[currentItemIndex] = response.data;
+              setAccounts(updatedAccounts);
+            }
+          })
+          .catch(err => console.error("Error updating item:", err));
+      } else {
+        axios.post(route, payload, { headers })
+          .then(response => {
+            if (isDebtModal) {
+              setDebts([...debts, response.data]);
+            } else {
+              setAccounts([...accounts, response.data]);
+            }
+             fetchData();
+          })
+          .catch(err => console.error("Error adding item:", err));
+      }
+      resetForm();
     } else {
-      // Adding new item
-      axios.post(route, payload)
-        .then(response => {
-          if (isDebtModal) {
-            setDebts([...debts, response.data]);
-          } else {
-            setAccounts([...accounts, response.data]);
-          }
-        })
-        .catch(err => console.error("Error adding item:", err));
+      console.error("Please log in.");
     }
-
-    resetForm();
   };
 
   const handleDeleteItem = (index, isDebt) => {
+    const token = localStorage.getItem('token');
     const route = isDebt ? `${BASE_URL}/api/debts` : `${BASE_URL}/api/accounts`;
-    const id = isDebt ? debts[index].id : accounts[index].id;
-    axios.delete(`${route}/${id}`)
-      .then(() => {
-        if (isDebt) {
-          const updatedDebts = debts.filter((_, i) => i !== index);
-          setDebts(updatedDebts);
-        } else {
-          const updatedAccounts = accounts.filter((_, i) => i !== index);
-          setAccounts(updatedAccounts);
-        }
-      })
-      .catch(err => console.error("Error deleting item:", err));
+
+    const id = isDebt ? debts[index]._id : accounts[index]._id;
+
+    if (token) {
+      const headers = {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      };
+
+      axios.delete(`${route}/${id}`, { headers })
+        .then(() => {
+          if (isDebt) {
+            const updatedDebts = debts.filter(debt => debt._id !== id);
+            setDebts(updatedDebts);
+          } else {
+            const updatedAccounts = accounts.filter(account => account._id !== id);
+            setAccounts(updatedAccounts);
+          }
+        })
+        .catch(err => console.error("Error deleting item:", err));
+    } else {
+      console.error("No token found. Please log in.");
+    }
   };
 
   const handleEditItem = (index, isDebt) => {
@@ -104,9 +137,6 @@ const Balances = () => {
     setIsDebtModal(false);
   };
 
-  const handlePlaidButtonClick = () => {
-    alert("This button doesn't work yet!");
-  };
 
   return (
     <main className="Home">
@@ -133,9 +163,6 @@ const Balances = () => {
           <div className="add-accounts">
             <button className="add-more-button" onClick={() => { setShowModal(true); setIsDebtModal(false) }}>
               Add More Accounts
-            </button>
-            <button className="plaid-button" onClick={handlePlaidButtonClick}>
-              Link Account with Plaid
             </button>
           </div>
         </section>
@@ -183,7 +210,7 @@ const Balances = () => {
             </label>
             {!isDebtModal && (
               <label>
-                Account Number:
+                Last 4 Digits of Account Number:
                 <input
                   type="text"
                   value={newItem.number}
