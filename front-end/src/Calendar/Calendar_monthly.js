@@ -39,10 +39,17 @@ const Calendar_monthly = () => {
     useEffect(() => {
         const fetchTaskCounts = async () => {
             try {
-                const response = await fetch(`http://localhost:4000/calendar/month/${year}/${month}/tasks`);
+                const session = window.localStorage.getItem("session_user");
+                if (!session) {
+                    console.error("No session found. Please log in.");
+                    return;
+                }
+                const sessionParsed = JSON.parse(session);
+                const response = await fetch(`http://localhost:4000/calendar/month/${year}/${month}/tasks/${sessionParsed._id}`);
                 const taskData = await response.json();
+                console.log("Monthly API Response:", taskData);
                 const taskCounts = taskData.reduce((acc, { day, count }) => {
-                    acc[day] = count; // Map day to task count
+                    acc[day] = count;
                     return acc;
                   }, {});
                 setTaskCounts(taskCounts);
