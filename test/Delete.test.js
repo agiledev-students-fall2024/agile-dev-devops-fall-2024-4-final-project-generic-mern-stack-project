@@ -79,7 +79,7 @@ const handleDelete = async (noteId, setNotes) => {
     await handleDelete(mockNoteId, setNotes);
   
     expect(axios.delete).toHaveBeenCalledWith(
-      `https://easynote-aivlj.ondigitalocean.app/api/notes/${mockNoteId}`,
+      `http://backend:5000/api/notes/${mockNoteId}`,
       {
         headers: {
           Authorization: `Bearer mocked-token`,

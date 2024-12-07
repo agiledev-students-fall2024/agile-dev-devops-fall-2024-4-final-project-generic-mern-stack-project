@@ -65,7 +65,7 @@ const ExistingNotes = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
 
-    fetch(`https://easynote-aivlj.ondigitalocean.app/api/notes`, {
+    fetch(`http://backend:5000/api/notes`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
