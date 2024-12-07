@@ -16,6 +16,7 @@ function EditTask({ }) {
     const [priority, setPriority] = useState('Low');
     const [recurring, setRecurring] = useState('No');
     const [recurring_period, setRecurring_period] = useState('');
+    const [goal, setGoal] = useState('');
     const [status, setStatus] = useState('not_started');
     const [error, setError] = useState('');
 
@@ -35,6 +36,7 @@ function EditTask({ }) {
                 setRecurring(task.recurring || 'No')
                 setRecurring_period(task.recurring_period || '')
                 setStatus(task.status || 'not_started')
+                setGoal(task.goal || '')
             } catch (error) {
                 console.error('Error fetching task:', error)
                 setError('Failed to load task data.')
@@ -70,6 +72,7 @@ function EditTask({ }) {
             priority,
             recurring,
             recurring_period: recurring === "Yes" ? recurring_period : "",
+            goal
         };
     
         try {

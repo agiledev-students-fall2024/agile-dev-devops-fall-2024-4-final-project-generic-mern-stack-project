@@ -26,6 +26,19 @@ app.get('/goals/:id', async (req, res) => {
       res.status(500).json([]);
     }
   });
+
+app.delete('/delete/goals/:id', async (req, res) => {
+    const goalId = req.params.id;
+    try {
+        const goal = await Goal.findByIdAndDelete(goalId);
+        if (!goal) {
+            return res.status(404).json({ error: 'Goal not found' });
+        }
+        res.json(goal);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to delete goal.' });
+    }
+})
   
 
 app.post('/goals/new', async (req, res) => {

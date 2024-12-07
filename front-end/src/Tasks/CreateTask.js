@@ -5,17 +5,6 @@ import './CreateTask.css';
 
 function CreateTask() {
 
-    const task = useRef({
-        title: "",
-        description: "",
-        subject: "",
-        due_date: "", //turn this into a date object before sending to the backend so the date can work with time tracking libraries
-        priority: "",
-        recurring: "",
-        recurring_period: "",
-        status: "not_started"
-    })
-
     const nav = useNavigate()
 
     const [title, setTitle] = useState("")
@@ -70,6 +59,7 @@ function CreateTask() {
           recurring,
           recurring_period: recurring === "Yes" ? recurringPeriod : "",
           user_id: session_parsed._id,
+          goal: ""
         };
       
         fetch('http://localhost:4000/tasks', {

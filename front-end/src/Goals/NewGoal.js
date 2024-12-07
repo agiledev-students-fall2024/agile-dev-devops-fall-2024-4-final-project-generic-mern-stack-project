@@ -12,7 +12,8 @@ const NewGoal = () => {
 
     useEffect(() => {
         const fetchTasks = async () => {
-            const response = await fetch('http://localhost:4000/tasks');
+            const user = await JSON.parse(window.localStorage.getItem('session_user'));
+            const response = await fetch(`http://localhost:4000/task/${user._id}`);
             const data = await response.json();
             setTasks(data);
         };

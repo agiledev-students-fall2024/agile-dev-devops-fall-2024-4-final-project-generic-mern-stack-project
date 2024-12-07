@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Tasks.css';
 import { useNavigate } from 'react-router-dom';
+import { set } from 'mongoose';
 const TASKS_PER_PAGE = 5;
 
 function Tasks() {
@@ -16,6 +17,9 @@ function Tasks() {
   const [sortAsc, setSortAsc] = useState(true);
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [send, setSend] = useState(false);
+  const [task, setTask] = useState({});
+  const [newStatus1, setNewStatus1] = useState('');
   const nav = useNavigate()
 
   useEffect(() => {
@@ -59,28 +63,47 @@ function Tasks() {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
-  const updateTaskStatus = async (taskId, newStatus) => {
-    await fetch(`http://localhost:4000/tasks/${taskId}/status`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ status: newStatus }),
-    });
-    setTasks(prevTasks =>
-      prevTasks.map(task =>
-        task._id.toString() === taskId ? { ...task, status: newStatus } : task
-      )
-    );
-  };
+  // const updateTaskStatus = async (newStatus) => {
+  //   setTasks(prevTasks =>
+  //     prevTasks.map(task1 =>
+  //       task1._id.toString() === taskId ? { ...task1, status: newStatus } : task1
+  //     )
+  //   );
+  // };
+
+  useEffect(() => {
+    const collect = async () => {
+      await fetch(`http://localhost:4000/tasks/${task._id}/status`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: newStatus1 }),
+      });
+      setTasks(prevTasks =>
+        prevTasks.map(task1 =>
+          task1._id.toString() === task._id ? { ...task1, status: newStatus1 } : task1
+        )
+      );
+      console.log("Updated")
+    }
+    collect();
+  }, [send])
 
   const toggleStatus = (task, index) => {
     const newStatus = task.status === 'not_started'
       ? 'ongoing'
       : task.status === 'ongoing'
       ? 'finished'
-      : 'not_started';
-    updateTaskStatus(task._id, newStatus);
+      : 'not_started'
+    setNewStatus1(newStatus)
+    setTask(task, newStatus)
+    if (send) {
+      setSend(false)
+    }
+    else {
+      setSend(true)
+    }
   };
 
 
