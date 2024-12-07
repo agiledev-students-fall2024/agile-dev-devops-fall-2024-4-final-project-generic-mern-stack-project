@@ -74,59 +74,79 @@ app.get("/api/accounts", authenticateToken, async (req, res) => {
   }
 });
 
-// Route to add a new account
-app.post("/api/accounts", authenticateToken, async (req, res) => {
-  const { type, amount, number } = req.body;
-
-  if (!type || amount == null || !number) {
-    return res.status(400).json({ error: "Type, amount, and account number are required" });
-  }
-
-  try {
-    const user = await User.findById(req.user.id); 
-
-    console.log('Authenticated User ID:', req.user.id);
-
-
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
+// Route to add a new account with express validator 
+app.post(
+  "/api/accounts",
+  authenticateToken,
+  [
+    body("type").notEmpty().withMessage("Account type is required"),
+    body("amount").isFloat({ min: 0 }).withMessage("Amount must be a positive number"),
+    body("number").notEmpty().withMessage("Account number is required"),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
 
-    const newAccount = { type, amount, number };
-    user.accounts.push(newAccount);
-    await user.save();
-    res.status(201).json(newAccount);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    const { type, amount, number } = req.body;
+
+    try {
+      const user = await User.findById(req.user.id);
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      const newAccount = { type, amount, number };
+      user.accounts.push(newAccount);
+      await user.save();
+      res.status(201).json(newAccount);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
   }
-});
+);
 
-// Route to update an account by ID
-app.put("/api/accounts/:accountId", authenticateToken, async (req, res) => {
-  const { accountId } = req.params;
-  const { type, amount, number } = req.body;
+// Route to edit an account by ID with express validator 
+app.put(
+  "/api/accounts/:accountId",
+  authenticateToken,
+  [
+    body("type").optional().notEmpty().withMessage("Account type is required"),
+    body("amount").optional().isFloat({ min: 0 }).withMessage("Amount must be a positive number"),
+    body("number").optional().notEmpty().withMessage("Account number is required"),
+  ],
+  async (req, res) => {
+    const { accountId } = req.params;
+    const { type, amount, number } = req.body;
 
-  try {
-    const user = await User.findById(req.user.id); 
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
 
-    const account = user.accounts.id(accountId); 
-    if (!account) {
-      return res.status(404).json({ error: "Account not found" });
+    try {
+      const user = await User.findById(req.user.id);
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      const account = user.accounts.id(accountId);
+      if (!account) {
+        return res.status(404).json({ error: "Account not found" });
+      }
+
+      if (type) account.type = type;
+      if (amount != null) account.amount = amount;
+      if (number) account.number = number;
+
+      await user.save();
+      res.json(account);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-
-    if (type) account.type = type;
-    if (amount != null) account.amount = amount;
-    if (number) account.number = number;
-
-    await user.save();
-    res.json(account);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
-});
+);
 
 // Route to delete an account by ID
 app.delete('/api/accounts/:id', async (req, res) => {
@@ -167,58 +187,82 @@ app.get("/api/debts", authenticateToken, async (req, res) => {
   }
 });
 
-// Route to add a new debt
-app.post("/api/debts", authenticateToken, async (req, res) => {
-  const { type, amount, dueDate, paymentSchedule } = req.body;
-
-  if (!type || amount == null || !dueDate || !paymentSchedule) {
-    return res.status(400).json({ error: "All debt fields are required" });
-  }
-
-  try {
-    const user = await User.findById(req.user.id);
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
+// Route to add a new debt with express validator 
+app.post(
+  "/api/debts",
+  authenticateToken,
+  [
+    body("type").notEmpty().withMessage("Debt type is required"),
+    body("amount").isFloat({ min: 0 }).withMessage("Amount must be a positive number"),
+    body("dueDate").notEmpty().withMessage("Due date is required"),
+    body("paymentSchedule").notEmpty().withMessage("Payment schedule is required"),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
 
-    console.log('Authenticated User ID:', req.user.id);
+    const { type, amount, dueDate, paymentSchedule } = req.body;
 
-    const newDebt = { type, amount, dueDate, paymentSchedule };
-    user.debts.push(newDebt); 
-    await user.save();
-    res.status(201).json(newDebt); 
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    try {
+      const user = await User.findById(req.user.id);
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      const newDebt = { type, amount, dueDate, paymentSchedule };
+      user.debts.push(newDebt);
+      await user.save();
+      res.status(201).json(newDebt);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
   }
-});
+);
 
-// Route to update a debt by ID
-app.put("/api/debts/:debtId", authenticateToken, async (req, res) => {
-  const { debtId } = req.params;
-  const { type, amount, dueDate, paymentSchedule } = req.body;
+// Route to edit a debt by ID with express validator 
+app.put(
+  "/api/debts/:debtId",
+  authenticateToken,
+  [
+    body("type").optional().notEmpty().withMessage("Debt type is required"),
+    body("amount").optional().isFloat({ min: 0 }).withMessage("Amount must be a positive number"),
+    body("dueDate").optional().notEmpty().withMessage("Due date is required"),
+    body("paymentSchedule").optional().notEmpty().withMessage("Payment schedule is required"),
+  ],
+  async (req, res) => {
+    const { debtId } = req.params;
+    const { type, amount, dueDate, paymentSchedule } = req.body;
 
-  try {
-    const user = await User.findById(req.user.id);
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
 
-    const debt = user.debts.id(debtId);  
-    if (!debt) {
-      return res.status(404).json({ error: "Debt not found" });
+    try {
+      const user = await User.findById(req.user.id);
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      const debt = user.debts.id(debtId);
+      if (!debt) {
+        return res.status(404).json({ error: "Debt not found" });
+      }
+
+      if (type) debt.type = type;
+      if (amount != null) debt.amount = amount;
+      if (dueDate) debt.dueDate = dueDate;
+      if (paymentSchedule) debt.paymentSchedule = paymentSchedule;
+
+      await user.save();
+      res.json(debt);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-
-    if (type) debt.type = type;
-    if (amount != null) debt.amount = amount;
-    if (dueDate) debt.dueDate = dueDate;
-    if (paymentSchedule) debt.paymentSchedule = paymentSchedule;
-
-    await user.save();
-    res.json(debt);  
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
-});
+);
 
 // Route to delete a debt by ID
 app.delete("/api/debts/:debtId", authenticateToken, async (req, res) => {
