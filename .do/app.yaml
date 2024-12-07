@@ -1,7 +1,8 @@
 name: easynote
 services:
   - name: backend
-    internal_ports: 5000
+    internal_ports: 
+      - 5000
     image:
       registry_type: DOCR
       repository: agile/backend
