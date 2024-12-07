@@ -37,7 +37,6 @@ jobs:
           registry: registry.digitalocean.com
           username: do-oauth2-registry-token
           password: ${{ secrets.DO_TOKEN_REG }}
-
       # Build & push backend image
       - name: Build and Push Backend Docker Image
         id: push_backend

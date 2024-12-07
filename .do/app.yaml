@@ -12,4 +12,3 @@ services:
       registry_type: DOCR
       repository: agile/frontend
       digest: ${FRONTEND_DIGEST}
-
