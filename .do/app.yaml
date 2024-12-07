@@ -9,7 +9,7 @@ services:
       digest: ${BACKEND_DIGEST}
   - name: frontend
     http_port: 8080
-    mage:
+    image:
       registry_type: DOCR
       repository: agile/frontend
       digest: ${FRONTEND_DIGEST}
