@@ -1,24 +1,42 @@
-const express = require('express');
-const router = express.Router();
+// Mock data for monthly expenses and income
+const monthlyData = {
+  January: { expenses: 500, income: 1900 },
+  February: { expenses: 400, income: 1600 },
+  March: { expenses: 700, income: 1600 },
+  April: { expenses: 389, income: 1600 },
+  May: { expenses: 400, income: 1600 },
+  June: { expenses: 1100, income: 1800 },
+  July: { expenses: 500, income: 1600 },
+  August: { expenses: 400, income: 1600 },
+  September: { expenses: 700, income: 1600 },
+  October: { expenses: 500, income: 1600 },
+  November: { expenses: 400, income: 1600 },
+  December: { expenses: 690, income: 1600 },
+  
+};
 
-// Mock data for monthly budget recaps
-const monthlyRecaps = [
-  { month: 'January', budgetLimit: 1000, overallSpent: 800 },
-  { month: 'February', budgetLimit: 1200, overallSpent: 1100 },
-  { month: 'March', budgetLimit: 900, overallSpent: 850 },
+// Mock data for spending categories
+const categoryData = [
+  { category: 'Food', amount: 300 },
+  { category: 'Rent', amount: 1000 },
+  { category: 'Transportation', amount: 150 },
+  { category: 'Entertainment', amount: 200 },
+  { category: 'Healthcare', amount: 170 },
+  { category: 'Subscriptions', amount: 77 },
+  { category: 'Other', amount: 200 },
 ];
 
-// GET route for fetching data for a specific month
-router.get('/charts/:month', (req, res) => {
-  const { month } = req.params;
-
-  // Find data for the requested month
-  const recap = monthlyRecaps.find((r) => r.month.toLowerCase() === month.toLowerCase());
-  if (recap) {
-    res.status(200).json(recap);
-  } else {
-    res.status(404).json({ error: `No data found for month: ${month}` });
+// Function to calculate monthly net balance
+function calculateMonthlyBalance(month) {
+  const data = monthlyData[month];
+  if (!data) {
+    return { error: 'Month not found' };
   }
-});
+  return {
+    ...data,
+    netBalance: data.income - data.expenses,
+  };
+}
 
-module.exports = router;
+// Export the data and calculation function
+export default { monthlyData, categoryData, calculateMonthlyBalance };
