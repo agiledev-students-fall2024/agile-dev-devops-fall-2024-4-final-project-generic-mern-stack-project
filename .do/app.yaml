@@ -1,8 +1,7 @@
 name: easynote
 services:
   - name: backend
-    internal_ports: 
-      - 5000
+    http_port: 8080
     image:
       registry_type: DOCR
       repository: agile/backend
@@ -16,3 +15,15 @@ services:
       registry_type: DOCR
       repository: agile/frontend
       digest: ${FRONTEND_DIGEST}
+ingress:
+  rules:
+  - component:
+      name: backend
+    match:
+      path:
+        prefix: /api
+  - component:
+      name: frontend
+    match:
+      path:
+        prefix: / 
