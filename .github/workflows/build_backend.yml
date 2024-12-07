@@ -37,6 +37,7 @@ jobs:
           registry: registry.digitalocean.com
           username: do-oauth2-registry-token
           password: ${{ secrets.DO_TOKEN_REG }}
+
       # Build & push backend image
       - name: Build and Push Backend Docker Image
         id: push_backend
@@ -65,19 +66,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      # Deploy the backend application
-      - name: Deploy the Backend to DigitalOcean App Platform
+      
+      - name: Deploy the app to DigitalOcean App Platform
         uses: digitalocean/app_action/deploy@v2
         env:
           BACKEND_DIGEST: ${{ needs.build-and-push.outputs.image_digest_backend }}
-        with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-
-      # Deploy the frontend application
-      - name: Deploy the Frontend to DigitalOcean App Platform
-        uses: digitalocean/app_action/deploy@v2
-        env:
           FRONTEND_DIGEST: ${{ needs.build-and-push.outputs.image_digest_frontend }}
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
