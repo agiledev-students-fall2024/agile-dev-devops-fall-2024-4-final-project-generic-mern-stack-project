@@ -7,6 +7,9 @@ services:
       registry_type: DOCR
       repository: agile/backend
       digest: ${BACKEND_DIGEST}
+    envs:
+      - key: MONGODB_URI
+        value: ${MONGO_URI}
   - name: frontend
     http_port: 8080
     image:

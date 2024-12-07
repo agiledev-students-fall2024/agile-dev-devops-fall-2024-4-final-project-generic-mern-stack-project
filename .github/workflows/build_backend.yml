@@ -72,5 +72,6 @@ jobs:
         env:
           BACKEND_DIGEST: ${{ needs.build-and-push.outputs.image_digest_backend }}
           FRONTEND_DIGEST: ${{ needs.build-and-push.outputs.image_digest_frontend }}
+          MONGO_URI: ${{ secrets.MONGO_URI }}
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
