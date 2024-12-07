@@ -10,6 +10,7 @@ are structured and stored in the database using Mongoose, which is a MongoDB obj
 for Node.js. */
 require('../models/schema'); 
 const Task = mongoose.model("Task")
+const Goal = mongoose.model("Goal")
 
 router.get('/tasks/urgent/:id', async (req, res) => {
   const today = new Date();
@@ -106,22 +107,30 @@ router.post('/tasks', async (req, res) => {
 });
 
 
-router.put('/tasks/:id/status', (req, res) => {
+router.put('/tasks/:id/status', async (req, res) => {
   const { status } = req.body;
 
   if (!["not_started", "ongoing", "finished"].includes(status)) {
     return res.status(400).json({ error: "Invalid status value" });
   }
-
-  Task.findByIdAndUpdate(req.params.id, { status }, { new: true })
-    .then(updatedTask => {
-      if (updatedTask) {
+  try {
+    const updatedTask = await Task.findByIdAndUpdate(req.params.id, { status }, { new: true }).populate('goal');
+    console.log("updatedTask", updatedTask)
+    if (!updatedTask) {
+      return res.status(404).json({ error: "Task not found" });
+    }
+    else {
+        if (status === 'finished') {
+            await Goal.updateOne({ _id: updatedTask.goal }, { $push: { completed_tasks: updatedTask._id } });              
+        }
+        else if (status == "ongoing" || status == "not_started") {
+            await Goal.updateOne({ _id: updatedTask.goal }, { $pull: { completed_tasks: updatedTask._id } });
+        }
         res.json(updatedTask);
-      } else {
-        res.status(404).json({ message: "Task not found" });
-      }
-    })
-    .catch(err => res.status(500).json({ error: err.message }));
+    }
+  } catch (error) {
+        res.status(500).json({ error })
+  }
 });
 
 
@@ -139,6 +148,7 @@ router.get('/tasks/:id', async (req, res) => {
 router.put('/tasks/:id', async (req, res) => {
   try {
     const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+    const goal = await Goal.findOne({ tasks: req.params.id });
     if (!updatedTask) {
         return res.status(404).json({ message: 'Task not found' })
     }
