@@ -124,7 +124,7 @@ const handleDelete = async (noteId) => {
         }
 
         await axios.delete(
-          `http://localhost:${process.env.EXPRESS_SERVER_PORT || 5000}/api/notes/${noteId}`,
+          `https://easynote-aivlj.ondigitalocean.app/api/notes/${noteId}`,
           {
             headers: {
               "Authorization": `Bearer ${token}`,

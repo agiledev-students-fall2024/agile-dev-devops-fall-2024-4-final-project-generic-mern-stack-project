@@ -57,7 +57,7 @@ export async function handleSave(
     }
 
     await axios.put(
-      `http://localhost:${process.env.EXPRESS_SERVER_PORT || 5000}/api/notes/${
+      `https://easynote-aivlj.ondigitalocean.app/api/notes/${
         note.id
       }`,
       updatedNote,
@@ -119,7 +119,7 @@ describe("handleSave", () => {
     await handleSave(event, setTitle, setCategory, quillRef, note, user, setTags, mockNavigate);
 
     expect(axios.put).toHaveBeenCalledWith(
-      `http://localhost:5000/api/notes/${note.id}`,
+      `https://easynote-aivlj.ondigitalocean.app/api/notes/${note.id}`,
       {
         id: note.id,
         user,
