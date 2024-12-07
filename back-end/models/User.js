@@ -41,6 +41,21 @@ const userSchema = new mongoose.Schema({
           collaborators: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], 
         },
       ],
+
+      recurringPayments: [
+        {
+          accountId: { type: String, required: true }, // Links to an account
+          amount: { type: Number, required: true },
+          category: { type: String, required: true },
+          description: { type: String, required: true }, // E.g., Rent, Subscription
+          frequency: {
+            type: String,
+            enum: ['daily', 'monthly', 'annual'],
+            required: true,
+          },
+          nextPaymentDate: { type: Date, required: true }, // Next scheduled payment
+        },
+      ],
 });
 
 // Hash password before saving
