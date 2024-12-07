@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Tasks.css';
 import { useNavigate } from 'react-router-dom';
-import { set } from 'mongoose';
 const TASKS_PER_PAGE = 5;
 
 function Tasks() {

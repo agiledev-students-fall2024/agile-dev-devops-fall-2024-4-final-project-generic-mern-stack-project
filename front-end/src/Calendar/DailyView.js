@@ -12,7 +12,13 @@ const DailyView = () => {
     useEffect(() => {
         const fetchTasks = async () => {
             try {
-                const response = await fetch(`http://localhost:4000/calendar/${month}/${day}/${year}`);
+                const session = window.localStorage.getItem("session_user");
+                if (!session) {
+                    console.error("No session found. Please log in.");
+                    return;
+                }
+                const sessionParsed = JSON.parse(session);
+                const response = await fetch(`http://localhost:4000/calendar/${month}/${day}/${year}/${sessionParsed._id}`);
                 const data = await response.json();
                 setTasks(data);
             } catch (error) {
