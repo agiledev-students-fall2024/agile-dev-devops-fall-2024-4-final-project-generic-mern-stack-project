@@ -14,7 +14,6 @@ app.use(express.json());
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
      .then(() => console.log('MongoDB connected'))
      .catch(err => console.log(err));
-app.use(cors())
 app.use('/notes', noteRoutes); 
 app.use('/users', userRoutes); 
 app.use('/auth/login', loginRoutes); 
