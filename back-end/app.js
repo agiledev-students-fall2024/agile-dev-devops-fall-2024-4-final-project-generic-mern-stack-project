@@ -467,21 +467,152 @@ app.delete('/api/transactions/:id', async (req, res) => {
  
 /* ======================= Recurring Payments Routes ======================= */
  
-app.get('/api/recurring-bills', (req, res) => {
-  // Get userId and budgetId from query or use defaults
-  const userId = req.query.userId ? parseInt(req.query.userId) : MOCK_USER_ID;
- 
-  if (!userId) {
-    return res.status(400).json({ error: 'User ID is required' });
-  }
- 
-  const userRecurringBills = recurringBills.filter(
-    (bill) =>
-      bill.userId === userId && (!budgetId || bill.budgetId === budgetId)
+
+// GET all recurring payments for a user
+app.get('/api/recurring-payments', authenticateToken, async (req, res) => {
+    const { userId } = req.query;
+  
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID is required' });
+    }
+  
+    try {
+      const user = await User.findById(userId).select('recurringPayments');
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      res.json(user.recurringPayments || []);
+    } catch (error) {
+      console.error('Error fetching recurring payments:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+  
+  // POST a new recurring payment
+  app.post(
+    '/api/recurring-payments',
+    authenticateToken,
+    [
+      body('name').notEmpty().withMessage('Payment name is required'),
+      body('amount').isNumeric().withMessage('Amount must be a valid number'),
+      body('dueDate').notEmpty().withMessage('Due date is required'),
+      body('accountId').notEmpty().withMessage('Account ID is required'),
+    ],
+    async (req, res) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+  
+      const { userId, name, category, amount, dueDate, accountId } = req.body;
+  
+      try {
+        const user = await User.findById(userId);
+        if (!user) {
+          return res.status(404).json({ error: 'User not found' });
+        }
+  
+        const newPayment = {
+          _id: new mongoose.Types.ObjectId(),
+          name,
+          category: category || 'Uncategorized',
+          amount,
+          dueDate,
+          accountId,
+        };
+  
+        user.recurringPayments.push(newPayment);
+        await user.save();
+  
+        res.status(201).json(newPayment);
+      } catch (error) {
+        console.error('Error adding recurring payment:', error);
+        res.status(500).json({ error: 'Internal server error' });
+      }
+    }
   );
- 
-  res.json(userRecurringBills);
-});
+  
+  // PUT update an existing recurring payment
+  app.put(
+    '/api/recurring-payments/:id',
+    authenticateToken,
+    [
+      body('name').optional().notEmpty().withMessage('Payment name is required'),
+      body('amount').optional().isNumeric().withMessage('Amount must be a valid number'),
+      body('dueDate').optional().notEmpty().withMessage('Due date is required'),
+      body('accountId').optional().notEmpty().withMessage('Account ID is required'),
+    ],
+    async (req, res) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+  
+      const { id } = req.params; // Recurring payment ID
+      const { userId, name, category, amount, dueDate, accountId } = req.body;
+  
+      if (!userId) {
+        return res.status(400).json({ error: 'User ID is required' });
+      }
+  
+      try {
+        const user = await User.findById(userId);
+        if (!user) {
+          return res.status(404).json({ error: 'User not found' });
+        }
+  
+        const payment = user.recurringPayments.id(id);
+        if (!payment) {
+          return res.status(404).json({ error: 'Recurring payment not found' });
+        }
+  
+        // Update only provided fields
+        if (name) payment.name = name;
+        if (category) payment.category = category;
+        if (amount !== undefined) payment.amount = amount;
+        if (dueDate) payment.dueDate = dueDate;
+        if (accountId) payment.accountId = accountId;
+  
+        await user.save();
+  
+        res.status(200).json(payment);
+      } catch (error) {
+        console.error('Error updating recurring payment:', error);
+        res.status(500).json({ error: 'Internal server error' });
+      }
+    }
+  );
+  
+  // DELETE a recurring payment
+  app.delete('/api/recurring-payments/:id', authenticateToken, async (req, res) => {
+    const { id } = req.params; // Recurring payment ID
+    const { userId } = req.query; // User ID from query
+  
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID is required' });
+    }
+  
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      const paymentIndex = user.recurringPayments.findIndex((p) => p._id.toString() === id);
+      if (paymentIndex === -1) {
+        return res.status(404).json({ error: 'Recurring payment not found' });
+      }
+  
+      user.recurringPayments.splice(paymentIndex, 1);
+      await user.save();
+  
+      res.status(200).json({ message: 'Recurring payment deleted successfully' });
+    } catch (error) {
+      console.error('Error deleting recurring payment:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
  
 /* ======================= Budget Limits Routes ======================= */
 app.get('/api/budget-limits', async (req, res) => {
@@ -535,5 +666,8 @@ if (process.env.NODE_ENV === 'production') {
     res.send('API is running... Front-end development server handles UI.');
   });
 }
+
+
+
  
 export default app;
