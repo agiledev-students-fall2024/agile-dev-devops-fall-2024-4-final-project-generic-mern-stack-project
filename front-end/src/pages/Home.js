@@ -102,6 +102,7 @@ const Home = () => {
 
   return (
     <div className="w-[100%] flex flex-col justify-center items-center gap-6 p-8 mx-auto md:w-[90%]">
+      <h1 className="text-xl font-bold text-ebony-700 text-center">Home</h1>
       <SearchBar
         searchInput={searchInput}
         onChange={handleChange}
