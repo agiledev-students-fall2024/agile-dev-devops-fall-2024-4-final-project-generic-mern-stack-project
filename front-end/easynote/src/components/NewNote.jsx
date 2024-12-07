@@ -99,7 +99,7 @@ const NewNote = () => {
       }
   
       const res = await axios.post(
-        `http://localhost:${process.env.EXPRESS_SERVER_PORT || 5000}/api/notes/`,
+        `https://easynote-aivlj.ondigitalocean.app/api/notes/`,
         notes,
         {
           headers: {

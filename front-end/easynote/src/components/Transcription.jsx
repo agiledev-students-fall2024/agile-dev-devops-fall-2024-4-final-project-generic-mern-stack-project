@@ -38,7 +38,7 @@ const Transcription = () => {
       }
 
       const response = await axios.post(
-        `http://localhost:${process.env.EXPRESS_SERVER_PORT || 5000}/api/transcribe`, 
+        `https://easynote-aivlj.ondigitalocean.app/api/transcribe`, 
         formData, 
         {
           headers: {
@@ -76,7 +76,7 @@ const Transcription = () => {
 
     // Implement API for Transcription here
     axios.post(
-      `http://localhost:${process.env.EXPRESS_SERVER_PORT || 5000}/api/notes/`, 
+      `https://easynote-aivlj.ondigitalocean.app/api/notes/`, 
       newNote,
       {
         headers: {

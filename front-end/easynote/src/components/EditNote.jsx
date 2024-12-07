@@ -127,7 +127,7 @@ const EditNote = () => {
       }
 
       await axios.put(
-        `http://localhost:${process.env.EXPRESS_SERVER_PORT || 5000}/api/notes/${note.id}`,
+        `https://easynote-aivlj.ondigitalocean.app/api/notes/${note.id}`,
         updatedNote,
         {
           headers: {

@@ -65,7 +65,7 @@ const ExistingNotes = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
 
-    fetch('http://localhost:5000/api/notes', {
+    fetch(`https://easynote-aivlj.ondigitalocean.app/api/notes`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -124,7 +124,7 @@ const handleDelete = async (noteId) => {
         }
 
         await axios.delete(
-          `http://localhost:${process.env.EXPRESS_SERVER_PORT || 5000}/api/notes/${noteId}`,
+          `https://easynote-aivlj.ondigitalocean.app/api/notes/${noteId}`,
           {
             headers: {
               "Authorization": `Bearer ${token}`,
