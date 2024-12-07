@@ -3,6 +3,7 @@ import InputField from "../components/InputField";
 import SubmitButton from "../components/SubmitButton";
 import toast from "react-hot-toast";
 import { axiosInstance } from "../axios";
+import './CreateCommunity.css';
 
 const CreateCommunity = () => {
   const [name, setName] = useState("");
