@@ -38,11 +38,7 @@ function Header({ onLogout }) {
           ))}
         </ul>
       )}
-
-      {/* Logout Button */}
-      <button className="logout-button" onClick={onLogout}>
-        Logout
-      </button>
+      
     </div>
   );
 }

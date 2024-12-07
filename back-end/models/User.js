@@ -41,6 +41,16 @@ const userSchema = new mongoose.Schema({
           collaborators: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], 
         },
       ],
+      budgetLimits: {
+        monthlyLimit: { type: Number, required: true, default: 0 }, // Overall monthly budget limit
+        categories: [
+            {
+                name: { type: String, required: true }, // User-defined category name
+                limit: { type: Number, required: true, default: 0 }, // User-defined budget limit for the category
+            }
+        ],
+        other: { type: Number, default: 0 }, // Automatically calculated as excess from unallocated funds
+      },
 
       recurringPayments: [
         {
@@ -56,7 +66,9 @@ const userSchema = new mongoose.Schema({
           nextPaymentDate: { type: Date, required: true }, // Next scheduled payment
         },
       ],
+
 });
+
 
 // Hash password before saving
 userSchema.pre('save', async function (next) {

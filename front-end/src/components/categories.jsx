@@ -1,14 +1,14 @@
 import React from 'react';
 import './categories.css';
 
-function Categories({ categoryTotals, categoryLimits, isEditing, handleLimitChange }) {
-  const calculateProgress = (spent, limit) => Math.min((spent / limit) * 100, 100);
+function categories({ categoryTotals, categoryLimits, isEditing, handleLimitChange }) {
+  const calculateProgress = (spent, limit) => (limit > 0 ? Math.min((spent / limit) * 100, 100) : 0);
 
   return (
     <div className="category-breakdown-grid">
       {Object.keys(categoryLimits).map((category) => {
         const spent = categoryTotals[category] || 0;
-        const limit = categoryLimits[category] || 100;
+        const limit = categoryLimits[category] || 0;
         const percentage = calculateProgress(spent, limit);
 
         return (
@@ -25,7 +25,7 @@ function Categories({ categoryTotals, categoryLimits, isEditing, handleLimitChan
                 className="category-limit-input"
               />
             ) : (
-              <p>${spent.toFixed(2)} / ${limit}</p>
+              <p>${spent.toFixed(2)} / ${limit.toFixed(2)}</p>
             )}
           </div>
         );
@@ -34,4 +34,4 @@ function Categories({ categoryTotals, categoryLimits, isEditing, handleLimitChan
   );
 }
 
-export default Categories;
+export default categories;

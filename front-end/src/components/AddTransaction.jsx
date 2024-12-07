@@ -20,23 +20,32 @@ function AddTransaction({ onAddTransaction, onClose }) {
   };
 
   const handleAddTransaction = () => {
+    const userId = localStorage.getItem('id'); // Retrieve the logged-in user's ID
     const { merchant, category, amount, date } = transaction;
+  
     if (merchant && category && amount && date) {
       // Send the transaction to the backend
-      axios.post(`${BASE_URL}/api/transactions`, {
-        ...transaction,
-        amount: parseFloat(amount)
-      })
-      .then((res) => {
-        onAddTransaction(res.data); // Send backend response to Home for UI update
-        setTransaction({ merchant: '', category: '', amount: '', date: '' });
-        onClose();
-      })
-      .catch((err) => {
-        console.error("Error adding transaction:", err);
-      });
+      axios
+        .post(`${BASE_URL}/api/transactions`, {
+          ...transaction,
+          amount: parseFloat(amount),
+          userId, // Include userId in the request body
+        })
+        .then((res) => {
+          const newTransaction = res.data;
+  
+          // Notify the parent component of the new transaction
+          onAddTransaction(newTransaction);
+          setTransaction({ merchant: '', category: '', amount: '', date: '' });
+          onClose();
+        })
+        .catch((err) => {
+          console.error('Error adding transaction:', err);
+        });
     }
   };
+  
+  
 
   return (
     <div className="modal">

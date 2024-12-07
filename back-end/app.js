@@ -7,6 +7,7 @@ import mongoose from 'mongoose';
 import { body, validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
 import { authenticateToken } from './middleware/auth.js';
+
  
 //MOCK DATA
 import budgetLimits from './mocks/budgetLimits.js';
@@ -28,10 +29,6 @@ dotenv.config({ silent: true });
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
  
-/* MOCK USER SESSION WHILE AWAITING LOGIN IMPLEMENTATION */
-// Define mock userId and budgetId
-const MOCK_USER_ID = 1;
-const MOCK_BUDGET_ID = 1;
  
 /* Initialize Express App */
 const app = express();
@@ -57,7 +54,7 @@ mongoose
 app.get('/', (req, res) => {
   res.send('Hello!');
 });
- 
+
 // use the specialized routing files
 app.use('/user', router); // all requests for /user/* will be handled by the user router
  
@@ -171,224 +168,308 @@ app.get('/api/debts', (req, res) => {
 });
  
 /* ======================= Goal Routes ======================= */
-// Route to invite collaborator
+
 app.get('/goals', async (req, res) => {
-  const { ownerId, collaboratorId } = req.query;
- 
+  const { userId } = req.query;
+
+  if (!userId) {
+    return res.status(400).json({ message: 'User ID is required' });
+  }
+
   try {
-    const filter = {};
-    if (ownerId) filter.ownerId = ownerId;
-    if (collaboratorId) filter.collaborators = collaboratorId;
- 
-    const goals = await BudgetGoal.find(filter).populate(
-      'collaborators',
-      'username email'
-    );
-    res.json(goals);
+    const user = await User.findById(userId).select('goals');
+    if (!user || !user.goals) {
+      return res.status(404).json({ message: 'No goals found for this user' });
+    }
+
+    res.json(user.goals);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
  
 // Create a new goal
 app.post(
   '/goals',
   [
-    body('name').notEmpty().withMessage('Name is required'),
-    body('targetAmount')
-      .isNumeric()
-      .withMessage('Target amount must be a number'),
-    body('ownerId').notEmpty().withMessage('Owner ID is required'),
-    body('frequency').notEmpty().withMessage('frequency is required'),
+    body('userId').notEmpty().withMessage('User ID is required'),
+    body('name').notEmpty().withMessage('Goal name is required'),
+    body('targetAmount').isNumeric().withMessage('Target amount must be a number'),
+    body('frequency').notEmpty().withMessage('Frequency is required'),
   ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
- 
-    const { name, targetAmount, ownerId, frequency } = req.body;
- 
+
+    const { userId, name, targetAmount, frequency } = req.body;
+
     try {
-      const newGoal = new BudgetGoal({
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      const newGoal = {
+        _id: new mongoose.Types.ObjectId(),
         name,
         targetAmount,
         frequency,
-        currentAmount: 0, // Start with 0
-        ownerId,
-      });
- 
-      await newGoal.save();
-      res
-        .status(201)
-        .json({ message: 'Goal created successfully', goal: newGoal });
+        currentAmount: 0,
+      };
+
+      user.goals.push(newGoal);
+      await user.save();
+
+      res.status(201).json({ message: 'Goal created successfully', goal: newGoal });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
   }
 );
+
+//update a goal
+app.put('/goals/:goalId', async (req, res) => {
+  const { goalId } = req.params;
+  const { userId, name, targetAmount, frequency, currentAmount } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({ message: 'User ID is required' });
+  }
+
+  try {
+    const user = await User.findOne({ _id: userId, 'goals._id': goalId });
+    if (!user) {
+      return res.status(404).json({ message: 'Goal not found' });
+    }
+
+    const goal = user.goals.id(goalId);
+    if (name) goal.name = name;
+    if (targetAmount) goal.targetAmount = targetAmount;
+    if (frequency) goal.frequency = frequency;
+    if (currentAmount !== undefined) goal.currentAmount = currentAmount;
+
+    await user.save();
+    res.status(200).json({ message: 'Goal updated successfully', goal });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
  
 app.delete('/goals/:goalId', async (req, res) => {
   const { goalId } = req.params;
- 
+  const userId = req.query.userId || req.headers['user-id'];
+
+  console.log('Received userId:', userId, 'and goalId:', goalId);
+
+  if (!userId) {
+    return res.status(400).json({ message: 'User ID is required' });
+  }
+
   try {
-    const deletedGoal = await BudgetGoal.findByIdAndDelete(goalId);
-    if (!deletedGoal) {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const initialGoalCount = user.goals.length;
+    user.goals = user.goals.filter((goal) => goal._id.toString() !== goalId);
+
+    if (user.goals.length === initialGoalCount) {
       return res.status(404).json({ message: 'Goal not found' });
     }
-    res.json({ message: 'Goal deleted successfully' });
+
+    await user.save();
+
+    res.status(200).json({ message: 'Goal deleted successfully' });
   } catch (error) {
+    console.error('Error during goal deletion:', error);
     res.status(500).json({ error: error.message });
   }
 });
+
+
+
  
-// Add a collaborator to a goal
-app.post('/goals/:goalId/collaborators', async (req, res) => {
-  const { goalId } = req.params;
-  const { collaboratorId } = req.body;
- 
-  try {
-    const goal = await BudgetGoal.findById(goalId);
-    if (!goal) {
-      return res.status(404).json({ message: 'Goal not found' });
-    }
- 
-    if (!goal.collaborators.includes(collaboratorId)) {
-      goal.collaborators.push(collaboratorId);
-      await goal.save();
-    }
- 
-    res.json({ message: 'Collaborator added successfully', goal });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+
  
 // Link a transaction to a goal
 app.post('/goals/:goalId/transactions', async (req, res) => {
   const { goalId } = req.params;
-  const { amount } = req.body;
- 
+  const { userId, amount } = req.body;
+
+  if (!userId || !amount) {
+    return res.status(400).json({ message: 'User ID and transaction amount are required' });
+  }
+
   try {
-    const goal = await BudgetGoal.findById(goalId);
-    if (!goal) {
+    const user = await User.findOne({ _id: userId, 'goals._id': goalId });
+    if (!user) {
       return res.status(404).json({ message: 'Goal not found' });
     }
- 
-    goal.currentAmount += amount; // Increment currentAmount
-    await goal.save();
- 
-    res.json({ message: 'Transaction added to goal', goal });
+
+    const goal = user.goals.id(goalId);
+    goal.currentAmount += amount;
+
+    await user.save();
+    res.status(200).json({ message: 'Transaction added to goal', goal });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
  
-app.post('/goals/:goalId/invite', async (req, res) => {
-  try {
-    const { goalId } = req.params;
-    const { collaboratorEmail } = req.body;
-    const goal = await BudgetGoal.findById(goalId);
-    if (!goal) {
-      return res.status(404).json({ error: 'Goal not found' });
-    }
-    const collaborator = await User.findOne({ email: collaboratorEmail });
-    if (!collaborator) {
-      return res.status(404).json({ error: 'Collaborator not found' });
-    }
-    if (!goal.collaborators.includes(collaborator._id)) {
-      goal.collaborators.push(collaborator._id);
-      await goal.save();
-    }
-    res.status(200).json({ message: 'Collaborator added successfully' });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
- 
-// Retrieve all goals for a user
-app.get('/goals/:userId', async (req, res) => {
-  try {
-    const { userId } = req.params;
-    const goals = await BudgetGoal.find({
-      $or: [{ owner: userId }, { collaborators: userId }],
-    });
-    res.json(goals);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
  
 /* ======================= Transaction Routes ======================= */
 // Route to get all transactions
-app.get('/api/transactions', (req, res) => {
-  res.json(transactionData);
+app.get('/api/transactions', async (req, res) => {
+  const { userId } = req.query;
+
+  if (!userId) {
+    return res.status(400).json({ error: 'User ID is required' });
+  }
+
+  try {
+    const user = await User.findById(userId).select('transactions');
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json(user.transactions || []); // Return the user's transactions
+  } catch (error) {
+    console.error('Error fetching transactions:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
+
+
  
 // Route to add a new transaction
-app.post('/api/transactions', (req, res) => {
-  const { merchant, category, amount, date } = req.body;
-  if (!merchant || !category || amount == null || !date) {
+app.post('/api/transactions', async (req, res) => {
+  const { merchant, category, amount, date, userId } = req.body;
+
+  if (!userId || !merchant || !category || amount == null || !date) {
     return res
       .status(400)
-      .json({ error: 'Merchant, category, amount, and date are required' });
+      .json({ error: 'User ID, merchant, category, amount, and date are required.' });
   }
-  const newTransaction = {
-    id: transactionData.length + 1,
-    merchant,
-    category,
-    amount,
-    date,
-  };
-  transactionData.push(newTransaction);
-  res.status(201).json(newTransaction);
+
+  try {
+    // Find the user in the database
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Create a new transaction object
+    const newTransaction = {
+      merchant,
+      category,
+      amount,
+      date: new Date(date), // Ensure the date is stored correctly
+      _id: new mongoose.Types.ObjectId(), // Generate a unique ID for the transaction
+    };
+
+    // Add the transaction to the user's transactions array
+    user.transactions.push(newTransaction);
+
+    // Save the updated user document
+    await user.save();
+
+    // Respond with the newly added transaction
+    res.status(201).json(newTransaction);
+  } catch (error) {
+    console.error('Error adding transaction:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
+
  
 // Route to update a transaction by ID
-app.put('/api/transactions/:id', (req, res) => {
-  const { id } = req.params;
-  const { merchant, category, amount, date } = req.body;
-  const transactionIndex = transactionData.findIndex(
-    (transaction) => transaction.id === parseInt(id)
-  );
- 
-  if (transactionIndex === -1) {
-    return res.status(404).json({ error: 'Transaction not found' });
+// Route to update a transaction by ID
+app.put('/api/transactions/:id', async (req, res) => {
+  const { id } = req.params; // Transaction ID from the request parameters
+  const { merchant, category, amount, date, userId } = req.body; // Updated data and userId
+
+  if (!userId) {
+    return res.status(400).json({ error: 'User ID is required.' });
   }
- 
-  transactions[transactionIndex] = {
-    ...transactions[transactionIndex],
-    merchant,
-    category,
-    amount,
-    date,
-  };
-  res.json(transactionData[transactionIndex]);
+
+  try {
+    // Find the user and the transaction by ID
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    const transaction = user.transactions.id(id);
+    if (!transaction) {
+      return res.status(404).json({ error: 'Transaction not found.' });
+    }
+
+    // Update the transaction fields
+    if (merchant) transaction.merchant = merchant;
+    if (category) transaction.category = category;
+    if (amount !== undefined) transaction.amount = amount;
+    if (date) transaction.date = new Date(date);
+
+    // Save the updated user document
+    await user.save();
+
+    // Return the updated transaction
+    res.status(200).json(transaction);
+  } catch (error) {
+    console.error('Error updating transaction:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 });
+
  
 // Route to delete a transaction by ID
-app.delete('/api/transactions/:id', (req, res) => {
-  const { id } = req.params;
-  const transactionIndex = transactionData.findIndex(
-    (transaction) => transaction.id === parseInt(id)
-  );
- 
-  if (transactionIndex === -1) {
-    return res.status(404).json({ error: 'Transaction not found' });
+// Route to delete a transaction by ID
+app.delete('/api/transactions/:id', async (req, res) => {
+  const { id } = req.params; // Transaction ID
+  const { userId } = req.body; // User ID from the request body
+
+  if (!userId) {
+    return res.status(400).json({ error: 'User ID is required.' });
   }
- 
-  transactionData.splice(transactionIndex, 1);
-  res.status(204).send();
+
+  try {
+    // Find the user and remove the transaction by ID
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    const transactionIndex = user.transactions.findIndex(t => t._id.toString() === id);
+    if (transactionIndex === -1) {
+      return res.status(404).json({ error: 'Transaction not found.' });
+    }
+
+    // Remove the transaction
+    user.transactions.splice(transactionIndex, 1);
+
+    // Save the updated user document
+    await user.save();
+
+    res.status(200).json({ message: 'Transaction deleted successfully.' });
+  } catch (error) {
+    console.error('Error deleting transaction:', error);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
 });
+
  
 /* ======================= Recurring Payments Routes ======================= */
  
 app.get('/api/recurring-bills', (req, res) => {
   // Get userId and budgetId from query or use defaults
   const userId = req.query.userId ? parseInt(req.query.userId) : MOCK_USER_ID;
-  const budgetId = req.query.budgetId
-    ? parseInt(req.query.budgetId)
-    : MOCK_BUDGET_ID;
  
   if (!userId) {
     return res.status(400).json({ error: 'User ID is required' });
@@ -403,24 +484,27 @@ app.get('/api/recurring-bills', (req, res) => {
 });
  
 /* ======================= Budget Limits Routes ======================= */
-app.get('/api/budget-limits', (req, res) => {
-  const userId = req.query.userId ? parseInt(req.query.userId) : MOCK_USER_ID;
-  const budgetId = req.query.budgetId
-    ? parseInt(req.query.budgetId)
-    : MOCK_BUDGET_ID;
- 
-  const userBudgetLimit = budgetLimits.find(
-    (limit) => limit.userId === userId && limit.budgetId === budgetId
-  );
- 
-  if (!userBudgetLimit) {
-    return res
-      .status(404)
-      .json({ error: 'Budget limits not found for this user and budget.' });
+app.get('/api/budget-limits', async (req, res) => {
+  const { userId } = req.query;
+
+  if (!userId) {
+    return res.status(400).json({ error: 'User ID is required.' });
   }
- 
-  res.json(userBudgetLimit);
+
+  try {
+    // Fetch the user and their budget limits
+    const user = await User.findById(userId).select('budgetLimits');
+    if (!user) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    res.json(user.budgetLimits); // Send the budget limits
+  } catch (error) {
+    console.error('Error fetching budget limits:', error);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
 });
+
  
 /* ======================= Notification Routes ======================= */
 // Route to get notifications

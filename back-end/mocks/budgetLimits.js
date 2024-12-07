@@ -1,8 +1,5 @@
 const budgetLimits= [
     {
-      budgetId: 1, // username's personal budget
-      userId: 1, // userId 1 is username's account
-      name: "Personal",
       monthlyLimit: 3000,
       categoryLimits: {
         Bills: 1500,
