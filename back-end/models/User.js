@@ -15,42 +15,45 @@ const userSchema = new mongoose.Schema({
           amount: { type: Number, required: true },
           number: { type: String, required: true },
         },
-    ],
-    debts: [
-      {
-        type: { type: String, required: true },
-        amount: { type: Number, required: true },
-        dueDate: { type: Date, required: true },
-        paymentSchedule: { type: String, required: true }, 
-      },
-    ],
-    transactions: [
-      {
-        merchant: { type: String, required: true },
-        category: { type: String, required: true },
-        amount: { type: Number, required: true },
-        date: { type: Date, required: true },
-      },
-    ],
-    goals: [
-      {
-        name: { type: String, required: true },
-        currentAmount: { type: Number, default: 0, min: 0 }, 
-        frequency: {type: String, enum: ['daily', 'monthly', 'annual'], required: true,},
-        targetAmount: { type: Number, required: true },
-        collaborators: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], 
-      },
-    ],
-    budgetLimits: {
-      monthlyLimit: { type: Number, required: true, default: 0 }, // Overall monthly budget limit
-      categories: [
-          {
-              name: { type: String, required: true }, // User-defined category name
-              limit: { type: Number, required: true, default: 0 }, // User-defined budget limit for the category
-          }
       ],
-      other: { type: Number, default: 0 }, // Automatically calculated as excess from unallocated funds
-    },
+      debts: [
+        {
+          type: { type: String, required: true },
+          amount: { type: Number, required: true },
+          dueDate: { type: Date, required: true },
+          paymentSchedule: { type: String, required: true }, 
+        },
+      ],
+      transactions: [
+        {
+          merchant: { type: String, required: true },
+          category: { type: String, required: true },
+          amount: { type: Number, required: true },
+          date: { type: Date, required: true },
+        },
+      ],
+      goals: [
+        {
+          name: { type: String, required: true },
+          currentAmount: { type: Number, default: 0, min: 0 }, 
+          frequency: {type: String, enum: ['daily', 'monthly', 'annual'], required: true,},
+          targetAmount: { type: Number, required: true },
+          collaborators: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], 
+        },
+      ],
+      budgetLimits: {
+        monthlyLimit: { type: Number, required: true, default: 0 }, // Overall monthly budget limit
+        categories: [
+            {
+                name: { type: String, required: true }, // User-defined category name
+                limit: { type: Number, required: true, default: 0 }, // User-defined budget limit for the category
+            }
+        ],
+        other: { type: Number, default: 0 }, // Automatically calculated as excess from unallocated funds
+      },
+
+      
+
 });
 
 

@@ -1,74 +1,94 @@
-
 .recurring-payments-container {
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  }
-  
-  .recurring-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .add-payment-btn {
-    font-size: 1rem;
-    color: #487bf1;
-    text-decoration: none;
-    padding: 5px 10px;
-    background-color: #e0e7ff;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-  }
-  
-  .add-payment-btn:hover {
-    background-color: #bcd4ff;
-  }
-  
-  .payments-list {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .payment-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 15px;
-    margin-bottom: 10px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-    position: relative;
-  }
-  
-  .payment-item:hover {
-    background-color: #e8f1ff;
-  }
-  
-  .payment-details {
-    display: flex;
-    gap: 20px;
-  }
-  
-  .payment-name {
-    font-weight: bold;
-  }
-  
-  .edit-payment-btn {
-    display: none;
-    position: absolute;
-    transform: translateY(-130%);
-    right: 10px;
-    font-size: 0.9rem;
-    color: #487bf1;
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .payment-item:hover .edit-payment-btn {
-    display: inline;
-  }
-  
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+ 
+.recurring-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+ 
+.add-payment-btn {
+  font-size: 1rem;
+  color: #487bf1;
+  text-decoration: none;
+  padding: 5px 10px;
+  background-color: #e0e7ff;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+ 
+.add-payment-btn:hover {
+  background-color: #bcd4ff;
+}
+ 
+.payments-list {
+  list-style-type: none;
+  padding: 0;
+}
+ 
+.payment-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  position: relative;
+}
+ 
+.payment-item:hover {
+  background-color: #e8f1ff;
+}
+ 
+.payment-details {
+  display: flex;
+  gap: 20px;
+}
+ 
+.payment-name {
+  font-weight: bold;
+}
+ 
+.edit-payment-btn {
+  display: block;
+  position: absolute;
+  top: 10px;
+  right: 60px; /* Adjust this value to space it from the Delete button */
+  font-size: 0.9rem;
+  color: #487bf1;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+ 
+.delete-payment-btn {
+  display: block;
+  position: absolute;
+  top: 10px;
+  right: 10px; /* Align to the right of the container */
+  font-size: 0.9rem;
+  color: #f14848;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+ 
+.payment-item {
+  position: relative; /* Ensure relative positioning for proper alignment of buttons */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+}
+ 
+.payment-item:hover .edit-payment-btn,
+.payment-item:hover .delete-payment-btn {
+  display: block; /* Show buttons only when hovering over the item */
+}
