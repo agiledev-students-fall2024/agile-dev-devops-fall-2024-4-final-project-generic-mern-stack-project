@@ -52,20 +52,7 @@ const userSchema = new mongoose.Schema({
         other: { type: Number, default: 0 }, // Automatically calculated as excess from unallocated funds
       },
 
-      recurringPayments: [
-        {
-          accountId: { type: String, required: true }, // Links to an account
-          amount: { type: Number, required: true },
-          category: { type: String, required: true },
-          description: { type: String, required: true }, // E.g., Rent, Subscription
-          frequency: {
-            type: String,
-            enum: ['daily', 'monthly', 'annual'],
-            required: true,
-          },
-          nextPaymentDate: { type: Date, required: true }, // Next scheduled payment
-        },
-      ],
+      
 
 });
 
