@@ -19,7 +19,6 @@ const BlogPostLoggedIn = () => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/posts/${postId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        console.log('API Response:', response.data); // Debug log
         setPost(response.data.post);
         setLoggedin(response.data.loggedin);
         setAuthor(response.data.post.author);
