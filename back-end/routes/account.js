@@ -2,11 +2,23 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose')
 const passport = require('passport')
+const multer = require('multer');
 const { body, validationResult } = require('express-validator')
 const User = require('../models/User.js')
 const Blocked = require('../models/Blocked.js')
 const Post = require('../models/Post.js')
 
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/');
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`);
+    },
+});
+
+const upload = multer({ storage });
 
 router.get('/edit', 
     passport.authenticate('jwt', { session: false }), 
@@ -21,6 +33,7 @@ router.get('/edit',
 
 router.put('/edit', 
     passport.authenticate('jwt', { session: false }), 
+    upload.single('profileImg'),
     [
         body('name')
             .notEmpty()
@@ -36,6 +49,16 @@ router.put('/edit',
             .withMessage('Layout is required.')
             .isIn(['list', 'list-title', 'masonry', 'masonry-title', 'grid'])
             .withMessage('Invalid layout option.'),
+        body('profileImg').custom((value, { req }) => {
+            const file = req.file
+            if (file){
+                const allowedTypes = ['image/jpg', 'image/jpeg', 'image/png',];
+                if (!allowedTypes.includes(file.mimetype)) {
+                    throw new Error('File must be a JPG, JPEG, or a PNG.');
+                }
+            }
+            return true; 
+        })
     ],
     async (req, res) => {
         const errors = validationResult(req)
@@ -55,11 +78,11 @@ router.put('/edit',
                     message: 'User not found' 
                 })
             }
-        
+            
             user.name = req.body.name || user.name
             user.bio = req.body.bio
             user.layout = req.body.layout || user.layout
-            user.profilePicture = req.body.profilePicture || user.profilePicture
+            user.profilePicture = req.file ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}` : user.profilePicture
         
             await user.save()
             return res.status(200).json({ 

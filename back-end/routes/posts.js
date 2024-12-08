@@ -47,7 +47,7 @@ router.post(
       });
 
       const savedPost = await newPost.save();
-      console.log('Post created:', savedPost); // Debug log
+      // console.log('Post created:', savedPost); // Debug log
       res.status(201).json({ message: 'Post created successfully', post: savedPost });
     } catch (err) {
       console.error('Error creating post:', err);
@@ -66,7 +66,7 @@ router.get('/:id', passport.authenticate('jwt', { session: false }), async (req,
 
   try {
     const post = await Post.findById(id).populate('author').exec();
-    console.log('Fetched post:', post); // Debug log
+    // console.log('Fetched post:', post); // Debug log
     if (!post) {
       return res.status(404).json({ message: 'Post not found.' });
     }
