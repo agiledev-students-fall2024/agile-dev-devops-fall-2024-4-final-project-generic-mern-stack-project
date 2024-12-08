@@ -87,7 +87,7 @@ const Home = () => {
                     />
                   )}
                   <h2>{post.title}</h2>
-                  <h3>By {post.name}</h3> 
+                  <h3>by {post.name}</h3> 
                   <p className="post-content">
                     {post.content.split(' ').slice(0, 10).join(' ') +
                       (post.content.split(' ').length > 10 ? '...' : '')}
