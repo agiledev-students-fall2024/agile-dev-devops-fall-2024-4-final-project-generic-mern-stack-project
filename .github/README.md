@@ -14,6 +14,6 @@ The `cd-prod-deployment` job is triggered when a new deployment branch is create
 
 To make a new deployment:
 1. Create a new branch with the name `prod/<x.x.x>` where `x.x.x` is an optional version number.
-2. push the branch to the remote repository.
-3. The deployment will be triggered automatically.
+2. Create a new release on GitHub with the same tag name as the branch name.
+3. Push the branch to GitHub.
 
