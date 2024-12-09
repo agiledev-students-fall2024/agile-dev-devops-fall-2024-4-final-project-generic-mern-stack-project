@@ -63,7 +63,7 @@ const Home = () => {
       {error ? (
         <div className="error-message">{error}</div>
       ) : (
-        <div className={`home-posts ${user.layout || 'list'}`}>
+        <div className={`home-posts layout`}>
           {posts.map((post) => {
             const dateObject = new Date(post.createdAt); // Use `createdAt` from the back-end
             return (
@@ -87,12 +87,12 @@ const Home = () => {
                     />
                   )}
                   <h2>{post.title}</h2>
-                  <h3>by {post.name}</h3> 
                   <p className="post-content">
-                    {post.content.split(' ').slice(0, 10).join(' ') +
-                      (post.content.split(' ').length > 10 ? '...' : '')}
+                    {post.content.trim().split(' ').slice(0, 20).join(' ') +
+                      (post.content.split(' ').length > 20 ? '...' : '')}
                   </p>
-                  <p className="mt-3 mb-0 text-end">
+                  <h3 className="authorName">by {post.name}</h3> 
+                  <p className="postDate">
                     {dateObject.toLocaleDateString('en-US')}
                   </p>
                 </div>

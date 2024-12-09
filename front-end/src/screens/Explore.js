@@ -73,12 +73,12 @@ const Explore = () => {
                     <img src={noImgSrc} alt="Not provided by user" className="no-img" />
                   )}
                   <h2>{post.title}</h2>
-                  <h3>by {post.name}</h3>
                   <p className="post-content">
-                    {post.content.split(' ').slice(0, 10).join(' ') +
-                      (post.content.split(' ').length > 10 ? '...' : '')}
+                    {post.content.trim().split(' ').slice(0, 20).join(' ') +
+                      (post.content.split(' ').length > 20 ? '...' : '')}
                   </p>
-                  <p className="mt-3 mb-0 text-end">{dateObject.toLocaleDateString('en-US')}</p>
+                  <h3 className="authName">by {post.name}</h3>
+                  <p className="pDate">{dateObject.toLocaleDateString('en-US')}</p>
                 </div>
               </Link>
             );

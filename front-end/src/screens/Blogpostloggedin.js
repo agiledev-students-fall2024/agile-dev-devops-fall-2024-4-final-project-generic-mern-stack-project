@@ -85,6 +85,7 @@ const BlogPostLoggedIn = () => {
             )}
           </p>
           <p className="post-date">{dateObject.toLocaleDateString('en-US')}</p>
+          <br />
           <p className="post-content">{post.content}</p>
         </div>
 
