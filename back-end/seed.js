@@ -14,24 +14,42 @@ const seedData = async () => {
     await FriendRequest.deleteMany();
     await Friendship.deleteMany();
     await Blocked.deleteMany();
-
     console.log('Collections reset.');
 
     // ADD SEED FRIENDSHIP
-    const friendship = await Friendship.create({
+    const friendship1 = await Friendship.create({
       user1: new mongoose.Types.ObjectId('673f858d5fc4b9efe8ac6266'),
       user2: new mongoose.Types.ObjectId('6744f22a2a7a95bad561ca4f'),
     });
 
-    console.log('Friendship seeded:', friendship);
+    const friendship2 = await Friendship.create({
+      user1: new mongoose.Types.ObjectId('673f858d5fc4b9efe8ac6266'),
+      user2: new mongoose.Types.ObjectId('6745053dfef6a841323a28cf'),
+    });
 
-    // ADD SEED REQUEST
-    const friendRequest = await FriendRequest.create({
+    const friendship3 = await Friendship.create({
+      user1: new mongoose.Types.ObjectId('673f858d5fc4b9efe8ac6266'),
+      user2: new mongoose.Types.ObjectId('6745072d77f8bf13cbd99062'),
+    });
+
+    console.log('Friendship seeded:', friendship1);
+    console.log('Friendship seeded:', friendship2);
+    console.log('Friendship seeded:', friendship3);
+
+    // ADD SEED INCOMING/OUTGOING REQUEST
+    const incomingRequest = await FriendRequest.create({
       from: new mongoose.Types.ObjectId('6744f23aa08fb8eb505b5a3b'),
       to: new mongoose.Types.ObjectId('673f858d5fc4b9efe8ac6266'),
     });
 
-    console.log('Friend request seeded:', friendRequest);
+    const outgoingRequest = await FriendRequest.create({
+      from: new mongoose.Types.ObjectId('673f858d5fc4b9efe8ac6266'),
+      to: new mongoose.Types.ObjectId('67455e551ba8b8f7050ead71'),
+    });
+
+    console.log('Incoming friend request seeded:', incomingRequest);
+    console.log('Outgoing friend request seeded:', outgoingRequest);
+
     mongoose.connection.close();
   } catch (error) {
     console.error('Error seeding data:', error);
