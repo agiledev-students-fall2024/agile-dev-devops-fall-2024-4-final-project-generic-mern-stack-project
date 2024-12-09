@@ -1,0 +1,63 @@
+name: Deploy to Production
+
+# trigger on new release
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to deploy on"
+        required: true
+        default: "master"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
+    - name: Install dependencies
+      run: |
+        cd back-end
+        npm install
+
+    - name: Deploy Backend to DigitalOcean Droplet
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{secrets.DO_DROPLET_IP}}
+        username: deployer
+        key: ${{secrets.DO_DEPLOYER_SSH_KEY}}
+        script: |
+          cd ~/4-final-project-marconnect
+          git pull origin ${{ github.event.inputs.branch || github.ref_name }}
+          cd back-end
+          npm install
+          sudo pm2 restart backend
+          sudo nginx -t
+          sudo systemctl reload nginx
+          sudo pm2 reload all
+          sudo pm2 logs
+
+    - name: Deploy Frontend to DigitalOcean Droplet
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{secrets.DO_DROPLET_IP}}
+        username: deployer
+        key: ${{secrets.DO_DEPLOYER_SSH_KEY}}
+        script: |
+          cd ~/4-final-project-marconnect
+          git pull origin ${{ github.event.inputs.branch || github.ref_name }}
+          cd front-end
+          npm install
+          npm run build
+          sudo nginx -t
+          sudo systemctl reload nginx
