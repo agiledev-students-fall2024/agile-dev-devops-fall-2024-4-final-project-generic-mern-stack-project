@@ -1,0 +1,59 @@
+name: Integration Tests
+
+on:
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch: # Add this to trigger the workflow manually
+    inputs:
+      branch:
+        description: "Branch to test the workflow"
+        required: true
+        default: "master"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the code
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Set up Node.js
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
+    # Install dependencies
+    - name: Install dependencies
+      run: |
+        cd back-end
+        npm install
+
+    # Run vulnerability scan
+    - name: Run vulnerability scan
+      run: |
+        cd back-end
+        npm audit --audit-level=moderate
+
+    # Run tests
+    - name: Run tests
+      run: |
+        cd back-end
+        npm run test:ci
+
+    # Upload test results
+    - name: Upload test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: jest-results
+        path: back-end/test-results.xml
+
+    # Publish test results
+    - name: Report test results
+      uses: dorny/test-reporter@v1
+      with:
+        name: Jest Tests
+        path: back-end/test-results.xml
+        reporter: junit
