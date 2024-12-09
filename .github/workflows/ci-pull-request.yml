@@ -49,7 +49,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: jest-results
-          path: back-end/test-results.xml
+          path: back-end/junit.xml
       - name: Report test results
         uses: dorny/test-reporter@v1
         with:
