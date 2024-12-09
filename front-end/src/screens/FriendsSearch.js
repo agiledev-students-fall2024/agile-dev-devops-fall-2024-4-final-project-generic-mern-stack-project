@@ -10,6 +10,7 @@ const FriendsSearch = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [friends, setFriends] = useState([]);
     const [filteredFriends, setFilteredFriends] = useState([]);
+    const [notification, setNotification] = useState(''); // NOTIFICATION STATE
     const { token } = useContext(AuthContext);
 
     // FETCH FRIENDS FROM BACKEND
@@ -40,29 +41,29 @@ const FriendsSearch = () => {
 
     // BLOCK A USER
     const handleBlock = async (friendId) => {
-        if (!token) return;
-
         try {
-            await axios.post(`${apiUrl}/api/friends/block/${friendId}`, {}, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            setFriends(prevFriends => prevFriends.filter(friend => friend.id !== friendId));
+          await axios.post(`${apiUrl}/api/friends/block/${friendId}`, {}, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          setFriends(prevFriends => prevFriends.filter(friend => friend.id !== friendId));
+          setNotification('User blocked'); // Show notification
+          setTimeout(() => setNotification(''), 3000); // Hide after 3 seconds
         } catch (error) {
-            console.error('Error blocking friend:', error);
+          console.error('Error blocking friend:', error);
         }
     };
 
     // REMOVE A FRIEND
     const handleRemove = async (friendId) => {
-        if (!token) return;
-
         try {
-            await axios.post(`${apiUrl}/api/friends/remove/${friendId}`, {}, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            setFriends(prevFriends => prevFriends.filter(friend => friend.id !== friendId));
+          await axios.post(`${apiUrl}/api/friends/remove/${friendId}`, {}, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          setFriends(prevFriends => prevFriends.filter(friend => friend.id !== friendId));
+          setNotification('Friend removed'); // Show notification
+          setTimeout(() => setNotification(''), 3000); // Hide after 3 seconds
         } catch (error) {
-            console.error('Error removing friend:', error);
+          console.error('Error removing friend:', error);
         }
     };
 
@@ -79,6 +80,12 @@ const FriendsSearch = () => {
                 </div>
             </header>
 
+            {notification && (
+                <div className="notification">
+                    {notification}
+                </div>
+            )}
+            
             <div className='container-friends'>
                 <div className="input-bar">
                     <input 
