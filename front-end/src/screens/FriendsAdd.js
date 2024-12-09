@@ -10,6 +10,7 @@ const FriendsAdd = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [potentialFriends, setPotentialFriends] = useState([]);
     const [filteredFriends, setFilteredFriends] = useState([]);
+    const [notification, setNotification] = useState(''); // STATE FOR NOTIFICATION
     const { token } = useContext(AuthContext);
 
     // FETCH ALL POTENTIAL FRIENDS
@@ -47,6 +48,8 @@ const FriendsAdd = () => {
             });
             setPotentialFriends(prevFriends => prevFriends.filter(friend => friend.id !== friendId));
             setFilteredFriends(prevFriends => prevFriends.filter(friend => friend.id !== friendId));
+            setNotification('Friend request sent'); // Show notification
+            setTimeout(() => setNotification(''), 3000); // Hide notification after 3 seconds
         } catch (error) {
             console.error('Error sending friend request:', error);
         }
@@ -64,7 +67,13 @@ const FriendsAdd = () => {
                     <Link to="/friendsadd" className="custom-link">Add Friend</Link>
                 </div>
             </header>
-            
+
+            {notification && (
+                <div className="notification">
+                    {notification}
+                </div>
+            )}
+
             <div className='container-friends'>
                 <div className="input-bar-add">
                     <input 

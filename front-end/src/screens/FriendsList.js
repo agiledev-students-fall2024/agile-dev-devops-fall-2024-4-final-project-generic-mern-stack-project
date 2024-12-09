@@ -8,8 +8,8 @@ const apiUrl = process.env.REACT_APP_API_URL;
 
 const FriendsList = () => {
   const [friends, setFriends] = useState([]);
+  const [notification, setNotification] = useState(''); // NOTIFICATION STATE
   const { token, username } = useContext(AuthContext);
-  // console.log('Current logged-in username:', username);
 
   // FETCH FRIENDS FROM BACKEND
   useEffect(() => {
@@ -43,9 +43,9 @@ const FriendsList = () => {
         },
       });
       if (response.status === 200) {
-        setFriends(friends.filter(friend => friend.id !== friendId)); // REMOVE BLOCKED FRIEND FROM DISPLAY
-      } else {
-        console.error('Failed to block friend');
+        setFriends(friends.filter(friend => friend.id !== friendId));
+        setNotification('User blocked'); // Show notification
+        setTimeout(() => setNotification(''), 3000); // Hide after 3 seconds
       }
     } catch (error) {
       console.error('Error:', error);
@@ -61,9 +61,9 @@ const FriendsList = () => {
         },
       });
       if (response.status === 200) {
-        setFriends(friends.filter(friend => friend.id !== friendId)); // REMOVE DELETED FRIEND FROM DISPLAY
-      } else {
-        console.error('Failed to remove friend');
+        setFriends(friends.filter(friend => friend.id !== friendId));
+        setNotification('Friend removed'); // Show notification
+        setTimeout(() => setNotification(''), 3000); // Hide after 3 seconds
       }
     } catch (error) {
       console.error('Error:', error);
@@ -85,6 +85,12 @@ const FriendsList = () => {
           <Link to="/friendslist" className="custom-link">Friends</Link>
         </div>
       </header>
+
+      {notification && (
+        <div className="notification">
+            {notification}
+        </div>
+      )}
 
       <div className='container-friends'>
         <div className="friends-actions">

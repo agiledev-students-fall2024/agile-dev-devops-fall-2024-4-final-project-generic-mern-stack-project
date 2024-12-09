@@ -9,6 +9,7 @@ const apiUrl = process.env.REACT_APP_API_URL;
 const FriendRequests = () => {
   const [incomingRequests, setIncomingRequests] = useState([]);
   const [outgoingRequests, setOutgoingRequests] = useState([]);
+  const [notification, setNotification] = useState(''); // STATE FOR NOTIFICATION
   const { token } = useContext(AuthContext);
 
   useEffect(() => {
@@ -48,6 +49,8 @@ const FriendRequests = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setIncomingRequests(prev => prev.filter(request => request.id !== requestId));
+      setNotification('Friend request accepted'); // Show notification
+      setTimeout(() => setNotification(''), 3000); // Hide notification after 3 seconds
     } catch (error) {
       console.error('Error accepting friend request:', error);
     }
@@ -61,6 +64,8 @@ const FriendRequests = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setIncomingRequests(prev => prev.filter(request => request.id !== requestId));
+      setNotification('Friend request declined'); // Show notification
+      setTimeout(() => setNotification(''), 3000); // Hide notification after 3 seconds
     } catch (error) {
       console.error('Error declining friend request:', error);
     }
@@ -74,6 +79,8 @@ const FriendRequests = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setOutgoingRequests(prev => prev.filter(request => request.id !== requestId));
+      setNotification('Friend request canceled'); // Show notification
+      setTimeout(() => setNotification(''), 3000); // Hide notification after 3 seconds
     } catch (error) {
       console.error('Error canceling friend request:', error);
     }
@@ -91,6 +98,12 @@ const FriendRequests = () => {
           <Link to="/friendsrequests" className="custom-link">Requests</Link>
         </div>
       </header>
+
+      {notification && (
+        <div className="notification">
+          {notification}
+        </div>
+      )}
 
       <div className='container-friends'>
         <h6>Incoming Requests</h6>

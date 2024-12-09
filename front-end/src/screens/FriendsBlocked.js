@@ -8,6 +8,7 @@ const apiUrl = process.env.REACT_APP_API_URL;
 
 const FriendsBlocked = () => {
     const [blockedUsers, setBlockedUsers] = useState([]);
+    const [notification, setNotification] = useState(''); // STATE FOR NOTIFICATION
     const { token } = useContext(AuthContext);
 
     // FETCH ALL BLOCKED USERS
@@ -35,6 +36,8 @@ const FriendsBlocked = () => {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setBlockedUsers(prevBlocked => prevBlocked.filter(user => user.id !== userId));
+            setNotification('User unblocked'); // Show notification
+            setTimeout(() => setNotification(''), 3000); // Hide notification after 3 seconds
         } catch (error) {
             console.error('Error unblocking user:', error);
         }
@@ -52,6 +55,12 @@ const FriendsBlocked = () => {
                     <Link to="/friendsblocked" className="custom-link">Blocked</Link>
                 </div>
             </header>
+
+            {notification && (
+                <div className="notification">
+                    {notification}
+                </div>
+            )}
 
             <div className='container-friends'>
                 <h6>Users you have blocked</h6>
