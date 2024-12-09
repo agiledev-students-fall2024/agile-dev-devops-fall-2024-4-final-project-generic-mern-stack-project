@@ -13,7 +13,7 @@ The `ci-pull-request` job is triggered when a pull request is opened or updated.
 The `cd-prod-deployment` job is triggered when a new deployment branch is created. This job deploys both front-end and back-end to the production server (Digital Ocean).
 
 To make a new deployment:
-1. Create a new branch with the name `prod-<x.x.x>` where `x.x.x` is an optional version number.
+1. Create a new branch with the name `prod/<x.x.x>` where `x.x.x` is an optional version number.
 2. push the branch to the remote repository.
 3. The deployment will be triggered automatically.
 
