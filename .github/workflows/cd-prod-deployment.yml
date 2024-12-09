@@ -13,7 +13,53 @@ on:
         default: "master"
 
 jobs:
-  deploy:
+  deploy-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
+    - name: Install dependencies
+      run: |
+        cd back-end
+        npm install
+
+    - name: Deploy Backend to DigitalOcean Droplet
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{secrets.HOST}}
+          username: ${{secrets.USERNAME}}
+          key: ${{secrets.KEY}}
+          script: |
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            rm -rf test
+            mkdir test
+            cd test
+            git clone git@github.com:username/projectname
+            echo 'Deployment to digital ocean finished'
+            
+    - name: Deploy Frontend to DigitalOcean Droplet
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{secrets.HOST}}
+          username: ${{secrets.USERNAME}}
+          key: ${{secrets.KEY}}
+          script: |
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            rm -rf test
+            mkdir test
+            cd test
+            git clone git@github.com:username/projectname
+            echo 'Deployment to digital ocean finished'
+  deploy-frontend:
     runs-on: ubuntu-latest
 
     steps:
