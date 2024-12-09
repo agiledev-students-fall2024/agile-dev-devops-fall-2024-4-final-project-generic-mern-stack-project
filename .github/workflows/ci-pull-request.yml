@@ -55,5 +55,5 @@ jobs:
         with:
           name: Jest Tests
           path: back-end/test-results.xml
-          reporter: github-pr-check
+          reporter: jest-junit
 
