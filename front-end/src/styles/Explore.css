@@ -34,3 +34,14 @@
 .container:not(#profile-blog-posts){
   margin-bottom: 5rem;
 }
+
+.authName{
+  font-weight: bold;
+  text-decoration: underline;
+  text-align: right;
+}
+
+.pDate{
+  text-align: right;
+  font-weight: bold;
+}

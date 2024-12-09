@@ -27,10 +27,16 @@
   border-radius: .5rem;
 }
 
-.post-content {
-  font-size: 1rem;
-}
-
 .container:not(#profile-blog-posts){
   margin-bottom: 5rem;
+}
+.authorName{
+  font-weight: bold;
+  text-decoration: underline;
+  text-align: right;
+}
+
+.postDate{
+  text-align: right;
+  font-weight: bold;
 }
