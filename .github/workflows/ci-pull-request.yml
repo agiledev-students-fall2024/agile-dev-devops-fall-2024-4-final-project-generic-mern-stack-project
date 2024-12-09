@@ -54,6 +54,6 @@ jobs:
         uses: dorny/test-reporter@v1
         with:
           name: Jest Tests
-          path: back-end/test-results.xml
+          path: back-end/junit.xml
           reporter: jest-junit
 
