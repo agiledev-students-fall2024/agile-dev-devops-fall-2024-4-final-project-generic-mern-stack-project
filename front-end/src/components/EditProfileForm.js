@@ -1,6 +1,6 @@
 import React from 'react'
 import axios from 'axios'
-import { Navigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -10,10 +10,12 @@ const EditProfileForm = () => {
         name: '',
         bio: '',
         layout: '',
-        file: null
+        profileImg: null
     })
 
     const [error, setError] = React.useState(null)
+    const navigate = useNavigate(); 
+
     const [success, setSuccess] = React.useState(null)
 
     React.useEffect(() => {
@@ -26,30 +28,45 @@ const EditProfileForm = () => {
                 name: res.data.name,
                 bio: res.data.bio ? res.data.bio : '',
                 layout: res.data.layout,
-                file: null
+                profileImg: res.data.profileImg ? res.data.profileImg : null
             })
         })
         .catch(err => {})
     }, [token])
 
     const handleChange = (e) => {
-        const { name, value } = e.target
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }))
-    }
+        const { name, value, files } = e.target;
+    
+        if (name === 'profileImg') {
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: files[0],
+            }));
+        } else {
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: value,
+            }));
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        const data = new FormData();
+        data.append('name', formData.name);
+        data.append('bio', formData.bio);
+        data.append('layout', formData.layout);
+        if (formData.profileImg) data.append('profileImg', formData.profileImg); // Only append file if exists
+
+
         try {
             const response = await axios
                 .put(`${apiUrl}/api/account/edit`, 
-                    formData,
-                    { headers: { Authorization: `Bearer ${token}` }, },
+                    data,
+                    { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' }, },
                 )
             setError(null)
-            setSuccess(response.data.username)
+            navigate(`/profile/${response.data.username}`);
         } catch (error) {
           if (error.response) {
               setError(error.response.data.message)
@@ -66,10 +83,6 @@ const EditProfileForm = () => {
         { val: 'masonry', label: 'Masonry (image only)'},
         { val: 'masonry-title', label: 'Masonry'}
     ]
-
-    if (success) {
-        return <Navigate to={`/profile/${success}`} /> 
-    }
 
     return (
         <>

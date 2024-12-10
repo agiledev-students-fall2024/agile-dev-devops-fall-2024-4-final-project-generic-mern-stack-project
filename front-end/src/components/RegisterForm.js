@@ -1,11 +1,11 @@
 import React from 'react'
 import axios from 'axios'
-import { Navigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const RegisterForm = () => {
-  const [registered, setRegistered] = React.useState(false)
+  const navigate = useNavigate(); 
   const [formData, setFormData] = React.useState({
         name: '',
         username: '',
@@ -29,7 +29,7 @@ const RegisterForm = () => {
     try {
         await axios.post(`${apiUrl}/api/authentication/register`, formData)
         setError(null)
-        setRegistered(true)
+        navigate('/login');
     } catch (error) {
       if (error.response) {
           setError(error.response.data.message)
@@ -37,10 +37,6 @@ const RegisterForm = () => {
           setError(`Network error: ${error.message}`)
       }
     }
-  }
-
-  if (registered){
-    return <Navigate to='/login' /> 
   }
 
   return (
