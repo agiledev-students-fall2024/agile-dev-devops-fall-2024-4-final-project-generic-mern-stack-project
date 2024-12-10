@@ -39,9 +39,7 @@ const CodeEditor = () => {
             if (eventSourceRef.current) {
                 eventSourceRef.current.close();
             }
-
-            const eventSource = new EventSource(`${import.meta.env.VITE_API_URL}/code/${meetingId}/stream`);
-            
+            const eventSource = new EventSource(`${import.meta.env.VITE_API_URL}/code/${meetingId}/stream`);  
             eventSource.onopen = () => {
                 console.log('SSE connection established');
                 setError(null);

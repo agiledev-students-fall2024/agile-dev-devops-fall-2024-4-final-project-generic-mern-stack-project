@@ -74,12 +74,12 @@ const JoinCreateMeetingPage = () => {
         const data = await response.json();
         setPastMeetings(data);
     } catch (error) {
-        console.error('Error fetching past meetings:', error);
-        setError('Failed to load past meetings');
+      console.error('Error fetching past meetings:', error);
+      setError('Failed to load past meetings');
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-};
+  };
 
   const handlePastMeetingClick = (meetingId) => {
     navigate(`/meetings/${meetingId}`);
