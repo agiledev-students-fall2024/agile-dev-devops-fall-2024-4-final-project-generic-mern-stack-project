@@ -19,9 +19,12 @@ app.use('/users', userRoutes);
 app.use('/auth/login', loginRoutes); 
 
 app.use(cors({
-    origin: 'https://easynote-aivlj.ondigitalocean.app/', 
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], 
-    credentials: true 
+    origin: [
+        'https://easynote-aivlj.ondigitalocean.app', 
+        'http://localhost:3000'
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
 }));
 
 const PORT = process.env.PORT || 5000;
