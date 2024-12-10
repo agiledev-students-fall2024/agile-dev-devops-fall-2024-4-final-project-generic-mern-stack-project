@@ -95,10 +95,3 @@ const BlogPostLoggedIn = () => {
 };
 
 export default BlogPostLoggedIn;
-
-/*
-        <h1>{post.title}</h1>
-        <h3>By {post.name}</h3>
-        <br />
-        <p>{post.content}</p>
-*/
