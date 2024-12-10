@@ -31,9 +31,6 @@ export const validateRecipe = [
     .isString()
     .notEmpty()
     .withMessage("Cuisine is required"),
-  body("rating")
-    .isFloat({ min: 0, max: 5 })
-    .withMessage("Rating must be between 0 and 5"),
 ];
 
 // Validation rules for updating user profile
