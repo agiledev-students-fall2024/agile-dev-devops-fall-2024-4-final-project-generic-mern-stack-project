@@ -14,9 +14,6 @@ app.use(express.json());
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
      .then(() => console.log('MongoDB connected'))
      .catch(err => console.log(err));
-app.use('/notes', noteRoutes); 
-app.use('/users', userRoutes); 
-app.use('/auth/login', loginRoutes); 
 
 app.use(cors({
     origin: [
@@ -26,6 +23,10 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 }));
+
+app.use('/notes', noteRoutes); 
+app.use('/users', userRoutes); 
+app.use('/auth/login', loginRoutes); 
 
 const PORT = process.env.PORT || 5000;
 
