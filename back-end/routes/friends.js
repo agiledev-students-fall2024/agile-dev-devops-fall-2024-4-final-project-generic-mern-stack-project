@@ -71,6 +71,7 @@ router.post('/remove/:id', passport.authenticate('jwt', { session: false }), asy
 router.post('/block/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
   const userId = req.params.id;
   try {
+    // REMOVE CURRENT FRIENDSHIPS
     await Friendship.deleteOne({
       $or: [
         { user1: req.user.id, user2: userId },
@@ -78,16 +79,27 @@ router.post('/block/:id', passport.authenticate('jwt', { session: false }), asyn
       ]
     });
 
+    // REMOVE PENDING FRIEND REQUESTS
+    await FriendRequest.deleteMany({
+      $or: [
+        { sender: req.user.id, receiver: userId },
+        { sender: userId, receiver: req.user.id }
+      ]
+    });
+
+    // CHECK IF THE USER IS ALREADY BLOCKED
     const isBlocked = await Blocked.findOne({ blocker: req.user.id, blocked: userId });
     if (!isBlocked) {
+      // ADD USER TO BLOCKED LIST
       await Blocked.create({ blocker: req.user.id, blocked: userId });
     }
 
-    res.status(200).json({ message: 'User blocked successfully' });
+    res.status(200).json({ message: 'User blocked successfully, and all related requests were removed' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
 
 // 5. ADD A FRIEND (SEND AN OUTGOING FRIEND REQUEST)
 router.post('/request/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
