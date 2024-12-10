@@ -1,6 +1,6 @@
 import React from 'react'
 import axios from 'axios'
-import { Navigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -14,6 +14,8 @@ const EditProfileForm = () => {
     })
 
     const [error, setError] = React.useState(null)
+    const navigate = useNavigate(); 
+
     const [success, setSuccess] = React.useState(null)
 
     React.useEffect(() => {
@@ -64,7 +66,7 @@ const EditProfileForm = () => {
                     { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' }, },
                 )
             setError(null)
-            setSuccess(response.data.username)
+            navigate(`/profile/${response.data.username}`);
         } catch (error) {
           if (error.response) {
               setError(error.response.data.message)
@@ -81,10 +83,6 @@ const EditProfileForm = () => {
         { val: 'masonry', label: 'Masonry (image only)'},
         { val: 'masonry-title', label: 'Masonry'}
     ]
-
-    if (success) {
-        return <Navigate to={`/profile/${success}`} /> 
-    }
 
     return (
         <>

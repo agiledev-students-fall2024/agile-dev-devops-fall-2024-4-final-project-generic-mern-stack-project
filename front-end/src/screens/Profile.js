@@ -2,7 +2,7 @@ import '../styles/Profile.css'
 import '../styles/main.css'
 import React from 'react'
 import axios from 'axios';
-import { useParams, Link, Navigate } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 
 
 const apiUrl = process.env.REACT_APP_API_URL;
@@ -11,10 +11,11 @@ const Profile = () => {
     const { username } = useParams()
     const token = localStorage.getItem('token')
     const [user, setUser] = React.useState(null)
-    const [redirect, setRedirect] = React.useState(false)
     const [belongsToLoggedIn, setBelongsToLoggedIn] = React.useState(null)
     const [posts, setPosts] = React.useState([])
     const [rel, setRel] = React.useState('')
+    const [reqId, setReqId] = React.useState(null)
+    const navigate = useNavigate(); 
 
     const generateRandomList = (min, max, count) => (
         Array.from({ length: count }, () => Math.floor(Math.random() * (max - min + 1)) + min)
@@ -30,15 +31,13 @@ const Profile = () => {
                 setUser(res.data.user)
                 setPosts(res.data.posts)
                 setRel(res.data.rel)
+                setReqId(res.data.reqId)
             })
             .catch(err => {
-                setRedirect(true)
+                navigate('/')
             })
-    }, [token, username, rel])
+    }, [token, username, rel, navigate])
 
-    if (redirect) {
-        return <Navigate to='/' /> 
-    }
     
     const randomNumbers = generateRandomList(6, 13, posts.length)
 
@@ -175,9 +174,7 @@ const Profile = () => {
             await axios.post(`${apiUrl}/api/friends/request/${user._id}`, {}, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            // setPotentialFriends(prevFriends => prevFriends.filter(friend => friend.id !== friendId));
-            // setNotification('Friend request sent'); // Show notification
-            // setTimeout(() => setNotification(''), 3000); // Hide notification after 3 seconds
+            setRel('OUTGOING')
         } catch (error) {
             console.error('Error sending friend request:', error);
         }
@@ -185,18 +182,64 @@ const Profile = () => {
 
     const handleRemoveFriend = async () => {
         try {
-          const response = await axios.post(`${apiUrl}/api/friends/remove/${user._id}`, {}, {
+            await axios.post(`${apiUrl}/api/friends/remove/${user._id}`, {}, {
             headers: { Authorization: `Bearer ${token}` },
-          })
-          if (response.status === 200) {
-            // setFriends(friends.filter(friend => friend.id !== friendId));
-            // setNotification('Friend removed'); // Show notification
-            // setTimeout(() => setNotification(''), 3000); // Hide after 3 seconds
-          }
+            })
+            setRel('NONE')
         } catch (error) {
           console.error('Error:', error);
         }
     }
+
+    const handleCancelRequest = async () => {
+        try {
+            await axios.post(`${apiUrl}/api/friends/requests/cancel/${reqId}`, {}, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setRel('NONE')
+        } catch (error) {
+          console.error('Error canceling friend request:', error);
+        }
+    };
+
+    const handleAcceptRequest = async () => {
+        try {
+            await axios.post(`${apiUrl}/api/friends/requests/accept/${reqId}`, {}, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setRel('FRIENDS')
+        } catch (error) {
+          console.error('Error canceling friend request:', error);
+        }
+    };
+
+    const handleDeclineRequest = async () => {
+        try {
+            await axios.post(`${apiUrl}/api/friends/requests/decline/${reqId}`, {}, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setRel('NONE')
+        } catch (error) {
+          console.error('Error canceling friend request:', error);
+        }
+    };
+
+    const handleBlock = async () => {
+        try {
+            await axios.post(`${apiUrl}/api/friends/block/${user._id}`, {}, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            navigate('/friendsblocked'); 
+        } catch (error) {
+          console.error('Error canceling friend request:', error);
+        }
+    };
+
+    const ActionButton = ({ onClick, className, children }) => (
+        <button className={`${className} text-white text-base py-2 px-4 rounded-full no-underline`} onClick={onClick}>
+            {children}
+        </button>
+    );
 
     return (
         <div>
@@ -207,9 +250,36 @@ const Profile = () => {
                     </svg>
                 </Link>
                 
-                { belongsToLoggedIn && <Link to={`/createnewblogpost/${user.username}`} className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>New Post</Link> }
-                { !belongsToLoggedIn && rel === 'FRIENDS' && <button className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline' onClick={() => handleRemoveFriend()} >Remove Friend</button> }
-                { !belongsToLoggedIn && rel === 'NONE' && <button className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline' onClick={() => handleAddFriend()} >Add Friend</button> }
+                {   
+                    belongsToLoggedIn ? 
+                    <Link to={`/createnewblogpost/${user.username}`} className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>New Post</Link> :
+                    <>
+                        {rel === 'FRIENDS' && (
+                            <div>
+                                <ActionButton className="bg-gray-500 me-3" onClick={handleRemoveFriend}>Remove Friend</ActionButton>
+                                <ActionButton className="bg-gray-500" onClick={handleBlock}>Block</ActionButton>
+                            </div>
+                        )}
+
+                        {rel === 'INCOMING' && (
+                            <div>
+                                <ActionButton className="bg-green-700 me-3" onClick={handleAcceptRequest}>Accept Request</ActionButton>
+                                <ActionButton className="bg-red-600" onClick={handleDeclineRequest}>Decline Request</ActionButton>
+                            </div>
+                        )}
+
+                        {rel === 'OUTGOING' && (
+                            <ActionButton className="bg-gray-400" onClick={handleCancelRequest}>Cancel Request</ActionButton>
+                        )}
+
+                        {rel === 'NONE' && (
+                            <div>
+                                <ActionButton className="bg-blue-500 me-3" onClick={handleAddFriend}>Add Friend</ActionButton>
+                                <ActionButton className="bg-red-500" onClick={handleBlock}>Block</ActionButton>
+                            </div>
+                        )}
+                    </>              
+                }
             </header>
 
             { user && <>

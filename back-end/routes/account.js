@@ -117,12 +117,13 @@ router.get( '/user/:username',
 
             const posts = await Post.find({author: user.id}).exec()
             let rel = 'NONE'
+            let reqId = null
 
             if (!belongsToLoggedIn){
                 const blocked = (await Blocked.find({
                     $or: [
-                        { blocker: req.user._id, blocked: user.id },
-                        { blocker: user.id, blocked: req.user._id }
+                        { blocker: req.user._id, blocked: user._id },
+                        { blocker: user._id, blocked: req.user._id }
                     ]
                 }).exec()).length > 0
 
@@ -135,27 +136,29 @@ router.get( '/user/:username',
 
                 const friends = (await Friendship.find({
                     $or: [
-                        { user1: req.user._id, user2: user.id },
-                        { user1: user.id, user2: req.user._id }
+                        { user1: req.user._id, user2: user._id },
+                        { user1: user._id, user2: req.user._id }
                     ]
                 }).exec()).length > 0
-                
-                const incomingRequest = (await FriendRequest.find({ to: user._id }).exec()).length > 0
-                const outgoingRequest = (await FriendRequest.find({ from: user._id }).exec()).length > 0
+
+                const outgoingRequest = (await FriendRequest.findOne({ to: user._id, from: req.user._id }).exec())
+                const incomingRequest = (await FriendRequest.findOne({ to: req.user._id, from: user._id }).exec())
 
                 if (friends){
                     rel = 'FRIENDS'
                 } else {
                     if (incomingRequest){
                         rel = 'INCOMING'
+                        reqId = incomingRequest._id
                     } else if (outgoingRequest){
                         rel = 'OUTGOING'
+                        reqId = outgoingRequest._id
                     }
                 }
             }
             return res.status(200).json({ 
                 success: true,
-                belongsToLoggedIn, user, posts, rel
+                belongsToLoggedIn, user, posts, rel, reqId
             })
         
         } catch (err) {
