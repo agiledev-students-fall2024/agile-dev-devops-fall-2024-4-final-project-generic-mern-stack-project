@@ -38,9 +38,9 @@ jobs:
         key: ${{secrets.DO_DEPLOYER_SSH_KEY}}
         script: |
           cd /root/4-final-project-marconnect
-          git pull origin ${{ github.event.inputs.branch || github.ref_name }}
+          sudo git pull origin ${{ github.event.inputs.branch || github.ref_name }}
           cd back-end
-          npm install
+          sudo npm install
           sudo pm2 restart backend
           sudo nginx -t
           sudo systemctl reload nginx
@@ -55,9 +55,12 @@ jobs:
         key: ${{secrets.DO_DEPLOYER_SSH_KEY}}
         script: |
           cd /root/4-final-project-marconnect
-          git pull origin ${{ github.event.inputs.branch || github.ref_name }}
+          sudo git pull origin ${{ github.event.inputs.branch || github.ref_name }}
           cd front-end
-          npm install
-          npm run build
+          sudo npm install
+          sudo npm run build
+          cd /var/www/myapp
+          sudo rm -rf *
+          sudo cp -r ~/4-final-project-marconnect/front-end/dist/* .
           sudo nginx -t
           sudo systemctl reload nginx
