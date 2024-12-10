@@ -33,6 +33,13 @@ export const validateRecipe = [
     .withMessage("Cuisine is required"),
 ];
 
+// Recipe ID validation rule
+export const validateRecipeID = [
+  body("userId")
+    .isString()
+    .withMessage("User ID must be a string"),
+];
+
 // Validation rules for updating user profile
 export const validateUpdateProfile = [
   body("userId")
