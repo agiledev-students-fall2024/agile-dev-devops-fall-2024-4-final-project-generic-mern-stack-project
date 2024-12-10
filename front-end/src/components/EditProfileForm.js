@@ -16,8 +16,6 @@ const EditProfileForm = () => {
     const [error, setError] = React.useState(null)
     const navigate = useNavigate(); 
 
-    const [success, setSuccess] = React.useState(null)
-
     React.useEffect(() => {
         axios
         .get(`${apiUrl}/api/account/edit`, 
@@ -87,7 +85,7 @@ const EditProfileForm = () => {
     return (
         <>
             <div className='text-center'>
-                <label htmlFor='fileInput'>Edit picture</label>
+                <label htmlFor='fileInput' className='border bg-gray-200 py-1 px-2 rounded-md'>Edit picture</label>
                 <input
                     name='profileImg'
                     id='fileInput'
