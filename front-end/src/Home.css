@@ -5,43 +5,25 @@
 }
 
 .activity-card {
-    background-color: black;
-    border: 1px solid #ddd;
+    background-color: white;
+    border: 1px solid #8dbda6;
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     max-width: 400px;
     overflow: visible;
+    text-align: center;
 }
 
 .activity-card h2, .activity-card h3 {
     margin: 0 0 10px;
+    color: #242424;
 }
 
 .activity-card p {
     margin: 0 0 10px;
-}
-
-.activity-image {
-    margin: 10px 0;
-}
-
-.activity-image img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-}
-
-.close-button {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background-color: transparent;
-    border: none;
-    color: #fff;
-    font-size: 24px;
-    cursor: pointer;
+    color: #242424;
 }
 
 .activity-image-popup img {

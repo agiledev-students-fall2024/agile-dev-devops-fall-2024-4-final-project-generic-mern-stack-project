@@ -2,7 +2,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 
-function CompletionModal({ isOpen, onRequestClose, onFileChange, onSubmit, error }) {
+function CompletionModal({ isOpen, onRequestClose, onFileChange, onSubmit, error, closeModalNoImage}) {
   return (
     <Modal
       isOpen={isOpen}
@@ -20,7 +20,10 @@ function CompletionModal({ isOpen, onRequestClose, onFileChange, onSubmit, error
           <input type="file" name="my_files" accept="image/*" onChange={onFileChange} />
         </label>
           {error && <div className = 'upload-error'>{error}</div>}
+          <div className='modal-buttons'>
           <button type="submit" className="upload-image-button">Upload Image</button>
+          <button onClick={closeModalNoImage} className="upload-no-image-button">Finish Without Uploading</button>
+          </div>
       </form>
       
     </Modal>

@@ -118,18 +118,17 @@ app.post("/api/shareRecipe", upload.single("image"), async (req, res) => {
   }
 });
 
-// Example API for retrieving recipes
 app.get("/api/recipes", async (req, res) => {
   try {
     const recipes = await Recipe.find();
-    res.json(recipes);
+    res.status(200).json(recipes);
   } catch (error) {
     console.error("Error fetching recipes:", error.message);
     res.status(500).json({ error: "Failed to fetch recipes" });
   }
 });
 
-// Other APIs (e.g., challenges, user profiles) remain unchanged...
+
 app.get("/api/challenges", async (req, res) => {
   try {
     const mockError = process.env.MOCK_ERROR === "true";
@@ -143,20 +142,29 @@ app.get("/api/challenges", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch activity tracker data" });
   }
 });
-/*app.get("/api/users", async (req, res) => {
+app.get("/api/weeklyactivity", async (req, res) => {
   try {
     if (process.env.MOCK_ERROR === "true") {
       throw new Error("Mocked error");
     }
-    const { data } = await axios.get(
-      "https://my.api.mockaroo.com/users.json?key=66da8e80"
-    );
-    res.json(data);
+    const thisUserId = req.query.userId;
+
+    if (!thisUserId) {
+      return res.status(400).json({ error: "User ID is required" });
+    }
+
+    // Fetch the user based on the userId
+    const user = await User.findById(thisUserId);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.json(user)
   } catch (error) {
     console.error("Error fetching data from API:", error.message);
     res.status(500).json({ error: "Failed to fetch user data" });
   }
-});*/
+});
 
 app.get("/api/user", async (req, res) => {
   try {
@@ -198,7 +206,7 @@ app.get("/api/user", async (req, res) => {
 });*/
 
 // NOT TESTED YET because route is not used yet
-app.post(
+/*app.post(
   "/api/user/add-recipe",
   validateRecipe, // Validate recipe data
   handleValidationErrors, // Handle validation errors
@@ -212,7 +220,7 @@ app.post(
         { $push: { recipes: userRecipe } },
         { new: true }
       );
-
+      console.log(updatedUser)
       if (!updatedUser) {
         return res.status(404).json({ message: "User not found" });
       }
@@ -223,10 +231,10 @@ app.post(
       res.status(500).json({ message: "Failed to update user recipe list" });
     }
   }
-);
+);*/
 
 
-/*
+
 app.post('/api/user/add-recipe', async(req, res) => {
     try{
         const {userId, userRecipe} = req.body;
@@ -246,7 +254,7 @@ app.post('/api/user/add-recipe', async(req, res) => {
         res.status(500).json({ message: 'Failed to update user recipe list' });
     }
 })
-*/
+
 
 app.put('/api/user/complete-recipe', async(req, res) => {
     console.log("route hit")
@@ -257,9 +265,14 @@ app.put('/api/user/complete-recipe', async(req, res) => {
             return res.status(404).json({ error: "User not found" });
         }
         
-        const recipe = user.recipes.find((r) => r.id.toString() === recipeId);
+        let recipe = user.recipes.find((r) => r.id.toString() === recipeId);
+        console.log('recipeId is, ', recipeId)
         if (!recipe) {
-            return res.status(404).json({ error: "Recipe not found" });
+          recipe = {
+            id: recipeId,
+            completed: true,
+          };
+          user.recipes.push(recipe);
         }
 
         recipe["completed"] = true;
@@ -307,47 +320,7 @@ app.put(
   }
 );
 
-// app.put('/api/update-profile', async (req, res) => {
-//   try {
-//     const { userId, firstName, lastName, age, location, bio } = req.body;
-
-//     // Update the user based on the provided userId
-//     console.log("thisis userID", userId);
-//     const updatedUser = await User.findByIdAndUpdate(
-//       userId,
-//       {
-//         first_name: firstName,
-//         last_name: lastName,
-//         age,
-//         location,
-//         bio,
-//       },
-//       { new: true }
-//     );
-
-//     if (!updatedUser) {
-//       return res.status(404).json({ message: "User not found" });
-//     }
-
-//     res.status(200).json(updatedUser);
-//   } catch (error) {
-//     console.error("Error updating profile:", error);
-//     res.status(500).json({ message: "Server error while updating profile" });
-//   }
-// });
-
-/*app.get("/api/basicRecipe", async (req, res) => {
-  try {
-    const { data } = await axios.get(
-      "https://my.api.mockaroo.com/basic_recipe.json?key=786e37d0"
-    );
-    res.json(data);
-  } catch (error) {
-    console.error("Error fetching data from API:", error.message);
-    res.status(500).json({ error: "Failed to fetch recipes data" });
-  }
-});
-*/// Start the server
+/// Start the server
 export const startServer = () => {
   app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

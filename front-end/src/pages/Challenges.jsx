@@ -15,7 +15,23 @@ const Challenges = () => {
         const fetchChallengesData = async () => {
             try{
                 const response = await axios.get(`${process.env.REACT_APP_BACK_PORT}/api/challenges`);
-                setChallengesData([...response.data])
+                
+                const formattedData = response.data.map((item) => {          
+                    return {
+                      id: item._id,
+                      description: item.description,
+                      name: item.name,
+                      difficulty_level: item.difficulty_level,
+                      ingredients: item.ingredients,
+                      steps: item.steps,
+                      duration: item.duration,
+
+                    };
+                  });
+                setChallengesData(formattedData)
+
+
+
                 console.log('challenges data', challengesData)
             } catch (error){
                 console.log('Error fetching activities')
