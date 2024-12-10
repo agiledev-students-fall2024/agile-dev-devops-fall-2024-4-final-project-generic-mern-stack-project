@@ -2,11 +2,25 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose')
 const passport = require('passport')
+const multer = require('multer');
 const { body, validationResult } = require('express-validator')
 const User = require('../models/User.js')
 const Blocked = require('../models/Blocked.js')
+const Friendship = require('../models/Friendship.js')
+const FriendRequest = require('../models/FriendRequest');
 const Post = require('../models/Post.js')
 
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/');
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`);
+    },
+});
+
+const upload = multer({ storage });
 
 router.get('/edit', 
     passport.authenticate('jwt', { session: false }), 
@@ -21,6 +35,7 @@ router.get('/edit',
 
 router.put('/edit', 
     passport.authenticate('jwt', { session: false }), 
+    upload.single('profileImg'),
     [
         body('name')
             .notEmpty()
@@ -36,6 +51,16 @@ router.put('/edit',
             .withMessage('Layout is required.')
             .isIn(['list', 'list-title', 'masonry', 'masonry-title', 'grid'])
             .withMessage('Invalid layout option.'),
+        body('profileImg').custom((value, { req }) => {
+            const file = req.file
+            if (file){
+                const allowedTypes = ['image/jpg', 'image/jpeg', 'image/png',];
+                if (!allowedTypes.includes(file.mimetype)) {
+                    throw new Error('File must be a JPG, JPEG, or a PNG.');
+                }
+            }
+            return true; 
+        })
     ],
     async (req, res) => {
         const errors = validationResult(req)
@@ -55,11 +80,11 @@ router.put('/edit',
                     message: 'User not found' 
                 })
             }
-        
+            
             user.name = req.body.name || user.name
             user.bio = req.body.bio
             user.layout = req.body.layout || user.layout
-            user.profilePicture = req.body.profilePicture || user.profilePicture
+            user.profilePicture = req.file ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}` : user.profilePicture
         
             await user.save()
             return res.status(200).json({ 
@@ -81,7 +106,6 @@ router.get( '/user/:username',
     async (req, res) => {
         const belongsToLoggedIn = req.user.username === req.params.username
         const username = belongsToLoggedIn ? req.user.username : req.params.username
-        
         try {
             const user = await User.findOne({ username: username }).select('-password -__v').exec()
             if (!user){
@@ -91,11 +115,15 @@ router.get( '/user/:username',
                 })
             } 
 
+            const posts = await Post.find({author: user.id}).exec()
+            let rel = 'NONE'
+            let reqId = null
+
             if (!belongsToLoggedIn){
                 const blocked = (await Blocked.find({
                     $or: [
-                    { blocker: req.user._id, blocked: user.id },
-                    { blocker: user.id, blocked: req.user._id }
+                        { blocker: req.user._id, blocked: user._id },
+                        { blocker: user._id, blocked: req.user._id }
                     ]
                 }).exec()).length > 0
 
@@ -105,12 +133,32 @@ router.get( '/user/:username',
                         error: 'User is blocked or has blocked you' 
                     })
                 }
-            }
 
-            const posts = await Post.find({author: user.id}).exec()
+                const friends = (await Friendship.find({
+                    $or: [
+                        { user1: req.user._id, user2: user._id },
+                        { user1: user._id, user2: req.user._id }
+                    ]
+                }).exec()).length > 0
+
+                const outgoingRequest = (await FriendRequest.findOne({ to: user._id, from: req.user._id }).exec())
+                const incomingRequest = (await FriendRequest.findOne({ to: req.user._id, from: user._id }).exec())
+
+                if (friends){
+                    rel = 'FRIENDS'
+                } else {
+                    if (incomingRequest){
+                        rel = 'INCOMING'
+                        reqId = incomingRequest._id
+                    } else if (outgoingRequest){
+                        rel = 'OUTGOING'
+                        reqId = outgoingRequest._id
+                    }
+                }
+            }
             return res.status(200).json({ 
                 success: true,
-                belongsToLoggedIn, user, posts
+                belongsToLoggedIn, user, posts, rel, reqId
             })
         
         } catch (err) {
