@@ -14,7 +14,7 @@ const Profile = () => {
     const [redirect, setRedirect] = React.useState(false)
     const [belongsToLoggedIn, setBelongsToLoggedIn] = React.useState(null)
     const [posts, setPosts] = React.useState([])
-    // const [friends, setFriends] = React.useState(false)
+    const [rel, setRel] = React.useState('')
 
     const generateRandomList = (min, max, count) => (
         Array.from({ length: count }, () => Math.floor(Math.random() * (max - min + 1)) + min)
@@ -29,12 +29,12 @@ const Profile = () => {
                 setBelongsToLoggedIn(res.data.belongsToLoggedIn)
                 setUser(res.data.user)
                 setPosts(res.data.posts)
-                // setFriends(res.data.friends)
+                setRel(res.data.rel)
             })
             .catch(err => {
                 setRedirect(true)
             })
-    }, [token, username])
+    }, [token, username, rel])
 
     if (redirect) {
         return <Navigate to='/' /> 
@@ -170,6 +170,34 @@ const Profile = () => {
         }
     }
 
+    const handleAddFriend = async () => {
+        try {
+            await axios.post(`${apiUrl}/api/friends/request/${user._id}`, {}, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            // setPotentialFriends(prevFriends => prevFriends.filter(friend => friend.id !== friendId));
+            // setNotification('Friend request sent'); // Show notification
+            // setTimeout(() => setNotification(''), 3000); // Hide notification after 3 seconds
+        } catch (error) {
+            console.error('Error sending friend request:', error);
+        }
+    }
+
+    const handleRemoveFriend = async () => {
+        try {
+          const response = await axios.post(`${apiUrl}/api/friends/remove/${user._id}`, {}, {
+            headers: { Authorization: `Bearer ${token}` },
+          })
+          if (response.status === 200) {
+            // setFriends(friends.filter(friend => friend.id !== friendId));
+            // setNotification('Friend removed'); // Show notification
+            // setTimeout(() => setNotification(''), 3000); // Hide after 3 seconds
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+    }
+
     return (
         <div>
             <header>
@@ -180,8 +208,8 @@ const Profile = () => {
                 </Link>
                 
                 { belongsToLoggedIn && <Link to={`/createnewblogpost/${user.username}`} className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>New Post</Link> }
-                {/* { !belongsToLoggedIn && friends && <button className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>Remove Friend</button> } */}
-                {/* { !belongsToLoggedIn && !friends && <button className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline'>Add Friend</button> } */}
+                { !belongsToLoggedIn && rel === 'FRIENDS' && <button className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline' onClick={() => handleRemoveFriend()} >Remove Friend</button> }
+                { !belongsToLoggedIn && rel === 'NONE' && <button className='bg-gray-500 text-white text-base py-2 px-4 rounded-full no-underline' onClick={() => handleAddFriend()} >Add Friend</button> }
             </header>
 
             { user && <>

@@ -6,6 +6,8 @@ const multer = require('multer');
 const { body, validationResult } = require('express-validator')
 const User = require('../models/User.js')
 const Blocked = require('../models/Blocked.js')
+const Friendship = require('../models/Friendship.js')
+const FriendRequest = require('../models/FriendRequest');
 const Post = require('../models/Post.js')
 
 
@@ -104,7 +106,6 @@ router.get( '/user/:username',
     async (req, res) => {
         const belongsToLoggedIn = req.user.username === req.params.username
         const username = belongsToLoggedIn ? req.user.username : req.params.username
-        
         try {
             const user = await User.findOne({ username: username }).select('-password -__v').exec()
             if (!user){
@@ -114,11 +115,14 @@ router.get( '/user/:username',
                 })
             } 
 
+            const posts = await Post.find({author: user.id}).exec()
+            let rel = 'NONE'
+
             if (!belongsToLoggedIn){
                 const blocked = (await Blocked.find({
                     $or: [
-                    { blocker: req.user._id, blocked: user.id },
-                    { blocker: user.id, blocked: req.user._id }
+                        { blocker: req.user._id, blocked: user.id },
+                        { blocker: user.id, blocked: req.user._id }
                     ]
                 }).exec()).length > 0
 
@@ -128,12 +132,30 @@ router.get( '/user/:username',
                         error: 'User is blocked or has blocked you' 
                     })
                 }
-            }
 
-            const posts = await Post.find({author: user.id}).exec()
+                const friends = (await Friendship.find({
+                    $or: [
+                        { user1: req.user._id, user2: user.id },
+                        { user1: user.id, user2: req.user._id }
+                    ]
+                }).exec()).length > 0
+                
+                const incomingRequest = (await FriendRequest.find({ to: user._id }).exec()).length > 0
+                const outgoingRequest = (await FriendRequest.find({ from: user._id }).exec()).length > 0
+
+                if (friends){
+                    rel = 'FRIENDS'
+                } else {
+                    if (incomingRequest){
+                        rel = 'INCOMING'
+                    } else if (outgoingRequest){
+                        rel = 'OUTGOING'
+                    }
+                }
+            }
             return res.status(200).json({ 
                 success: true,
-                belongsToLoggedIn, user, posts
+                belongsToLoggedIn, user, posts, rel
             })
         
         } catch (err) {
