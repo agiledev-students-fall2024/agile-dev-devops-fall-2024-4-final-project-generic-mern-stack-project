@@ -61,6 +61,6 @@ jobs:
           sudo npm run build
           cd /var/www/myapp
           sudo rm -rf *
-          sudo cp -r ~/4-final-project-marconnect/front-end/dist/* .
+          sudo cp -r /root/4-final-project-marconnect/front-end/dist/* .
           sudo nginx -t
           sudo systemctl reload nginx
