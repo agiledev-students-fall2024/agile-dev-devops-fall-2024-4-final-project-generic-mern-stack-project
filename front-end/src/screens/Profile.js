@@ -256,15 +256,15 @@ const Profile = () => {
                     <>
                         {rel === 'FRIENDS' && (
                             <div>
-                                <ActionButton className="bg-gray-500 me-3" onClick={handleRemoveFriend}>Remove Friend</ActionButton>
-                                <ActionButton className="bg-gray-500" onClick={handleBlock}>Block</ActionButton>
+                                <ActionButton className="bg-gray-400 me-3" onClick={handleRemoveFriend}>Remove Friend</ActionButton>
+                                <ActionButton className="bg-red-500" onClick={handleBlock}>Block</ActionButton>
                             </div>
                         )}
 
                         {rel === 'INCOMING' && (
                             <div>
                                 <ActionButton className="bg-green-700 me-3" onClick={handleAcceptRequest}>Accept Request</ActionButton>
-                                <ActionButton className="bg-red-600" onClick={handleDeclineRequest}>Decline Request</ActionButton>
+                                <ActionButton className="bg-red-500" onClick={handleDeclineRequest}>Decline Request</ActionButton>
                             </div>
                         )}
 
