@@ -37,7 +37,7 @@ jobs:
         username: deployer
         key: ${{secrets.DO_DEPLOYER_SSH_KEY}}
         script: |
-          cd ~/4-final-project-marconnect
+          cd /root/4-final-project-marconnect
           git pull origin ${{ github.event.inputs.branch || github.ref_name }}
           cd back-end
           npm install
@@ -54,7 +54,7 @@ jobs:
         username: deployer
         key: ${{secrets.DO_DEPLOYER_SSH_KEY}}
         script: |
-          cd ~/4-final-project-marconnect
+          cd /root/4-final-project-marconnect
           git pull origin ${{ github.event.inputs.branch || github.ref_name }}
           cd front-end
           npm install
