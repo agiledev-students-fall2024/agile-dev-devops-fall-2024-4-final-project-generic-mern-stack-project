@@ -31,20 +31,20 @@ const BlogPostLoggedIn = () => {
       }
     };
 
-    fetchPostData();
-  }, [postId]);
+    fetchPostData();
+  }, [postId]);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
-  if (error) {
-    return <p>{error}</p>;
-  }
+  if (error) {
+    return <p>{error}</p>;
+  }
 
-  if (!post) {
-    return <p>Post not found</p>;
-  }
+  if (!post) {
+    return <p>Post not found</p>;
+  }
 
   const imageURL = post.photo;
   const dateObject = new Date(post.createdAt); 
@@ -66,12 +66,12 @@ const BlogPostLoggedIn = () => {
         )}
       </header>
 
-      <div className="blog-post-content">
-        {imageURL ? (
-          <img src={imageURL} alt="Post" className="blog-post-image" />
-        ) : (
-          <img src="https://cdn.vectorstock.com/i/500p/50/20/no-photography-sign-image-vector-23665020.jpg" alt="No Image Provided" className="blog-post-image no-img" />
-        )}
+      <div className="blog-post-content">
+        {imageURL ? (
+          <img src={imageURL} alt="Post" className="blog-post-image" />
+        ) : (
+          <img src="https://cdn.vectorstock.com/i/500p/50/20/no-photography-sign-image-vector-23665020.jpg" alt="No Image Provided" className="blog-post-image no-img" />
+        )}
 
         <div className="blog-post-details">
           <h1 className="blog-post-title">{post.title}</h1>
