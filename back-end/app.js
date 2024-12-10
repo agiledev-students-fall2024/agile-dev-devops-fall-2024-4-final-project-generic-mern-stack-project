@@ -1,30 +1,41 @@
-// import and instantiate express
-require('./config.js')
-const task = require("./Task_Routes/task.js")
-const goal = require("./Goal_Routes/goal.js")
-const calendarRoutes = require('./Calendar_Routes/calendar.js');
-const cors = require('cors')
-const auth = require('./Authentication/authentication.js')
-const express = require("express") // CommonJS import style!
-const app = express() // instantiate an Express object
+// Import dependencies
+require('./config.js');
+const express = require('express');
+const cors = require('cors');
+const authMiddleware = require('./middlewares/authMiddleware'); // Import auth middleware
 
-// we will put some server logic here later...
+// Import route handlers
+const taskRoutes = require('./Task_Routes/task.js');
+const goalRoutes = require('./Goal_Routes/goal.js');
+const calendarRoutes = require('./Calendar_Routes/calendar.js');
+const authRoutes = require('./Authentication/authentication.js');
+
+// Initialize Express app
+const app = express();
+
+// Enable CORS for cross-origin requests
 app.use(
     cors({
-        origin: 'http://localhost:3000',
+        origin: 'http://localhost:3000', // Allow requests from your front-end app
         methods: ["GET", "POST", "DELETE", "PUT"]
     })
-)
+);
 
+// Middleware to parse incoming JSON requests
 app.use(express.json());
 
-app.use(task)
-app.use(goal)
-app.use(calendarRoutes);
-// IMPORTANT Comment for Sprint3: Up to end of sprint 3, we're not sure whether we need further maintain 
-// the Authentication part. For now we will leave the designed login/register logic at here, but we don't integrate 
-// it with other parts. You can Register and login as normal, but it WILL NOT AFFECT ANYTHING!!!
-app.use(auth)
+// Public routes (authentication)
+app.use(authRoutes); // Login and registration routes remain public
 
-// export the express app we created to make it available to other modules
-module.exports = app
+// Protected routes (require authentication)
+app.use('/tasks', authMiddleware, taskRoutes);
+app.use('/goals', authMiddleware, goalRoutes);
+app.use('/calendar', authMiddleware, calendarRoutes);
+
+// Error handling for undefined routes
+app.use((req, res, next) => {
+    res.status(404).json({ error: 'Route not found' });
+});
+
+// Export the app for use in server.js
+module.exports = app;
