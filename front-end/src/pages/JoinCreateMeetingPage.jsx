@@ -30,7 +30,7 @@ const JoinCreateMeetingPage = () => {
 
   const handleCreateMeeting = async () => {
     try {
-      const response = await fetch('http://161.35.1.122/api/meeting', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/meeting`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -52,7 +52,7 @@ const JoinCreateMeetingPage = () => {
     if (!meetingId.trim()) return;
 
     try {
-      const response = await fetch(`http://161.35.1.122/api/meeting/${meetingId}`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/meeting/${meetingId}`);
       if (response.ok) {
         navigate(`/meetings/${meetingId}`);
       } else {
@@ -67,7 +67,7 @@ const JoinCreateMeetingPage = () => {
   const fetchPastMeetings = async () => {
     try {
         setError(null);
-        const response = await fetch('http://161.35.1.122/api/meeting/past/list');
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/meeting/past/list`);
         if (!response.ok) {
             throw new Error('Failed to fetch past meetings');
         }

@@ -12,7 +12,7 @@ const LoginPage = () => {
         // return
         e.preventDefault();
         try {
-            const response = await fetch('http://161.35.1.122/api/auth/login', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password }),

@@ -10,7 +10,7 @@ const RegisterPage = () => {
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://161.35.1.122/api/auth/user', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/user`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password }),
