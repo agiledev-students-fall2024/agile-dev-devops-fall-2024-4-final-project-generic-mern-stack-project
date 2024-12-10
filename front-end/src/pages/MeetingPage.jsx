@@ -129,7 +129,7 @@ function MeetingPage() {
             }
     
             // End meeting in MongoDB
-            await fetch(`http://localhost:8080/meeting/${meetingId}/end`, {
+            await fetch(`http://161.35.1.122/api/meeting/${meetingId}/end`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -320,7 +320,7 @@ function MeetingPage() {
     useEffect(() => {
         (async () => {
             // handle meeting that dont exist, as user can still nav directly to this page
-            const response = await fetch(`http://localhost:8080/meeting/${meetingId}`);
+            const response = await fetch(`http://161.35.1.122/api/meeting/${meetingId}`);
             if (!response.ok) {
                 alert('The meeting you are trying to enter does not exist, or something has gone wrong while joining the meeting');
                 navigate('/login');
@@ -397,8 +397,8 @@ function MeetingPage() {
                                     <p>No one is connected.</p>
                                     <p>Invite others using this link:</p>
                                     <p>
-                                        <a href={`http://localhost:3000/meetings/${meetingId}`} className="text-blue-500 underline">
-                                            http://localhost:3000/meetings/{meetingId}
+                                        <a href={`http://161.35.1.122/api/meetings/${meetingId}`} className="text-blue-500 underline">
+                                            http://161.35.1.122/api/meetings/{meetingId}
                                         </a>
                                     </p>
                                 </div>
