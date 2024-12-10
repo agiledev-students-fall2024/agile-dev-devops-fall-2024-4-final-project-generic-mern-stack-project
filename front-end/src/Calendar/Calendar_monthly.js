@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import './Calendar_monthly.css';
-//import './index.css'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -15,62 +14,68 @@ const Calendar_monthly = () => {
     const monthStr = monthNames[month - 1];
     const year = currentDate.getFullYear();
 
-    // get the first date of the current month
-    const firstDay = new Date(year, month-1, 1).getDay();
-    // get the total days in the month
+    // Get the first date of the current month
+    const firstDay = new Date(year, month - 1, 1).getDay();
+    // Get the total days in the month
     const daysInMonth = new Date(year, month, 0).getDate();
-    // generate an array of all the days in the month
+    // Generate an array of all the days in the month
     const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1);
 
-    // padding days for the first week (if the month doesn't start on Sunday)
+    // Padding days for the first week (if the month doesn't start on Sunday)
     const paddedDaysArray = Array(firstDay).fill(null).concat(daysArray);
 
-    // group days into weeks
+    // Group days into weeks
     const weeks = [];
     for (let i = 0; i < paddedDaysArray.length; i += 7) {
         weeks.push(paddedDaysArray.slice(i, i + 7));
     }
 
     const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
     const [taskCounts, setTaskCounts] = useState({});
 
     // Fetch task counts for each day in the current month
     useEffect(() => {
         const fetchTaskCounts = async () => {
+            const token = localStorage.getItem('auth_token'); // Retrieve token
+
+            if (!token) {
+                console.error("Unauthorized access. Please log in.");
+                return;
+            }
+
             try {
-                const session = window.localStorage.getItem("session_user");
-                if (!session) {
-                    console.error("No session found. Please log in.");
-                    return;
-                }
-                const sessionParsed = JSON.parse(session);
-                const response = await fetch(`http://localhost:4000/calendar/month/${year}/${month}/tasks/${sessionParsed._id}`);
-                const taskData = await response.json();
+                const response = await axios.get(`http://localhost:4000/calendar/month/${year}/${month}/tasks`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`, // Include JWT token
+                    },
+                });
+                const taskData = response.data;
+
                 console.log("Monthly API Response:", taskData);
+
+                // Convert task data into an object with day as the key
                 const taskCounts = taskData.reduce((acc, { day, count }) => {
                     acc[day] = count;
                     return acc;
-                  }, {});
+                }, {});
+
                 setTaskCounts(taskCounts);
             } catch (error) {
-                console.error("Error fetching task counts", error);
+                console.error("Error fetching task counts:", error);
             }
         };
         fetchTaskCounts();
     }, [year, month]);
 
-
     return (
         <main>
             <div className="calendar-container">
-                <div className='title'>
+                <div className="title">
                     <h2>{monthStr}, {year}</h2>
                 </div>
 
                 <div className="month">
-                    
-                    <div className='header'>
+                    <div className="header">
                         {dayNames.map((dayName, index) => (
                             <div className="dayName" key={index}>{dayName}</div>
                         ))}
@@ -88,10 +93,9 @@ const Calendar_monthly = () => {
                                     ) : ' '}
                                     
                                     {/* Conditionally render Tasks */}
-                                    <div className='task_calendar'>
+                                    <div className="task_calendar">
                                         {day !== null ? <p>Tasks:</p> : null} 
-                                        {/* Placeholder for task count or actual data */}
-                                        {day !== null ?  <p>{taskCounts[day] || 0}</p>: null }
+                                        {day !== null ? <p>{taskCounts[day] || 0}</p> : null}
                                     </div>
                                 </div>
                             ))}
@@ -101,6 +105,6 @@ const Calendar_monthly = () => {
             </div>     
         </main>
     );
-}
+};
 
 export default Calendar_monthly;
