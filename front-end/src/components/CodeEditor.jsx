@@ -39,9 +39,7 @@ const CodeEditor = () => {
             if (eventSourceRef.current) {
                 eventSourceRef.current.close();
             }
-
             const eventSource = new EventSource(`http://161.35.1.122/api/code/${meetingId}/stream`);
-            
             eventSource.onopen = () => {
                 console.log('SSE connection established');
                 setError(null);

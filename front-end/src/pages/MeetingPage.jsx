@@ -127,7 +127,7 @@ function MeetingPage() {
                     track.stop();
                 });
             }
-    
+
             // End meeting in MongoDB
             await fetch(`http://161.35.1.122/api/meeting/${meetingId}/end`, {
                 method: 'POST',
@@ -135,17 +135,17 @@ function MeetingPage() {
                     'Content-Type': 'application/json'
                 }
             });
-    
+
             // Close event source if it exists
             if (eventSourceRef.current) {
                 eventSourceRef.current.close();
             }
-    
+
             // Close peer connection if it exists
             if (peerConnection.current) {
                 peerConnection.current.close();
             }
-    
+
             // Navigate to join/create page using the imported navigate function
             navigate('/joincreatemeeting');
         } catch (error) {
@@ -378,7 +378,7 @@ function MeetingPage() {
 
 
     return (
-<div className="flex meeting-container">
+        <div className="flex meeting-container">
             <div className={`flex flex-col w-full bg-grey-900`}>
                 <div className="flex bg-grey-900">
                     {/* Main content area */}
@@ -416,7 +416,7 @@ function MeetingPage() {
                             </div>
                         )}
                     </div>
-                    
+
                     {/* PiP video box */}
                     <div className="absolute top-20 right-4 w-64 h-48">
                         <VideoBox
@@ -429,10 +429,10 @@ function MeetingPage() {
                         />
                     </div>
                 </div>
-                
+
                 {/* Navigation bar */}
                 <div className="bg-gray-700 rounded-xl px-4 flex self-end justify-between items-center w-full shadow-md">
-                <div className="flex">
+                    <div className="flex">
                         <NavBarButton
                             icon={!isAudioOn ? FaMicrophoneSlash : FaMicrophone}
                             text={"Audio"}
@@ -457,7 +457,7 @@ function MeetingPage() {
 
                 </div>
             </div>
-            
+
             {/* Chat sidebar */}
             <div className={`transition-all duration-300 ${chatVisible ? 'w-3/10' : 'w-0'} h-full bg-gray-900 overflow-y-auto`}>
                 {chatVisible && <Chat meetingId={meetingId} ref={chatRef} />}
