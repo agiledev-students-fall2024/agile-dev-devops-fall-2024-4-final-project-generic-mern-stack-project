@@ -9,6 +9,11 @@ services:
     envs:
       - key: MONGODB_URI
         value: ${MONGO_URI}
+      - key: TRANSCRIBE_API_KEY
+        value: ${TRANSCRIBE_API_KEY}
+      - key: OPENAI_API_KEY
+        value: ${OPENAI_API_KEY}
+        
   - name: frontend
     http_port: 8080
     image:
