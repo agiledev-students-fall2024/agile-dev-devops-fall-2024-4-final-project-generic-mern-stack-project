@@ -124,6 +124,35 @@ function Recipes() {
                 </button>
               </div>
             ))}
+             {selectedRecipe && (
+              <div className="popup-overlay" onClick={close}>
+                <div className="popup-content" onClick={(e) => e.stopPropagation()}>
+                  <h1>{selectedRecipe.name}</h1>
+                  <h3 style={{color: '#242424'}}>Ingredients:</h3>
+                  <ul className="recipes-ingredients-list">
+                    {selectedRecipe.ingredients?.map((ingredient, index) => (
+                      <li>
+                        {ingredient}
+                      </li>
+                    ))}
+                  </ul>
+                  <button
+                    className="start-button"
+                    onClick={() => handleStartRecipe(selectedRecipe)}
+                  >
+                    START RECIPE
+                  </button>
+                  {selectedRecipe.steps.map((step, index) => (
+                    <div key={index}>
+                      <p>Step {index + 1}: {step}</p>
+                    </div>
+                  ))}
+                </div>
+                <button className="close-button" onClick={close}>
+                  X
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

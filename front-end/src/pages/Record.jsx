@@ -225,6 +225,7 @@ function Record() {
         onFileChange={handleFileChange}
         onSubmit={handleSubmit}
         error={error}
+        closeModalNoImage = {closeModal}
       />
     </div>
   );
