@@ -22,6 +22,9 @@ const userSchema = new mongoose.Schema({
         amount: { type: Number, required: true },
         dueDate: { type: Date, required: true },
         paymentSchedule: { type: String, required: true }, 
+        ispaidIncurrentPeriod: {type: Boolean, required: true},
+        accountId: {type: mongoose.Schema.Types.ObjectId, required:true},
+
       },
     ],
     transactions: [
