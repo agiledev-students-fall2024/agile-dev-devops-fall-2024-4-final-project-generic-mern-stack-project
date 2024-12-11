@@ -15,7 +15,7 @@ const Chat = React.forwardRef((props, ref) => {
         loadedData = loadedData.filter((message) => message.service === "chat").sort(
             (a, b) => a.timestamp - b.timestamp
         );
-        const messageList = loadedData.map((message) => {return {user: "user1", text: message.data, timestamp: new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}});
+        const messageList = loadedData.map((message) => {return {username: message.username ? message.username : "user1", text: message.data, timestamp: new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}});
         setMessages(messageList);
     }
 
@@ -24,11 +24,13 @@ const Chat = React.forwardRef((props, ref) => {
         if (newMessage.trim() == "") {
             return;
         }
-        const newMessageData = { user: "user1", text: newMessage, timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }
+        let username = localStorage.getItem("username") ? localStorage.getItem("username") : "user1";
+
+        const newMessageData = { user: username, text: newMessage, timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }
         setMessages(
             [...messages, newMessageData]
         )
-        sendDataToMeetingRoom(meetingId, "chat", newMessage);
+        sendDataToMeetingRoom(meetingId, "chat", newMessage, username);
         textElement.current.value = "";
         setShowEmojiPicker(false);
     }
@@ -52,13 +54,21 @@ const Chat = React.forwardRef((props, ref) => {
         <div className="flex flex-col justify-between w-full h-screen max-w-xl border border-gray-700 rounded-lg shadow-lg bg-gray-900">
             {/* Messages Container */}
             <div className="flex-grow p-4 space-y-4 bg-gray-800 overflow-y-auto">
-                {messages.map((message, i) => (
-                    <div key={i} className="message self-end bg-blue-600 text-white p-3 rounded-lg">
-                        <p>{message.text}</p>
-                        <p className="text-xs text-gray-400">{message.timestamp}</p>
-                    </div>
-                ))}
-            </div>
+                    {messages.map((message, i) => (
+                        <div 
+                            key={i} 
+                            className={`message ${
+                                message.username == localStorage.getItem("username")
+                                    ? "self-end bg-blue-600 text-white" 
+                                    : "self-start bg-gray-700 text-white"
+                            } p-3 rounded-lg`}
+                        >
+                            <p className="text-sm font-bold">{message.username}</p>
+                            <p>{message.text}</p>
+                            <p className="text-xs text-gray-400">{message.timestamp}</p>
+                        </div>
+                    ))}
+                </div>
 
             {/* Input and Emoji Picker */}
             <div className="flex p-4 border-t border-gray-700 relative">

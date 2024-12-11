@@ -70,9 +70,9 @@ const listenForNewMessages = async (meetingId, callback, all = false) => {
     return unsub;
 }
 
-const sendDataToMeetingRoom = async (meetingId, service, data) => {
+const sendDataToMeetingRoom = async (meetingId, service, data, username) => {
     const messagesRef = collection(db, 'meetings', meetingId, 'messages');
-    const res = await addDoc(messagesRef, { service, data, timestamp: Date.now() });
+    const res = await addDoc(messagesRef, { username: username, service, data, timestamp: Date.now() });
 }
 
 const partialEditMessage = async (meetingId, data) => {

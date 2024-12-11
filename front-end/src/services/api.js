@@ -11,6 +11,12 @@ export async function loginUser(username, password) {
     });
 
     const data = await response.json();
+
+    // save an object as a string into the browser's localStorage
+    const token = data["token"];
+    const serializedObj = JSON.stringify(token, null, 0) // a JSON string representation of the object
+    localStorage.setItem('token', serializedObj)
+
     return data;
 }
 

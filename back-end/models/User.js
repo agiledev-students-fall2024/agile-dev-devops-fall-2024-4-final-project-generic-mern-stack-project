@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -32,5 +33,21 @@ userSchema.pre('save', async function (next) {
 userSchema.methods.comparePassword = async function (candidatePassword) {
     return bcrypt.compare(candidatePassword, this.password);
 };
+
+// return a JWT token for the user
+userSchema.methods.generateJWT = function () {
+    const today = new Date()
+    const exp = new Date(today)
+    exp.setDate(today.getDate() + 14) // assuming an environment variable with num days in it
+  
+    return jwt.sign(
+      {
+        id: this._id,
+        username: this.username,
+        exp: parseInt(exp.getTime() / 1000),
+      },
+      process.env.JWT_SECRET
+    )
+  }
 
 module.exports = mongoose.model('User', userSchema);
