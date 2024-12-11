@@ -1,35 +1,74 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 const router = express.Router();
+const JWT_SECRET = 'test_jwt_secret'; 
 
 router.post('/', async (req, res) => {
-  
   const { name, email, password, occupation, studying } = req.body;
   let username = name;
+
   console.log("DBG: user registration: ");
   console.log(req.body);
 
-  const saltRounds = 10;
-  bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
-    if (err) {
-      return res.status(500).send('Error hashing password');
+  if (!username || !email || !password) {
+    return res.status(400).json({
+      error: 'Bad Request',
+      message: 'Missing required fields: username, email, and password are required.'
+    });
+  }
+
+  // Check if username or email already exists
+  try {
+    const existingUserByEmail = await User.findOne({ email });
+    const existingUserByUsername = await User.findOne({ username });
+
+    if (existingUserByEmail) {
+      return res.status(400).send('Email is already in use.');
     }
 
-    const user = new User({ 
-      username,
-      email,
-      password: hashedPassword,  
-      occupation, 
-      studying
-    });
-    
-    user.save()
-    .then(() => res.status(201).send('User registered successfully'))
-    .catch(err => res.status(500).send(`Error saving user to database: ${err.message}`));
-  });
+    if (existingUserByUsername) {
+      return res.status(400).send('Username is already taken.');
+    }
 
+    const saltRounds = 10;
+    bcrypt.hash(password, saltRounds, async (err, hashedPassword) => {
+      if (err) {
+        return res.status(500).send('Error hashing password');
+      }
+
+      console.log(username);
+      // Create the new user
+      const user = new User({
+        username,
+        email,
+        password: hashedPassword,
+        occupation,
+        studying,
+      });
+
+      try {
+        await user.save();
+
+        const token = jwt.sign(
+          { userId: user._id, email: user.email },
+          JWT_SECRET,
+          { expiresIn: '24h' } 
+        );
+
+        res.status(201).send({
+          message: 'User registered successfully',
+          token, 
+        });
+      } catch (err) {
+        res.status(500).send(`Error saving user to database: ${err.message}`);
+      }
+    });
+  } catch (err) {
+    return res.status(500).send(`Error checking for existing user: ${err.message}`);
+  }
 });
 
 
