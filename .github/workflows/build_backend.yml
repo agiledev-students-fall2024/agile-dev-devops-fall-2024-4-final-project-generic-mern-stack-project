@@ -1,0 +1,80 @@
+name: Build, Push and Deploy
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    outputs:
+      image_digest_backend: ${{ steps.push_backend.outputs.digest }}
+      image_digest_frontend: ${{ steps.push_frontend.outputs.digest }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Log in to DigitalOcean Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: registry.digitalocean.com
+          username: do-oauth2-registry-token
+          password: ${{ secrets.DO_TOKEN_REG }}
+
+      # Build & push backend image
+      - name: Build and Push Backend Docker Image
+        id: push_backend
+        uses: docker/build-push-action@v4
+        with:
+          context: ./back-end
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/backend:${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || 'latest' }}
+            registry.digitalocean.com/agile/backend:${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || 'latest' }}
+
+      # Build & push frontend image
+      - name: Build and Push Frontend Docker Image
+        id: push_frontend
+        uses: docker/build-push-action@v4
+        with:
+          context: ./front-end/easynote
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/frontend:${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || 'latest' }}
+            registry.digitalocean.com/agile/frontend:${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || 'latest' }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Deploy the app to DigitalOcean App Platform
+        uses: digitalocean/app_action/deploy@v2
+        env:
+          BACKEND_DIGEST: ${{ needs.build-and-push.outputs.image_digest_backend }}
+          FRONTEND_DIGEST: ${{ needs.build-and-push.outputs.image_digest_frontend }}
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          TRANSCRIBE_API_KEY: ${{ secrets.TRANSCRIBE_API_KEY }}
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
