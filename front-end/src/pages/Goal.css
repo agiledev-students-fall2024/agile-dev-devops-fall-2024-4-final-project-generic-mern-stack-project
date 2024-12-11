@@ -1,0 +1,101 @@
+.Goal h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.grid-item1,
+.grid-item2,
+.grid-item3 {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+.grid-item3 {
+  grid-column: span 2;
+}
+
+
+.grid-item3 form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.grid-item3 form label {
+  margin-bottom: 10px;
+}
+
+.button {
+  background-color: rgb(40, 125, 222);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.trans-button {
+  background-color: #33a047;
+  color: white;
+  margin: 10px 5px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.goals-list,
+.goal-item {
+  margin-left: 10px;
+  margin-right: 5px;
+}
+
+/* Goal.css */
+.progress-bar-container {
+  background-color: #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 20px;
+  margin-top: 10px;
+}
+
+.progress-bar {
+  background-color: #487bf1;
+  height: 100%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.transaction-select {
+  margin-top: 10px;
+}
+
+.transaction-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+
+
+@media screen and (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-item3 {
+    grid-column: span 1;
+  }
+}
