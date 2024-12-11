@@ -1,37 +1,30 @@
-require('./config.js');
-const express = require('express');
-const cors = require('cors');
-
-// Import route handlers
-const taskRoutes = require('./Task_Routes/task.js');
-const goalRoutes = require('./Goal_Routes/goal.js');
+// import and instantiate express
+require('./config.js')
+const task = require("./Task_Routes/task.js")
+const goal = require("./Goal_Routes/goal.js")
 const calendarRoutes = require('./Calendar_Routes/calendar.js');
-const authRoutes = require('./Authentication/authentication.js');
+const cors = require('cors')
+const auth = require('./Authentication/authentication.js')
+const express = require("express") // CommonJS import style!
+const app = express() // instantiate an Express object
 
-// Initialize Express app
-const app = express();
+// we will put some server logic here later...
+app.use(
+    cors({
+        origin: 'http://localhost:3000',
+        methods: ["GET", "POST", "DELETE", "PUT"]
+    })
+)
 
-// Enable CORS for cross-origin requests
-app.use(cors({ origin: 'http://localhost:3000', methods: ["GET", "POST", "DELETE", "PUT"] }));
-
-// Middleware to parse incoming JSON requests
 app.use(express.json());
 
-// Public routes (authentication)
-app.use(authRoutes); // Login and registration routes remain public
+app.use(task)
+app.use(goal)
+app.use(calendarRoutes);
+// IMPORTANT Comment for Sprint3: Up to end of sprint 3, we're not sure whether we need further maintain 
+// the Authentication part. For now we will leave the designed login/register logic at here, but we don't integrate 
+// it with other parts. You can Register and login as normal, but it WILL NOT AFFECT ANYTHING!!!
+app.use(auth)
 
-// Protected routes (require authentication)
-app.use('/tasks', taskRoutes);
-app.use('/goals', goalRoutes);
-app.use('/calendar', calendarRoutes);
-
-// Log all registered routes
-console.log('Available routes:', app._router.stack.filter(r => r.route).map(r => r.route.path));
-
-// Catch-all route for debugging
-app.all('*', (req, res) => {
-    console.log(`Request received at ${req.method} ${req.url}`);
-    res.status(404).json({ error: 'Route not found' });
-});
-
-module.exports = app;
+// export the express app we created to make it available to other modules
+module.exports = app

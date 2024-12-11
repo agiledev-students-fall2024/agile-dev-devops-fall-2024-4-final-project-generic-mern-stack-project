@@ -1,55 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './NewGoal.css';
-
+import { Link } from 'react-router-dom';
 const NewGoal = () => {
     const [title, setTitle] = useState('');
     const [selectedTasks, setSelectedTasks] = useState([]);
-    const [tasks, setTasks] = useState([]);
+    const [tasks, setTasks] = useState(['']);
     const [showTaskList, setShowTaskList] = useState(false);
     const [dueDate, setDueDate] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchTasks = async () => {
-            const token = localStorage.getItem('auth_token'); // Retrieve JWT token
-
-            if (!token) {
-                alert("Unauthorized access. Please log in.");
-                navigate('/Login'); // Redirect to login if token is missing
-                return;
-            }
-
-            try {
-                const response = await fetch('http://localhost:4000/tasks', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`, // Include JWT token
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    setTasks(data);
-                } else {
-                    console.error("Failed to fetch tasks:", response.statusText);
-                    alert("Failed to fetch tasks. Please log in again.");
-                    localStorage.removeItem('auth_token');
-                    navigate('/Login');
-                }
-            } catch (error) {
-                console.error("Error fetching tasks:", error);
-                alert("An error occurred while fetching tasks. Please try again.");
-            }
+            const user = await JSON.parse(window.localStorage.getItem('session_user'));
+            const response = await fetch(`http://localhost:4000/task/${user._id}`);
+            const data = await response.json();
+            setTasks(data);
         };
-
         fetchTasks();
-    }, [navigate]);
+    }, []);
 
     const toggleTaskList = () => {
         setShowTaskList((prevShow) => !prevShow);
     };
-
+    //call actual tasks for this user and display them here and return
+    //mongoDB uuid in the array of selected tasks
     const handleTaskSelection = (taskId) => {
         setSelectedTasks((prevSelectedTasks) =>
             prevSelectedTasks.includes(taskId)
@@ -60,41 +35,18 @@ const NewGoal = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
-        const token = localStorage.getItem('auth_token');
-        if (!token) {
-            alert("Unauthorized access. Please log in.");
-            navigate('/Login');
-            return;
-        }
-    
-        const newGoal = { title, tasks: selectedTasks, dueDate };
-    
-        // Log the data being sent
-        console.log("Payload to Backend:", newGoal);
-    
-        try {
-            const response = await fetch('http://localhost:4000/goals/new', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newGoal),
-            });
-    
-            if (response.ok) {
-                navigate('/Goals');
-            } else {
-                const errorData = await response.json();
-                console.error("Failed to create goal:", errorData.message);
-                alert(errorData.message || "Failed to create goal. Please try again.");
-            }
-        } catch (error) {
-            console.error("Error creating goal:", error);
-            alert("An error occurred while creating the goal. Please try again.");
-        }
+        //window.localStorage.getItem('session_user')
+        const user = await JSON.parse(window.localStorage.getItem('session_user'))
+        const newGoal = { title, tasks: selectedTasks, dueDate, "user_id": user._id };
+        const response = await fetch('http://localhost:4000/goals/new', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newGoal),
+        });
+        if (response.ok) navigate('/Goals');
     };
+
+    
     return (
         <div className="new-goal-container">
             <h1 className="page-title">Create New Goal</h1>
@@ -119,6 +71,7 @@ const NewGoal = () => {
                     />
                 </div>
 
+
                 <div className="tasks-section">
                     <button type="button" onClick={toggleTaskList} className="task-select-btn">
                         Select from Existing Tasks
@@ -140,7 +93,7 @@ const NewGoal = () => {
                 </div>
                 <div className="new-goal-buttons">
                     <Link to="/Goals">
-                        <button type="button" className="cancel-btn">Cancel</button>
+                        <button className="cancel-btn">Cancel</button>
                     </Link>
                     <button type="submit" className="create-btn">Save Goal</button>
                 </div>
