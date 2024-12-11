@@ -1,0 +1,118 @@
+/* REPLICATING CONTAINER FROM BOOTSTRAP */
+.container-friends {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* FOR ARROW AND PAGE TITLE */
+.header-content {
+    display: flex;
+    align-items: center;
+}
+
+/* FOR PAGE TITLE */
+.custom-link {
+    text-decoration: none;
+    color: inherit;
+    margin-left: 5px;
+}
+
+/* FOR SEARCH, ADD FRIEND, REQUESTS SECTION */
+.friends-actions {
+    display: flex;
+    flex-direction: column;
+}
+
+/* FOR SEARCH, ADD FRIEND, REQUESTS BUTTONS */
+.action-btn {
+    margin: 3px 0px;
+    width: 100%;
+    padding: 6px 12px;
+    font-size: 12px; 
+    text-align: left;
+    color: black;
+    background-color: lightgrey;
+}
+
+/* FOR FRIENDS LIST SECTION */
+.friends-list {
+    padding-top: 5px;
+}
+
+/* FOR NAME INITIALS */
+.initials {
+    padding-left: 4px;
+    padding-top: 15px;
+}
+
+/* FOR INDIVIDUAL FRIEND */
+.friend-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    font-size: 15px;
+    flex-wrap: nowrap; 
+}
+
+/* TO ENSURE THE NAME AND BUTTONS FIT IN ONE LINE */
+.friend-item > div:first-child {
+    flex-grow: 1;
+    overflow-x: auto; /* ENABLES HORIZONTAL SCROLLING */
+    white-space: nowrap;
+    margin-right: 10px;
+    max-width: 100%;
+}
+
+/* FOR BLOCK AND REMOVE BUTTONS TO STAY ALIGNED HORIZONTALLY */
+.friend-actions {
+    display: flex;
+    gap: 5px;
+    white-space: nowrap;
+}
+
+/* STYLING FOR BUTTONS */
+.friend-actions button {
+    font-size: 10px;
+    color: black;
+    background-color: lightgrey;
+}
+
+/* FOR FRIEND COUNT AND BLOCKED SECTION */
+.footer {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 11px;
+}
+
+/* FOR BLOCKED BUTTON */
+.blocked-btn {
+    width: 100%;
+    padding: 6px 12px;
+    font-size: 12px; 
+    text-align: left;
+    color: black;
+    background-color: lightgrey;
+}
+
+/* FOR POP-UP NOTIFICATION */
+.notification {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    font-size: 14px;
+}

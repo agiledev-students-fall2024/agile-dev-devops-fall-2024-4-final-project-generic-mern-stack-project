@@ -1,0 +1,145 @@
+.btn-file {
+    border: solid 1px #D9D9D9;
+}
+
+.container:not(#profile-blog-posts){
+    margin-bottom: 5rem;
+}
+
+.content {
+    margin: 2rem 0;
+    padding: 0 2rem;
+}
+
+.content > * {
+    margin: 1rem;
+}
+
+.content > *:not(form):not(.layout--grid):not(.layout--masonry) {
+    display: flex;
+    justify-content: center;
+}
+
+.default-img > * {
+    width: 4rem;
+    height: 4rem;
+}
+
+.default-img > img {
+    border-radius: 50%;
+    background-color: gainsboro;
+}
+
+.edit-picture {
+    display: grid;
+    justify-content: center;
+}
+
+#fileInput {
+    display: none;
+}
+
+.profile-functions {
+    display: flex;
+    justify-content: space-around;
+    gap: 1rem;
+}
+
+.layout, .layout--list-title {
+    display: grid;
+    grid-template-columns: 1fr;
+    flex-wrap: wrap;
+    row-gap: 2rem;
+    margin-top: 1rem;
+}
+
+.layout--grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: .5rem;
+    row-gap: 1rem;
+    margin-top: 1rem;
+    place-items: center;
+}
+
+.layout--grid img {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+}
+
+.layout--grid img:not(.no-img), .profile-posts:not(.layout--masonry) img:not(.no-img) {
+    width: 100%;
+    height: auto;
+    border-radius: .5rem;
+}
+
+.layout--masonry {
+    column-count: 2;
+    column-gap: .625rem;
+}
+
+.layout--masonry a {
+    margin-top: 2rem !important;
+}
+
+.layout--masonry div {
+    width: 100%;
+    height: auto;
+    margin-bottom: .625rem;
+    break-inside: avoid;
+    border-radius: .5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+}
+
+.layout--masonry div > * {
+    margin-bottom: 1rem;
+}
+
+.layout--masonry img {
+    width: 100%;
+    height: var(--masonry-img-height, 7rem);
+    object-fit: cover; 
+    border-radius: .5rem;
+    display: inline-block; 
+    vertical-align: top; 
+}
+
+.layout--masonry > a > img:nth-child(1) {
+    margin-top: 2rem !important;
+}
+
+.profile-posts {
+    margin-bottom: 3rem;
+}
+
+.profile-posts:not(.layout--masonry) .no-img {
+    width: 60%; 
+    height: auto; 
+    border-radius: .5rem;
+    display: block;
+    margin-inline: auto;
+}
+
+.profile-posts div {
+    border: .5px solid gray;
+    padding: 1rem;
+    border-radius: .8rem;
+}
+
+.profile-posts h2 {
+    font-size: 1rem;
+    margin-top: .5rem;
+    font-weight: 600;
+    color: black;
+}
+
+#profile-blog-posts {
+    margin-bottom: 0;
+}
+
+/* #profile-blog-posts + div > div {
+    margin-top: 0;
+} */
+
+#profile-blog-posts + div > div > * {
+    margin-top: 1rem;
+}

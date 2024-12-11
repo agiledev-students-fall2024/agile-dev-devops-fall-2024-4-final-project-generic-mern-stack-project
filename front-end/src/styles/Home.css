@@ -1,0 +1,42 @@
+.home-posts .no-img {
+  width: 60%; 
+  height: auto; 
+  border-radius: .5rem;
+  display: block;
+  margin-inline: auto;
+}
+
+.home-posts div {
+  border: .5px solid gray;
+  padding: 1rem;
+  border-radius: .8rem;
+  margin-right: 12px;
+  margin-left: 12px;
+}
+
+.home-posts h2 {
+  font-size: 1.25rem;
+  margin-top: .5rem;
+  font-weight: 600;
+  color: black;
+}
+
+.home-posts:not(.layout--masonry) img:not(.no-img) {
+  width: 100%;
+  height: auto;
+  border-radius: .5rem;
+}
+
+.container:not(#profile-blog-posts){
+  margin-bottom: 5rem;
+}
+.authorName{
+  font-weight: bold;
+  text-decoration: underline;
+  text-align: right;
+}
+
+.postDate{
+  text-align: right;
+  font-weight: bold;
+}

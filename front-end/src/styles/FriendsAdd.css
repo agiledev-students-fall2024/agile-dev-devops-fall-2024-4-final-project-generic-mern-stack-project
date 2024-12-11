@@ -1,0 +1,82 @@
+/* REPLICATING CONTAINER FROM BOOTSTRAP */
+.container-friends {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* FOR THE USER INPUT BAR */
+.input-bar-add {
+    width: 100%;
+    font-size: 12px; 
+    text-align: left;
+    background-color: lightgrey;
+    border-radius: 7px;
+    border: 0.5px solid black;
+    margin-top: 19px;
+}
+
+/* FOR THE TEXT INPUT INSIDE INPUT BAR */
+.search-input-add {
+    width: 100%;
+    padding: 3px;
+    border: none;
+    border-radius: 7px;
+    outline: none;
+    font-size: 16px;
+    background-color: lightgrey;
+}
+
+/* FOR THE SEARCH RESULT SECTION */
+.search-results-add {
+    margin-top: 20px;
+}
+
+/* THE FORMATTING AROUND EACH FRIEND */
+.friend-search-item-add {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    font-size: 15px;
+}
+
+/* THE SECTION FORMATTING OF EACH FRIEND'S NAME */
+.friend-search-info-add {
+    overflow-x: auto;
+    white-space: nowrap;
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+/* THE TEXT FORMATTING OF EACH FRIEND'S NAME */
+.friend-search-info-add h5 {
+    margin: 0px;
+    font-size: 15px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+/* STYLING THE BUTTON ADD FRIEND */
+.friend-actions button {
+    font-size: 10px;
+    background-color: lightgrey;
+}
+
+/* FOR POP-UP NOTIFICATION */
+.notification {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    font-size: 14px;
+}

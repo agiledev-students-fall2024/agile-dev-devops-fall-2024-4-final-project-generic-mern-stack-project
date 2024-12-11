@@ -1,0 +1,76 @@
+/* REPLICATING CONTAINER FROM BOOTSTRAP */
+.container-friends {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* FOR THE USER INPUT BAR */
+.input-bar {
+    width: 100%;
+    font-size: 12px; 
+    text-align: left;
+    background-color: lightgrey;
+    border-radius: 7px;
+    border: 0.5px solid black;
+    margin-top: 19px;
+}
+
+/* FOR THE TEXT INPUT INSIDE INPUT BAR */
+.search-input {
+    width: 100%;
+    padding: 3px;
+    border: none;
+    border-radius: 7px;
+    outline: none;
+    font-size: 16px;
+    background-color: lightgrey;
+}
+
+/* FOR THE SEARCH RESULT SECTION */
+.search-results {
+    margin-top: 20px;
+}
+
+/* THE FORMATTING AROUND EACH FRIEND */
+.friend-search-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    font-size: 15px;
+    flex-wrap: nowrap; 
+}
+
+/* TO ENSURE THE NAME AND BUTTONS FIT IN ONE LINE */
+.friend-search-item > div:first-child {
+    flex-grow: 1;
+    overflow-x: auto; /* ENABLES HORIZONTAL SCROLLING */
+    white-space: nowrap;
+    margin-right: 10px;
+    max-width: 100%;
+}
+
+/* THE FORMATTING OF EACH FRIEND'S NAME */
+.friend-search-info h5 {
+    margin: 0px;
+    font-size: 15px;
+}
+
+/* FOR POP-UP NOTIFICATION */
+.notification {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    font-size: 14px;
+}

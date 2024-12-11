@@ -1,19 +1,33 @@
-# Project Repository
+# Network
 
-This repository will be used for team projects.
+### Project Description
 
-Several sets of instructions are included in this repository. They should each be treated as separate assignments with their own due dates and sets of requirements.
+Network is an interactive blogging web app that allows users to share any and all inspirational ideas. Blogs can range anywhere from a short blurb to longer stories that the users want to share. In addition, users can easily follow their friends and any other authors to stay up to date on what others want to share.
 
-1. See the [App Map & Wireframes](instructions-0a-app-map-wireframes.md) and [Prototyping](./instructions-0b-prototyping.md) instructions for the requirements of the initial user experience design of the app.
+### Product Vision Statement
 
-1. Delete the contents of this file and replace with the contents of a proper README.md, as described in the [project setup instructions](./instructions-0c-project-setup.md)
+Allowing users to freely share any and all inspirational ideas, including images and texts. In addition, users can follow authors and friends of their choice.
 
-1. See the [Sprint Planning instructions](instructions-0d-sprint-planning.md) for the requirements of Sprint Planning for each Sprint.
+### Core Team Members
 
-1. See the [Front-End Development instructions](./instructions-1-front-end.md) for the requirements of the initial Front-End Development.
+- Andy Liu: [Github](https://github.com/andy-612)
+- Lindsey Hirano: [Github](https://github.com/lsh7002)
+- Monserat Pavia-Bravo: [Github](https://github.com/mnsrt13)
+- Toby Wang: [Github](https://github.com/tobyywang)
 
-1. See the [Back-End Development instructions](./instructions-2-back-end.md) for the requirements of the initial Back-End Development.
+### Brief History
 
-1. See the [Database Integration instructions](./instructions-3-database.md) for the requirements of integrating a database into the back-end.
+One of our teammates has always loved playing volleyball. The first idea was to create a platform to better connect volleyball enthusiasts to share their achievements and talent. To this end, we decided on a social media site that allows users to share and view images and texts with their connections. As we moved forward with this idea, we realized that the site does not have to be limited to volleyball enthusiasts. We wanted to create a platform that allows people with any interests to share and connect with anyone they want. As a result, we modified our project vision to be as open as possible, recognizing that people with similar interests are more likely to connect with each other and form their own respective communities within the site.
 
-1. See the [Deployment instructions](./instructions-4-deployment.md) for the requirements of deploying an app.
+[Here](./CONTRIBUTING.md) are ways you can contribute to this project.
+
+### Building and Testing the Project
+
+1. Clone this repo
+2. Create a .env file within the back-end folder and in it put the line: PORT=3000
+3. Create a .env file within the front-end folder and in it put the line: REACT_APP_API_URL=http://localhost:3000
+4. Create two new terminals: front-end and back-end. For the back-end terminal, cd into the back-end file and run the command "npm run dev". For the front-end terminal, cd into your front-end file and run the command "npm start". Make sure to run the back-end terminal before running your front-end terminal. This will allow you to view the application.
+
+### Links to relevant documents
+
+A detailed breakdown of our app map and wireframes, as well as a Figma prototype: [UX Design](./UX-DESIGN.md)

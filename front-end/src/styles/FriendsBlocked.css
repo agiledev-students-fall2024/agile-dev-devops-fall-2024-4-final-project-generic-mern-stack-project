@@ -1,0 +1,56 @@
+/* REPLICATING CONTAINER FROM BOOTSTRAP */
+.container-friends {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* FOR EACH ROW WITHIN INCOMING AND OUTGOING REQUESTS */
+.blocked-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    font-size: 15px;
+    flex-wrap: nowrap; 
+}
+
+/* STYLING THE USERNAME OF EACH USER */
+.blocked-item .username {
+    flex-grow: 1;
+    margin-right: 10px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+/* FOR THE SECTION SURROUNDING THE BUTTONS IN EACH ROW */
+.blocked-actions {
+    display: flex;
+    gap: 5px;
+    white-space: nowrap;
+}
+
+/* FOR THE ACTION BUTTONS IN EACH ROW */
+.blocked-actions button {
+    font-size: 10px;
+    color: black;
+    background-color: lightgrey;
+}
+
+/* FOR THE POP-UP NOTIFICATION */
+.notification {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    font-size: 14px;
+}
