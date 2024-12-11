@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 const Balances = () => {
   const [accounts, setAccounts] = useState([]);
   const [debts, setDebts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [previousDebts, setPreviousDebts] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isDebtModal, setIsDebtModal] = useState(false);
@@ -28,22 +28,22 @@ const Balances = () => {
     const mockDebts = [
       {
         type: 'Car Loan',
-        amount: 15000,
-        dueDates: ['2024-01-01', '2024-02-01', '2024-03-01'],
+        amount: 20000,
+        dueDates: ['2025-01-12', '2025-02-12', '2025-03-12'],
         paymentSchedule: 'Monthly',
+        totalPayments: 20,
       },
       {
         type: 'Student Loan',
         amount: 30000,
-        dueDates: ['2024-06-01', '2024-12-01'],
+        dueDates: ['2025-06-12', '2026-06-12'],
         paymentSchedule: 'Annually',
+        totalPayments: 2,
       },
     ];
 
-    // Set mock data
     setAccounts(mockAccounts);
     setDebts(mockDebts);
-    setLoading(false);
   }, []);
 
   const resetForm = () => {
@@ -54,99 +54,194 @@ const Balances = () => {
     setIsDebtModal(false);
   };
 
-  if (loading) return <p>Loading...</p>;
+  const handleDebtPayment = (index, paidFromAccount) => {
+    const updatedDebts = [...debts];
+    const debt = updatedDebts[index];
+
+    if (debt.dueDates.length > 0) {
+      const [nextDueDate, ...remainingDates] = debt.dueDates;
+
+      // Calculate the payment amount per installment
+      const paymentAmount = debt.amount / (debt.totalPayments || debt.dueDates.length);
+
+      // Update debt's amount and due dates
+      if (remainingDates.length === 0) {
+        // Move to previous debts if fully paid
+        setPreviousDebts([...previousDebts, debt]);
+        updatedDebts.splice(index, 1);
+      } else {
+        debt.dueDates = remainingDates;
+        debt.amount = Math.max(0, debt.amount - paymentAmount); // Reduce the debt amount
+      }
+
+      // Deduct the payment amount from the selected account
+      const updatedAccounts = [...accounts];
+      const accountIndex = updatedAccounts.findIndex((account) => account.type === paidFromAccount);
+      if (accountIndex !== -1) {
+        updatedAccounts[accountIndex].amount = Math.max(
+          0,
+          updatedAccounts[accountIndex].amount - paymentAmount
+        );
+        alert(
+          `Payment of $${paymentAmount.toFixed(2)} made from ${paidFromAccount}. Next due date: ${
+            nextDueDate || 'N/A'
+          }`
+        );
+      }
+
+      setAccounts(updatedAccounts);
+      setDebts(updatedDebts);
+    }
+  };
+
+  const addOrEditItem = () => {
+    if (isDebtModal) {
+      const updatedDebts = [...debts];
+      if (isEditing) {
+        updatedDebts[currentItemIndex] = { ...newItem };
+      } else {
+        updatedDebts.push({
+          ...newItem,
+          dueDates: calculateDueDates(newItem.dueDate, newItem.paymentSchedule, newItem.totalPayments),
+        });
+      }
+      setDebts(updatedDebts);
+    } else {
+      const updatedAccounts = [...accounts];
+      if (isEditing) {
+        updatedAccounts[currentItemIndex] = { ...newItem };
+      } else {
+        updatedAccounts.push(newItem);
+      }
+      setAccounts(updatedAccounts);
+    }
+    resetForm();
+  };
+
+  const calculateDueDates = (startDate, frequency, totalPayments) => {
+    const dueDates = [];
+    const currentDate = new Date(startDate);
+
+    for (let i = 0; i < totalPayments; i++) {
+      dueDates.push(currentDate.toISOString().split('T')[0]);
+      if (frequency === 'Bi-weekly') currentDate.setDate(currentDate.getDate() + 14);
+      if (frequency === 'Monthly') currentDate.setMonth(currentDate.getMonth() + 1);
+      if (frequency === 'Annually') currentDate.setFullYear(currentDate.getFullYear() + 1);
+    }
+    return dueDates;
+  };
 
   return (
     <main className="Home">
       <div className="container">
         <section className="accounts-section">
           <h1>Account Balances</h1>
-          {accounts.length > 0 ? (
-            accounts.map((account, index) => (
-              <div key={index}>
-                <div className="account-type">
-                  {account.type} - XXXX{account.number}
-                </div>
-                <div className="account-balance">${account.amount.toLocaleString()}</div>
-                <button
-                  className="edit-button"
-                  onClick={() => {
-                    setCurrentItemIndex(index);
-                    setIsEditing(true);
-                    setIsDebtModal(false);
-                    setShowModal(true);
-                  }}
-                >
-                  Edit
-                </button>
-                <button
-                  className="delete-button"
-                  onClick={() => {
-                    const updatedAccounts = [...accounts];
-                    updatedAccounts.splice(index, 1);
-                    setAccounts(updatedAccounts);
-                  }}
-                >
-                  Delete
-                </button>
+          {accounts.map((account, index) => (
+            <div key={index} className="account-item">
+              <div className="account-type">
+                <strong>{account.type}</strong> - XXXX{account.number}
               </div>
-            ))
-          ) : (
-            <p>No accounts added yet.</p>
-          )}
+              <div className="account-balance">${account.amount.toLocaleString()}</div>
+              <button
+                className="edit-button"
+                onClick={() => {
+                  setCurrentItemIndex(index);
+                  setIsEditing(true);
+                  setIsDebtModal(false);
+                  setNewItem(account);
+                  setShowModal(true);
+                }}
+              >
+                Edit
+              </button>
+              <button
+                className="delete-button"
+                onClick={() => {
+                  const updatedAccounts = [...accounts];
+                  updatedAccounts.splice(index, 1);
+                  setAccounts(updatedAccounts);
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          ))}
+          <div className="add-accounts">
+            <button
+              className="add-more-button"
+              onClick={() => {
+                setIsDebtModal(false);
+                setShowModal(true);
+              }}
+            >
+              Add More Accounts
+            </button>
+          </div>
         </section>
 
         <section className="debt-section">
           <h1>Debt Management</h1>
-          {debts.length > 0 ? (
-            debts.map((debt, index) => (
-              <div key={index}>
-                <div className="debt-type">
-                  {debt.type} - ${debt.amount.toLocaleString()}
-                </div>
-                <div className="debt-info">
-                  Remaining Due Dates: {debt.dueDates.join(', ')}
-                  <br />
-                  Payment Schedule: {debt.paymentSchedule}
-                </div>
-                <button
-                  className="edit-button"
-                  onClick={() => {
-                    setCurrentItemIndex(index);
-                    setIsEditing(true);
-                    setIsDebtModal(true);
-                    setShowModal(true);
-                  }}
-                >
-                  Edit
-                </button>
-                <button
-                  className="delete-button"
-                  onClick={() => {
-                    const updatedDebts = [...debts];
-                    updatedDebts.splice(index, 1);
-                    setDebts(updatedDebts);
-                  }}
-                >
-                  Delete
-                </button>
-                <label>
-                  Paid:
-                  <input
-                    type="checkbox"
-                    checked={debt.dueDates.length === 0}
-                    onChange={() => {
-                      const updatedDebts = [...debts];
-                      updatedDebts[index].dueDates = updatedDebts[index].dueDates.slice(1);
-                      setDebts(updatedDebts);
-                    }}
-                  />
-                </label>
+          {debts.map((debt, index) => (
+            <div key={index} className="debt-item">
+              <div>
+                <strong>{debt.type}</strong> - <span className="debt-amount">${debt.amount.toLocaleString()}</span>
+                <br />
+                <strong>Payment Schedule:</strong> {debt.paymentSchedule}
+                <br />
+                <strong>Remaining Due Dates:</strong> {debt.dueDates.join(', ')}
               </div>
-            ))
-          ) : (
-            <p>No debts added yet.</p>
-          )}
+              <label className="debt-paid-label">
+                <strong>Paid:</strong>
+                <input
+                  type="checkbox"
+                  className="paid-checkbox"
+                  onChange={() => handleDebtPayment(index, 'Savings')} // Replace 'Savings' with dynamic account selection
+                />
+              </label>
+              <button
+                className="edit-button"
+                onClick={() => {
+                  setCurrentItemIndex(index);
+                  setIsEditing(true);
+                  setIsDebtModal(true);
+                  setNewItem(debt);
+                  setShowModal(true);
+                }}
+              >
+                Edit
+              </button>
+              <button
+                className="delete-button"
+                onClick={() => {
+                  const updatedDebts = [...debts];
+                  updatedDebts.splice(index, 1);
+                  setDebts(updatedDebts);
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          ))}
+          <div className="add-debt">
+            <button
+              className="add-more-button"
+              onClick={() => {
+                setIsDebtModal(true);
+                setShowModal(true);
+              }}
+            >
+              Add More Debt
+            </button>
+          </div>
+        </section>
+
+        <section className="previous-debts-section">
+          <h1>Previous Debts</h1>
+          {previousDebts.map((debt, index) => (
+            <div key={index} className="previous-debt-item">
+              <strong>{debt.type}</strong> - ${debt.amount.toLocaleString()}
+            </div>
+          ))}
         </section>
       </div>
 
@@ -169,7 +264,7 @@ const Balances = () => {
                 type="number"
                 value={newItem.amount}
                 onChange={(e) => setNewItem({ ...newItem, amount: e.target.value })}
-                placeholder="e.g., 5000"
+                placeholder="e.g., 20000"
               />
             </label>
             {isDebtModal && (
@@ -205,20 +300,7 @@ const Balances = () => {
                 </label>
               </>
             )}
-            <button
-              onClick={() => {
-                const updatedData = [...(isDebtModal ? debts : accounts)];
-                if (isEditing) {
-                  updatedData[currentItemIndex] = { ...newItem };
-                } else {
-                  updatedData.push({ ...newItem });
-                }
-                isDebtModal ? setDebts(updatedData) : setAccounts(updatedData);
-                resetForm();
-              }}
-            >
-              {isEditing ? 'Save Changes' : 'Add'}
-            </button>
+            <button onClick={addOrEditItem}>{isEditing ? 'Save Changes' : 'Add'}</button>
             <button onClick={resetForm}>Cancel</button>
           </div>
         </div>
