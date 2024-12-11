@@ -323,7 +323,7 @@ function MeetingPage() {
     useEffect(() => {
         (async () => {
             // handle meeting that dont exist, as user can still nav directly to this page
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/meeting/${meetingId}`); // TODO: Change to your server
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/meeting/${meetingId}`);
             if (!response.ok) {
                 alert('The meeting you are trying to enter does not exist, or something has gone wrong while joining the meeting');
                 navigate('/login');
@@ -473,7 +473,6 @@ function MeetingPage() {
                 <Navigate to="/login"/>
             )}
         </>
- 
     );
 }
 

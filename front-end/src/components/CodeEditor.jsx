@@ -17,7 +17,7 @@ const CodeEditor = () => {
         const fetchCodeHistory = async () => {
             try {
                 setError(null);
-                const response = await fetch(`http://localhost:8080/code/${meetingId}`); // TODO: Change to your server
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/code/${meetingId}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch code history');
                 }
@@ -39,9 +39,7 @@ const CodeEditor = () => {
             if (eventSourceRef.current) {
                 eventSourceRef.current.close();
             }
-
-            const eventSource = new EventSource(`http://localhost:8080/code/${meetingId}/stream`); // TODO: Change to your server
-
+            const eventSource = new EventSource(`${import.meta.env.VITE_API_URL}/code/${meetingId}/stream`);  
             eventSource.onopen = () => {
                 console.log('SSE connection established');
                 setError(null);
@@ -86,7 +84,7 @@ const CodeEditor = () => {
 
     const sendCodeUpdate = async (newCode) => {
         try {
-            const response = await fetch(`http://localhost:8080/code/${meetingId}`, { // TODO: Change to your server
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/code/${meetingId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
