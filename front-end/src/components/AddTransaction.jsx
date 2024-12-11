@@ -18,21 +18,32 @@ function AddTransaction({ onAddTransaction, onClose }) {
   };
 
   const handleAddTransaction = async () => {
-    const userId = localStorage.getItem('id'); // Retrieve the logged-in user's ID
-    const { merchant, category, amount, date } = transaction;
-
-    if (merchant && category && amount && date) {
+    const userId = localStorage.getItem('id');
+    const { merchant, category, amount, date, accountId } = transaction;
+  
+    if (merchant && category && amount && date && accountId) {
       try {
+        // Convert local date to UTC before sending to the server
+        const utcDate = new Date(date).toISOString();
+  
         const response = await axios.post(`${BASE_URL}/api/transactions`, {
-          ...transaction,
+          merchant,
+          category,
           amount: parseFloat(amount),
+          date: utcDate, // Send UTC date
+          accountId,
           userId,
         });
-
-        const newTransaction = response.data;
-        onAddTransaction(newTransaction); // Notify the parent component
-        setTransaction({ merchant: '', category: '', amount: '', date: '' }); // Reset form
-        onClose(); // Close the modal
+  
+        onAddTransaction(response.data);
+        setTransaction({
+          merchant: '',
+          category: '',
+          amount: '',
+          date: '',
+          accountId: '',
+        });
+        onClose();
       } catch (error) {
         console.error('Error adding transaction:', error);
       }
@@ -40,6 +51,7 @@ function AddTransaction({ onAddTransaction, onClose }) {
       alert('Please fill in all fields before submitting.');
     }
   };
+  
 
   return (
     <div className="modal">

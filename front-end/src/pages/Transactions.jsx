@@ -49,6 +49,20 @@ function Transactions() {
     setFilteredTransactions(sortedTransactions);
   };
 
+  const handleUpdateTransaction = (updatedTransaction) => {
+    const updatedTransactions = transactions.map((transaction) =>
+      transaction._id === updatedTransaction._id ? updatedTransaction : transaction
+    );
+    const sortedTransactions = updatedTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+    setTransactions(sortedTransactions);
+
+    setFilteredTransactions(
+      selectedCategory === 'All'
+        ? sortedTransactions
+        : sortedTransactions.filter((t) => t.category === selectedCategory)
+    );
+  };
+
   return (
     <div className="transactions-page">
       <div className="transactions-header">
@@ -108,6 +122,7 @@ function Transactions() {
       {editTransaction && (
         <EditTransaction
           transaction={editTransaction}
+          onUpdateTransaction={handleUpdateTransaction} // Pass the update handler here
           onClose={() => setEditTransaction(null)}
           onDeleteTransaction={(id) => {
             setTransactions(transactions.filter((t) => t._id !== id));

@@ -471,7 +471,7 @@ app.get('/api/transactions', async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
  
-    res.json(user.transactions || []); // Return the user's transactions
+    res.json(user.transactions || []); 
   } catch (error) {
     console.error('Error fetching transactions:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -481,92 +481,90 @@ app.get('/api/transactions', async (req, res) => {
 // Route to add a new transaction
 app.post('/api/transactions', async (req, res) => {
   const { merchant, category, amount, date, userId } = req.body;
- 
+
   if (!userId || !merchant || !category || amount == null || !date) {
     return res.status(400).json({
       error: 'User ID, merchant, category, amount, and date are required.',
     });
   }
- 
+
   try {
-    // Find the user in the database
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
- 
-    // Create a new transaction object
+
+    const parsedDate = new Date(date); 
+    const offsetDate = new Date(parsedDate.getTime() + parsedDate.getTimezoneOffset() * 60000);
+
     const newTransaction = {
       merchant,
       category,
       amount,
-      date: new Date(date), // Ensure the date is stored correctly
-      _id: new mongoose.Types.ObjectId(), // Generate a unique ID for the transaction
+      date: offsetDate, 
+      _id: new mongoose.Types.ObjectId(),
     };
- 
-    // Add the transaction to the user's transactions array
+
     user.transactions.push(newTransaction);
- 
-    // Save the updated user document
     await user.save();
- 
-    // Respond with the newly added transaction
+
     res.status(201).json(newTransaction);
   } catch (error) {
     console.error('Error adding transaction:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
  
 // Route to update a transaction by ID
 app.put('/api/transactions/:id', async (req, res) => {
-  const { id } = req.params; // Transaction ID from the request parameters
-  const { merchant, category, amount, date, userId } = req.body; // Updated data and userId
- 
+  const { id } = req.params;
+  const { merchant, category, amount, date, userId } = req.body;
+
   if (!userId) {
     return res.status(400).json({ error: 'User ID is required.' });
   }
- 
+
   try {
-    // Find the user and the transaction by ID
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ error: 'User not found.' });
     }
- 
+
     const transaction = user.transactions.id(id);
     if (!transaction) {
       return res.status(404).json({ error: 'Transaction not found.' });
     }
- 
-    // Update the transaction fields
+
+    if (date) {
+      const parsedDate = new Date(date);
+      transaction.date = new Date(parsedDate.getTime() + parsedDate.getTimezoneOffset() * 60000);
+    }
+
     if (merchant) transaction.merchant = merchant;
     if (category) transaction.category = category;
     if (amount !== undefined) transaction.amount = amount;
-    if (date) transaction.date = new Date(date);
- 
-    // Save the updated user document
+
     await user.save();
- 
-    // Return the updated transaction
+
     res.status(200).json(transaction);
   } catch (error) {
     console.error('Error updating transaction:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
  
 // Route to delete a transaction by ID
 app.delete('/api/transactions/:id', async (req, res) => {
-  const { id } = req.params; // Transaction ID
-  const { userId } = req.body; // User ID from the request body
+  const { id } = req.params; 
+  const { userId } = req.body;
  
   if (!userId) {
     return res.status(400).json({ error: 'User ID is required.' });
   }
  
   try {
-    // Find the user and remove the transaction by ID
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ error: 'User not found.' });
@@ -578,11 +576,7 @@ app.delete('/api/transactions/:id', async (req, res) => {
     if (transactionIndex === -1) {
       return res.status(404).json({ error: 'Transaction not found.' });
     }
- 
-    // Remove the transaction
     user.transactions.splice(transactionIndex, 1);
- 
-    // Save the updated user document
     await user.save();
  
     res.status(200).json({ message: 'Transaction deleted successfully.' });

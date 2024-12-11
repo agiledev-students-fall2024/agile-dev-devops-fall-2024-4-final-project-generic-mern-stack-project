@@ -9,7 +9,7 @@ function EditTransaction({ transaction, onUpdateTransaction, onClose, onDeleteTr
   const [updatedTransaction, setUpdatedTransaction] = useState({
     ...transaction,
     amount: transaction.amount.toString(),
-    date: transaction.date.split('T')[0],
+    date: new Date(transaction.date).toISOString().split('T')[0],
   });
 
   const handleInputChange = (e) => {
