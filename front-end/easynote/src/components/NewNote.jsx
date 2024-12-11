@@ -76,9 +76,9 @@ const NewNote = () => {
       return res.data;
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.response?.message || "Unknown error";
-      alert(`Failed to save note: ${errorMessage}`);
+      // alert(`Failed to save note: ${errorMessage}`);
       console.error("Error occurred:", error);
-      throw error; // Re-throw for tests to catch
+      // throw error; // Re-throw for tests to catch
     }
   }
 
@@ -94,7 +94,8 @@ const NewNote = () => {
         alert('Please log in again');
         return;
       }
-      const url =  `http://localhost:${process.env.EXPRESS_SERVER_PORT || 5000}/api/aiFeaturesRoute/summarize`;
+      const url = `https://easynote-aivlj.ondigitalocean.app/api/aiFeaturesRoute/summarize/`;
+      // const url =  `http://localhost:${process.env.EXPRESS_SERVER_PORT || 5000}/api/aiFeaturesRoute/summarize`; local version
       const res = await axios.post(
         url,
         { 'text': content },
