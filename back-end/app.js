@@ -14,18 +14,19 @@ app.use(express.json());
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
      .then(() => console.log('MongoDB connected'))
      .catch(err => console.log(err));
+
+app.use(cors({
+        origin: [
+            'https://easynote-aivlj.ondigitalocean.app', 
+            'http://localhost:3000'
+        ],
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+        credentials: true
+}));     
 app.use('/notes', noteRoutes); 
 app.use('/users', userRoutes); 
 app.use('/auth/login', loginRoutes); 
 
-app.use(cors({
-    origin: [
-        'https://easynote-aivlj.ondigitalocean.app', 
-        'http://localhost:3000'
-    ],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
-}));
 
 const PORT = process.env.PORT || 5000;
 

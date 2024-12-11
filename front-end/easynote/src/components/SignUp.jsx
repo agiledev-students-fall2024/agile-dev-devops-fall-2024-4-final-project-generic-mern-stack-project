@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { useProfile } from './ProfileContext';
-import { handleLogin } from './authUtils';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +14,7 @@ const SignUp = () => {
   });
   const { setUser } = useProfile();
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");  // Error message state
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,34 +40,45 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
-      const response = await axios.post("https://easynote-aivlj.ondigitalocean.app/api/users", formData, {
-      headers: {
-        "Content-Type": "application/json" // Ensure correct content type
-      }
-    });
-      console.log(response);
-      const loginResponse = await handleLogin(formData.email, formData.password);
+      // Send registration request
       
-      if (loginResponse.success) {
-          setUser({ email: loginResponse.email });
-          navigate('/');
+      const response = await axios.post("https://easynote-aivlj.ondigitalocean.app/api/users", formData, {  
+      //const response = await axios.post("http://localhost:5000/users", formData, {  
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      // Check if registration is successful
+      if (response.data.token) {
+        // Save token to localStorage
+        localStorage.setItem('authToken', response.data.token);
+
+        // Set the user in ProfileContext (if needed)
+        setUser({ email: formData.email });
+
+        // Navigate to the homepage
+        navigate('/');
       } else {
-          alert('Login failed');
+        // If no token returned, show error
+        setErrorMessage("Registration failed. Please try again.");
       }
     } catch (error) {
+      // Handle error (e.g., server errors)
       console.error('Registration failed:', error);
-      alert('Registration failed');
+      setErrorMessage(error.response?.data?.message || "Registration failed. Please try again.");
     }
-    setUser(formData);
-    navigate('/')
   };
 
   return (
     <div className="auth-container">
       <div className="auth-box">
         <h2 className="auth-title">Create Account</h2>
+        {/* Show error message if any */}
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
+        
         <form onSubmit={handleSubmit} className="auth-form">
           <input
             type="text"
@@ -141,4 +152,5 @@ const SignUp = () => {
     </div>
   );
 };
+
 export default SignUp;
