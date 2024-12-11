@@ -1,8 +1,6 @@
-// Import dependencies
 require('./config.js');
 const express = require('express');
 const cors = require('cors');
-const authMiddleware = require('./middlewares/authMiddleware'); // Import auth middleware
 
 // Import route handlers
 const taskRoutes = require('./Task_Routes/task.js');
@@ -14,12 +12,7 @@ const authRoutes = require('./Authentication/authentication.js');
 const app = express();
 
 // Enable CORS for cross-origin requests
-app.use(
-    cors({
-        origin: 'http://localhost:3000', // Allow requests from your front-end app
-        methods: ["GET", "POST", "DELETE", "PUT"]
-    })
-);
+app.use(cors({ origin: 'http://localhost:3000', methods: ["GET", "POST", "DELETE", "PUT"] }));
 
 // Middleware to parse incoming JSON requests
 app.use(express.json());
@@ -28,14 +21,17 @@ app.use(express.json());
 app.use(authRoutes); // Login and registration routes remain public
 
 // Protected routes (require authentication)
-app.use('/tasks', authMiddleware, taskRoutes);
-app.use('/goals', authMiddleware, goalRoutes);
-app.use('/calendar', authMiddleware, calendarRoutes);
+app.use('/tasks', taskRoutes);
+app.use('/goals', goalRoutes);
+app.use('/calendar', calendarRoutes);
 
-// Error handling for undefined routes
-app.use((req, res, next) => {
+// Log all registered routes
+console.log('Available routes:', app._router.stack.filter(r => r.route).map(r => r.route.path));
+
+// Catch-all route for debugging
+app.all('*', (req, res) => {
+    console.log(`Request received at ${req.method} ${req.url}`);
     res.status(404).json({ error: 'Route not found' });
 });
 
-// Export the app for use in server.js
 module.exports = app;

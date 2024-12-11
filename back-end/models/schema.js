@@ -29,7 +29,7 @@ const GoalSchema = new mongoose.Schema({
   tasks: [{type: mongoose.Schema.Types.ObjectId, ref: 'Task',},],
   dueDate: {type: Date, required: true,},
   completed_tasks: [{type: mongoose.Schema.Types.ObjectId, ref: 'Task',}],
-  user_id: {type: mongoose.Schema.Types.ObjectId, ref: 'User',}
+  user_id: {type: Schema.Types.ObjectId, ref: 'User',}
 });
 
 const Goal = mongoose.model('Goal', GoalSchema);

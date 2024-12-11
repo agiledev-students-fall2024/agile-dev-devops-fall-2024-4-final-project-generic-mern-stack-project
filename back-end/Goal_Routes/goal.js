@@ -1,10 +1,10 @@
 const { Router } = require('express');
 const mongoose = require('mongoose');
-const authMiddleware = require('../middlewares/authMiddleware'); // Import auth middleware
-require('../models/goalschema');
+const authMiddleware = require('../middlewares/authMiddleware');
+require('../models/schema');
 
-const Goal = mongoose.model("Goal");
-const Task = mongoose.model("Task");
+const Goal = mongoose.model('Goal');
+const Task = mongoose.model('Task');
 
 const app = new Router();
 
@@ -12,24 +12,22 @@ const app = new Router();
 app.use(authMiddleware);
 
 // Fetch all goals for the authenticated user
-app.get('/goals', async (req, res) => {
-    const userId = req.user.userId; // Extract user ID from the token
+app.get('/', async (req, res) => {
+    const userId = req.user.userId; // Extract user ID from JWT
+    console.log(userId);
 
     try {
+        //const goals = await Goal.find({ user_id: userId }).populate('tasks');
         const goals = await Goal.find({ user_id: userId }).populate('tasks');
-
         // Enrich goals with completed task counts
-        const enrichedGoals = goals.map(goal => {
-            const completedTasks = goal.tasks.filter(task => task.status === 'finished');
-            return {
-                ...goal.toObject(),
-                completed_tasks: completedTasks,
-            };
-        });
+        // const enrichedGoals = goals.map(goal => ({
+        //     ...goal.toObject(),
+        //     completed_tasks: goal.tasks.filter(task => task.status === 'finished'),
+        // }));
 
-        res.json(enrichedGoals);
+        res.status(200).json(goals);
     } catch (error) {
-        console.error("Error fetching goals:", error);
+        console.error('Error fetching goals:', error);
         res.status(500).json({ error: 'Failed to fetch goals.' });
     }
 });
@@ -53,12 +51,14 @@ app.delete('/delete/goals/:id', async (req, res) => {
 });
 
 // Create a new goal for the authenticated user
-app.post('/goals/new', async (req, res) => {
-    const { title, tasks, dueDate } = req.body;
-    const userId = req.user.userId; // Extract user ID from the token
-
+app.post('/new', async (req, res) => {
     try {
-        // Verify that all referenced tasks exist
+        const { title, tasks, dueDate} = req.body;
+        user_id = req.user.userId;
+        console.log(req.body)
+        // Log the incoming data
+        console.log("Incoming Data:", { title, tasks, dueDate, user_id });
+
         const existingTasks = await Task.find({ _id: { $in: tasks } });
         if (existingTasks.length !== tasks.length) {
             return res.status(400).json({ error: 'Some tasks do not exist.' });
@@ -69,13 +69,17 @@ app.post('/goals/new', async (req, res) => {
             tasks,
             dueDate,
             completed_tasks: [],
-            user_id: userId,
+            user_id
         });
 
         const savedGoal = await goal.save();
+
+        // Log the saved goal
+        console.log("Saved Goal:", savedGoal);
+
         res.status(201).json(savedGoal);
     } catch (error) {
-        console.error("Error creating goal:", error);
+        console.error("Error saving goal:", error);
         res.status(500).json({ error: 'Failed to create goal.' });
     }
 });

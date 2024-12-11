@@ -11,7 +11,7 @@ const Goal = mongoose.model("Goal");
 router.use(authMiddleware);
 
 // Fetch urgent tasks for the authenticated user
-router.get('/tasks/urgent', async (req, res) => {
+router.get('/urgent', async (req, res) => {
     const today = new Date();
     const userId = req.user.userId; // Extract user ID from the token
     today.setHours(0, 0, 0, 0);
@@ -31,9 +31,9 @@ router.get('/tasks/urgent', async (req, res) => {
 });
 
 // Fetch all tasks for the authenticated user
-router.get('/tasks', async (req, res) => {
+router.get('/', async (req, res) => {
     const userId = req.user.userId; // Extract user ID from the token
-
+    console.log(userId);
     try {
         const tasks = await Task.find({ user_id: userId });
         res.json(tasks);
@@ -44,7 +44,7 @@ router.get('/tasks', async (req, res) => {
 });
 
 // Fetch a single task by its ID
-router.get('/tasks/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
     const taskId = req.params.id;
 
     try {
@@ -60,7 +60,7 @@ router.get('/tasks/:id', async (req, res) => {
 });
 
 // Create a new task for the authenticated user
-router.post('/tasks', async (req, res) => {
+router.post('/', async (req, res) => {
     const { title, description, subject, due_date, priority, recurring, recurring_period } = req.body;
     const userId = req.user.userId; // Extract user ID from the token
     const due = new Date(due_date);
@@ -118,7 +118,7 @@ router.post('/tasks', async (req, res) => {
 });
 
 // Update a task's status
-router.put('/tasks/:id/status', async (req, res) => {
+router.put('/:id/status', async (req, res) => {
     const { status } = req.body;
 
     if (!['not_started', 'ongoing', 'finished'].includes(status)) {
@@ -156,7 +156,7 @@ router.put('/tasks/:id/status', async (req, res) => {
 });
 
 // Update a task's details
-router.put('/tasks/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
     try {
         const updatedTask = await Task.findByIdAndUpdate(
             req.params.id,
@@ -176,7 +176,7 @@ router.put('/tasks/:id', async (req, res) => {
 });
 
 // Delete a task by ID
-router.delete('/tasks/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         const deletedTask = await Task.findByIdAndDelete(req.params.id);
 

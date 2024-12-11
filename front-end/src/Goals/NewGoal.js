@@ -60,27 +60,29 @@ const NewGoal = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const token = localStorage.getItem('auth_token'); // Retrieve JWT token
-
+    
+        const token = localStorage.getItem('auth_token');
         if (!token) {
             alert("Unauthorized access. Please log in.");
-            navigate('/Login'); // Redirect to login if token is missing
+            navigate('/Login');
             return;
         }
-
+    
         const newGoal = { title, tasks: selectedTasks, dueDate };
-
+    
+        // Log the data being sent
+        console.log("Payload to Backend:", newGoal);
+    
         try {
             const response = await fetch('http://localhost:4000/goals/new', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`, // Include JWT token
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(newGoal),
             });
-
+    
             if (response.ok) {
                 navigate('/Goals');
             } else {
@@ -93,7 +95,6 @@ const NewGoal = () => {
             alert("An error occurred while creating the goal. Please try again.");
         }
     };
-
     return (
         <div className="new-goal-container">
             <h1 className="page-title">Create New Goal</h1>

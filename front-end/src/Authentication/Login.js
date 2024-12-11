@@ -33,8 +33,9 @@ const Login = () => {
             const responseData = await response.json();
 
             if (response.ok) {
-                // Save the token to localStorage
-                window.localStorage.setItem('auth_token', responseData.token);
+                console.log('Token Received:', responseData.token); // Debugging log
+                window.localStorage.setItem('auth_token', responseData.token); // Save token to localStorage
+                console.log('Token in Local Storage:', localStorage.getItem('auth_token')); // Confirm storage
                 nav('/Homepage'); // Redirect to the homepage
             } else {
                 alert(responseData.error || 'Login failed. Please try again.');

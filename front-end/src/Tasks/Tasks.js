@@ -32,7 +32,7 @@ function Tasks() {
 
             try {
                 setLoading(true);
-                const response = await fetch('http://localhost:4000/task', {
+                const response = await fetch('http://localhost:4000/tasks', {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',

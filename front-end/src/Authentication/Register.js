@@ -53,7 +53,7 @@ const Register = () => {
             const responseData = await response.json();
 
             if (response.ok) {
-                // Save the token to localStorage
+                console.log('Token Received on Registration:', responseData.token); // Debugging
                 window.localStorage.setItem('auth_token', responseData.token);
                 nav('/Homepage'); // Redirect to the homepage
             } else {
