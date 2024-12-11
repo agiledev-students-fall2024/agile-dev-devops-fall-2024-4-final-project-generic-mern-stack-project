@@ -153,5 +153,10 @@ async function testRewriteText() {
 
 testRewriteText();
 
+module.exports = {
+    summarizeText,
+    proofReadText,
+    rewriteText,
+};
 
 
