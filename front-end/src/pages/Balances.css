@@ -3,7 +3,10 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  height: 100vh;
+  min-height: 100vh; /* Ensures it covers the full height of the viewport */
+  background-color: rgb(200, 223, 252);
+  margin: 0; /* Remove any default margins */
+  padding: 20px 0; /* Adds some breathing space on top and bottom */
 }
 
 .container {
@@ -11,30 +14,75 @@
   flex-direction: column;
   align-items: center;
   width: 80%;
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
+/* Sections Styling */
 .accounts-section,
-.debt-section {
+.debt-section,
+.previous-debts-section {
   width: 100%;
-  max-width: 500px;
+  max-width: 600px;
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 10px;
-  background-color: #f9f9f9;
+  background-color: #ffffff; /* White background for individual sections */
   margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
-/* Button Container Styling */
-.add-accounts,
-.add-debt {
+/* Account and Debt Items */
+.account-item,
+.debt-item,
+.previous-debt-item {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.account-type {
+  font-size: 16px;
+  color: #333;
+  font-weight: bold;
+}
+
+.account-balance {
+  font-size: 14px;
+  color: #555;
+}
+
+/* Debt Section Styling */
+.debt-item {
+  background-color: #f9f9f9; /* Light gray for debt items */
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.debt-amount {
+  color: #dc3545; /* Bold red for debt amounts */
+  font-weight: bold;
+}
+
+.debt-paid-label {
   display: flex;
-  flex-direction: column;
   align-items: center;
   margin-top: 10px;
 }
 
-/* Button Styling */
+.paid-checkbox {
+  margin-left: 5px;
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+/* Section Headers */
+h1 {
+  font-size: 20px;
+  color: #0077cc; /* Blue text for headers */
+  margin-bottom: 15px;
+}
+
+/* Buttons */
 .edit-button,
 .delete-button {
   margin: 10px 5px;
@@ -45,87 +93,11 @@
 }
 
 .edit-button {
-  background-color: #ffc107;
+  background-color: #ffc107; /* Yellow for edit */
   color: white;
 }
 
 .delete-button {
-  background-color: #dc3545;
-  color: white;
-}
-
-.add-more-button,
-.plaid-button {
-  width: 100%;
-  max-width: 200px;
-  margin: 5px 0;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  color: white;
-  border: none;
-}
-
-.add-more-button {
-  background-color: #28a745;
-}
-
-.plaid-button {
-  background-color: #0077cc;
-}
-
-/* Modal Styling */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  width: 400px;
-  max-width: 90%;
-  box-sizing: border-box;
-  text-align: center;
-}
-
-.modal-content input {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-sizing: border-box;
-}
-
-.modal-buttons {
-  display: flex;
-  justify-content: space-between;
-}
-
-.modal-buttons button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.modal-buttons button:first-child {
-  background-color: #28a745;
-  color: white;
-}
-
-.modal-buttons button:last-child {
-  background-color: #dc3545;
+  background-color: #dc3545; /* Red for delete */
   color: white;
 }
