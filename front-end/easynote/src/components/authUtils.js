@@ -1,7 +1,7 @@
 export const handleLogin = async (email, password) => {
     try {
-        const response = await fetch(`https://easynote-aivlj.ondigitalocean.app/api/auth/login`, {
-        //const response = await fetch(`http://localhost:5000/auth/login`, {    
+        //const response = await fetch(`https://easynote-aivlj.ondigitalocean.app/api/auth/login`, {
+        const response = await fetch(`http://localhost:5000/auth/login`, {    
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
