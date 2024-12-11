@@ -2,7 +2,6 @@ import React from 'react';
 import { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import EmojiPicker from 'emoji-picker-react';
-import Message from "./Message.jsx";
 import { sendDataToMeetingRoom } from '../services/firebaseApi.js';
 
 const Chat = React.forwardRef((props, ref) => {

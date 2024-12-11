@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 
 // ActionButton component definition
 const ActionButton = ({ text, color, onClick }) => (
@@ -18,6 +18,8 @@ const JoinCreateMeetingPage = () => {
   const [pastMeetings, setPastMeetings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const jwtToken = localStorage.getItem("token");
+  const [isLoggedIn, setIsLoggedIn] = useState(jwtToken && true);
 
   useEffect(() => {
     fetchPastMeetings();
@@ -87,7 +89,9 @@ const JoinCreateMeetingPage = () => {
 
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <>
+    {isLoggedIn ? (
+      <div className="min-h-screen bg-gray-100">
       <header className="bg-white shadow-sm py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
@@ -214,6 +218,10 @@ const JoinCreateMeetingPage = () => {
         )}
       </main>
     </div>
+    ) : (
+      <Navigate to="/login" />
+    )}
+    </>
   );
 };
 
