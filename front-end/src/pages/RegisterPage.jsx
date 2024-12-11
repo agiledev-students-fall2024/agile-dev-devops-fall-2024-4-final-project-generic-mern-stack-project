@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import {jwtDecode} from 'jwt-decode';
 
 const RegisterPage = () => {
     const [username, setUsername] = useState('');
@@ -17,6 +18,13 @@ const RegisterPage = () => {
             });
 
             const data = await response.json();
+            console.log(data);
+            // save an object as a string into the browser's localStorage
+            const token = data["token"];
+            localStorage.setItem('token', token);
+            var userData = jwtDecode(token);
+            localStorage.setItem('username', userData['username']);
+
             if (response.ok) {
                 navigate('/joincreatemeeting');
             } else {

@@ -30,7 +30,9 @@ router.post(
             // Create and save user
             const user = new User({ username, password });
             await user.save();
-            res.status(201).json({ message: 'User registered successfully' });
+            // Generate JWT
+            const token = jwt.sign({ id: user._id, username: user.username}, JWT_SECRET, { expiresIn: '1h' });
+            res.status(201).json({ message: 'User registered successfully', token: token});
         } catch (error) {
             console.error('Error during registration:', error);
             res.status(500).json({ error: 'Internal server error' });
@@ -59,7 +61,7 @@ router.post(
             }
 
             // Generate JWT
-            const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
+            const token = jwt.sign({ id: user._id, username: user.username}, JWT_SECRET, { expiresIn: '1h' });
             res.status(200).json({ message: 'Login successful', token });
         } catch (error) {
             console.error('Error during login:', error);
