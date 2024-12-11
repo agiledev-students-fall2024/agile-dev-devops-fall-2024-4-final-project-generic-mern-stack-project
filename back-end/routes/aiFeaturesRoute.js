@@ -37,14 +37,16 @@ router.post('/transcribe', uploadMulter.single('audio'), async (req, res) => {
 
 
 router.post('/summarize', async (req, res) => {
-    const  text  = req.body.text;
     console.log('Request Headers:', req.headers); // Log request headers
     console.log('Request Body:', req.body);       // Log entire request body
-    if (!text) {
+    
+    const textData = req.body.text;
+    
+    if (!textData) {
         return res.status(400).json({ error: 'Text is required for summarization' });
     }
     try {
-        const summary = await summarizeText(text);
+        const summary = await summarizeText(textData);
         res.json({ summary });
     } catch (error) {
         res.status(500).json({ error: 'Failed to summarize text', message: error.message });
