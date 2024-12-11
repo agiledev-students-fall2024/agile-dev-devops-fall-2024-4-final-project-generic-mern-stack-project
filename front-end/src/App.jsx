@@ -16,7 +16,6 @@ import Balances from './pages/Balances';
 import Transactions from './pages/Transactions';
 import BottomNav from './components/bottomNav';
 import ProtectedRoute from './components/ProtectedRoute';
-import Header from './components/header';
 
 function App() {
   const [authToken, setAuthToken] = useState(localStorage.getItem('token'));
@@ -47,8 +46,7 @@ function AppContent({ authToken, handleLogin, handleLogout }) {
 
   return (
     <>
-      {authToken && <Header onLogout={handleLogout} />}
-      {/* Show header when logged in */}
+      {/* Removed global header */}
       <Routes>
         {!authToken ? (
           <>
@@ -69,7 +67,7 @@ function AppContent({ authToken, handleLogin, handleLogout }) {
                 />
               }
             >
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Home onLogout={handleLogout} />} />
               <Route path="/goal" element={<Goal />} />
               <Route path="/transactions" element={<Transactions />} />
               <Route

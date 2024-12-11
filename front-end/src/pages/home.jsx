@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Header from '../components/header';
 import CategoricalLimits from '../components/CategoricalLimits.jsx';
 import Notifications from '../components/notifications.jsx';
 import AddTransaction from '../components/AddTransaction';
@@ -67,6 +68,9 @@ function Home() {
 
     return (
         <div className="home-container">
+            {/* Updated Header */}
+            <Header />
+
             {/* Budget Overview Section */}
             <section className="budget-overview">
                 <div className="budget-header">
@@ -153,7 +157,10 @@ function Home() {
                             <span>{transaction.merchant}</span>
                             <span>{transaction.category}</span>
                             <span>${transaction.amount.toFixed(2)}</span>
-                            <span>{new Date(transaction.date).toLocaleDateString()}</span>
+                            <span>
+                                {new Date(transaction.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                            </span>
+
                         </li>
                     ))}
                 </ul>
