@@ -66,13 +66,13 @@ const JoinCreateMeetingPage = () => {
 
   const fetchPastMeetings = async () => {
     try {
-      setError(null);
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/meeting/past/list`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch past meetings');
-      }
-      const data = await response.json();
-      setPastMeetings(data);
+        setError(null);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/meeting/past/list`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch past meetings');
+        }
+        const data = await response.json();
+        setPastMeetings(data);
     } catch (error) {
       console.error('Error fetching past meetings:', error);
       setError('Failed to load past meetings');
