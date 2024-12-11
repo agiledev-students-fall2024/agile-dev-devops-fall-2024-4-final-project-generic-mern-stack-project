@@ -45,14 +45,14 @@ const userSchema = new mongoose.Schema({
       },
     ],
     budgetLimits: {
-      monthlyLimit: { type: Number, required: true, default: 0 }, // Overall monthly budget limit
+      monthlyLimit: { type: Number, required: true, default: 0 },
       categories: [
           {
-              name: { type: String, required: true }, // User-defined category name
-              limit: { type: Number, required: true, default: 0 }, // User-defined budget limit for the category
+              name: { type: String, required: true },
+              limit: { type: Number, required: true, default: 0 }, 
           }
       ],
-      other: { type: Number, default: 0 }, // Automatically calculated as excess from unallocated funds
+      other: { type: Number, default: 0 },
     },
     categories: [
       {
