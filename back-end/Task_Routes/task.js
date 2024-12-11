@@ -1,172 +1,194 @@
 const mongoose = require('mongoose');
 const express = require('express');
-const { resource } = require('../app');
+const authMiddleware = require('../middlewares/authMiddleware'); // Import auth middleware
 const router = express.Router();
-/* The line `require('../models/schema');` is importing the schema definition for tasks from a file
-located at '../models/schema.js' or a similar path. This schema likely defines the structure of the
-Task model used in the application, including the fields like name, description, subject, due date,
-priority, recurring, recurring period, and status. This schema is necessary for defining how tasks
-are structured and stored in the database using Mongoose, which is a MongoDB object modeling tool
-for Node.js. */
+
 require('../models/schema'); 
-const Task = mongoose.model("Task")
-const Goal = mongoose.model("Goal")
+const Task = mongoose.model("Task");
+const Goal = mongoose.model("Goal");
 
-router.get('/tasks/urgent/:id', async (req, res) => {
-  const today = new Date();
-  const userId = req.params.id;
-  today.setHours(0, 0, 0, 0);
-  const urgentTasks = await Task.find({ 
-    user_id: userId, 
-    due: { $gte: today } 
-  })
-  .sort({ due: 1 }) 
-  .limit(3);
-  res.json(urgentTasks);
+// Apply authMiddleware to protect all routes
+router.use(authMiddleware);
+
+// Fetch urgent tasks for the authenticated user
+router.get('/urgent', async (req, res) => {
+    const today = new Date();
+    const userId = req.user.userId; // Extract user ID from the token
+    today.setHours(0, 0, 0, 0);
+
+    try {
+        const urgentTasks = await Task.find({
+            user_id: userId,
+            due: { $gte: today }
+        })
+        .sort({ due: 1 })
+        .limit(3);
+        res.json(urgentTasks);
+    } catch (error) {
+        console.error('Error fetching urgent tasks:', error);
+        res.status(500).json({ error: 'Failed to fetch urgent tasks.' });
+    }
 });
 
-router.get('/tasks', (req, res) => {
-  Task.find().then(tasks => {
-    tasks.forEach(task => {
-    });
-    res.json(tasks);
-  });
+// Fetch all tasks for the authenticated user
+router.get('/', async (req, res) => {
+    const userId = req.user.userId; // Extract user ID from the token
+    console.log(userId);
+    try {
+        const tasks = await Task.find({ user_id: userId });
+        res.json(tasks);
+    } catch (error) {
+        console.error('Error fetching tasks:', error);
+        res.status(500).json({ error: 'Failed to fetch tasks.' });
+    }
 });
 
+// Fetch a single task by its ID
+router.get('/:id', async (req, res) => {
+    const taskId = req.params.id;
 
-
-router.get('/task/:id', async (req, res) => {
-  try {
-    const task = await Task.find({"user_id": req.params.id}) 
-    if (!task) {
-        return res.json([])
+    try {
+        const task = await Task.findById(taskId);
+        if (!task) {
+            return res.status(404).json({ error: 'Task not found.' });
+        }
+        res.json(task);
+    } catch (error) {
+        console.error('Error fetching task:', error);
+        res.status(500).json({ error: 'Failed to fetch task.' });
     }
-    else {
-        res.json(task)
-    }
-} catch (error) {
-    res.status(500).json({ error: error.message })
-}
 });
 
+// Create a new task for the authenticated user
+router.post('/', async (req, res) => {
+    const { title, description, subject, due_date, priority, recurring, recurring_period } = req.body;
+    const userId = req.user.userId; // Extract user ID from the token
+    const due = new Date(due_date);
+    const tasksToCreate = [];
 
+    // Helper function to calculate recurring dates
+    const nextDue = (currentDate, period) => {
+        const dates = [];
+        for (let i = 1; i <= 3; i++) {
+            const nextDate = new Date(currentDate);
+            if (period === 'Weekly') nextDate.setDate(nextDate.getDate() + 7 * i);
+            else if (period === 'Biweekly') nextDate.setDate(nextDate.getDate() + 14 * i);
+            else if (period === 'Monthly') nextDate.setMonth(nextDate.getMonth() + i);
+            dates.push(nextDate);
+        }
+        return dates;
+    };
 
-router.post('/tasks', async (req, res) => {
-  const { title, description, subject, due_date, priority, recurring, recurring_period, user_id} = req.body;
-  const due = new Date(due_date);
-  const tasksToCreate = [];
+    try {
+        if (recurring === 'Yes') {
+            const futureDates = nextDue(due, recurring_period);
+            futureDates.forEach(futureDate => {
+                tasksToCreate.push({
+                    name: title,
+                    description,
+                    subject,
+                    due: futureDate,
+                    priority,
+                    recurring,
+                    recurring_period,
+                    status: 'not_started',
+                    user_id: userId
+                });
+            });
+        } else {
+            tasksToCreate.push({
+                name: title,
+                description,
+                subject,
+                due,
+                priority,
+                recurring: false,
+                recurring_period: null,
+                status: 'not_started',
+                user_id: userId
+            });
+        }
 
-  const nextDue = (currentDate, period) => {
-    const dates = [];
-    for (let i = 1; i <= 3; i++) {
-      const nextDate = new Date(currentDate);
-      if (period === 'Weekly') nextDate.setDate(nextDate.getDate() + 7 * i);
-      else if (period === 'Biweekly') nextDate.setDate(nextDate.getDate() + 14 + i);
-      else if (period === 'Monthly') nextDate.setMonth(nextDate.getMonth() + i);
-      dates.push(nextDate);
+        const savedTasks = await Task.insertMany(tasksToCreate);
+        res.status(201).json(savedTasks);
+    } catch (error) {
+        console.error('Error creating tasks:', error);
+        res.status(500).json({ error: 'Failed to create tasks.' });
     }
-    return dates;
-  };
-  try {
-    if (recurring === "Yes") {
-      const futureDates = nextDue(due, recurring_period);
-
-      futureDates.forEach((futureDate) => {
-        tasksToCreate.push({
-          name: title,
-          description,
-          subject,
-          due: futureDate,
-          priority,
-          recurring,
-          recurring_period,
-          status: 'not_started',
-          user_id,
-        });
-      });
-    } else {
-      tasksToCreate.push({
-        name: title,
-        description,
-        subject,
-        due,
-        priority,
-        recurring: false,
-        recurring_period: null,
-        status: 'not_started',
-        user_id,
-      });
-    }
-
-    const savedTasks = await Task.insertMany(tasksToCreate);
-    res.status(201).json(savedTasks);
-  } catch (error) {
-    console.error("Error creating tasks:", error.message);
-    res.status(500).json({ error: error.message });
-  }
 });
 
+// Update a task's status
+router.put('/:id/status', async (req, res) => {
+    const { status } = req.body;
 
-router.put('/tasks/:id/status', async (req, res) => {
-  const { status } = req.body;
-
-  if (!["not_started", "ongoing", "finished"].includes(status)) {
-    return res.status(400).json({ error: "Invalid status value" });
-  }
-  try {
-    const updatedTask = await Task.findByIdAndUpdate(req.params.id, { status }, { new: true }).populate('goal');
-    console.log("updatedTask", updatedTask)
-    if (!updatedTask) {
-      return res.status(404).json({ error: "Task not found" });
+    if (!['not_started', 'ongoing', 'finished'].includes(status)) {
+        return res.status(400).json({ error: 'Invalid status value.' });
     }
-    else {
+
+    try {
+        const updatedTask = await Task.findByIdAndUpdate(
+            req.params.id,
+            { status },
+            { new: true }
+        ).populate('goal');
+
+        if (!updatedTask) {
+            return res.status(404).json({ error: 'Task not found.' });
+        }
+
         if (status === 'finished') {
-            await Goal.updateOne({ _id: updatedTask.goal }, { $push: { completed_tasks: updatedTask._id } });              
+            await Goal.updateOne(
+                { _id: updatedTask.goal },
+                { $push: { completed_tasks: updatedTask._id } }
+            );
+        } else if (status === 'not_started' || status === 'ongoing') {
+            await Goal.updateOne(
+                { _id: updatedTask.goal },
+                { $pull: { completed_tasks: updatedTask._id } }
+            );
         }
-        else if (status == "ongoing" || status == "not_started") {
-            await Goal.updateOne({ _id: updatedTask.goal }, { $pull: { completed_tasks: updatedTask._id } });
-        }
+
         res.json(updatedTask);
+    } catch (error) {
+        console.error('Error updating task status:', error);
+        res.status(500).json({ error: 'Failed to update task status.' });
     }
-  } catch (error) {
-        res.status(500).json({ error })
-  }
 });
 
+// Update a task's details
+router.put('/:id', async (req, res) => {
+    try {
+        const updatedTask = await Task.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true, runValidators: true }
+        );
 
+        if (!updatedTask) {
+            return res.status(404).json({ error: 'Task not found.' });
+        }
 
-router.get('/tasks/:id', async (req, res) => {
-  const taskId = req.params.id;
-  const task = await Task.findById(taskId);
-  if (!task) {
-    return res.status(404).json({ error: "Task not found" });
-  }
-  res.json(task);
-});
-
-
-router.put('/tasks/:id', async (req, res) => {
-  try {
-    const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
-    const goal = await Goal.findOne({ tasks: req.params.id });
-    if (!updatedTask) {
-        return res.status(404).json({ message: 'Task not found' })
+        res.json(updatedTask);
+    } catch (error) {
+        console.error('Error updating task:', error);
+        res.status(500).json({ error: 'Failed to update task.' });
     }
-    res.json(updatedTask)
-} catch (error) {
-    res.status(500).json({ message: 'Error updating task', error: error.message })
-}
 });
 
-router.delete('/tasks/:id', async (req, res) => {
-  try {
-      const deletedTask = await Task.findByIdAndDelete(req.params.id)
-      if (!deletedTask) {
-          return res.status(404).json({ message: 'Task not found' })
-      }
-      res.status(204).send() // No content response
-  } catch (error) {
-      res.status(500).json({ message: 'Error deleting task', error: error.message })
-  }
-})
+// Delete a task by ID
+router.delete('/:id', async (req, res) => {
+    try {
+        const deletedTask = await Task.findByIdAndDelete(req.params.id);
+
+        if (!deletedTask) {
+            return res.status(404).json({ error: 'Task not found.' });
+        }
+
+        res.status(204).send(); // No content response
+    } catch (error) {
+        console.error('Error deleting task:', error);
+        res.status(500).json({ error: 'Failed to delete task.' });
+    }
+});
+
 module.exports = router;
