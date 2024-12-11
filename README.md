@@ -10,11 +10,11 @@ The vision of Task Destroyer focus on the group of high school or unversity stud
 
 ## Team Members
 
-* Xiaowei Ma [GitHub](https://github.com/WillliamMa)
-* Rishi Rana [GitHub](https://github.com/Rishi-Rana1)
-* Arnav Nayak [GitHub](https://github.com/ern-02)
-* Nathan Daniel [GitHub](https://github.com/WayyGood)
-* Rena Wang [GitHub](https://github.com/nomegustaexam)
+- Xiaowei Ma [GitHub](https://github.com/WillliamMa)
+- Rishi Rana [GitHub](https://github.com/Rishi-Rana1)
+- Arnav Nayak [GitHub](https://github.com/ern-02)
+- Nathan Daniel [GitHub](https://github.com/WayyGood)
+- Rena Wang [GitHub](https://github.com/nomegustaexam)
 
 ## Project History
 
@@ -25,22 +25,28 @@ The idea for the project of our team came from observing the academic environmen
 We sincerely appreciate your contribution! To start contribute, please visit the following link for [CONTRIBUTING.md](./CONTRIBUTING.md) and follow the guidelines!
 
 ## Building & Testing
+
 To set up the project locally, follow these steps:
+
 1. Clone the Repo to local and open:
+
    ```bash
    git clone https://github.com/agiledev-students-fall2024/4-final-project-task-destroyer.git
    ```
 
 2. Navigate to the according directories and install dependencies:
    ```bash
+   npm install jsonwebtoken
    cd back-end
    npm install
-   cd front-end/front-end 
+   cd front-end
    npm install
    ```
 
 ### Run the Application
+
 1. Start the backend server:
+
    ```bash
    cd back-end
    npm start
@@ -48,7 +54,7 @@ To set up the project locally, follow these steps:
 
 2. Start the frontend application:
    ```bash
-   cd front-end/front-end 
+   cd front-end
    npm start
    ```
 
