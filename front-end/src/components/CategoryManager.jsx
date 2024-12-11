@@ -90,7 +90,7 @@ function CategoryManager({
                             onChange={(e) => setCustomCategory(e.target.value)}
                             placeholder="Enter custom category"
                         />
-                        <button onClick={handleAddCustomCategory}>Add</button>
+                        <button onClick={handleAddCustomCategory}>Save</button>
                     </div>
                 )}
             </div>
