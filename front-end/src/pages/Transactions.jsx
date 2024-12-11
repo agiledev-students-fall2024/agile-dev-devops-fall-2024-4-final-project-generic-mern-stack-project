@@ -68,34 +68,12 @@ function Transactions() {
     setFilteredTransactions(filteredTransactions.filter(t => t._id !== transactionId));
   };
 
-  const handleAddTransaction = async (transaction) => {
-    try {
-      const response = await fetch('http://localhost:3001/api/transactions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...transaction,
-          userId,
-        }),
-      });
-  
-      if (!response.ok) {
-        throw new Error('Failed to add transaction');
-      }
-  
-      const newTransaction = await response.json();
-  
-      // Update state with the new transaction and sort
-      const updatedTransactions = [newTransaction, ...transactions];
-      const sortedTransactions = updatedTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
-      setTransactions(sortedTransactions);
-      setFilteredTransactions(sortedTransactions);
-      setShowAddTransaction(false); // Close the AddTransaction modal
-    } catch (error) {
-      console.error('Error adding transaction:', error);
-    }
+  const handleNewTransaction = (newTransaction) => {
+    // Add the new transaction to the state and sort the list
+    const updatedTransactions = [newTransaction, ...transactions];
+    const sortedTransactions = updatedTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+    setTransactions(sortedTransactions);
+    setFilteredTransactions(sortedTransactions);
   };
 
   return (
@@ -165,7 +143,7 @@ function Transactions() {
 
       {showAddTransaction && (
         <AddTransaction
-          onAddTransaction={handleAddTransaction}
+          onAddTransaction={handleNewTransaction} // Use centralized logic
           onClose={() => setShowAddTransaction(false)}
         />
       )}
