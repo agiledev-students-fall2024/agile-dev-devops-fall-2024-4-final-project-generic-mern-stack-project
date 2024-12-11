@@ -74,5 +74,7 @@ jobs:
           BACKEND_DIGEST: ${{ needs.build-and-push.outputs.image_digest_backend }}
           FRONTEND_DIGEST: ${{ needs.build-and-push.outputs.image_digest_frontend }}
           MONGO_URI: ${{ secrets.MONGO_URI }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          TRANSCRIBE_API_KEY: ${{ secrets.TRANSCRIBE_API_KEY }}
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}

@@ -27,7 +27,6 @@ app.use('/notes', noteRoutes);
 app.use('/users', userRoutes); 
 app.use('/auth/login', loginRoutes); 
 
-
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, '0.0.0.0', () => {
