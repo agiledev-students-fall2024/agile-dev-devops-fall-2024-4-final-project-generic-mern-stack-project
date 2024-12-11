@@ -1,0 +1,26 @@
+GET http://localhost:5001/api/pins
+
+GET http://localhost:5001/api/pins/user/123
+
+GET http://localhost:5001/api/pins/1
+
+POST http://localhost:5001/api/pins
+Content-Type: application/json
+
+{
+  "userId": 789,
+  "message": "New memory",
+  "location": [40.7400, -73.9800]
+}
+
+PUT http://localhost:5001/api/pins/1
+Content-Type: application/json
+
+{
+  "message": "Updated memory",
+  "location": [40.7500, -73.9900]
+}
+
+DELETE http://localhost:5001/api/pins/1
+
+GET http://localhost:5001/test/mock-data
