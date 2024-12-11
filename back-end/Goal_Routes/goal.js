@@ -50,7 +50,7 @@ app.delete('/delete/goals/:id', async (req, res) => {
     }
 });
 
-// Create a new goal for the authenticated user
+
 app.post('/new', async (req, res) => {
     try {
         const { title, tasks, dueDate} = req.body;
