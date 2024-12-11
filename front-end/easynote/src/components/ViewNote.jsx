@@ -1,7 +1,6 @@
 import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
 
-// Tag color mapping
 const tagColors = {
   "React": "#e8f5e9", 
   "JavaScript": "#e3f2fd", 
@@ -23,15 +22,15 @@ const ViewNote = () => {
     <div className="view-note">
       <h1>{note.title}</h1>
       <p><strong>Category:</strong> {note.category}</p>
-      <p><strong>Last Modified:</strong> {new Date(note.lastModified).toLocaleString()}</p>
+      <p><strong>Last Modified:</strong> {new Date(note.updatedAt).toLocaleString()}</p>
       <div className="note-tags">
         <strong>Tags:</strong> 
-        {note.tags.length > 0 ? (
+        {note.tags && note.tags.length > 0 ? (
           note.tags.map(tag => (
             <span 
               key={tag} 
               className="tag" 
-              style={{ backgroundColor: tagColors[tag] || tagColors['Other'] }} // Apply tag color
+              style={{ backgroundColor: tagColors[tag] || tagColors['Other'] }}
             >
               {tag}
             </span>
@@ -40,7 +39,7 @@ const ViewNote = () => {
           <span>No tags</span>
         )}
       </div>
-      <p>{note.preview}</p>
+      <p>{note.content}</p> {/* Changed from preview to content */}
       <Link to="/">Back to Notes</Link>
     </div>
   );

@@ -3,57 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useProfile } from './ProfileContext';
 import axios from "axios";
 
-
-
-// Mock data 
-const mockNotes = [
-  {
-    id: 1,
-    title: "Introduction to React Hooks",
-    preview: "React Hooks are functions that allow you to use state and other React features in functional components...",
-    category: "Programming",
-    lastModified: "2024-10-25T14:48:00",
-    tags: ["react", "javascript", "web development"],
-    author: "john.doe@email.com"
-  },
-  {
-    id: 2,
-    title: "Linear Algebra Notes - Matrices",
-    preview: "A matrix is a rectangular array of numbers, symbols, or expressions arranged in rows and columns...",
-    category: "Mathematics",
-    lastModified: "2024-10-24T09:30:00",
-    tags: ["math", "linear algebra", "matrices"],
-    author: "john.doe@email.com"
-  },
-  {
-    id: 3,
-    title: "Physics - Quantum Mechanics",
-    preview: "Quantum mechanics is a fundamental theory in physics that provides a description of the physical properties...",
-    category: "Physics",
-    lastModified: "2024-10-23T16:20:00",
-    tags: ["physics", "quantum", "science"],
-    author: "john.doe@email.com"
-  },
-  {
-    id: 4,
-    title: "Project Management Best Practices",
-    preview: "Effective project management requires careful planning, clear communication, and adaptive problem-solving...",
-    category: "Management",
-    lastModified: "2024-10-22T11:15:00",
-    tags: ["management", "leadership", "organization"],
-    author: "john.doe@email.com"
-  },
-  {
-    id: 5,
-    title: "Data Structures - Binary Trees",
-    preview: "A binary tree is a tree data structure in which each node has at most two children, referred to as left child and right child...",
-    category: "Programming",
-    lastModified: "2024-10-21T13:45:00",
-    tags: ["algorithms", "data structures", "programming"],
-    author: "john.doe@email.com"
-  }
-];
-
 const ExistingNotes = () => {
   const { user } = useProfile();
   const [searchTerm, setSearchTerm] = useState('');
@@ -101,11 +50,11 @@ const filteredNotes = notes.filter(note => {
 });
 
  // Handle checkbox toggle
- const handleCheckboxToggle = (id) => {
+ const handleCheckboxToggle = (noteId) => {
   setSelectedNotes(prevSelected =>
-    prevSelected.includes(id)
-      ? prevSelected.filter(noteId => noteId !== id)
-      : [...prevSelected, id]
+    prevSelected.includes(noteId)
+      ? prevSelected.filter(id => id !== noteId)
+      : [...prevSelected, noteId]
   );
 };
 // Handle delete action
@@ -133,7 +82,7 @@ const handleDelete = async (noteId) => {
         );
 
         // After successful deletion, remove the note from the state
-        setNotes(prevNotes => prevNotes.filter(note => note.id !== noteId));
+        setNotes(prevNotes => prevNotes.filter(note => note._id !== noteId));
 
         alert("Note deleted successfully.");
       } catch (error) {
@@ -145,7 +94,7 @@ const handleDelete = async (noteId) => {
 
 const handleEditNote = () => {
   if (selectedNotes.length === 1) {
-    const noteToEdit = mockNotes.find(note => note.id === selectedNotes[0]);
+    const noteToEdit = notes.find(note => note.id === selectedNotes[0]);
     navigate('/new-note', { state: { note: noteToEdit } });
   } else {
     alert("Please select exactly one note to edit.");
@@ -153,7 +102,7 @@ const handleEditNote = () => {
 };
 const handleOpenNote = () => {
   if (selectedNotes.length === 1) {
-    const noteToView = mockNotes.find(note => note.id === selectedNotes[0]);
+    const noteToView = notes.find(note => note._id === selectedNotes[0]);
     navigate('/view-note', { state: { note: noteToView } });
   } else {
     alert("Please select exactly one note to open.");
@@ -195,12 +144,12 @@ return (
 
     <div className="notes-grid">
       {filteredNotes.map(note => (
-        <div key={note.id} className="note-card">
+        <div key={note._id} className="note-card">
           <input
             type="checkbox"
             className="note-checkbox"
-            checked={selectedNotes.includes(note.id)}
-            onChange={() => handleCheckboxToggle(note.id)}
+            checked={selectedNotes.includes(note._id)}
+            onChange={() => handleCheckboxToggle(note._id)}
           />
           <div className="note-card-header">
             <span className="note-category">{note.category}</span>

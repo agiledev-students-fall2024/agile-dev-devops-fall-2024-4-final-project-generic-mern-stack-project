@@ -16,7 +16,7 @@ router.post('/', verifyToken, async (req, res) => {
         author: req.userId,
         category,
         preview,
-        updatedAt,
+        updatedAt: Date.now(),
         user,
     });
 
