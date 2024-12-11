@@ -48,3 +48,16 @@
   height: 150px;
   resize: vertical;
 }
+
+textarea#postContent {
+  width: 100%;
+  height: auto; /* This will auto-expand */
+  min-height: 150px; /* Set a reasonable minimum height */
+  resize: none; /* Prevent manual resizing */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 1.5;
+}

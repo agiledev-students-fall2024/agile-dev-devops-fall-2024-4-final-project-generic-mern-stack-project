@@ -74,11 +74,17 @@ const UpdateBlogPost = () => {
 
         <div className="form-group">
           <label htmlFor="postContent">Content:</label>
-          <textarea
+{/*           <textarea
             id="postContent"
             value={post.content}
             onChange={(e) => setPost({ ...post, content: e.target.value })}
-          />
+          /> */}
+          <textarea                                                             //CHANGE
+            id="postContent"
+            rows={10} // Adjust rows to an appropriate value
+            value={post.content}
+            onChange={(e) => setPost({ ...post, content: e.target.value })}
+          />
         </div>
 
 {/*         <div className="form-group">
