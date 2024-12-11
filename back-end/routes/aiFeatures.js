@@ -142,25 +142,16 @@ async function rewriteText(text) {
     }
 }
 
-async function testRewriting() {
+async function testRewriteText() {
     try {
-        const result = await rewriteText(`Contribution comment: This sprint is currently ongoing. 
-        Here are some notes on Git and GitHub activity by user GavinZhengOI in the main/master branch 
-        during the time period 10/10/2024 12:30 to 10/29/2024 12:30. Contributions made under any other 
-        username or made without the required Git/GitHub configuration settings will not be counted in 
-        this or future work.`);
+        const result = await rewriteText(`She don’t likes going to the market because it’s too much peoples there`);
         console.log(result);
     } catch (error) {
-        console.error('Error during rewriting:', error);
+        console.error('Error during text rewriting:', error);
     }
 }
 
-testRewriting();
+testRewriteText();
 
-module.exports = {
-    summarizeText,
-    proofReadText,
-    rewriteText,
-};
 
 
