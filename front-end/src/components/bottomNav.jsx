@@ -9,10 +9,6 @@ function BottomNav() {
         <img src="./home.png" alt="Home" />
         <span>Home</span>
       </NavLink>
-      <NavLink to="/charts" className="nav-item" activeclassname="active">
-        <img src="./charts.png" alt="Charts" />
-        <span>Charts</span>
-      </NavLink>
       <NavLink to="/balances" className="nav-item" activeclassname="active">
         <img src="./bank.png" alt="Balances" />
         <span>Balances</span>

@@ -587,7 +587,6 @@ app.post('/api/transactions', async (req, res) => {
 });
  
 // Route to update a transaction by ID
-// Route to update a transaction by ID
 app.put('/api/transactions/:id', async (req, res) => {
   const { id } = req.params; // Transaction ID from the request parameters
   const { merchant, category, amount, date, userId } = req.body; // Updated data and userId
@@ -625,7 +624,6 @@ app.put('/api/transactions/:id', async (req, res) => {
   }
 });
  
-// Route to delete a transaction by ID
 // Route to delete a transaction by ID
 app.delete('/api/transactions/:id', async (req, res) => {
   const { id } = req.params; // Transaction ID
@@ -850,6 +848,30 @@ app.get('/api/budget-limits', async (req, res) => {
     res.status(500).json({ error: 'Internal server error.' });
   }
 });
+
+app.post('/api/budget-limits', authenticateToken, async (req, res) => {
+  const { userId, monthlyLimit, categories } = req.body;
+
+  if (!userId || monthlyLimit === undefined || !Array.isArray(categories)) {
+      return res.status(400).json({ error: 'Invalid request data.' });
+  }
+
+  try {
+      const user = await User.findById(userId);
+      if (!user) {
+          return res.status(404).json({ error: 'User not found.' });
+      }
+
+      user.budgetLimits.monthlyLimit = monthlyLimit;
+      user.budgetLimits.categories = categories;
+
+      await user.save();
+      res.status(200).json({ message: 'Budget limits updated successfully.' });
+  } catch (error) {
+      console.error('Error updating budget limits:', error);
+      res.status(500).json({ error: 'Internal server error.' });
+  }
+});
  
 /* ======================= Notification Routes ======================= */
 // Route to get notifications
@@ -869,6 +891,52 @@ app.post('/api/logout', (req, res) => {
   tokenBlacklist.push(token);
   res.status(200).json({ message: 'Successfully logged out' });
 });
+
+/* ======================= Categories Routes ======================= */
+app.get('/api/categories', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.user.id; 
+    console.log('Fetching categories for user ID:', userId);
+
+    const user = await User.findById(userId).select('categories');
+    if (!user) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    res.status(200).json(user.categories || []);
+  } catch (error) {
+    console.error('Error fetching categories:', error.message);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+});
+
+app.post('/api/categories', authenticateToken, async (req, res) => {
+  const { name } = req.body;
+
+  if (!name) {
+    return res.status(400).json({ error: 'Category name is required.' });
+  }
+
+  try {
+    const userId = req.user.id;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    if (user.categories.some(category => category.name === name)) {
+      return res.status(400).json({ error: 'Category already exists.' });
+    }
+
+    user.categories.push({ name });
+    await user.save();
+    res.status(201).json({ name, message: 'Category added successfully.' });
+  } catch (error) {
+    console.error('Error adding category:', error.message);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+});
+
 /* ======================= Serve Frontend (React App) ======================= */
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../front-end/build')));

@@ -2,6 +2,10 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  min-height: 100vh; /* Ensures it covers the full height of the viewport */
+  background-color: rgb(200, 223, 252);
+  margin: 0; /* Remove any default margins */
+  padding: 20px 0; /* Adds some breathing space on top and bottom */
   height: 100vh;
   padding-bottom: 100px; /* Added padding to ensure the button is visible */
 }
@@ -11,19 +15,24 @@
   flex-direction: column;
   align-items: center;
   width: 80%;
+  margin-top: 30px;
   margin-top: 50px;
   padding-bottom: 100px; /* Added padding to ensure the button is visible */
 }
+
+/* Sections Styling */
  
 .accounts-section,
-.debt-section {
+.debt-section,
+.previous-debts-section {
   width: 100%;
-  max-width: 500px;
+  max-width: 600px;
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 10px;
-  background-color: #f9f9f9;
+  background-color: #ffffff; /* White background for individual sections */
   margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 .paid-debt-section {
   width: 100%;
@@ -38,7 +47,6 @@
 .add-accounts,
 .add-debt {
   display: flex;
-  flex-direction: column;
   align-items: center;
   margin-top: 10px;
 }
@@ -54,7 +62,7 @@
 }
  
 .edit-button {
-  background-color: #ffc107;
+  background-color: #ffc107; /* Yellow for edit */
   color: white;
 }
  

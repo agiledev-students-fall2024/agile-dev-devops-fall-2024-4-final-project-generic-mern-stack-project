@@ -13,25 +13,23 @@ import Registration from './pages/registration';
 import RecurringPayments from './pages/RecurringPayments';
 import Me from './pages/me';
 import Balances from './pages/Balances';
-import Charts from './pages/charts';
 import Transactions from './pages/Transactions';
 import BottomNav from './components/bottomNav';
 import ProtectedRoute from './components/ProtectedRoute';
-import Header from './components/header';
- 
+
 function App() {
   const [authToken, setAuthToken] = useState(localStorage.getItem('token'));
- 
+
   const handleLogin = (token) => {
     localStorage.setItem('token', token); // Save token in local storage
     setAuthToken(token);
   };
- 
+
   const handleLogout = () => {
     localStorage.removeItem('token'); // Remove token
     setAuthToken(null);
   };
- 
+
   return (
     <Router>
       <AppContent
@@ -42,14 +40,13 @@ function App() {
     </Router>
   );
 }
- 
+
 function AppContent({ authToken, handleLogin, handleLogout }) {
   const location = useLocation();
- 
+
   return (
     <>
-      {authToken && <Header onLogout={handleLogout} />}{' '}
-      {/* Show header when logged in */}
+      {/* Removed global header */}
       <Routes>
         {!authToken ? (
           <>
@@ -70,7 +67,7 @@ function AppContent({ authToken, handleLogin, handleLogout }) {
                 />
               }
             >
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Home onLogout={handleLogout} />} />
               <Route path="/goal" element={<Goal />} />
               <Route path="/transactions" element={<Transactions />} />
               <Route
@@ -79,17 +76,16 @@ function AppContent({ authToken, handleLogin, handleLogout }) {
               />
               <Route path="/me" element={<Me />} />
               <Route path="/balances" element={<Balances />} />
-              <Route path="/charts" element={<Charts />} />
+              {/* Removed the /charts route */}
               <Route path="*" element={<Navigate to="/" />} />
             </Route>
           </>
         )}
       </Routes>
-      {authToken && location.pathname !== '/login' && <BottomNav />}{' '}
+      {authToken && location.pathname !== '/login' && <BottomNav />}
       {/* Show bottom nav when logged in */}
     </>
   );
 }
- 
+
 export default App;
- 
