@@ -197,7 +197,12 @@ const calculateDueDates = (startDate, schedule, totalPayments) => {
   const dueDates = [];
   const currentDate = new Date(startDate);
   for (let i = 0; i < totalPayments; i++) {
-    dueDates.push(new Date(currentDate)); // Add as a Date object
+    dueDates.push({
+      date: new Date(currentDate), // Ensure each date is a Date object
+      isPaid: false, // Default value for isPaid
+    });
+
+    // Increment the date based on the schedule
     if (schedule === 'Bi-weekly') currentDate.setDate(currentDate.getDate() + 14);
     if (schedule === 'Monthly') currentDate.setMonth(currentDate.getMonth() + 1);
     if (schedule === 'Annually') currentDate.setFullYear(currentDate.getFullYear() + 1);
@@ -217,31 +222,43 @@ app.post(
     body('totalPayments').isInt({ min: 1 }).withMessage('Total payments must be a positive integer'),
   ],
   async (req, res) => {
+    console.log('Request body:', req.body);
+
     const { type, amount, dueDate, paymentSchedule, totalPayments } = req.body;
 
     try {
       const user = await User.findById(req.user.id);
       if (!user) {
+        console.error('User not found:', req.user.id);
         return res.status(404).json({ error: 'User not found' });
       }
 
-      const dueDates = calculateDueDates(dueDate, paymentSchedule, totalPayments);
-      const paymentAmount = amount / totalPayments;
+      const dueDates = calculateDueDates(new Date(dueDate), paymentSchedule, parseInt(totalPayments, 10)).map((due) => ({
+        date: new Date(due.date), // Ensure this is a valid Date object
+        isPaid: Boolean(due.isPaid), // Ensure this is a Boolean
+      }));
 
+      console.log('Calculated due dates:', dueDates);
+
+      const paymentAmount = parseFloat(amount) / parseInt(totalPayments, 10);
       const newDebt = {
-        type,
-        amount,
-        dueDate,
-        paymentSchedule,
-        dueDates, // Store calculated due dates
+        type: type.toString(), // Ensure type is a String
+        amount: parseFloat(amount), // Ensure amount is a Number
+        dueDate: new Date(dueDate), // Ensure dueDate is a Date object
+        paymentSchedule: paymentSchedule.toString(), // Ensure paymentSchedule is a String
+        dueDates, // Already converted
         paymentAmount,
       };
+
+      console.log('New debt object:', newDebt);
 
       user.debts.push(newDebt);
       await user.save();
 
+      console.log('Debt successfully added.');
       res.status(201).json(newDebt);
     } catch (error) {
+      console.error('Error in POST /api/debts:', error.message);
       res.status(500).json({ error: error.message });
     }
   }
@@ -306,6 +323,56 @@ app.put(
     }
   }
 );
+
+app.put('/api/debts/:debtId/dueDates/:dateIndex', authenticateToken, async (req, res) => {
+  const { debtId, dateIndex } = req.params;
+  const { accountId, isUndo } = req.body; // `isUndo` indicates if it's an undo operation
+
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const debt = user.debts.id(debtId);
+    if (!debt || !debt.dueDates[dateIndex]) {
+      return res.status(404).json({ error: 'Debt or due date not found' });
+    }
+
+    const account = user.accounts.id(accountId);
+    if (!account) {
+      return res.status(404).json({ error: 'Account not found' });
+    }
+
+    const paymentAmount = debt.paymentAmount;
+
+    if (isUndo) {
+      // Undo payment
+      if (!debt.dueDates[dateIndex].isPaid) {
+        return res.status(400).json({ error: 'This due date is not marked as paid.' });
+      }
+      account.amount += paymentAmount; // Restore the payment amount
+      debt.dueDates[dateIndex].isPaid = false; // Mark as unpaid
+    } else {
+      // Mark as paid
+      if (debt.dueDates[dateIndex].isPaid) {
+        return res.status(400).json({ error: 'This due date is already marked as paid.' });
+      }
+      if (account.amount < paymentAmount) {
+        return res.status(400).json({ error: 'Insufficient funds in the account.' });
+      }
+      account.amount -= paymentAmount; // Deduct the payment amount
+      debt.dueDates[dateIndex].isPaid = true; // Mark as paid
+    }
+
+    await user.save();
+
+    res.status(200).json({ debt, account });
+  } catch (error) {
+    console.error('Error updating due date:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
  
 // Route to delete a debt by ID
 app.delete('/api/debts/:debtId', authenticateToken, async (req, res) => {
