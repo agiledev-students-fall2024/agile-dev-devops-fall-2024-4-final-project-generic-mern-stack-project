@@ -30,7 +30,7 @@ router.post('/', verifyToken, async (req, res) => {
 
 router.get('/', verifyToken, async (req, res) => {
     try {
-        console.log('test localhost:5000/api/notes without id');
+        console.log('test localhost:5000/api/notes');
         const notes = await Note.find({ author: req.userId }).populate('author', 'username email');
         res.status(200).json(notes);
     } catch (error) {
@@ -41,7 +41,6 @@ router.get('/', verifyToken, async (req, res) => {
 
 router.get('/:id', verifyToken, async (req, res) => {
     try {
-        console.log('test localhost:5000/api/notes with id:', req.params.id);
         const note = await Note.findOne({ _id: req.params.id, author: req.userId }).populate('author', 'username email');
         if (!note) return res.status(404).json({ error: 'Note not found' });
         res.status(200).json(note);
