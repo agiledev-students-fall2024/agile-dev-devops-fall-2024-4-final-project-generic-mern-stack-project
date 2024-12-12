@@ -198,8 +198,8 @@ const calculateDueDates = (startDate, schedule, totalPayments) => {
   const currentDate = new Date(startDate);
   for (let i = 0; i < totalPayments; i++) {
     dueDates.push({
-      date: new Date(currentDate), // Ensure each date is a Date object
-      isPaid: false, // Default value for isPaid
+      date: new Date(currentDate), 
+      isPaid: false, 
     });
 
     // Increment the date based on the schedule
@@ -234,19 +234,19 @@ app.post(
       }
 
       const dueDates = calculateDueDates(new Date(dueDate), paymentSchedule, parseInt(totalPayments, 10)).map((due) => ({
-        date: new Date(due.date), // Ensure this is a valid Date object
-        isPaid: Boolean(due.isPaid), // Ensure this is a Boolean
+        date: new Date(due.date), 
+        isPaid: Boolean(due.isPaid), 
       }));
 
       console.log('Calculated due dates:', dueDates);
 
       const paymentAmount = parseFloat(amount) / parseInt(totalPayments, 10);
       const newDebt = {
-        type: type.toString(), // Ensure type is a String
-        amount: parseFloat(amount), // Ensure amount is a Number
-        dueDate: new Date(dueDate), // Ensure dueDate is a Date object
-        paymentSchedule: paymentSchedule.toString(), // Ensure paymentSchedule is a String
-        dueDates, // Already converted
+        type: type.toString(),
+        amount: parseFloat(amount), 
+        dueDate: new Date(dueDate), 
+        paymentSchedule: paymentSchedule.toString(),
+        dueDates, 
         paymentAmount,
       };
 
@@ -351,8 +351,8 @@ app.put('/api/debts/:debtId/dueDates/:dateIndex', authenticateToken, async (req,
       if (!debt.dueDates[dateIndex].isPaid) {
         return res.status(400).json({ error: 'This due date is not marked as paid.' });
       }
-      account.amount += paymentAmount; // Restore the payment amount
-      debt.dueDates[dateIndex].isPaid = false; // Mark as unpaid
+      account.amount += paymentAmount; 
+      debt.dueDates[dateIndex].isPaid = false; 
     } else {
       // Mark as paid
       if (debt.dueDates[dateIndex].isPaid) {
@@ -361,8 +361,8 @@ app.put('/api/debts/:debtId/dueDates/:dateIndex', authenticateToken, async (req,
       if (account.amount < paymentAmount) {
         return res.status(400).json({ error: 'Insufficient funds in the account.' });
       }
-      account.amount -= paymentAmount; // Deduct the payment amount
-      debt.dueDates[dateIndex].isPaid = true; // Mark as paid
+      account.amount -= paymentAmount; 
+      debt.dueDates[dateIndex].isPaid = true; 
     }
 
     await user.save();
