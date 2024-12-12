@@ -11,8 +11,8 @@ const Balances = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [isDebtModal, setIsDebtModal] = useState(false);
   const [currentItemIndex, setCurrentItemIndex] = useState(null);
+  const [isDebtModal, setIsDebtModal] = useState(false);
   const [newItem, setNewItem] = useState({
     type: '',
     amount: '',
@@ -564,15 +564,6 @@ const Balances = () => {
           {message && <p className="info-message">{message}</p>}
           {errorMessage && <p className="error-message">{errorMessage}</p>}
         </section>
-
-        <section className="previous-debts-section">
-          <h1>Previous Debts</h1>
-          {previousDebts.map((debt, index) => (
-            <div key={index} className="previous-debt-item">
-              <strong>{debt.type}</strong> - ${debt.amount.toLocaleString()}
-            </div>
-          ))}
-        </section>
       </div>
       {showModal && (
         <div className="modal">
@@ -624,28 +615,7 @@ const Balances = () => {
             {isDebtModal && (
               <>
                 <label>
-                  Payment Schedule:
-                  <select
-                    value={newItem.paymentSchedule}
-                    onChange={(e) => setNewItem({ ...newItem, paymentSchedule: e.target.value })}
-                  >
-                    <option value="">Select Frequency</option>
-                    <option value="Bi-weekly">Bi-weekly</option>
-                    <option value="Monthly">Monthly</option>
-                    <option value="Annually">Annually</option>
-                  </select>
-                </label>
-                <label>
-                  Total Payments:
-                  <input
-                    type="number"
-                    value={newItem.totalPayments}
-                    onChange={(e) => setNewItem({ ...newItem, totalPayments: e.target.value })}
-                    placeholder="e.g., 12"
-                  />
-                </label>
-                <label>
-                  First Due Date:
+                  Due Date:
                   <input
                     type="date"
                     value={newItem.dueDate.split('T')[0]}
@@ -673,7 +643,9 @@ const Balances = () => {
               </>
             )}
             <div className="modal-buttons">
-              <button onClick={handleAddOrEditItem}>{isEditing ? 'Save Changes' : 'Add'}</button>
+              <button onClick={handleAddOrEditItem}>
+                {isEditing ? 'Save Changes' : 'Add'}
+              </button>
               <button onClick={resetForm}>Cancel</button>
             </div>
           </div>
@@ -684,4 +656,3 @@ const Balances = () => {
 };
  
 export default Balances;
- 
