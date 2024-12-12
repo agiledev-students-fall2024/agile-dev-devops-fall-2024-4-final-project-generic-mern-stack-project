@@ -29,16 +29,10 @@ const Balances = () => {
       {
         type: 'Car Loan',
         amount: 20000,
-        dueDates: ['2025-01-12', '2025-02-12', '2025-03-12'],
+        originalAmount: 20000,
+        dueDates: ['01/12/2025', '02/12/2025', '03/12/2025', '04/12/2025', '05/12/2025'],
         paymentSchedule: 'Monthly',
-        totalPayments: 20,
-      },
-      {
-        type: 'Student Loan',
-        amount: 30000,
-        dueDates: ['2025-06-12', '2026-06-12'],
-        paymentSchedule: 'Annually',
-        totalPayments: 2,
+        totalPayments: 5,
       },
     ];
 
@@ -54,55 +48,22 @@ const Balances = () => {
     setIsDebtModal(false);
   };
 
-  const handleDebtPayment = (index, paidFromAccount) => {
-    const updatedDebts = [...debts];
-    const debt = updatedDebts[index];
-
-    if (debt.dueDates.length > 0) {
-      const [nextDueDate, ...remainingDates] = debt.dueDates;
-
-      // Calculate the payment amount per installment
-      const paymentAmount = debt.amount / (debt.totalPayments || debt.dueDates.length);
-
-      // Update debt's amount and due dates
-      if (remainingDates.length === 0) {
-        // Move to previous debts if fully paid
-        setPreviousDebts([...previousDebts, debt]);
-        updatedDebts.splice(index, 1);
-      } else {
-        debt.dueDates = remainingDates;
-        debt.amount = Math.max(0, debt.amount - paymentAmount); // Reduce the debt amount
-      }
-
-      // Deduct the payment amount from the selected account
-      const updatedAccounts = [...accounts];
-      const accountIndex = updatedAccounts.findIndex((account) => account.type === paidFromAccount);
-      if (accountIndex !== -1) {
-        updatedAccounts[accountIndex].amount = Math.max(
-          0,
-          updatedAccounts[accountIndex].amount - paymentAmount
-        );
-        alert(
-          `Payment of $${paymentAmount.toFixed(2)} made from ${paidFromAccount}. Next due date: ${
-            nextDueDate || 'N/A'
-          }`
-        );
-      }
-
-      setAccounts(updatedAccounts);
-      setDebts(updatedDebts);
-    }
-  };
-
   const addOrEditItem = () => {
     if (isDebtModal) {
       const updatedDebts = [...debts];
       if (isEditing) {
         updatedDebts[currentItemIndex] = { ...newItem };
       } else {
+        const dueDates = calculateDueDates(newItem.dueDate, newItem.paymentSchedule, newItem.totalPayments);
+        if (!dueDates.length) {
+          alert('Please ensure the due date and payment schedule are valid.');
+          return;
+        }
         updatedDebts.push({
           ...newItem,
-          dueDates: calculateDueDates(newItem.dueDate, newItem.paymentSchedule, newItem.totalPayments),
+          originalAmount: parseFloat(newItem.amount),
+          amount: parseFloat(newItem.amount),
+          dueDates,
         });
       }
       setDebts(updatedDebts);
@@ -122,8 +83,15 @@ const Balances = () => {
     const dueDates = [];
     const currentDate = new Date(startDate);
 
+    if (isNaN(currentDate.getTime())) {
+      return []; // Return empty if the date is invalid
+    }
+
     for (let i = 0; i < totalPayments; i++) {
-      dueDates.push(currentDate.toISOString().split('T')[0]);
+      dueDates.push(
+        `${currentDate.getMonth() + 1}/${currentDate.getDate()}/${currentDate.getFullYear()}`
+      );
+
       if (frequency === 'Bi-weekly') currentDate.setDate(currentDate.getDate() + 14);
       if (frequency === 'Monthly') currentDate.setMonth(currentDate.getMonth() + 1);
       if (frequency === 'Annually') currentDate.setFullYear(currentDate.getFullYear() + 1);
@@ -131,47 +99,99 @@ const Balances = () => {
     return dueDates;
   };
 
+  const handleDebtPayment = (index, paidFromAccount) => {
+    const updatedDebts = [...debts];
+    const debt = updatedDebts[index];
+
+    if (debt.dueDates.length > 0) {
+      const [nextDueDate, ...remainingDates] = debt.dueDates;
+
+      // Calculate constant payment amount
+      const paymentAmount = debt.originalAmount / debt.totalPayments;
+
+      debt.amount = parseFloat((debt.amount - paymentAmount).toFixed(2));
+      debt.dueDates = remainingDates;
+
+      if (remainingDates.length === 0) {
+        setPreviousDebts([...previousDebts, { ...debt, amount: 0 }]);
+        updatedDebts.splice(index, 1);
+      }
+
+      // Deduct payment from the selected account
+      const updatedAccounts = [...accounts];
+      const accountIndex = updatedAccounts.findIndex((account) => account.type === paidFromAccount);
+      if (accountIndex !== -1) {
+        updatedAccounts[accountIndex].amount = parseFloat(
+          (updatedAccounts[accountIndex].amount - paymentAmount).toFixed(2)
+        );
+        alert(
+          `Payment of $${paymentAmount.toFixed(2)} made from ${paidFromAccount}. Next due date: ${
+            remainingDates[0] || 'N/A'
+          }`
+        );
+      }
+
+      setAccounts(updatedAccounts);
+      setDebts(updatedDebts);
+    }
+  };
+
+  const handleDeleteItem = (index, isDebt) => {
+    if (isDebt) {
+      const updatedDebts = [...debts];
+      updatedDebts.splice(index, 1);
+      setDebts(updatedDebts);
+    } else {
+      const updatedAccounts = [...accounts];
+      updatedAccounts.splice(index, 1);
+      setAccounts(updatedAccounts);
+    }
+  };
+
+  const handleEditItem = (index, isDebt) => {
+    if (isDebt) {
+      setNewItem(debts[index]);
+      setCurrentItemIndex(index);
+      setIsDebtModal(true);
+    } else {
+      setNewItem(accounts[index]);
+      setCurrentItemIndex(index);
+      setIsDebtModal(false);
+    }
+    setIsEditing(true);
+    setShowModal(true);
+  };
+
   return (
     <main className="Home">
       <div className="container">
         <section className="accounts-section">
           <h1>Account Balances</h1>
-          {accounts.map((account, index) => (
-            <div key={index} className="account-item">
-              <div className="account-type">
-                <strong>{account.type}</strong> - XXXX{account.number}
+          <p>View and edit all bank account information below</p>
+          {accounts.length > 0 ? (
+            accounts.map((account, index) => (
+              <div key={index}>
+                <div className="account-type">
+                  {account.type} - XXXX{account.number}
+                </div>
+                <div className="account-balance">${account.amount.toLocaleString()}</div>
+                <button className="edit-button" onClick={() => handleEditItem(index, false)}>
+                  Edit
+                </button>
+                <button className="delete-button" onClick={() => handleDeleteItem(index, false)}>
+                  Delete
+                </button>
               </div>
-              <div className="account-balance">${account.amount.toLocaleString()}</div>
-              <button
-                className="edit-button"
-                onClick={() => {
-                  setCurrentItemIndex(index);
-                  setIsEditing(true);
-                  setIsDebtModal(false);
-                  setNewItem(account);
-                  setShowModal(true);
-                }}
-              >
-                Edit
-              </button>
-              <button
-                className="delete-button"
-                onClick={() => {
-                  const updatedAccounts = [...accounts];
-                  updatedAccounts.splice(index, 1);
-                  setAccounts(updatedAccounts);
-                }}
-              >
-                Delete
-              </button>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p>No accounts added yet.</p>
+          )}
           <div className="add-accounts">
             <button
               className="add-more-button"
               onClick={() => {
-                setIsDebtModal(false);
                 setShowModal(true);
+                setIsDebtModal(false);
               }}
             >
               Add More Accounts
@@ -184,7 +204,7 @@ const Balances = () => {
           {debts.map((debt, index) => (
             <div key={index} className="debt-item">
               <div>
-                <strong>{debt.type}</strong> - <span className="debt-amount">${debt.amount.toLocaleString()}</span>
+                <strong>{debt.type}</strong> - <span className="debt-amount">${debt.amount.toFixed(2)}</span>
                 <br />
                 <strong>Payment Schedule:</strong> {debt.paymentSchedule}
                 <br />
@@ -258,13 +278,24 @@ const Balances = () => {
                 placeholder={isDebtModal ? 'e.g., Car Loan' : 'e.g., Savings'}
               />
             </label>
+            {!isDebtModal && (
+              <label>
+                Last 4 Digits of Account Number:
+                <input
+                  type="text"
+                  value={newItem.number}
+                  onChange={(e) => setNewItem({ ...newItem, number: e.target.value })}
+                  placeholder="e.g., 1234"
+                />
+              </label>
+            )}
             <label>
               Amount:
               <input
                 type="number"
                 value={newItem.amount}
                 onChange={(e) => setNewItem({ ...newItem, amount: e.target.value })}
-                placeholder="e.g., 20000"
+                placeholder="e.g., 5000"
               />
             </label>
             {isDebtModal && (
@@ -287,7 +318,7 @@ const Balances = () => {
                     type="number"
                     value={newItem.totalPayments}
                     onChange={(e) => setNewItem({ ...newItem, totalPayments: e.target.value })}
-                    placeholder="e.g., 20"
+                    placeholder="e.g., 12"
                   />
                 </label>
                 <label>
