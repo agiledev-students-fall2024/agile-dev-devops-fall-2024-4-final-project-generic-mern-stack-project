@@ -154,11 +154,6 @@ return (
           <div className="note-card-header">
             <span className="note-category">{note.category}</span>
             <span className="note-date">
-              {/* {new Date(note.lastModified).toLocaleDateString()} */}
-              {console.log(typeof(filteredNotes[index].updatedAt))}
-              {/* {
-                let date = ; 
-              } */}
               {new Date(filteredNotes[index].updatedAt).toUTCString()}
             </span>
           </div>
