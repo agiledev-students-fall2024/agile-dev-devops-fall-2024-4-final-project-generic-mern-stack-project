@@ -19,11 +19,21 @@ const Calendar_monthly = () => {
     const firstDay = new Date(year, month-1, 1).getDay();
     // get the total days in the month
     const daysInMonth = new Date(year, month, 0).getDate();
+
+    // get the last day of the month (0-6, where 0 is Sunday)
+    const lastDay = new Date(year, month-1, daysInMonth).getDay();
+    
     // generate an array of all the days in the month
     const daysArray = Array.from({ length: daysInMonth }, (_, i) => i + 1);
 
     // padding days for the first week (if the month doesn't start on Sunday)
-    const paddedDaysArray = Array(firstDay).fill(null).concat(daysArray);
+    const startPadding = Array(firstDay).fill(null)
+    
+     // padding days for the last week (if the month doesn't end on Saturday)
+    const endPadding = Array(lastDay === 6 ? 0 : 6 - lastDay).fill(null)
+ 
+     // combine all arrays: start padding + days + end padding
+    const paddedDaysArray = [...startPadding, ...daysArray, ...endPadding]
 
     // group days into weeks
     const weeks = [];
