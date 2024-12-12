@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 const noteRoutes = require('./routes/note'); 
 const userRoutes = require('./routes/user'); 
 const loginRoutes = require('./routes/login');
+const aiFeaturesRoute = require('./routes/aiFeaturesRoute');
 require("dotenv").config({ silent: true })
 
 const app = express();
@@ -26,6 +27,7 @@ app.use(cors({
 app.use('/notes', noteRoutes); 
 app.use('/users', userRoutes); 
 app.use('/auth/login', loginRoutes); 
+app.use('/api/aiFeaturesRoute', aiFeaturesRoute);
 
 const PORT = process.env.PORT || 5000;
 

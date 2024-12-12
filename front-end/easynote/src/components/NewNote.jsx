@@ -25,9 +25,16 @@ const categories = [
   "Other",
 ];
 
-const Summary = ({ displaySummary }) => {
+const Summary = ({ displaySummary, summaryContent }) => {
   if (displaySummary) {
-    return <div className="summary">Connecting to AI summarizer...</div>;
+    return (
+      <>
+        <div className="summary">
+        <h2>Connecting to AI summarizer...</h2>
+         <p>{summaryContent}</p>
+        </div>
+      </>
+    )
   }
   return null;
 };
@@ -45,50 +52,7 @@ const NewNote = () => {
   const [isTyping, setIsTyping] = useState(false);
   const typingTimeoutRef = useRef(null); 
   const changeRef = useRef(new Delta());
-
-  // const triggerAPI = useCallback(async (notes) => {
-  //   try {
-  //     // const fakeToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXIxMjMiLCJpYXQiOjE3MzE1MTAxNjV9.L4OTK2ffTbq0AkL8ulSr4iDytu58puNtnI_9LxUXV5s";
-  //     // localStorage.setItem("token", fakeToken); generate fake token
-  //     const token = localStorage.getItem('token');  // for database setup: sprint 3
-  //     if (!token) {
-  //     alert('Please log in again');
-  //     return;
-  //     }
-  //     const res = await axios.post(
-  //       `http://localhost:${
-  //         process.env.EXPRESS_SERVER_PORT || 5000
-  //       }/api/notes/`,
-  // const triggerAPI = useCallback(async (notes) => {
-  //   try {
-  //     // const fakeToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzZXIxMjMiLCJpYXQiOjE3MzE1MTAxNjV9.L4OTK2ffTbq0AkL8ulSr4iDytu58puNtnI_9LxUXV5s";
-  //     // localStorage.setItem("token", fakeToken); generate fake token
-  //     const token = localStorage.getItem('token');  // for database setup: sprint 3
-  //     if (!token) {
-  //     alert('Please log in again');
-  //     return;
-  //     }
-  //     const res = await axios.post(
-  //       `http://localhost:${
-  //         process.env.EXPRESS_SERVER_PORT || 5000
-  //       }/api/notes/`,
-  //       notes,
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       }
-  //     );
-  //     console.log("Success", res);
-  //   } catch (error) {
-  //     alert(
-  //       "Failed to save note: " + 
-  //       (error.response && error.response.data ? error.response.data.message : error.response ? error.response.message : "Unknown error")
-  //     );      
-  //     console.error("Error occurred:", error);
-  //   }
-  // }, []);
+  const [summary, setSummary] = useState(null);
 
   async function triggerAPI(notes) {
     try {
@@ -112,9 +76,45 @@ const NewNote = () => {
       return res.data;
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.response?.message || "Unknown error";
-      alert(`Failed to save note: ${errorMessage}`);
+      // alert(`Failed to save note: ${errorMessage}`);
       console.error("Error occurred:", error);
-      throw error; // Re-throw for tests to catch
+      // throw error; // Re-throw for tests to catch
+    }
+  }
+
+  // how to get the summary from the user's notes
+  // what info should be sent to what route
+  async function generateSummary(){
+    // /summarize
+    const content = quillRef.current.root.textContent;
+    // console.log('content', content);
+    try{
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('Please log in again');
+        return;
+      }
+      const url = `https://easynote-aivlj.ondigitalocean.app/api/aiFeaturesRoute/summarize/`;
+      // const url =  `http://localhost:${process.env.EXPRESS_SERVER_PORT || 5000}/api/aiFeaturesRoute/summarize`; local version
+      const res = await axios.post(
+        url,
+        { 'text': content },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setDisplaySummary(true);
+      setSummary(res.data.summary);
+      return res.data.summary;
+      // const data = await res.json();
+    }
+    catch(e){
+      // console.log(content);
+      console.error("Error occurred:", e);
+      // throw e;
     }
   }
 
@@ -162,7 +162,7 @@ const saveInterval = setInterval(() => {
   if (change.length() > 0) {
     console.log('Saving changes', change);
 
-    const content = {content: quillRef.current.root.innerHTML};
+    const content = {content: quillRef.current.root.textContent};
 
     triggerAPI(content)
     
@@ -207,7 +207,7 @@ const saveInterval = setInterval(() => {
       return;
     }
 
-    const content = quillRef.current.root.innerHTML;
+    const content = quillRef.current.root.textContent;
     const preview = quillRef.current.getText().slice(0, 150) + "...";
 
     const newNote = {
@@ -281,7 +281,7 @@ const saveInterval = setInterval(() => {
           <button
             className="controls-right"
             type="button"
-            onClick={() => setDisplaySummary(true)}
+            onClick={generateSummary}
           >
             Summarize
           </button>
@@ -298,7 +298,7 @@ const saveInterval = setInterval(() => {
         </div>
 
         <div ref={editorRef} className="editor-container" />
-        <Summary displaySummary={displaySummary} />
+        <Summary displaySummary={displaySummary} summaryContent={summary} />
 
         <div className="note-actions">
           <button className="save-button" onClick={handleSave}>

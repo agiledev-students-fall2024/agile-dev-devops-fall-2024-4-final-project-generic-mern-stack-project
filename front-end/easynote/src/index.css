@@ -69,6 +69,33 @@ body {
   padding: 1rem;
 }
 
+@media (max-width: 767px) {
+  .mobile-menu-icon {
+    display: block;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  .mobile-nav-sidebar {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 80%;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    transition: left 0.3s ease-in-out;
+    z-index: 100;
+  }
+
+  .mobile-nav-sidebar.nav-sidebar-open {
+    left: 0;
+  }
+
+  .mobile-container {
+    padding: 16px;
+  }
+}
 .notes-header {
   display: flex;
   justify-content: space-between;

@@ -29,7 +29,8 @@ const Transcription = () => {
 
     const formData = new FormData();
     formData.append('audio', audioFile);
-
+    //  const url =  `http://localhost:${process.env.EXPRESS_SERVER_PORT || 5000}/api/aiFeaturesRoute/transcribe`; local version
+    const url = `https://easynote-aivlj.ondigitalocean.app/api/aiFeaturesRoute/transcribe`;
     try {
       const token = localStorage.getItem('token');
       if (!token) {
@@ -38,7 +39,7 @@ const Transcription = () => {
       }
 
       const response = await axios.post(
-        `https://easynote-aivlj.ondigitalocean.app/api/transcribe`, 
+        url,
         formData, 
         {
           headers: {
@@ -47,12 +48,12 @@ const Transcription = () => {
           }
         }
       );
-
-      setTranscription(response.data.transcription);
+      setTranscription(response.data.actualTranscript);
     } catch (err) {
       setError(err.response?.data?.message || 'Transcription failed');
     } finally {
       setIsLoading(false);
+
     }
   };
 
@@ -76,7 +77,7 @@ const Transcription = () => {
 
     // Implement API for Transcription here
     axios.post(
-      `https://easynote-aivlj.ondigitalocean.app/api/notes/`, 
+      `https://easynote-aivlj.ondigitalocean.app/api/aiFeaturesRoute/transcribe`, 
       newNote,
       {
         headers: {
