@@ -11,12 +11,11 @@ function AddTransaction({ onAddTransaction, onClose }) {
     category: '',
     amount: '',
     date: '',
-    accountId: '', // Keep this initially empty
+    accountId: '',
   });
 
-  const [accounts, setAccounts] = useState([]); // State to store user's accounts
+  const [accounts, setAccounts] = useState([]);
 
-  // Fetch user's accounts when component mounts
   useEffect(() => {
     const fetchAccounts = async () => {
       try {
@@ -26,7 +25,6 @@ function AddTransaction({ onAddTransaction, onClose }) {
         });
         setAccounts(response.data);
         
-        // Automatically set the first account as the default if accounts exist
         if (response.data.length > 0) {
           setTransaction(prev => ({
             ...prev,
@@ -51,7 +49,6 @@ function AddTransaction({ onAddTransaction, onClose }) {
   
     if (merchant && category && amount && date && accountId) {
       try {
-        // Convert local date to UTC before sending to the server
         const utcDate = new Date(date).toISOString();
   
         const response = await axios.post(`${BASE_URL}/api/transactions`, {
@@ -63,7 +60,6 @@ function AddTransaction({ onAddTransaction, onClose }) {
           userId,
         });
   
-        // Call onAddTransaction with both the transaction and updated account
         onAddTransaction(response.data);
   
         setTransaction({

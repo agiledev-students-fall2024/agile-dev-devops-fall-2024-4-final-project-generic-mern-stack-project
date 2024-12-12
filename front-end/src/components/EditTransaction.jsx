@@ -7,6 +7,8 @@ import { FaTrash } from 'react-icons/fa';
 function EditTransaction({ transaction, onUpdateTransaction, onClose, onDeleteTransaction }) {
   const BASE_URL = process.env.REACT_APP_SERVER_HOSTNAME;
   const [accounts, setAccounts] = useState([]);
+  const [originalAccount, setOriginalAccount] = useState(null);
+  
   const [updatedTransaction, setUpdatedTransaction] = useState({
     ...transaction,
     _id: transaction._id,
@@ -14,11 +16,9 @@ function EditTransaction({ transaction, onUpdateTransaction, onClose, onDeleteTr
     category: transaction.category || '',
     amount: transaction.amount.toString(),
     date: new Date(transaction.date).toISOString().split('T')[0],
-    // If accountId is undefined in transaction, try to get it from accounts[0] when accounts are loaded
     accountId: transaction.accountId || ''
   });
 
-  // Fetch accounts and set default account if needed
   useEffect(() => {
     const fetchAccounts = async () => {
       try {
@@ -26,8 +26,10 @@ function EditTransaction({ transaction, onUpdateTransaction, onClose, onDeleteTr
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
         setAccounts(response.data);
-        
-        // If no accountId is set, use the first account
+
+        const originalAcc = response.data.find(acc => acc._id === transaction.accountId);
+        setOriginalAccount(originalAcc);
+
         if (!updatedTransaction.accountId && response.data.length > 0) {
           setUpdatedTransaction(prev => ({
             ...prev,
@@ -49,64 +51,84 @@ function EditTransaction({ transaction, onUpdateTransaction, onClose, onDeleteTr
     }));
   };
 
-  const handleUpdateTransaction = async () => {
+  const updateAccountBalance = async (accountId, newAmount) => {
+    const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
     const userId = localStorage.getItem('id');
-    const { _id, merchant, category, amount, date, accountId } = updatedTransaction;
-
-    // Improved validation check with more specific messages
-    if (!merchant?.trim()) {
-      alert('Please enter a merchant name.');
-      return;
-    }
-    if (!category?.trim()) {
-      alert('Please select a category.');
-      return;
-    }
-    if (!amount || amount <= 0) {
-      alert('Please enter a valid amount.');
-      return;
-    }
-    if (!date?.trim()) {
-      alert('Please select a date.');
-      return;
-    }
-    if (!accountId) {
-      alert('Please select an account.');
-      return;
-    }
-
+    
     try {
-      // Convert date to UTC
-      const utcDate = new Date(date).toISOString();
-
-      const response = await axios.put(`${BASE_URL}/api/transactions/${_id}`, {
-        userId,
-        merchant,
-        category,
-        amount: parseFloat(amount),
-        date: utcDate,
-        accountId
-      });
-
-      const transactionData = {
-        transaction: response.data,
-        updatedAccount: null
-      };
-
-      onUpdateTransaction(transactionData);
-      onClose();
-    } catch (err) {
-      console.error("Error updating transaction:", err);
-      alert('Failed to update transaction. Please try again.');
+      const response = await axios.put(
+        `${BASE_URL}/api/accounts/${accountId}`,
+        {
+          userId,
+          amount: newAmount
+        },
+        { headers }
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error updating account balance:', error);
+      throw error;
     }
   };
 
+  const handleUpdateTransaction = async () => {
+    const userId = localStorage.getItem('id');
+    const { _id, merchant, category, amount, date, accountId } = updatedTransaction;
+    const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+  
+    if (!merchant?.trim()) return alert('Please enter a merchant name.');
+    if (!category?.trim()) return alert('Please select a category.');
+    if (!amount || amount <= 0) return alert('Please enter a valid amount.');
+    if (!date?.trim()) return alert('Please select a date.');
+    if (!accountId) return alert('Please select an account.');
+  
+    try {
+      const utcDate = new Date(date).toISOString();
+  
+      const response = await axios.put(
+        `${BASE_URL}/api/transactions/${_id}`,
+        {
+          userId,
+          merchant,
+          category,
+          amount: parseFloat(amount),
+          date: utcDate,
+          accountId,
+        },
+        { headers }
+      );
+  
+      const { transaction, updatedAccounts } = response.data;
+
+      const updatedTargetAccount = updatedAccounts.find(acc => acc._id === accountId);
+      onUpdateTransaction({
+        transaction,
+        updatedAccount: updatedTargetAccount,
+      });
+  
+      onClose();
+    } catch (err) {
+      console.error('Error updating transaction:', err.response?.data || err.message);
+      alert('Failed to update transaction. Please try again.');
+    }
+  };
+  
+
   const handleDeleteTransaction = async () => {
     const userId = localStorage.getItem('id');
+    const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+
     try {
+      if (originalAccount) {
+        const updatedBalance = originalAccount.amount + parseFloat(transaction.amount);
+        await updateAccountBalance(originalAccount._id, updatedBalance);
+      }
+      
       await axios.delete(`${BASE_URL}/api/transactions/${transaction._id}`, {
+        headers,
         data: { userId }
       });
+
       onDeleteTransaction(transaction._id);
       onClose();
     } catch (err) {

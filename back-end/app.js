@@ -479,7 +479,6 @@ app.get('/api/transactions', async (req, res) => {
 });
  
 // Route to add a new transaction
-// Route to add a new transaction
 app.post('/api/transactions', async (req, res) => {
   const { merchant, category, amount, date, userId, accountId } = req.body;
 
@@ -495,13 +494,11 @@ app.post('/api/transactions', async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Find the specific account
     const account = user.accounts.id(accountId);
     if (!account) {
       return res.status(404).json({ error: 'Account not found' });
     }
 
-    // Deduct the transaction amount from the account balance
     account.amount -= amount;
 
     const parsedDate = new Date(date); 
@@ -511,7 +508,8 @@ app.post('/api/transactions', async (req, res) => {
       merchant,
       category,
       amount,
-      date: offsetDate, 
+      date: offsetDate,
+      accountId,
       _id: new mongoose.Types.ObjectId(),
     };
 
@@ -529,7 +527,7 @@ app.post('/api/transactions', async (req, res) => {
 });
 
 // Route to update a transaction by ID
-app.put('/api/transactions/:id', async (req, res) => {
+app.put('/api/transactions/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
   const { merchant, category, amount, date, userId, accountId } = req.body;
 
@@ -544,7 +542,21 @@ app.put('/api/transactions/:id', async (req, res) => {
       return res.status(404).json({ error: 'Transaction not found.' });
     }
 
-    // Update the transaction fields
+    const originalAccountId = transaction.accountId;
+    const originalAmount = transaction.amount;
+    const originalAccount = user.accounts.id(originalAccountId);
+    const targetAccount = user.accounts.id(accountId);
+
+    if (!originalAccount || !targetAccount) {
+      return res.status(404).json({ error: 'One or more accounts not found.' });
+    }
+
+    if (originalAccountId !== accountId) {
+      originalAccount.amount += originalAmount;
+    }
+
+    targetAccount.amount -= parseFloat(amount);
+
     if (merchant) transaction.merchant = merchant;
     if (category) transaction.category = category;
     if (amount !== undefined) transaction.amount = parseFloat(amount);
@@ -553,13 +565,17 @@ app.put('/api/transactions/:id', async (req, res) => {
 
     await user.save();
 
-    res.status(200).json(transaction);
+    res.status(200).json({
+      transaction,
+      updatedAccounts: [originalAccount, targetAccount].filter((acc, index, self) => 
+        index === self.findIndex(a => a._id.toString() === acc._id.toString())
+      ),
+    });
   } catch (error) {
     console.error('Error updating transaction:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Internal server error', details: error.message });
   }
 });
-
  
 // Route to delete a transaction by ID
 app.delete('/api/transactions/:id', async (req, res) => {
