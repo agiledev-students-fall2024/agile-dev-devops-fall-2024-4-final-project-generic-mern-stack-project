@@ -23,7 +23,6 @@ function CategoryManager({
                 }
 
                 const data = await response.json();
-                console.log('Fetched categories:', data);
                 setCategories(data || []);
             } catch (err) {
                 console.error('Error fetching categories:', err.message);

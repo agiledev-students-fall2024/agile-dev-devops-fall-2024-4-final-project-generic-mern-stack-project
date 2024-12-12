@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './AddTransaction.css';
 import axios from 'axios';
 import CategoryDropdown from './categoryDropdown';
@@ -11,7 +11,35 @@ function AddTransaction({ onAddTransaction, onClose }) {
     category: '',
     amount: '',
     date: '',
+    accountId: '', // Keep this initially empty
   });
+
+  const [accounts, setAccounts] = useState([]); // State to store user's accounts
+
+  // Fetch user's accounts when component mounts
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      try {
+        const userId = localStorage.getItem('id');
+        const response = await axios.get(`${BASE_URL}/api/accounts`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        });
+        setAccounts(response.data);
+        
+        // Automatically set the first account as the default if accounts exist
+        if (response.data.length > 0) {
+          setTransaction(prev => ({
+            ...prev,
+            accountId: response.data[0]._id
+          }));
+        }
+      } catch (error) {
+        console.error('Error fetching accounts:', error);
+      }
+    };
+
+    fetchAccounts();
+  }, [BASE_URL]);
 
   const handleInputChange = (name, value) => {
     setTransaction((prev) => ({ ...prev, [name]: value }));
@@ -30,28 +58,30 @@ function AddTransaction({ onAddTransaction, onClose }) {
           merchant,
           category,
           amount: parseFloat(amount),
-          date: utcDate, // Send UTC date
+          date: utcDate,
           accountId,
           userId,
         });
   
+        // Call onAddTransaction with both the transaction and updated account
         onAddTransaction(response.data);
+  
         setTransaction({
           merchant: '',
           category: '',
           amount: '',
           date: '',
-          accountId: '',
+          accountId: accounts.length > 0 ? accounts[0]._id : '',
         });
         onClose();
       } catch (error) {
         console.error('Error adding transaction:', error);
+        alert('Failed to add transaction. Please try again.');
       }
     } else {
       alert('Please fill in all fields before submitting.');
     }
   };
-  
 
   return (
     <div className="modal">
@@ -82,6 +112,19 @@ function AddTransaction({ onAddTransaction, onClose }) {
             value={transaction.amount}
             onChange={(e) => handleInputChange('amount', e.target.value)}
           />
+        </label>
+        <label>
+          Account:
+          <select
+            value={transaction.accountId}
+            onChange={(e) => handleInputChange('accountId', e.target.value)}
+          >
+            {accounts.map((account) => (
+              <option key={account._id} value={account._id}>
+                {account.type} - {account.number}
+              </option>
+            ))}
+          </select>
         </label>
         <label>
           Date:

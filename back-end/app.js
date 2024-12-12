@@ -479,12 +479,13 @@ app.get('/api/transactions', async (req, res) => {
 });
  
 // Route to add a new transaction
+// Route to add a new transaction
 app.post('/api/transactions', async (req, res) => {
-  const { merchant, category, amount, date, userId } = req.body;
+  const { merchant, category, amount, date, userId, accountId } = req.body;
 
-  if (!userId || !merchant || !category || amount == null || !date) {
+  if (!userId || !merchant || !category || amount == null || !date || !accountId) {
     return res.status(400).json({
-      error: 'User ID, merchant, category, amount, and date are required.',
+      error: 'User ID, merchant, category, amount, date, and account ID are required.',
     });
   }
 
@@ -493,6 +494,15 @@ app.post('/api/transactions', async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
+
+    // Find the specific account
+    const account = user.accounts.id(accountId);
+    if (!account) {
+      return res.status(404).json({ error: 'Account not found' });
+    }
+
+    // Deduct the transaction amount from the account balance
+    account.amount -= amount;
 
     const parsedDate = new Date(date); 
     const offsetDate = new Date(parsedDate.getTime() + parsedDate.getTimezoneOffset() * 60000);
@@ -508,22 +518,20 @@ app.post('/api/transactions', async (req, res) => {
     user.transactions.push(newTransaction);
     await user.save();
 
-    res.status(201).json(newTransaction);
+    res.status(201).json({
+      transaction: newTransaction,
+      updatedAccount: account
+    });
   } catch (error) {
     console.error('Error adding transaction:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
- 
 // Route to update a transaction by ID
 app.put('/api/transactions/:id', async (req, res) => {
   const { id } = req.params;
-  const { merchant, category, amount, date, userId } = req.body;
-
-  if (!userId) {
-    return res.status(400).json({ error: 'User ID is required.' });
-  }
+  const { merchant, category, amount, date, userId, accountId } = req.body;
 
   try {
     const user = await User.findById(userId);
@@ -536,14 +544,12 @@ app.put('/api/transactions/:id', async (req, res) => {
       return res.status(404).json({ error: 'Transaction not found.' });
     }
 
-    if (date) {
-      const parsedDate = new Date(date);
-      transaction.date = new Date(parsedDate.getTime() + parsedDate.getTimezoneOffset() * 60000);
-    }
-
+    // Update the transaction fields
     if (merchant) transaction.merchant = merchant;
     if (category) transaction.category = category;
-    if (amount !== undefined) transaction.amount = amount;
+    if (amount !== undefined) transaction.amount = parseFloat(amount);
+    if (date) transaction.date = new Date(date);
+    if (accountId) transaction.accountId = accountId;
 
     await user.save();
 
