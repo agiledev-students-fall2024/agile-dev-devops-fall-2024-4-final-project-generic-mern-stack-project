@@ -154,6 +154,25 @@ const Balances = () => {
   };
 
 
+  const handleTogglePaid = async (debtId, dateIndex) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        try {
+            const headers = {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            };
+
+            await axios.put(`${BASE_URL}/api/debts/${debtId}/dueDates/${dateIndex}`, {}, { headers });
+
+            // Update state after the backend is updated
+            fetchData();
+        } catch (error) {
+            console.error('Error updating due date status:', error);
+        }
+    }
+  };
+
   return (
     <main className="Home">
       <div className="container">
@@ -203,14 +222,20 @@ const Balances = () => {
                   </p>
                   {debt.dueDates && debt.dueDates.length > 0 ? (
                     <ul className="due-dates-list">
-                      {debt.dueDates.map((date, i) => (
-                        <li key={i}>
-                          {new Date(date).toLocaleDateString('en-US', {
-                            month: 'long',
-                            day: 'numeric',
-                            year: 'numeric',
-                          })}
-                        </li>
+                      {debt.dueDates.map((dueDate, i) => (
+                          <li key={i} style={{ textDecoration: dueDate.isPaid ? 'line-through' : 'none' }}>
+                              {new Date(dueDate.date).toLocaleDateString('en-US', {
+                                  month: 'long',
+                                  day: 'numeric',
+                                  year: 'numeric',
+                              })}
+                              <input
+                                  type="checkbox"
+                                  checked={dueDate.isPaid}
+                                  onChange={() => handleTogglePaid(debt._id, i)}
+                              />
+                              <label>{dueDate.isPaid ? 'Paid' : 'Unpaid'}</label>
+                          </li>
                       ))}
                     </ul>
                   ) : (
