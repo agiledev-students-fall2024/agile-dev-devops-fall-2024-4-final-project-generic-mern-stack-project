@@ -35,6 +35,7 @@ To set up the project locally, follow these steps:
    ```
 
 2. Navigate to the according directories and install dependencies:
+
    ```bash
    npm install jsonwebtoken
    cd back-end
@@ -42,6 +43,14 @@ To set up the project locally, follow these steps:
    cd front-end
    npm install
    ```
+
+3. Create a file named ".env" and add the following content to the file:
+
+```
+PORT=4000
+DSN = "mongodb+srv://williamma:mxw20040509@williamma.g5yza.mongodb.net/?retryWrites=true&w=majority&appName=WilliamMa"
+FRONTEND="http://localhost:3000/"
+```
 
 ### Run the Application
 
