@@ -69,7 +69,8 @@ const Balances = () => {
       if (isDebtModal) {
         const dueDates = calculateDueDates(newItem.dueDate, newItem.paymentSchedule, newItem.totalPayments);
         const paymentAmount = Number(newItem.amount) / newItem.totalPayments;
-  
+      
+        // Add calculated fields to newItem
         newItem.dueDates = dueDates;
         newItem.paymentAmount = paymentAmount;
       }
@@ -187,26 +188,56 @@ const Balances = () => {
         </section>
         <section className="debt-section">
           <h1>Debt Management</h1>
-          <p>View and edit all debt you have below</p>
+          <p>View and manage your debts below:</p>
           {debts.length > 0 ? (
             debts.map((debt, index) => (
-              <div key={index} className="debt">
-                <div className="debt-type">
-                  {debt.type} - ${debt.amount.toLocaleString()}
+              <div key={index} className="debt-item">
+                <div className="debt-header">
+                  <strong>{debt.type}</strong> - ${debt.amount.toLocaleString()}
                 </div>
-                <div className="debt-info">
-                  Due Date: {debt.dueDate} <br />
-                  Payment Schedule: {debt.paymentSchedule}
+                <div className="debt-details">
+                  <p>
+                    <strong>Payment Schedule:</strong> {debt.paymentSchedule}
+                  </p>
+                  <p>
+                    <strong>Payment Amount:</strong> ${debt.paymentAmount ? debt.paymentAmount.toFixed(2) : 'N/A'}
+                  </p>
+                  <p>
+                    <strong>Remaining Due Dates:</strong>
+                  </p>
+                  {debt.dueDates && debt.dueDates.length > 0 ? (
+                    <ul className="due-dates-list">
+                      {debt.dueDates.map((date, i) => (
+                        <li key={i}>
+                          {new Date(date).toLocaleDateString('en-US', {
+                            month: 'long',
+                            day: 'numeric',
+                            year: 'numeric',
+                          })}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>No due dates available.</p>
+                  )}
                 </div>
-                <button className="edit-button" onClick={() => handleEditItem(index, true)}>Edit</button>
-                <button className="delete-button" onClick={() => handleDeleteItem(index, true)}>Delete</button>
+                <div className="debt-actions">
+                  <button className="edit-button" onClick={() => handleEditItem(index, true)}>Edit</button>
+                  <button className="delete-button" onClick={() => handleDeleteItem(index, true)}>Delete</button>
+                </div>
               </div>
             ))
           ) : (
             <p>No debts added yet.</p>
           )}
           <div className="add-debt">
-            <button className="add-more-button" onClick={() => { setShowModal(true); setIsDebtModal(true) }}>
+            <button
+              className="add-more-button"
+              onClick={() => {
+                setShowModal(true);
+                setIsDebtModal(true);
+              }}
+            >
               Add More Debt
             </button>
           </div>
