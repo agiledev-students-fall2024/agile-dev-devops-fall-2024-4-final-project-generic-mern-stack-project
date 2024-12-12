@@ -1,19 +1,32 @@
-# Project Repository
+# Marconnect
 
-This repository will be used for team projects.
+### Project Description
+Marconnect is a collaboritive video conferencing platform that is designed
+to meet the needs of engineers, developers, and CS educators / students.
+Unlike current meeting and collaboration tools which force users to juggle
+multiple platforms and context swithces between video conferencing, code editors, and other tools, Marconnect provides a unifed environment for seamless collaboration.
 
-Several sets of instructions are included in this repository. They should each be treated as separate assignments with their own due dates and sets of requirements.
+Marconnect aims to address the fragmented user experience that developers, educators, and satudents oftentimes face. Marconnect will integrate all the aforementioned tools, including video and audio conferencing, a collaborative whiteboard, and an interactive code editor into one program.
 
-1. See the [App Map & Wireframes](instructions-0a-app-map-wireframes.md) and [Prototyping](./instructions-0b-prototyping.md) instructions for the requirements of the initial user experience design of the app.
+If time allows, Marconnect will include more advanced features such as a generative AI chatbot for technical assistance, code compilation, and group collaboration.
 
-1. Delete the contents of this file and replace with the contents of a proper README.md, as described in the [project setup instructions](./instructions-0c-project-setup.md)
+### Product Vision
+The vision of our project is to become the go-to platform for collaborative video conferencing for developers, educators, and companies in technical fields. By eliminating the context switching and other issues as mentioned previously, we can help elevate the video conferencing experience for all users, and hopefully improve the video conferencing industry as a whole. Additionally, with future potential plans includiung AI integration, advanced security features, and a more scalable platform, we can potentially create a functional product that can be deployed at scale, beyond the scope of the AGILE course itself.
 
-1. See the [Sprint Planning instructions](instructions-0d-sprint-planning.md) for the requirements of Sprint Planning for each Sprint.
 
-1. See the [Front-End Development instructions](./instructions-1-front-end.md) for the requirements of the initial Front-End Development.
+### Team members
+* Brian Zou (bz2193@nyu.edu, https://github.com/brianzou03)
+* Jack Chen (zc2398@nyu.edu, https://github.com/JackZiyangChen)
+* Bryant To (bt2181@nyu.edu, https://github.com/bryantto08)
+* Andrew Bao (ab10171@nyu.edu, https://github.com/andrew-bao)
+* Marcus Chau (mc8786@nyu.edu, https://github.com/MarcusChau)
 
-1. See the [Back-End Development instructions](./instructions-2-back-end.md) for the requirements of the initial Back-End Development.
 
-1. See the [Database Integration instructions](./instructions-3-database.md) for the requirements of integrating a database into the back-end.
+### Project History
+The project was originally envisioned by the team when we realized that current video conferencing platforms have an issue -
+the lack of integration with necessary services for a software developer, like a code editor. Instead, most platforms require share screen
+and don't allow direct input into code, meaning code debugging and other issues are much more difficult to resolve.
 
-1. See the [Deployment instructions](./instructions-4-deployment.md) for the requirements of deploying an app.
+### How to Contribute?
+Visit the following link to see the requirements you must follow to contribute to the project.
+[CONTRIBUTING.md](./CONTRIBUTING.md)
