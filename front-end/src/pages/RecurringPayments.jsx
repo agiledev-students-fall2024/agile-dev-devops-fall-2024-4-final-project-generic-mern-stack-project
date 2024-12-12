@@ -4,6 +4,7 @@ import axios from 'axios';
  
 function RecurringPayments() {
   const [payments, setPayments] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [currentPaymentIndex, setCurrentPaymentIndex] = useState(null);
@@ -54,9 +55,20 @@ function RecurringPayments() {
         setError('Unable to fetch bank accounts.');
       }
     };
- 
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/api/categories`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setCategories(response.data || []);
+      } catch (err) {
+        console.error('Error fetching categories:', err.message);
+        setCategories([]);
+      }
+    };
     fetchPayments();
     fetchAccounts();
+    fetchCategories();
   }, [token]);
  
   const handleChange = (e) => {
@@ -147,6 +159,12 @@ function RecurringPayments() {
     }
   };
  
+  const formatDueDate = (dueDate) => {
+    if (!dueDate) return 'N/A';
+ 
+    return `Monthly on ${dueDate}`;
+  };
+ 
   return (
     <div className="recurring-payments-container">
       <header className="recurring-header">
@@ -170,7 +188,9 @@ function RecurringPayments() {
                 {payment.category || 'Uncategorized'}
               </p>
               <p className="payment-amount">${payment.amount || '0.00'}</p>
-              <p className="payment-due-date">{payment.dueDate || 'N/A'}</p>
+              <p className="payment-due-date">
+                {formatDueDate(payment.dueDate) || 'N/A'}
+              </p>
             </div>
             <button
               className="edit-payment-btn"
@@ -204,13 +224,18 @@ function RecurringPayments() {
             </label>
             <label>
               Category:
-              <input
-                type="text"
+              <select
                 name="category"
                 value={newPayment.category}
                 onChange={handleChange}
-                placeholder="e.g., Bills"
-              />
+              >
+                <option value="">Select a category</option>
+                {categories.map((category) => (
+                  <option key={category._id} value={category.name}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
             </label>
             <label>
               Amount ($):
