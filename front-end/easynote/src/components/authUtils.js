@@ -9,12 +9,10 @@ export const handleLogin = async (email, password) => {
             body: JSON.stringify({ email, password }),
         });
         const resp = await response.json();
-        const [username,  email,  occupation,  studying] = resp;
-        console.log("*****>>>>>", username,  email,  occupation,  studying);
 
         if (resp.token) {
             localStorage.setItem('token', resp.token);
-            return { success: true, username,  email,  occupation,  studying };
+            return { success: true, email };
         } else {
             throw new Error("Login failed: invalid response");
         }

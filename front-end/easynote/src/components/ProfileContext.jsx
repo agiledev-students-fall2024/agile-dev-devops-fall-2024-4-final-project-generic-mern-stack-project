@@ -5,15 +5,8 @@ const ProfileContext = createContext(null);
 export const ProfileProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  const updateUser = (updatedData) => {
-    setUser((prevUser) => ({
-      ...prevUser,
-      ...updatedData, 
-    }));
-  };
-
   return (
-    <ProfileContext.Provider value={{ user, setUser, updateUser }}>
+    <ProfileContext.Provider value={{ user, setUser }}>
       {children}
     </ProfileContext.Provider>
   );
