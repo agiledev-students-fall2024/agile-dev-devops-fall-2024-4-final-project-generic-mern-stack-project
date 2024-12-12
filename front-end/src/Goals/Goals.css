@@ -110,5 +110,5 @@ progress::-webkit-progress-value {
 
 .home-btn:hover {
     background-color: #0056b3; /* Darker hover color */
-    transform: translateY(-2px); /* Hover lift effect */
+    transform: translateY(-2px); 
 }

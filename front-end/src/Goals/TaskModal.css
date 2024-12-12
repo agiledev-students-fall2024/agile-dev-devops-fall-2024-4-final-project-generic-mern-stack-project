@@ -63,5 +63,5 @@
 }
 
 .modal-content button + button {
-    margin-left: 10px; /* Space between multiple buttons */
+    margin-left: 10px; 
 }
