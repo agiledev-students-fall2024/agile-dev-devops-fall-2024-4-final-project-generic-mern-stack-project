@@ -60,7 +60,7 @@ function GoalForm({ initialData, onSubmit, currentUserId }) { // Added `currentU
           <option value="" disabled>Select frequency</option>
           <option value="daily">Daily</option>
           <option value="monthly">Monthly</option>
-          <option value="annual">Annual</option>
+          <option value="annual">Annually</option>
         </select>
       </label>
       <label>
