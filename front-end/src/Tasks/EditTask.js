@@ -7,7 +7,6 @@ import axios from 'axios';
 function EditTask({ }) {
     const { taskId } = useParams(); 
 
-    console.log(taskId)
 
     const [name, setName] = useState(''); 
     const [description, setDescription] = useState('');
@@ -20,12 +19,21 @@ function EditTask({ }) {
     const [status, setStatus] = useState('not_started');
     const [error, setError] = useState('');
 
-
     
     useEffect(() => {
         const fetchTask = async () => {
             try {
-                const response = await axios.get(`http://localhost:4000/tasks/${taskId}`)
+                const response = await fetch(`${process.env.REACT_APP_BACKEND}/tasks/${taskId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': window.localStorage.getItem('token')
+                    }
+                });
+                if (response.status === 401 || response.error === "Invalid token" || response.error === "No token provided") { 
+                    navigate('/')
+                    return 
+                }
                 const task = response.data
 
                 setName(task.name || '')
@@ -64,42 +72,54 @@ function EditTask({ }) {
             return
         }
         
-        const updatedTask = {
-            name,
-            description,
-            subject,
-            due,
-            priority,
-            recurring,
-            recurring_period: recurring === "Yes" ? recurring_period : "",
-            goal
-        };
-    
         try {
-            const response = await axios.put(`http://localhost:4000/tasks/${taskId}`, updatedTask);
-            console.log("Task updated successfully:", response.data);
+            const updatedTask = {
+                name,
+                description,
+                subject,
+                due,
+                priority,
+                recurring,
+                recurring_period: recurring === "Yes" ? recurring_period : "",
+            };
+            const response = await fetch(`${process.env.REACT_APP_BACKEND}/tasks/${taskId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': window.localStorage.getItem('token')
+                },
+                body: JSON.stringify(updatedTask)
+            });
+            console.log(response.status)
+            if (response.status === 401 || response.error === "Invalid token" || response.error === "No token provided") { 
+                navigate('/')
+                return 
+            }
+            const responseParsed = await response.json();
+            console.log("response", responseParsed)
             alert('Task updated successfully!');
             navigate('/tasks'); // Redirect to the tasks list or another page
         } catch (error) {
             console.error("Failed to update task:", error);
             alert('Failed to update task. Please try again.');
         }
-
-        // simulate the "Save" action
-        console.log("Updated Task:", updatedTask)
-        
-        // Redirect to tasks list (simulated)
         navigate('/tasks')
       }
 
     const handleDelete = async () => {
+        let response;
         try {
-            await axios.delete(`http://localhost:4000/tasks/${taskId}`);
-            console.log("Task deleted successfully");
+            response = await axios.delete(`${process.env.REACT_APP_BACKEND}/tasks/${taskId}`, {
+                headers: { 'Content-Type': 'application/json', 'Authorization': window.localStorage.getItem('token') } 
+        })
+            if (response.status === 401 || response.error === "Invalid token" || response.error === "No token provided") { 
+                navigate('/')
+                return 
+            }
             navigate('/tasks');
         } catch (error) {
-            console.error("Failed to delete task:", error);
-            alert("Failed to delete task. Please try again.");
+            console.error("Failed to delete task:", error)
+            alert("Failed to delete task. Please try again.")
         }
     };
 

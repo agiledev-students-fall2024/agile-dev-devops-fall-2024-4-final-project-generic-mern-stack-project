@@ -9,8 +9,17 @@ function Homepage(){
   useEffect(() => {
     const fetchUrgentTasks = async () => {
       const session = window.localStorage.getItem("session_user");
-      const sessionParsed = JSON.parse(session);
-      const response = await fetch(`http://localhost:4000/tasks/urgent/${sessionParsed._id}`);
+      const sessionParsed = await JSON.parse(session);
+      const token = window.localStorage.getItem("token")
+      const response = await fetch(`${process.env.REACT_APP_BACKEND}/tasks/urgent/${sessionParsed?._id}`, {
+        headers: { 'Content-Type': 'application/json',
+                  'Authorization': token
+         }
+      });
+      if (response.status === 401 || response.error === "Invalid token" || response.error === "No token provided") {
+        nav('/');
+        return;
+      }
       const data = await response.json();
       setUrgentTasks(data);
     };
@@ -31,6 +40,7 @@ function Homepage(){
     // the Authentication part. For now we will leave the designed login/register logic at here, but we don't integrate 
     // it with other parts. You can Register and login as normal, but it WILL NOT AFFECT ANYTHING!!!
     window.localStorage.removeItem("session_user");
+    window.localStorage.removeItem("token");
     nav('/Login');
   };
   return (
@@ -39,7 +49,7 @@ function Homepage(){
 
       <div className="urgent-tasks">
         {urgentTasks.map((task) => (
-          <div key={task.id}>
+          <div key={task._id}>
             {task.name}: due by {new Date(task.due).toLocaleDateString()}
           </div>
         ))}

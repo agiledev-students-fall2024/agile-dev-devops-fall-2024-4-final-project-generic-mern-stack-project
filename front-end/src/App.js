@@ -16,6 +16,7 @@ import NewGoal from './Goals/NewGoal';
 import EditTask from './Tasks/EditTask';
 import Login from './Authentication/Login';
 import Register from './Authentication/Register';
+import NotFound from './NotFound';
 
 function App() {
 
@@ -38,7 +39,8 @@ function App() {
             <Route path="/Homepage" element={<Homepage />} />
             {/* Rena's part : monthly Calendar */}
             <Route path="/Calendar_monthly" element={<Calendar_monthly/>} />
-            <Route path=":month/:day/:year" element={<DailyView />} /> 
+            <Route path=":month/:day/:year" element={<DailyView />} />
+            <Route path="*" element={<NotFound />} /> 
           </Routes>
         </BrowserRouter>
       </div>
