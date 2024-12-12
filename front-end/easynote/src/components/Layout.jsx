@@ -98,7 +98,7 @@ const Layout = () => {
           )}
           {isProfileOpen && (
             <div className={`profile-dropdown ${isMobile ? 'mobile-profile-dropdown' : ''}`}>
-             {console.log("Hello",user)}
+             {console.log("Hello===>",user)}
               <div className="profile-dropdown-item">
               <strong>Hello, {user.username}!</strong>
               </div>
