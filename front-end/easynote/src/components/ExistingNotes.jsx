@@ -13,8 +13,8 @@ const ExistingNotes = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-
-    fetch(`https://easynote-aivlj.ondigitalocean.app/api/notes`, {
+    const url = `https://easynote-aivlj.ondigitalocean.app/api/notes`;
+    fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -143,7 +143,7 @@ return (
     </div>
 
     <div className="notes-grid">
-      {filteredNotes.map(note => (
+      {filteredNotes.map((note, index) => (
         <div key={note._id} className="note-card">
           <input
             type="checkbox"
@@ -154,7 +154,12 @@ return (
           <div className="note-card-header">
             <span className="note-category">{note.category}</span>
             <span className="note-date">
-              {new Date(note.lastModified).toLocaleDateString()}
+              {/* {new Date(note.lastModified).toLocaleDateString()} */}
+              {console.log(typeof(filteredNotes[index].updatedAt))}
+              {/* {
+                let date = ; 
+              } */}
+              {new Date(filteredNotes[index].updatedAt).toUTCString()}
             </span>
           </div>
           <h3 className="note-title">{note.title}</h3>
