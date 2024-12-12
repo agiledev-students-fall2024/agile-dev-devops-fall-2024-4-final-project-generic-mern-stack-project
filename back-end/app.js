@@ -216,11 +216,18 @@ app.post(
   authenticateToken,
   [
     body('type').notEmpty().withMessage('Debt type is required'),
+
     body('amount').isFloat({ min: 0 }).withMessage('Amount must be a positive number'),
     body('dueDate').notEmpty().withMessage('Due date is required'),
     body('paymentSchedule').notEmpty().withMessage('Payment schedule is required'),
     body('totalPayments').isInt({ min: 1 }).withMessage('Total payments must be a positive integer'),
+
   ],
+  body('accountId')
+    .optional()
+    .custom((value) => !value || mongoose.Types.ObjectId.isValid(value))
+    .withMessage('Invalid accountId format'),
+ 
   async (req, res) => {
     console.log('Request body:', req.body);
 
@@ -252,6 +259,7 @@ app.post(
 
       console.log('New debt object:', newDebt);
 
+
       user.debts.push(newDebt);
       await user.save();
 
@@ -269,23 +277,58 @@ app.put(
   '/api/debts/:debtId',
   authenticateToken,
   [
-    body('type').optional().notEmpty().withMessage('Debt type is required'),
+    body('type')
+      .optional()
+      .isString()
+      .withMessage('Debt type must be a string'),
     body('amount')
       .optional()
       .isFloat({ min: 0 })
       .withMessage('Amount must be a positive number'),
-    body('dueDate').optional().notEmpty().withMessage('Due date is required'),
+    body('paidAmount')
+      .optional()
+      .isFloat({ min: 0 })
+      .withMessage('Paid amount must be a positive number'),
+    body('dueDate')
+      .optional()
+      .isISO8601()
+      .withMessage('Invalid due date format. Use YYYY-MM-DD.'),
     body('paymentSchedule')
       .optional()
-      .notEmpty()
-      .withMessage('Payment schedule is required'),
+      .isIn(['Bi-weekly', 'Monthly', 'Annually'])
+      .withMessage(
+        'Invalid payment schedule. Must be Bi-weekly, Monthly, or Annually'
+      ),
+    body('ispaidIncurrentPeriod')
+      .optional()
+      .isBoolean()
+      .withMessage(
+        'Invalid value for ispaidIncurrentPeriod. Must be true or false.'
+      ),
+    body('accountId')
+      .optional()
+      .custom(
+        (value) => value === null || mongoose.Types.ObjectId.isValid(value)
+      )
+      .withMessage('Invalid account ID.'),
   ],
   async (req, res) => {
     const { debtId } = req.params;
-    const { type, amount, dueDate, paymentSchedule } = req.body;
+    const {
+      type,
+      amount,
+      paidAmount,
+      dueDate,
+      paymentSchedule,
+      ispaidIncurrentPeriod,
+      accountId,
+    } = req.body;
+ 
+    console.log(req.body);
  
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.error('Validation Errors:', errors.array()); // Log validation errors
       return res.status(400).json({ errors: errors.array() });
     }
  
@@ -315,6 +358,7 @@ app.put(
         debt.dueDates = newDueDates;
         debt.paymentAmount = debt.amount / totalPayments;
       }
+
  
       await user.save();
       res.json(debt);

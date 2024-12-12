@@ -147,6 +147,12 @@ function RecurringPayments() {
     }
   };
  
+  const formatDueDate = (dueDate) => {
+    if (!dueDate) return 'N/A';
+ 
+    return `Monthly on ${dueDate}`;
+  };
+ 
   return (
     <div className="recurring-payments-container">
       <header className="recurring-header">
@@ -170,7 +176,9 @@ function RecurringPayments() {
                 {payment.category || 'Uncategorized'}
               </p>
               <p className="payment-amount">${payment.amount || '0.00'}</p>
-              <p className="payment-due-date">{payment.dueDate || 'N/A'}</p>
+              <p className="payment-due-date">
+                {formatDueDate(payment.dueDate) || 'N/A'}
+              </p>
             </div>
             <button
               className="edit-payment-btn"

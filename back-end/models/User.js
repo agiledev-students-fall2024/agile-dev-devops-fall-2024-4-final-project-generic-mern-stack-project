@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
-
+ 
 const userSchema = new mongoose.Schema({
     firstName: {type: String, required: true},
     lastName:{type: String, required: true},
@@ -48,44 +48,29 @@ const userSchema = new mongoose.Schema({
         targetAmount: { type: Number, required: true },
         collaborators: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], 
       },
-    ],
-    budgetLimits: {
-      monthlyLimit: { type: Number, required: true, default: 0 },
-      categories: [
-          {
-              name: { type: String, required: true },
-              limit: { type: Number, required: true, default: 0 }, 
-          }
-      ],
-      other: { type: Number, default: 0 },
+      targetAmount: { type: Number, required: true },
+      collaborators: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     },
+  ],
+  budgetLimits: {
+    monthlyLimit: { type: Number, required: true, default: 0 }, // Overall monthly budget limit
     categories: [
       {
-                    name: { type: String, required: true, unique: true }, 
+        name: { type: String, required: true }, // User-defined category name
+        limit: { type: Number, required: true, default: 0 }, // User-defined budget limit for the category
       },
-    ],  
-
+    ],
+    other: { type: Number, default: 0 }, // Automatically calculated as excess from unallocated funds
+  },
 });
-
+ 
+// Hash password before saving
 userSchema.pre('save', async function (next) {
-  // Hash the password if it's modified
   if (this.isModified('password')) {
-      this.password = await bcrypt.hash(this.password, 10);
+    this.password = await bcrypt.hash(this.password, 10);
   }
-
-  // Add default categories for new users
-  if (this.isNew) {
-      this.categories = [
-          { name: 'Food' },
-          { name: 'Transportation' },
-          { name: 'Rent' },
-          { name: 'Utilities' },
-          { name: 'Entertainment' },
-      ];
-  }
-
   next();
 });
-
-
+ 
 export default mongoose.model('User', userSchema);
+ 
