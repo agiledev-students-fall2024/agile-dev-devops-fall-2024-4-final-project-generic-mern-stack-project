@@ -5,9 +5,31 @@ import { useProfile } from './ProfileContext';
 const Layout = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const { user, setUser } = useProfile();
   const navigate = useNavigate();
   const navRef = useRef(null);
+
+  useEffect(() => {
+    // Check if the device is mobile
+    const isMobileDevice = () => {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    };
+
+    setIsMobile(isMobileDevice());
+
+    // Add event listener to detect window resize
+    const handleResize = () => {
+      setIsMobile(isMobileDevice());
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup the event listener
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const toggleNav = () => {
     setIsNavOpen(prev => !prev);
@@ -45,7 +67,10 @@ const Layout = () => {
   return (
     <div>
       <header className="header">
-        <div className="menu-icon" onClick={toggleNav}>
+        <div 
+          className={`menu-icon ${isMobile ? 'mobile-menu-icon' : ''}`} 
+          onClick={toggleNav}
+        >
           {isNavOpen ? '✕' : '☰'}
         </div>
         <div className="logo"></div>
@@ -54,17 +79,17 @@ const Layout = () => {
             <img
               src={user.profilePicture}
               alt="Profile"
-              className="account-icon"
+              className={`account-icon ${isMobile ? 'mobile-account-icon' : ''}`}
               onClick={() => setIsProfileOpen(!isProfileOpen)}
             />
           ) : (
             <div
-              className="account-icon"
+              className={`account-icon ${isMobile ? 'mobile-account-icon' : ''}`}
               onClick={() => setIsProfileOpen(!isProfileOpen)}
             ></div>
           )}
           {isProfileOpen && (
-            <div className="profile-dropdown">
+            <div className={`profile-dropdown ${isMobile ? 'mobile-profile-dropdown' : ''}`}>
               <div className="profile-dropdown-item">
                 <strong>{user?.name}</strong>
               </div>
@@ -79,12 +104,12 @@ const Layout = () => {
               </div>
             </div>
           )}
-        </div>
+ </div>
       </header>
 
       <nav 
         ref={navRef}
-        className={`nav-sidebar ${isNavOpen ? 'nav-sidebar-open' : ''}`}
+        className={`nav-sidebar ${isNavOpen ? 'nav-sidebar-open' : ''} ${isMobile ? 'mobile-nav-sidebar' : ''}`}
       >
         <ul className="nav-list">
           <li><Link to="/" className="nav-link" onClick={() => setIsNavOpen(false)}>Home</Link></li>
@@ -94,7 +119,7 @@ const Layout = () => {
         </ul>
       </nav>
 
-      <main className="container">
+      <main className={`container ${isMobile ? 'mobile-container' : ''}`}>
         <Outlet />
       </main>
     </div>
