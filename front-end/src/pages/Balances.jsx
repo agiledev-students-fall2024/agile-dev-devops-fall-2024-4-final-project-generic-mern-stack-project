@@ -43,11 +43,21 @@ const Balances = () => {
     fetchData();
   }, []); 
   
+  const calculateDueDates = (startDate, schedule, totalPayments) => {
+    const dueDates = [];
+    const currentDate = new Date(startDate);
+    for (let i = 0; i < totalPayments; i++) {
+      dueDates.push(currentDate.toISOString().split('T')[0]); 
+      if (schedule === 'Bi-weekly') currentDate.setDate(currentDate.getDate() + 14);
+      if (schedule === 'Monthly') currentDate.setMonth(currentDate.getMonth() + 1);
+      if (schedule === 'Annually') currentDate.setFullYear(currentDate.getFullYear() + 1);
+    }
+    return dueDates;
+  };
 
   const handleAddOrEditItem = () => {
     const token = localStorage.getItem('token');
     const route = isDebtModal ? `${BASE_URL}/api/debts` : `${BASE_URL}/api/accounts`;
-    const payload = { ...newItem, amount: Number(newItem.amount) };
   
     if (token) {
       const headers = {
@@ -55,9 +65,18 @@ const Balances = () => {
         'Content-Type': 'application/json'
       };
   
+      // Calculate due dates and payment amount if adding a debt
+      if (isDebtModal) {
+        const dueDates = calculateDueDates(newItem.dueDate, newItem.paymentSchedule, newItem.totalPayments);
+        const paymentAmount = Number(newItem.amount) / newItem.totalPayments;
+  
+        newItem.dueDates = dueDates;
+        newItem.paymentAmount = paymentAmount;
+      }
+  
       if (isEditing) {
         const id = isDebtModal ? debts[currentItemIndex]._id : accounts[currentItemIndex]._id;
-        axios.put(`${route}/${id}`, payload, { headers })
+        axios.put(`${route}/${id}`, newItem, { headers })
           .then(response => {
             if (isDebtModal) {
               const updatedDebts = [...debts];
@@ -71,14 +90,14 @@ const Balances = () => {
           })
           .catch(err => console.error("Error updating item:", err));
       } else {
-        axios.post(route, payload, { headers })
+        axios.post(route, newItem, { headers })
           .then(response => {
             if (isDebtModal) {
               setDebts([...debts, response.data]);
             } else {
               setAccounts([...accounts, response.data]);
             }
-             fetchData();
+            fetchData();
           })
           .catch(err => console.error("Error adding item:", err));
       }
@@ -166,7 +185,6 @@ const Balances = () => {
             </button>
           </div>
         </section>
-
         <section className="debt-section">
           <h1>Debt Management</h1>
           <p>View and edit all debt you have below</p>
@@ -194,7 +212,6 @@ const Balances = () => {
           </div>
         </section>
       </div>
-
       {showModal && (
         <div className="modal">
           <div className="modal-content">
@@ -231,21 +248,33 @@ const Balances = () => {
             {isDebtModal && (
               <>
                 <label>
-                  Due Date:
+                  Payment Schedule:
+                  <select
+                    value={newItem.paymentSchedule}
+                    onChange={(e) => setNewItem({ ...newItem, paymentSchedule: e.target.value })}
+                  >
+                    <option value="">Select Schedule</option>
+                    <option value="Bi-weekly">Bi-weekly</option>
+                    <option value="Monthly">Monthly</option>
+                    <option value="Annually">Annually</option>
+                  </select>
+                </label>
+                <label>
+                  Total Payments:
+                  <input
+                    type="number"
+                    value={newItem.totalPayments}
+                    onChange={(e) => setNewItem({ ...newItem, totalPayments: e.target.value })}
+                    placeholder="e.g., 20"
+                  />
+                </label>
+                <label>
+                  First Due Date:
                   <input
                     type="date"
                     value={newItem.dueDate}
                     onChange={(e) => setNewItem({ ...newItem, dueDate: e.target.value })}
                   />
-                </label>
-                <label>
-                  Payment Schedule:
-                  <input
-                    type="text"
-                    value={newItem.paymentSchedule}
-                    onChange={(e) => setNewItem({ ...newItem, paymentSchedule: e.target.value })}
-                  placeholder="e.g., Monthly"
-                />
                 </label>
               </>
             )}
