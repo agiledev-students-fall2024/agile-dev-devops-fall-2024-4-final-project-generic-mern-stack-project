@@ -38,18 +38,26 @@ To set up the project locally, follow these steps:
 
    ```bash
    npm install jsonwebtoken
+   npm install mongo-sanitize
    cd back-end
    npm install
    cd front-end
    npm install
    ```
 
-3. Create a file named ".env" and add the following content to the file:
+3. Create a file named ".env" in the back-end folder and add the following content to the file:
 
 ```
 PORT=4000
 DSN = "mongodb+srv://williamma:mxw20040509@williamma.g5yza.mongodb.net/?retryWrites=true&w=majority&appName=WilliamMa"
 FRONTEND="http://localhost:3000/"
+SECRET = "dev ops project"
+```
+
+4. Create a file named ".env" in the front-end folder and add the following content to the file:
+
+```
+REACT_APP_BACKEND="http://localhost:4000/"
 ```
 
 ### Run the Application
