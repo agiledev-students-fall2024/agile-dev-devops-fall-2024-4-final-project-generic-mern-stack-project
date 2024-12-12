@@ -1,0 +1,198 @@
+.Home {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh; /* Ensures it covers the full height of the viewport */
+  background-color: rgb(200, 223, 252);
+  margin: 0; /* Remove any default margins */
+  padding: 20px 0; /* Adds some breathing space on top and bottom */
+  height: 100vh;
+  padding-bottom: 100px; /* Added padding to ensure the button is visible */
+}
+ 
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  margin-top: 30px;
+  margin-top: 50px;
+  padding-bottom: 100px; /* Added padding to ensure the button is visible */
+}
+
+/* Sections Styling */
+ 
+.accounts-section,
+.debt-section,
+.previous-debts-section {
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #ffffff; /* White background for individual sections */
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+.paid-debt-section {
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  margin-bottom: 20px;
+}
+/* Button Container Styling */
+.add-accounts,
+.add-debt {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+ 
+/* Button Styling */
+.edit-button,
+.delete-button {
+  margin: 10px 5px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+ 
+.edit-button {
+  background-color: #ffc107; /* Yellow for edit */
+  color: white;
+}
+ 
+.delete-button {
+  background-color: #dc3545;
+  color: white;
+}
+ 
+.add-more-button,
+.plaid-button {
+  width: 100%;
+  max-width: 200px;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  border: none;
+}
+ 
+.add-more-button {
+  background-color: #28a745;
+}
+ 
+.plaid-button {
+  background-color: #0077cc;
+}
+.info-message {
+  color: rgba(0, 0, 5, 0.963);
+  margin-top: 10px;
+  font-size: 1.2em; /* Increase font size */
+}
+ 
+.error-message {
+  color: red;
+  margin-top: 10px;
+  font-size: 1.2em; /* Increase font size */
+}
+ 
+.debt-paid-label {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+.paid-checkbox {
+  width: 24px; /* Increase width */
+  height: 24px; /* Increase height */
+  transform: scale(1.5); /* Scales up the checkbox */
+  margin: 10px; /* Add spacing around the checkbox */
+  cursor: pointer; /* Makes it more interactive */
+}
+/* Define the CSS classes for the checkbox states */
+.debt-paid-label.paid-checkbox {
+  cursor: pointer;
+}
+.paid-checkbox.highlighted {
+  background-color: yellow; /* Highlighted color */
+  outline: 2px solid yellow; /* Optional outline for visibility */
+}
+ 
+.paid-checkbox.greyed-out {
+  background-color: lightgray; /* Greyed-out color */
+  opacity: 0.6; /* Dim the appearance */
+}
+/* Modal Styling */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+ 
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  box-sizing: border-box;
+  text-align: center;
+}
+ 
+.modal-content input {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+ 
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+ 
+.modal-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+ 
+.modal-buttons button:first-child {
+  background-color: #28a745;
+  color: white;
+}
+ 
+.modal-buttons button:last-child {
+  background-color: #dc3545;
+  color: white;
+}
+
+.due-dates-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.due-dates-list li label {
+  font-weight: bold;
+}
+
+.due-dates-list li input[type="checkbox"] {
+  margin-left: 8px;
+}
