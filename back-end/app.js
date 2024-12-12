@@ -594,15 +594,14 @@ app.post('/api/transactions', async (req, res) => {
     }
 
     account.amount -= amount;
-
-    const parsedDate = new Date(date); 
-    const offsetDate = new Date(parsedDate.getTime() + parsedDate.getTimezoneOffset() * 60000);
+    const transactionDate = new Date(date);
+    transactionDate.setUTCHours(12, 0, 0, 0);
 
     const newTransaction = {
       merchant,
       category,
       amount,
-      date: offsetDate,
+      date: transactionDate,
       accountId,
       _id: new mongoose.Types.ObjectId(),
     };
@@ -620,7 +619,6 @@ app.post('/api/transactions', async (req, res) => {
   }
 });
 
-// Route to update a transaction by ID
 app.put('/api/transactions/:id', authenticateToken, async (req, res) => {
   const { id } = req.params;
   const { merchant, category, amount, date, userId, accountId } = req.body;
@@ -654,14 +652,18 @@ app.put('/api/transactions/:id', authenticateToken, async (req, res) => {
     if (merchant) transaction.merchant = merchant;
     if (category) transaction.category = category;
     if (amount !== undefined) transaction.amount = parseFloat(amount);
-    if (date) transaction.date = new Date(date);
+    if (date) {
+      const transactionDate = new Date(date);
+      transactionDate.setUTCHours(12, 0, 0, 0);
+      transaction.date = transactionDate;
+    }
     if (accountId) transaction.accountId = accountId;
 
     await user.save();
 
     res.status(200).json({
       transaction,
-      updatedAccounts: [originalAccount, targetAccount].filter((acc, index, self) => 
+      updatedAccounts: [originalAccount, targetAccount].filter((acc, index, self) =>
         index === self.findIndex(a => a._id.toString() === acc._id.toString())
       ),
     });
@@ -670,6 +672,7 @@ app.put('/api/transactions/:id', authenticateToken, async (req, res) => {
     res.status(500).json({ error: 'Internal server error', details: error.message });
   }
 });
+
  
 // Route to delete a transaction by ID
 app.delete('/api/transactions/:id', async (req, res) => {
