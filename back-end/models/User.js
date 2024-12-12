@@ -20,11 +20,11 @@ const userSchema = new mongoose.Schema({
     {
       type: { type: String, required: true },
       amount: { type: Number, required: true },
-      paidAmount: { type: Number, required: true },
+      paidAmount: { type: Number, required: false },
       dueDate: { type: Date, required: true },
       paymentSchedule: { type: String, required: true }, //bi-weekly, monthly, annually
-      ispaidIncurrentPeriod: { type: Boolean, required: true },
-      accountId: { type: mongoose.Schema.Types.ObjectId, required: true }, // Refers to the _id of an embedded account
+      ispaidIncurrentPeriod: { type: Boolean, required: false },
+      accountId: { type: mongoose.Schema.Types.ObjectId, required: false }, // Refers to the _id of an embedded account
     },
   ],
   transactions: [

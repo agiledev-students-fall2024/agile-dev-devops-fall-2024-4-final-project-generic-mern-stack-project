@@ -202,26 +202,55 @@ app.post(
     body('amount')
       .isFloat({ min: 0 })
       .withMessage('Amount must be a positive number'),
-    body('dueDate').notEmpty().withMessage('Due date is required'),
+    body('paidAmount')
+      .optional() // Allow it to be missing
+      .isFloat({ min: 0 })
+      .withMessage('paidAmount must be a positive number'),
+    body('dueDate')
+      .notEmpty()
+      .withMessage('Due date is required')
+      .isISO8601()
+      .withMessage('Invalid date format'),
     body('paymentSchedule')
       .notEmpty()
       .withMessage('Payment schedule is required'),
   ],
+  body('accountId')
+    .optional()
+    .custom((value) => !value || mongoose.Types.ObjectId.isValid(value))
+    .withMessage('Invalid accountId format'),
+ 
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
  
-    const { type, amount, dueDate, paymentSchedule } = req.body;
- 
+    const {
+      type,
+      amount,
+      paidAmount,
+      dueDate,
+      paymentSchedule,
+      ispaidIncurrentPeriod,
+      accountId,
+    } = req.body;
+    console.log(req.body);
     try {
       const user = await User.findById(req.user.id);
       if (!user) {
         return res.status(404).json({ error: 'User not found' });
       }
  
-      const newDebt = { type, amount, dueDate, paymentSchedule };
+      const newDebt = {
+        type,
+        amount,
+        paidAmount: paidAmount || 0, // Default to 0 if missing
+        dueDate,
+        paymentSchedule,
+        ispaidIncurrentPeriod: ispaidIncurrentPeriod || false, // Default to false
+        accountId: accountId || null, // Default to null
+      };
       user.debts.push(newDebt);
       await user.save();
       res.status(201).json(newDebt);
@@ -236,23 +265,58 @@ app.put(
   '/api/debts/:debtId',
   authenticateToken,
   [
-    body('type').optional().notEmpty().withMessage('Debt type is required'),
+    body('type')
+      .optional()
+      .isString()
+      .withMessage('Debt type must be a string'),
     body('amount')
       .optional()
       .isFloat({ min: 0 })
       .withMessage('Amount must be a positive number'),
-    body('dueDate').optional().notEmpty().withMessage('Due date is required'),
+    body('paidAmount')
+      .optional()
+      .isFloat({ min: 0 })
+      .withMessage('Paid amount must be a positive number'),
+    body('dueDate')
+      .optional()
+      .isISO8601()
+      .withMessage('Invalid due date format. Use YYYY-MM-DD.'),
     body('paymentSchedule')
       .optional()
-      .notEmpty()
-      .withMessage('Payment schedule is required'),
+      .isIn(['Bi-weekly', 'Monthly', 'Annually'])
+      .withMessage(
+        'Invalid payment schedule. Must be Bi-weekly, Monthly, or Annually'
+      ),
+    body('ispaidIncurrentPeriod')
+      .optional()
+      .isBoolean()
+      .withMessage(
+        'Invalid value for ispaidIncurrentPeriod. Must be true or false.'
+      ),
+    body('accountId')
+      .optional()
+      .custom(
+        (value) => value === null || mongoose.Types.ObjectId.isValid(value)
+      )
+      .withMessage('Invalid account ID.'),
   ],
   async (req, res) => {
     const { debtId } = req.params;
-    const { type, amount, dueDate, paymentSchedule } = req.body;
+    const {
+      type,
+      amount,
+      paidAmount,
+      dueDate,
+      paymentSchedule,
+      ispaidIncurrentPeriod,
+      accountId,
+    } = req.body;
+ 
+    console.log(req.body);
  
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.error('Validation Errors:', errors.array()); // Log validation errors
       return res.status(400).json({ errors: errors.array() });
     }
  
@@ -269,8 +333,12 @@ app.put(
  
       if (type) debt.type = type;
       if (amount != null) debt.amount = amount;
+      if (paidAmount != null) debt.paidAmount = paidAmount;
       if (dueDate) debt.dueDate = dueDate;
       if (paymentSchedule) debt.paymentSchedule = paymentSchedule;
+      if (accountId) debt.accountId = accountId;
+      if (ispaidIncurrentPeriod)
+        debt.ispaidIncurrentPeriod = ispaidIncurrentPeriod;
  
       await user.save();
       res.json(debt);
