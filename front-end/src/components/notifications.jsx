@@ -12,7 +12,7 @@ function Notifications() {
     upcomingBills: false
   });
 
-  const userId = localStorage.getItem('id'); // Fetch user ID from localStorage
+  const userId = localStorage.getItem('id'); 
 
   useEffect(() => {
     if (!userId) {
@@ -20,11 +20,9 @@ function Notifications() {
       return;
     }
 
-    // Fetch notifications data for the user
     fetch(`http://localhost:3001/api/notifications?userId=${userId}`)
       .then((response) => response.json())
       .then((data) => {
-        // Ensure data matches expected structure
         setNotifications({
           budgetLimits: data.budgetLimits || [],
           subscriptions: data.subscriptions || [],

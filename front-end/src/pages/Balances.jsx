@@ -13,6 +13,7 @@ const Balances = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentItemIndex, setCurrentItemIndex] = useState(null);
   const [isDebtModal, setIsDebtModal] = useState(false);
+
   const [newItem, setNewItem] = useState({
     type: '',
     amount: '',
@@ -61,54 +62,24 @@ const Balances = () => {
  
   useEffect(() => {
     fetchData();
-  }, []);
- 
-  const calculatePayment = (debtAmount, dueDate, frequency) => {
-    const today = new Date(); // Get today's date
-    const due = new Date(dueDate); // Parse due date
- 
-    if (due < today) {
-      throw new Error('Due date must be in the future.');
-    }
- 
-    // Calculate the total time (in milliseconds) and convert to intervals
-    const totalTime = due - today; // Total time in milliseconds
- 
-    let intervals;
-    switch (frequency.toLowerCase()) {
-      case 'monthly':
-        intervals = Math.ceil(totalTime / (1000 * 60 * 60 * 24 * 30.44)); // Approx. 30.44 days in a month
-        break;
-      case 'annually':
-        intervals = Math.ceil(totalTime / (1000 * 60 * 60 * 24 * 365.25)); // Leap year consideration
-        break;
-      case 'bi-weekly':
-        intervals = Math.ceil(totalTime / (1000 * 60 * 60 * 24 * 14)); // 14 days
-        break;
-      default:
-        throw new Error(
-          "Invalid frequency. Use 'monthly', 'annually', or 'bi-weekly'."
-        );
-    }
- 
-    if (intervals <= 0) {
-      throw new Error(
-        'Interval calculation error. Ensure due date is in the future.'
-      );
-    }
- 
-    // Calculate and return the payment amount per interval
-    return parseFloat((debtAmount / intervals).toFixed(2));
+  }, []); 
+
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(value);
   };
- 
+
+
   const handleAddOrEditItem = () => {
     resetMessage();
     const token = localStorage.getItem('token');
-    const route = isDebtModal
-      ? `${BASE_URL}/api/debts`
-      : `${BASE_URL}/api/accounts`;
-    const payload = { ...newItem, amount: Number(newItem.amount) };
- 
+
+    const route = isDebtModal ? `${BASE_URL}/api/debts` : `${BASE_URL}/api/accounts`;
+  
     if (token) {
       const headers = {
         Authorization: `Bearer ${token}`,
@@ -116,12 +87,15 @@ const Balances = () => {
       };
  
       if (isEditing) {
-        const id = isDebtModal
-          ? debts[currentItemIndex]._id
-          : accounts[currentItemIndex]._id;
-        axios
-          .put(`${route}/${id}`, payload, { headers })
-          .then((response) => {
+        const id = isDebtModal ? debts[currentItemIndex]._id : accounts[currentItemIndex]._id;
+
+        if (isDebtModal) {
+          newItem.totalPayments = newItem.totalPayments || debts[currentItemIndex].dueDates.length;
+        }
+
+        axios.put(`${route}/${id}`, newItem, { headers })
+          .then(response => {
+
             if (isDebtModal) {
               const updatedDebts = [...debts];
               updatedDebts[currentItemIndex] = response.data;
@@ -131,14 +105,20 @@ const Balances = () => {
               updatedAccounts[currentItemIndex] = response.data;
               setAccounts(updatedAccounts);
             }
+            fetchData(); 
           })
  
           .catch((err) => console.error('Error updating item:', err));
         console.log(debts);
       } else {
-        axios
-          .post(route, payload, { headers })
-          .then((response) => {
+
+
+        if (isDebtModal) {
+          newItem.totalPayments = newItem.totalPayments || debts[currentItemIndex].dueDates.length;
+        }
+        
+        axios.post(route, newItem, { headers })
+          .then(response => {
             if (isDebtModal) {
               setDebts([...debts, response.data]);
             } else {
@@ -376,45 +356,105 @@ const Balances = () => {
   const handleEditItem = (index, isDebt) => {
     resetMessage();
     if (isDebt) {
-      setNewItem(debts[index]);
+      setNewItem({
+        ...debts[index],
+        amount: debts[index].amount.toFixed(2), 
+      });
       setCurrentItemIndex(index);
       setIsDebtModal(true);
     } else {
-      setNewItem(accounts[index]);
+      setNewItem({
+        ...accounts[index],
+        amount: accounts[index].amount.toFixed(2),
+      });
       setCurrentItemIndex(index);
       setIsDebtModal(false);
     }
     setIsEditing(true);
     setShowModal(true);
   };
- 
-  function formatDueDate(isoDate) {
-    const date = new Date(isoDate); // Parse ISO date string
-    const day = String(date.getDate()).padStart(2, '0'); // Get day (add leading zero)
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Get month (0-based index, so +1)
-    const year = date.getFullYear(); // Get full year
-    return `${day}/${month}/${year}`; // Format as dd/mm/yyyy
-  }
- 
-  const getDueDates = (amount, dueDate, frequency, numberOfDates = 3) => {
-    if (!amount || !dueDate || !frequency) return [];
-    let nextDueDate = new Date(dueDate);
-    const dueDates = [];
-    const frequencyDays =
-      {
-        biweekly: 14,
-        monthly: 30,
-        annualy: 365,
-      }[frequency.toLowerCase()] || 30;
- 
-    for (let i = 0; i < numberOfDates; i++) {
-      dueDates.push(new Date(nextDueDate));
-      nextDueDate.setDate(nextDueDate.getDate() + frequencyDays);
-    }
- 
-    return dueDates;
+
+
+  const resetForm = () => {
+    setNewItem({ 
+      type: '', 
+      amount: '', 
+      number: '', 
+      dueDate: '', 
+      paymentSchedule: '', 
+      totalPayments: '' 
+    });
+    setShowModal(false);
+    setIsEditing(false);
+    setIsDebtModal(false);
   };
- 
+
+
+  const handleTogglePaid = async (debtId, dateIndex) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error("No token found. Please log in.");
+      return;
+    }
+  
+    const dueDate = debts.find(debt => debt._id === debtId)?.dueDates[dateIndex];
+    if (!dueDate) {
+      alert('Due date not found.');
+      return;
+    }
+  
+    try {
+      const selectedAccountId = dueDate.isPaid 
+        ? promptAccountSelection(accounts, 'Select an account to deposit the previously paid amount:') 
+        : promptAccountSelection(accounts, 'Select an account to pay from:');
+  
+      if (!selectedAccountId) {
+        alert('Operation cancelled.');
+        return;
+      }
+  
+      const headers = {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      };
+  
+      const response = await axios.put(
+        `${BASE_URL}/api/debts/${debtId}/dueDates/${dateIndex}`,
+        { accountId: selectedAccountId, isUndo: dueDate.isPaid },
+        { headers }
+      );
+  
+      console.log('Debt updated successfully:', response.data);
+      fetchData();
+    } catch (error) {
+      console.error('Error updating due date status:', error);
+    }
+  };
+
+  const promptAccountSelection = (accounts, message) => {
+    if (!accounts || accounts.length === 0) {
+      alert('No accounts available.');
+      return null;
+    }
+  
+    const accountOptions = accounts
+      .map((account, index) => `${index + 1}: ${account.type} - ${formatCurrency(account.amount)}`)
+      .join('\n');
+  
+    const selectedOption = prompt(
+      `${message}\n${accountOptions}\nEnter the number corresponding to your choice:`
+    );
+  
+    const selectedIndex = parseInt(selectedOption, 10) - 1;
+    if (selectedIndex >= 0 && selectedIndex < accounts.length) {
+      return accounts[selectedIndex]._id;
+    } else {
+      alert('Invalid selection.');
+      return null;
+    }
+  };
+
+
   return (
     <main className="Home">
       <div className="container">
@@ -429,7 +469,7 @@ const Balances = () => {
                   {account.type} - XXXX{account.number}
                 </div>
                 <div className="account-balance">
-                  $ {account.amount.toLocaleString()}
+                  {formatCurrency(account.amount)}
                 </div>
                 <button
                   className="edit-button"
@@ -460,109 +500,71 @@ const Balances = () => {
             </button>
           </div>
         </section>
-        <section className="paid-debt-section">
-          <h1>Fully Paid Debt Panel</h1>
-          <p>View all debt you have fully paid below</p>
-          {paidDebts.length > 0 ? (
-            paidDebts.map((paidDebt, index) => (
-              <div key={index} className="debt">
-                <div className="debt-type">
-                  {paidDebt.type} - ${paidDebt.amount.toLocaleString()}
+
+        <section className="debt-section">
+          <h1>Debt Management</h1>
+          <p>View and manage your debts below:</p>
+          {debts.length > 0 ? (
+            debts.map((debt, index) => (
+              <div key={index} className="debt-item">
+                <div className="debt-header">
+                  <strong>{debt.type}</strong> - {formatCurrency(debt.amount)}
                 </div>
-                <div className="debt-info">
-                  Due Date: {formatDueDate(paidDebt.dueDate)} <br />
-                  Payment Schedule: {paidDebt.paymentSchedule}
-                  <br />
+                <div className="debt-details">
+                  <p>
+                    <strong>Payment Schedule:</strong> {debt.paymentSchedule}
+                  </p>
+                  <p>
+                    <strong>Payment Amount:</strong> {debt.paymentAmount ? formatCurrency(debt.paymentAmount) : 'N/A'}
+                  </p>
+                  <p>
+                    <strong>Remaining Due Dates:</strong>
+                  </p>
+                  {debt.dueDates && debt.dueDates.length > 0 ? (
+                    <ul className="due-dates-list">
+                      {debt.dueDates.map((dueDate, i) => (
+                          <li key={i} style={{ textDecoration: dueDate.isPaid ? 'line-through' : 'none' }}>
+                              {new Date(dueDate.date).toLocaleDateString('en-US', {
+                                  month: 'long',
+                                  day: 'numeric',
+                                  year: 'numeric',
+                              })}
+                              <input
+                                  type="checkbox"
+                                  checked={dueDate.isPaid}
+                                  onChange={() => handleTogglePaid(debt._id, i)}
+                              />
+                              <label>{dueDate.isPaid ? 'Paid' : 'Unpaid'}</label>
+                          </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>No due dates available.</p>
+                  )}
+                </div>
+                <div className="debt-actions">
+                  <button className="edit-button" onClick={() => handleEditItem(index, true)}>Edit</button>
+                  <button className="delete-button" onClick={() => handleDeleteItem(index, true)}>Delete</button>
+
                 </div>
               </div>
             ))
           ) : (
             <p>No debts found.</p>
           )}
-        </section>
-        <section className="debt-section">
-          <h1>Debt Management</h1>
-          <p>View and edit all debt you have to pay below</p>
-          {debts.length > 0 ? (
-            debts.map((debt, index) => {
-              // Calculate upcoming due dates
-              const dueDates = getDueDates(
-                debt.amount,
-                debt.dueDate,
-                debt.paymentSchedule
-              );
- 
-              return (
-                <div key={index} className="debt">
-                  <div className="debt-type">
-                    {debt.type} - ${debt.amount.toLocaleString()}
-                  </div>
-                  <div className="debt-info">
-                    Due Date: {formatDueDate(debt.dueDate)} <br />
-                    Payment Schedule: {debt.paymentSchedule}
-                    <br />
-                    <strong>Coming Due Dates:</strong>
-                    <ul>
-                      {dueDates.map((date, i) => (
-                        <li key={i}>{date.toDateString()}</li>
-                      ))}
-                    </ul>
-                    <label className="debt-paid-label"></label>
-                    <strong>Paid:</strong>
-                    <input
-                      type="checkbox"
-                      className={`paid-checkbox ${
-                        debt.ispaidIncurrentPeriod
-                          ? 'greyed-out'
-                          : 'highlighted'
-                      }`}
-                      checked={debt.ispaidIncurrentPeriod}
-                      onChange={(e) => handleTogglePaid(e, index)}
-                    />
-                    {
-                      <select
-                        name="accountId"
-                        value={debt.accountId}
-                        onChange={(e) => handleAccountSelection(e, index)}
-                      >
-                        <option value="">Select Account</option>
-                        {accounts.map((account, accIndex) => (
-                          <option key={account._id} value={account._id}>
-                            {account.type} - XXXX{account.number}
-                          </option>
-                        ))}
-                      </select>
-                    }
-                  </div>
-                  <button
-                    className="edit-button"
-                    onClick={() => handleEditItem(index, true)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="delete-button"
-                    onClick={() => handleDeleteItem(index, true)}
-                  >
-                    Delete
-                  </button>
-                </div>
-              );
-            })
-          ) : (
-            <p>No debts found.</p>
-          )}
-          <button
-            className="add-more-button"
-            onClick={() => {
-              setShowModal(true);
-              setIsDebtModal(true);
-            }}
-          >
-            Add More Debts
-          </button>
-          {message && <p className="info-message">{message}</p>}
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
+
+          <div className="add-debt">
+            <button
+              className="add-more-button"
+              onClick={() => {
+                setShowModal(true);
+                setIsDebtModal(true);
+              }}
+            >
+              Add More Debt
+            </button>
+          </div>
+
         </section>
       </div>
       {showModal && (
@@ -615,30 +617,35 @@ const Balances = () => {
             {isDebtModal && (
               <>
                 <label>
-                  Due Date:
-                  <input
-                    type="date"
-                    value={newItem.dueDate.split('T')[0]}
-                    onChange={(e) =>
-                      setNewItem({ ...newItem, dueDate: e.target.value })
-                    }
-                  />
-                </label>
-                <label>
                   Payment Schedule:
                   <select
                     value={newItem.paymentSchedule}
-                    onChange={(e) =>
-                      setNewItem({
-                        ...newItem,
-                        paymentSchedule: e.target.value,
-                      })
-                    }
+                    onChange={(e) => setNewItem({ ...newItem, paymentSchedule: e.target.value })}
                   >
-                    <option value="Monthly">Monthly</option>
+                    <option value="">Select Schedule</option>
                     <option value="Bi-weekly">Bi-weekly</option>
+                    <option value="Monthly">Monthly</option>
                     <option value="Annually">Annually</option>
                   </select>
+                </label>
+                <label>
+                  Total Payments:
+                  <input
+
+                    type="number"
+                    value={newItem.totalPayments}
+                    onChange={(e) => setNewItem({ ...newItem, totalPayments: e.target.value })}
+                    placeholder="e.g., 20"
+                  />
+                </label>
+                <label>
+                  First Due Date:
+                  <input
+                    type="date"
+                    value={newItem.dueDate}
+                    onChange={(e) => setNewItem({ ...newItem, dueDate: e.target.value })}
+                  />
+
                 </label>
               </>
             )}

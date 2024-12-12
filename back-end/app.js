@@ -192,6 +192,23 @@ app.get('/api/debts', authenticateToken, async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+const calculateDueDates = (startDate, schedule, totalPayments) => {
+  const dueDates = [];
+  const currentDate = new Date(startDate);
+  for (let i = 0; i < totalPayments; i++) {
+    dueDates.push({
+      date: new Date(currentDate), 
+      isPaid: false, 
+    });
+
+    // Increment the date based on the schedule
+    if (schedule === 'Bi-weekly') currentDate.setDate(currentDate.getDate() + 14);
+    if (schedule === 'Monthly') currentDate.setMonth(currentDate.getMonth() + 1);
+    if (schedule === 'Annually') currentDate.setFullYear(currentDate.getFullYear() + 1);
+  }
+  return dueDates;
+};
  
 // Route to add a new debt with express validator
 app.post(
@@ -199,21 +216,12 @@ app.post(
   authenticateToken,
   [
     body('type').notEmpty().withMessage('Debt type is required'),
-    body('amount')
-      .isFloat({ min: 0 })
-      .withMessage('Amount must be a positive number'),
-    body('paidAmount')
-      .optional() // Allow it to be missing
-      .isFloat({ min: 0 })
-      .withMessage('paidAmount must be a positive number'),
-    body('dueDate')
-      .notEmpty()
-      .withMessage('Due date is required')
-      .isISO8601()
-      .withMessage('Invalid date format'),
-    body('paymentSchedule')
-      .notEmpty()
-      .withMessage('Payment schedule is required'),
+
+    body('amount').isFloat({ min: 0 }).withMessage('Amount must be a positive number'),
+    body('dueDate').notEmpty().withMessage('Due date is required'),
+    body('paymentSchedule').notEmpty().withMessage('Payment schedule is required'),
+    body('totalPayments').isInt({ min: 1 }).withMessage('Total payments must be a positive integer'),
+
   ],
   body('accountId')
     .optional()
@@ -221,40 +229,44 @@ app.post(
     .withMessage('Invalid accountId format'),
  
   async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
- 
-    const {
-      type,
-      amount,
-      paidAmount,
-      dueDate,
-      paymentSchedule,
-      ispaidIncurrentPeriod,
-      accountId,
-    } = req.body;
-    console.log(req.body);
+    console.log('Request body:', req.body);
+
+    const { type, amount, dueDate, paymentSchedule, totalPayments } = req.body;
+
     try {
       const user = await User.findById(req.user.id);
       if (!user) {
+        console.error('User not found:', req.user.id);
         return res.status(404).json({ error: 'User not found' });
       }
- 
+
+      const dueDates = calculateDueDates(new Date(dueDate), paymentSchedule, parseInt(totalPayments, 10)).map((due) => ({
+        date: new Date(due.date), 
+        isPaid: Boolean(due.isPaid), 
+      }));
+
+      console.log('Calculated due dates:', dueDates);
+
+      const paymentAmount = parseFloat(amount) / parseInt(totalPayments, 10);
       const newDebt = {
-        type,
-        amount,
-        paidAmount: paidAmount || 0, // Default to 0 if missing
-        dueDate,
-        paymentSchedule,
-        ispaidIncurrentPeriod: ispaidIncurrentPeriod || false, // Default to false
-        accountId: accountId || null, // Default to null
+        type: type.toString(),
+        amount: parseFloat(amount), 
+        dueDate: new Date(dueDate), 
+        paymentSchedule: paymentSchedule.toString(),
+        dueDates, 
+        paymentAmount,
       };
+
+      console.log('New debt object:', newDebt);
+
+
       user.debts.push(newDebt);
       await user.save();
+
+      console.log('Debt successfully added.');
       res.status(201).json(newDebt);
     } catch (error) {
+      console.error('Error in POST /api/debts:', error.message);
       res.status(500).json({ error: error.message });
     }
   }
@@ -332,13 +344,21 @@ app.put(
       }
  
       if (type) debt.type = type;
-      if (amount != null) debt.amount = amount;
-      if (paidAmount != null) debt.paidAmount = paidAmount;
-      if (dueDate) debt.dueDate = dueDate;
-      if (paymentSchedule) debt.paymentSchedule = paymentSchedule;
-      if (accountId) debt.accountId = accountId;
-      if (ispaidIncurrentPeriod)
-        debt.ispaidIncurrentPeriod = ispaidIncurrentPeriod;
+
+      if (amount != null || dueDate || paymentSchedule || req.body.totalPayments) {
+        if (amount != null) debt.amount = amount;
+        if (dueDate) debt.dueDate = dueDate;
+        if (paymentSchedule) debt.paymentSchedule = paymentSchedule;
+    
+        // Update totalPayments if provided
+        const totalPayments = req.body.totalPayments || debt.dueDates.length;
+    
+        // Recalculate due dates and payment amount
+        const newDueDates = calculateDueDates(debt.dueDate, debt.paymentSchedule, totalPayments);
+        debt.dueDates = newDueDates;
+        debt.paymentAmount = debt.amount / totalPayments;
+      }
+
  
       await user.save();
       res.json(debt);
@@ -347,6 +367,56 @@ app.put(
     }
   }
 );
+
+app.put('/api/debts/:debtId/dueDates/:dateIndex', authenticateToken, async (req, res) => {
+  const { debtId, dateIndex } = req.params;
+  const { accountId, isUndo } = req.body; // `isUndo` indicates if it's an undo operation
+
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const debt = user.debts.id(debtId);
+    if (!debt || !debt.dueDates[dateIndex]) {
+      return res.status(404).json({ error: 'Debt or due date not found' });
+    }
+
+    const account = user.accounts.id(accountId);
+    if (!account) {
+      return res.status(404).json({ error: 'Account not found' });
+    }
+
+    const paymentAmount = debt.paymentAmount;
+
+    if (isUndo) {
+      // Undo payment
+      if (!debt.dueDates[dateIndex].isPaid) {
+        return res.status(400).json({ error: 'This due date is not marked as paid.' });
+      }
+      account.amount += paymentAmount; 
+      debt.dueDates[dateIndex].isPaid = false; 
+    } else {
+      // Mark as paid
+      if (debt.dueDates[dateIndex].isPaid) {
+        return res.status(400).json({ error: 'This due date is already marked as paid.' });
+      }
+      if (account.amount < paymentAmount) {
+        return res.status(400).json({ error: 'Insufficient funds in the account.' });
+      }
+      account.amount -= paymentAmount; 
+      debt.dueDates[dateIndex].isPaid = true; 
+    }
+
+    await user.save();
+
+    res.status(200).json({ debt, account });
+  } catch (error) {
+    console.error('Error updating due date:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
  
 // Route to delete a debt by ID
 app.delete('/api/debts/:debtId', authenticateToken, async (req, res) => {
@@ -539,7 +609,7 @@ app.get('/api/transactions', async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
  
-    res.json(user.transactions || []); // Return the user's transactions
+    res.json(user.transactions || []); 
   } catch (error) {
     console.error('Error fetching transactions:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -548,93 +618,116 @@ app.get('/api/transactions', async (req, res) => {
  
 // Route to add a new transaction
 app.post('/api/transactions', async (req, res) => {
-  const { merchant, category, amount, date, userId } = req.body;
- 
-  if (!userId || !merchant || !category || amount == null || !date) {
+  const { merchant, category, amount, date, userId, accountId } = req.body;
+
+  if (!userId || !merchant || !category || amount == null || !date || !accountId) {
     return res.status(400).json({
-      error: 'User ID, merchant, category, amount, and date are required.',
+      error: 'User ID, merchant, category, amount, date, and account ID are required.',
     });
   }
- 
+
   try {
-    // Find the user in the database
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
- 
-    // Create a new transaction object
+
+    const account = user.accounts.id(accountId);
+    if (!account) {
+      return res.status(404).json({ error: 'Account not found' });
+    }
+
+    account.amount -= amount;
+    const transactionDate = new Date(date);
+    transactionDate.setUTCHours(12, 0, 0, 0);
+
     const newTransaction = {
       merchant,
       category,
       amount,
-      date: new Date(date), // Ensure the date is stored correctly
-      _id: new mongoose.Types.ObjectId(), // Generate a unique ID for the transaction
+      date: transactionDate,
+      accountId,
+      _id: new mongoose.Types.ObjectId(),
     };
- 
-    // Add the transaction to the user's transactions array
+
     user.transactions.push(newTransaction);
- 
-    // Save the updated user document
     await user.save();
- 
-    // Respond with the newly added transaction
-    res.status(201).json(newTransaction);
+
+    res.status(201).json({
+      transaction: newTransaction,
+      updatedAccount: account
+    });
   } catch (error) {
     console.error('Error adding transaction:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
- 
-// Route to update a transaction by ID
-app.put('/api/transactions/:id', async (req, res) => {
-  const { id } = req.params; // Transaction ID from the request parameters
-  const { merchant, category, amount, date, userId } = req.body; // Updated data and userId
- 
-  if (!userId) {
-    return res.status(400).json({ error: 'User ID is required.' });
-  }
- 
+
+app.put('/api/transactions/:id', authenticateToken, async (req, res) => {
+  const { id } = req.params;
+  const { merchant, category, amount, date, userId, accountId } = req.body;
+
   try {
-    // Find the user and the transaction by ID
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ error: 'User not found.' });
     }
- 
+
     const transaction = user.transactions.id(id);
     if (!transaction) {
       return res.status(404).json({ error: 'Transaction not found.' });
     }
- 
-    // Update the transaction fields
+
+    const originalAccountId = transaction.accountId;
+    const originalAmount = transaction.amount;
+    const originalAccount = user.accounts.id(originalAccountId);
+    const targetAccount = user.accounts.id(accountId);
+
+    if (!originalAccount || !targetAccount) {
+      return res.status(404).json({ error: 'One or more accounts not found.' });
+    }
+
+    if (originalAccountId !== accountId) {
+      originalAccount.amount += originalAmount;
+    }
+
+    targetAccount.amount -= parseFloat(amount);
+
     if (merchant) transaction.merchant = merchant;
     if (category) transaction.category = category;
-    if (amount !== undefined) transaction.amount = amount;
-    if (date) transaction.date = new Date(date);
- 
-    // Save the updated user document
+    if (amount !== undefined) transaction.amount = parseFloat(amount);
+    if (date) {
+      const transactionDate = new Date(date);
+      transactionDate.setUTCHours(12, 0, 0, 0);
+      transaction.date = transactionDate;
+    }
+    if (accountId) transaction.accountId = accountId;
+
     await user.save();
- 
-    // Return the updated transaction
-    res.status(200).json(transaction);
+
+    res.status(200).json({
+      transaction,
+      updatedAccounts: [originalAccount, targetAccount].filter((acc, index, self) =>
+        index === self.findIndex(a => a._id.toString() === acc._id.toString())
+      ),
+    });
   } catch (error) {
     console.error('Error updating transaction:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Internal server error', details: error.message });
   }
 });
+
  
 // Route to delete a transaction by ID
 app.delete('/api/transactions/:id', async (req, res) => {
-  const { id } = req.params; // Transaction ID
-  const { userId } = req.body; // User ID from the request body
+  const { id } = req.params; 
+  const { userId } = req.body;
  
   if (!userId) {
     return res.status(400).json({ error: 'User ID is required.' });
   }
  
   try {
-    // Find the user and remove the transaction by ID
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ error: 'User not found.' });
@@ -646,11 +739,7 @@ app.delete('/api/transactions/:id', async (req, res) => {
     if (transactionIndex === -1) {
       return res.status(404).json({ error: 'Transaction not found.' });
     }
- 
-    // Remove the transaction
     user.transactions.splice(transactionIndex, 1);
- 
-    // Save the updated user document
     await user.save();
  
     res.status(200).json({ message: 'Transaction deleted successfully.' });
