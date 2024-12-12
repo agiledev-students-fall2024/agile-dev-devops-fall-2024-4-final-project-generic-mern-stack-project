@@ -9,6 +9,7 @@ const Balances = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentItemIndex, setCurrentItemIndex] = useState(null);
   const [isDebtModal, setIsDebtModal] = useState(false);
+
   const [newItem, setNewItem] = useState({
     type: '',
     amount: '',
@@ -157,19 +158,53 @@ const Balances = () => {
   const handleTogglePaid = async (debtId, dateIndex) => {
     const token = localStorage.getItem('token');
     if (token) {
-        try {
-            const headers = {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            };
-
-            await axios.put(`${BASE_URL}/api/debts/${debtId}/dueDates/${dateIndex}`, {}, { headers });
-
-            // Update state after the backend is updated
-            fetchData();
-        } catch (error) {
-            console.error('Error updating due date status:', error);
+      try {
+        const selectedAccountId = promptAccountSelection(accounts);
+  
+        if (!selectedAccountId) {
+          alert('Payment cancelled.');
+          return;
         }
+  
+        const headers = {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        };
+  
+        const response = await axios.put(
+          `${BASE_URL}/api/debts/${debtId}/dueDates/${dateIndex}`,
+          { accountId: selectedAccountId },
+          { headers }
+        );
+  
+        console.log('Debt updated successfully:', response.data);
+        fetchData();
+      } catch (error) {
+        console.error('Error updating due date status:', error);
+      }
+    }
+  };
+
+  const promptAccountSelection = (accounts) => {
+    if (!accounts || accounts.length === 0) {
+      alert('No accounts available to pay from.');
+      return null;
+    }
+  
+    const accountOptions = accounts.map(
+      (account, index) => `${index + 1}: ${account.type} - $${account.amount.toFixed(2)}`
+    ).join('\n');
+  
+    const selectedOption = prompt(
+      `Select an account to pay from:\n${accountOptions}\nEnter the number corresponding to your choice:`
+    );
+  
+    const selectedIndex = parseInt(selectedOption, 10) - 1;
+    if (selectedIndex >= 0 && selectedIndex < accounts.length) {
+      return accounts[selectedIndex]._id;
+    } else {
+      alert('Invalid selection.');
+      return null;
     }
   };
 
@@ -186,7 +221,7 @@ const Balances = () => {
                   {account.type} - XXXX{account.number}
                 </div>
                 <div className="account-balance">
-                  $ {account.amount.toLocaleString()}
+                  $ {account.amount.toFixed(2).toLocaleString()}
                 </div>
                 <button className="edit-button" onClick={() => handleEditItem(index, false)}>Edit</button>
                 <button className="delete-button" onClick={() => handleDeleteItem(index, false)}>Delete</button>
