@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useProfile } from './ProfileContext';
 
@@ -34,14 +34,51 @@ const mockNotes = [
 ];
 
 const Home = () => {
-  const { user } = useProfile();
-  console.log('Current user:', user); // Debug line to check user data
-  
-  // Only filter by author if user is logged in, otherwise show all recent notes
-  const recentNotes = mockNotes
-    .filter(note => !user?.email || note.author === user.email)
-    .sort((a, b) => new Date(b.lastModified) - new Date(a.lastModified))
-    .slice(0, 5); 
+  const { user } = useProfile(); 
+  console.log('Current user:', user); 
+  const [recentNotes, setRecentNotes] = useState([]); 
+  const [errorMessage, setErrorMessage] = useState(""); 
+  const [loading, setLoading] = useState(true); 
+
+  useEffect(() => {
+    const fetchNotes = async () => {
+      const token = localStorage.getItem('token');
+
+      try {
+        //const response = await fetch('http://localhost:5000/notes', {
+        const response = await fetch('https://easynote-aivlj.ondigitalocean.app/api/notes', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`, 
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          
+          const filteredNotes = data
+            .filter(note => !user?.email || note.author.email === user.email) 
+            .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)) 
+            .slice(0, 5);
+          
+          setRecentNotes(filteredNotes); 
+        } else {
+          throw new Error('Failed to fetch notes');
+        }
+      } catch (error) {
+        setErrorMessage(error.message); 
+      } finally {
+        setLoading(false); 
+      }
+    };
+
+    fetchNotes(); 
+  }, [user]); 
+
+  if (loading) {
+    return <div>Loading...</div>; 
+  }
 
   return (
     <section className="home-view">
@@ -54,32 +91,36 @@ const Home = () => {
           <Link to="/new-note" className="create-button">New Note</Link>
           <Link to="/existing-notes" className="create-button">Existing Notes</Link>
           <Link to="/transcription" className="create-button">Speech-to-Text</Link>
-
         </div>
+        
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
+
         <ul className="notes-list">
-          {recentNotes.map(note => (
-            <li key={note.id} className="note-item">
-              <Link to={`/note/${note.id}`} className="note-link">
-                <div className="note-item-content">
-                  <div className="note-item-header">
-                    <span className="note-item-title">{note.title}</span>
-                    <span className="note-item-category">{note.category}</span>
-                  </div>
-                  <div className="note-item-details">
-                    <span className="note-item-date">
-                      {new Date(note.lastModified).toLocaleDateString()}
-                    </span>
-                    <div className="note-item-tags">
-                      {note.tags.slice(0, 2).map(tag => (
-                        <span key={tag} className="tag">{tag}</span>
-                      ))}
+          {recentNotes.length > 0 ? (
+            recentNotes.map(note => (
+              <li key={note._id} className="note-item">
+                <Link to={`/note/${note._id}`} className="note-link">
+                  <div className="note-item-content">
+                    <div className="note-item-header">
+                      <span className="note-item-title">{note.title}</span>
+                      <span className="note-item-category">{note.category}</span>
+                    </div>
+                    <div className="note-item-details">
+                      <span className="note-item-date">
+                        {new Date(note.updatedAt).toLocaleDateString()}
+                      </span>
+                      <div className="note-item-tags">
+            
+                        {note.tags[0]?.split(' ').slice(0, 2).map((tag, index) => (
+                          <span key={index} className="tag">{tag}</span>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Link>
-            </li>
-          ))}
-          {recentNotes.length === 0 && (
+                </Link>
+              </li>
+            ))
+          ) : (
             <li className="note-item empty-notes">
               <p>No recent notes. Create a new note to get started!</p>
             </li>
