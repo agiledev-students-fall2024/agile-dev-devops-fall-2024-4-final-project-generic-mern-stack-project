@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './AddTransaction.css';
 import axios from 'axios';
 import CategoryDropdown from './categoryDropdown';
@@ -11,30 +11,68 @@ function AddTransaction({ onAddTransaction, onClose }) {
     category: '',
     amount: '',
     date: '',
+    accountId: '',
   });
+
+  const [accounts, setAccounts] = useState([]);
+
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      try {
+        const userId = localStorage.getItem('id');
+        const response = await axios.get(`${BASE_URL}/api/accounts`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        });
+        setAccounts(response.data);
+        
+        if (response.data.length > 0) {
+          setTransaction(prev => ({
+            ...prev,
+            accountId: response.data[0]._id
+          }));
+        }
+      } catch (error) {
+        console.error('Error fetching accounts:', error);
+      }
+    };
+
+    fetchAccounts();
+  }, [BASE_URL]);
 
   const handleInputChange = (name, value) => {
     setTransaction((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleAddTransaction = async () => {
-    const userId = localStorage.getItem('id'); // Retrieve the logged-in user's ID
-    const { merchant, category, amount, date } = transaction;
-
-    if (merchant && category && amount && date) {
+    const userId = localStorage.getItem('id');
+    const { merchant, category, amount, date, accountId } = transaction;
+  
+    if (merchant && category && amount && date && accountId) {
       try {
+        const utcDate = new Date(date).toISOString();
+  
         const response = await axios.post(`${BASE_URL}/api/transactions`, {
-          ...transaction,
+          merchant,
+          category,
           amount: parseFloat(amount),
+          date: utcDate,
+          accountId,
           userId,
         });
-
-        const newTransaction = response.data;
-        onAddTransaction(newTransaction); // Notify the parent component
-        setTransaction({ merchant: '', category: '', amount: '', date: '' }); // Reset form
-        onClose(); // Close the modal
+  
+        onAddTransaction(response.data);
+  
+        setTransaction({
+          merchant: '',
+          category: '',
+          amount: '',
+          date: '',
+          accountId: accounts.length > 0 ? accounts[0]._id : '',
+        });
+        onClose();
       } catch (error) {
         console.error('Error adding transaction:', error);
+        alert('Failed to add transaction. Please try again.');
       }
     } else {
       alert('Please fill in all fields before submitting.');
@@ -70,6 +108,19 @@ function AddTransaction({ onAddTransaction, onClose }) {
             value={transaction.amount}
             onChange={(e) => handleInputChange('amount', e.target.value)}
           />
+        </label>
+        <label>
+          Account:
+          <select
+            value={transaction.accountId}
+            onChange={(e) => handleInputChange('accountId', e.target.value)}
+          >
+            {accounts.map((account) => (
+              <option key={account._id} value={account._id}>
+                {account.type} - {account.number}
+              </option>
+            ))}
+          </select>
         </label>
         <label>
           Date:

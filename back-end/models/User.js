@@ -30,6 +30,7 @@ const userSchema = new mongoose.Schema({
         category: { type: String, required: true },
         amount: { type: Number, required: true },
         date: { type: Date, required: true },
+        accountId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Account' }
       },
     ],
     goals: [
