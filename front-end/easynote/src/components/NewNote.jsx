@@ -216,7 +216,7 @@ const saveInterval = setInterval(() => {
       title,
       preview,
       category,
-      updatedAt: new Date().toISOString(),
+      updatedAt: new Date().toGMTString(),
       tags: tags
         .split(",")
         .map((tag) => tag.trim())

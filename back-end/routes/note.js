@@ -6,7 +6,7 @@ const router = express.Router();
 router.post('/', verifyToken, async (req, res) => {
     console.log('Body', req.body); 
 
-    const { title, content, tags, category, preview, user} = req.body;
+    const { title, content, tags, category, preview, user, updatedAt} = req.body;
     console.log("Create new note post request");
     // console.log('user id', req.userId) debugging for sprint 3
     const newNote = new Note({
@@ -16,7 +16,7 @@ router.post('/', verifyToken, async (req, res) => {
         author: req.userId,
         category,
         preview,
-        updatedAt: Date.now(),
+        updatedAt: updatedAt,
         user,
     });
 
