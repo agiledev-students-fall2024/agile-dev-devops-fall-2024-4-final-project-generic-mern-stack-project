@@ -21,7 +21,9 @@ const userSchema = new mongoose.Schema({
         type: { type: String, required: true },
         amount: { type: Number, required: true },
         dueDate: { type: Date, required: true },
-        paymentSchedule: { type: String, required: true }, 
+        paymentSchedule: { type: String, required: true },
+        dueDates: [{ type: Date }], 
+        paymentAmount: { type: Number },
       },
     ],
     transactions: [

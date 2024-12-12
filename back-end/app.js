@@ -192,6 +192,18 @@ app.get('/api/debts', authenticateToken, async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+const calculateDueDates = (startDate, schedule, totalPayments) => {
+  const dueDates = [];
+  const currentDate = new Date(startDate);
+  for (let i = 0; i < totalPayments; i++) {
+    dueDates.push(new Date(currentDate)); // Add as a Date object
+    if (schedule === 'Bi-weekly') currentDate.setDate(currentDate.getDate() + 14);
+    if (schedule === 'Monthly') currentDate.setMonth(currentDate.getMonth() + 1);
+    if (schedule === 'Annually') currentDate.setFullYear(currentDate.getFullYear() + 1);
+  }
+  return dueDates;
+};
  
 // Route to add a new debt with express validator
 app.post(
@@ -199,31 +211,35 @@ app.post(
   authenticateToken,
   [
     body('type').notEmpty().withMessage('Debt type is required'),
-    body('amount')
-      .isFloat({ min: 0 })
-      .withMessage('Amount must be a positive number'),
+    body('amount').isFloat({ min: 0 }).withMessage('Amount must be a positive number'),
     body('dueDate').notEmpty().withMessage('Due date is required'),
-    body('paymentSchedule')
-      .notEmpty()
-      .withMessage('Payment schedule is required'),
+    body('paymentSchedule').notEmpty().withMessage('Payment schedule is required'),
+    body('totalPayments').isInt({ min: 1 }).withMessage('Total payments must be a positive integer'),
   ],
   async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
- 
-    const { type, amount, dueDate, paymentSchedule } = req.body;
- 
+    const { type, amount, dueDate, paymentSchedule, totalPayments } = req.body;
+
     try {
       const user = await User.findById(req.user.id);
       if (!user) {
         return res.status(404).json({ error: 'User not found' });
       }
- 
-      const newDebt = { type, amount, dueDate, paymentSchedule };
+
+      const dueDates = calculateDueDates(dueDate, paymentSchedule, totalPayments);
+      const paymentAmount = amount / totalPayments;
+
+      const newDebt = {
+        type,
+        amount,
+        dueDate,
+        paymentSchedule,
+        dueDates, // Store calculated due dates
+        paymentAmount,
+      };
+
       user.debts.push(newDebt);
       await user.save();
+
       res.status(201).json(newDebt);
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -268,9 +284,20 @@ app.put(
       }
  
       if (type) debt.type = type;
-      if (amount != null) debt.amount = amount;
-      if (dueDate) debt.dueDate = dueDate;
-      if (paymentSchedule) debt.paymentSchedule = paymentSchedule;
+
+      if (amount != null || dueDate || paymentSchedule || req.body.totalPayments) {
+        if (amount != null) debt.amount = amount;
+        if (dueDate) debt.dueDate = dueDate;
+        if (paymentSchedule) debt.paymentSchedule = paymentSchedule;
+    
+        // Update totalPayments if provided
+        const totalPayments = req.body.totalPayments || debt.dueDates.length;
+    
+        // Recalculate due dates and payment amount
+        const newDueDates = calculateDueDates(debt.dueDate, debt.paymentSchedule, totalPayments);
+        debt.dueDates = newDueDates;
+        debt.paymentAmount = debt.amount / totalPayments;
+      }
  
       await user.save();
       res.json(debt);

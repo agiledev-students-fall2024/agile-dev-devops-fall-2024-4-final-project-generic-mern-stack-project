@@ -42,18 +42,6 @@ const Balances = () => {
   useEffect(() => {
     fetchData();
   }, []); 
-  
-  const calculateDueDates = (startDate, schedule, totalPayments) => {
-    const dueDates = [];
-    const currentDate = new Date(startDate);
-    for (let i = 0; i < totalPayments; i++) {
-      dueDates.push(currentDate.toISOString().split('T')[0]); 
-      if (schedule === 'Bi-weekly') currentDate.setDate(currentDate.getDate() + 14);
-      if (schedule === 'Monthly') currentDate.setMonth(currentDate.getMonth() + 1);
-      if (schedule === 'Annually') currentDate.setFullYear(currentDate.getFullYear() + 1);
-    }
-    return dueDates;
-  };
 
   const handleAddOrEditItem = () => {
     const token = localStorage.getItem('token');
@@ -65,18 +53,13 @@ const Balances = () => {
         'Content-Type': 'application/json'
       };
   
-      // Calculate due dates and payment amount if adding a debt
-      if (isDebtModal) {
-        const dueDates = calculateDueDates(newItem.dueDate, newItem.paymentSchedule, newItem.totalPayments);
-        const paymentAmount = Number(newItem.amount) / newItem.totalPayments;
-      
-        // Add calculated fields to newItem
-        newItem.dueDates = dueDates;
-        newItem.paymentAmount = paymentAmount;
-      }
-  
       if (isEditing) {
         const id = isDebtModal ? debts[currentItemIndex]._id : accounts[currentItemIndex]._id;
+
+        if (isDebtModal) {
+          newItem.totalPayments = newItem.totalPayments || debts[currentItemIndex].dueDates.length;
+        }
+
         axios.put(`${route}/${id}`, newItem, { headers })
           .then(response => {
             if (isDebtModal) {
@@ -88,9 +71,15 @@ const Balances = () => {
               updatedAccounts[currentItemIndex] = response.data;
               setAccounts(updatedAccounts);
             }
+            fetchData(); 
           })
           .catch(err => console.error("Error updating item:", err));
       } else {
+
+        if (isDebtModal) {
+          newItem.totalPayments = newItem.totalPayments || debts[currentItemIndex].dueDates.length;
+        }
+        
         axios.post(route, newItem, { headers })
           .then(response => {
             if (isDebtModal) {
@@ -151,7 +140,14 @@ const Balances = () => {
   };
 
   const resetForm = () => {
-    setNewItem({ type: '', amount: '', number: '', dueDate: '', paymentSchedule: '' });
+    setNewItem({ 
+      type: '', 
+      amount: '', 
+      number: '', 
+      dueDate: '', 
+      paymentSchedule: '', 
+      totalPayments: '' 
+    });
     setShowModal(false);
     setIsEditing(false);
     setIsDebtModal(false);
