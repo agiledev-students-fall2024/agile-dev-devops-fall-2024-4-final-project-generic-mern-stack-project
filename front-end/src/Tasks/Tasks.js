@@ -25,15 +25,22 @@ function Tasks() {
     const collect = async () => {
       setLoading(true);
       const session = window.localStorage.getItem("session_user")
+      const token = window.localStorage.getItem("token")
       const session_parsed = await JSON.parse(session)
       //this is to retrieve a logged in user's object, if null no user is signed in
-      const response = await fetch(`http://localhost:4000/task/${session_parsed._id}`);
-      const data = await response.json();
-      setTasks(data);
+      const response = await fetch(`${process.env.REACT_APP_BACKEND}/task/${session_parsed?._id}`,{
+        headers: { 'Content-Type': 'application/json', 'Authorization': token } 
+      })
+      if (response.status === 401 || response.error === "Invalid token" || response.error === "No token provided") { 
+        nav('/')
+        return 
+      }
+      const data = await response.json()
+      setTasks(data)
       console.log(data)
-      const uniqueSubjects = [...new Set(data.map(task => task.subject))];
-      setSubjects(uniqueSubjects); // Update subjects state
-      setLoading(false);
+      const uniqueSubjects = [...new Set(data.map(task => task.subject))]
+      setSubjects(uniqueSubjects)
+      setLoading(false)
     };
     collect();
   }, []);
@@ -72,21 +79,26 @@ function Tasks() {
 
   useEffect(() => {
     const collect = async () => {
-      await fetch(`http://localhost:4000/tasks/${task._id}/status`, {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND}/tasks/${task?._id}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': window.localStorage.getItem("token")
         },
         body: JSON.stringify({ status: newStatus1 }),
-      });
+      })
+      if (response.status === 401 || response.error === "Invalid token" || response.error === "No token provided") { 
+          nav('/')
+          return 
+        }
       setTasks(prevTasks =>
         prevTasks.map(task1 =>
           task1._id.toString() === task._id ? { ...task1, status: newStatus1 } : task1
         )
-      );
+      )
       console.log("Updated")
     }
-    collect();
+    collect()
   }, [send])
 
   const toggleStatus = (task, index) => {

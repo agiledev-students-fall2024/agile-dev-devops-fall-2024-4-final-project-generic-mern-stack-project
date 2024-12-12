@@ -4,7 +4,7 @@ import './TaskModal.css';
 const TaskModal = ({ goal, onClose, action, trigger, setTrigger }) => {
     const handleDelete = async () => {
         try {
-            const response = await fetch(`http://localhost:4000/delete/goals/${goal._id}`, {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND}/delete/goals/${goal?._id}`, {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
             });

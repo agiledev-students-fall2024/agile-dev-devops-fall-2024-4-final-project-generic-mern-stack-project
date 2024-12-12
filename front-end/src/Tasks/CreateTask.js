@@ -44,36 +44,44 @@ function CreateTask() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!title || !subject || !due_date || !priority || (recurring === "Yes" && !recurringPeriod)) {
-          alert("Please fill out all required fields.");
-          return;
+        const collect = async () => {
+            if (!title || !subject || !due_date || !priority || (recurring === "Yes" && !recurringPeriod)) {
+                alert("Please fill out all required fields.");
+                return;
+              }
+              const session = window.localStorage.getItem("session_user");
+              const session_parsed = JSON.parse(session);
+              const newTask = {
+                title,
+                description,
+                subject,
+                due_date,
+                priority,
+                recurring,
+                recurring_period: recurring === "Yes" ? recurringPeriod : "",
+                user_id: session_parsed._id,
+                goal: ""
+              };
+            
+              const response = await fetch(`${process.env.REACT_APP_BACKEND}/tasks`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 
+                        'Authorization': window.localStorage.getItem('token')
+                },
+                body: JSON.stringify(newTask),
+              })
+              if (response.status === 401 || response.error === "Invalid token" || response.error === "No token provided") { 
+                nav('/')
+                return 
+              }
+              if (response.ok) {
+                nav("/Tasks")
+              } else {
+                console.error("Failed to create task")
+              }
         }
-        const session = window.localStorage.getItem("session_user");
-        const session_parsed = JSON.parse(session);
-        const newTask = {
-          title,
-          description,
-          subject,
-          due_date,
-          priority,
-          recurring,
-          recurring_period: recurring === "Yes" ? recurringPeriod : "",
-          user_id: session_parsed._id,
-          goal: ""
-        };
-      
-        fetch('http://localhost:4000/tasks', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(newTask),
-        })
-        .then(response => {
-          if (response.ok) {
-            nav("/Tasks");
-          } else {
-            console.error("Failed to create task");
-          }
-        });
+        collect();
+        
       };
 
     return (

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './Calendar_monthly.css';
 //import './index.css'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Calendar_monthly = () => {
+    const navigate = useNavigate();
     const monthNames = [
         'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'
@@ -45,9 +46,18 @@ const Calendar_monthly = () => {
                     return;
                 }
                 const sessionParsed = JSON.parse(session);
-                const response = await fetch(`http://localhost:4000/calendar/month/${year}/${month}/tasks/${sessionParsed._id}`);
+                const response = await fetch(`${process.env.REACT_APP_BACKEND}/calendar/month/${year}/${month}/tasks/${sessionParsed?._id}`,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': window.localStorage.getItem('token')
+                        }
+            });
+                if (response.status === 401 || response.error === "Invalid token" || response.error === "No token provided") {
+                    navigate('/');
+                    return;
+                }
                 const taskData = await response.json();
-                console.log("Monthly API Response:", taskData);
                 const taskCounts = taskData.reduce((acc, { day, count }) => {
                     acc[day] = count;
                     return acc;
