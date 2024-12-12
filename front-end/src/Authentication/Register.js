@@ -39,7 +39,7 @@ const Login = () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(send)
               }
-            const response = await fetch('http://localhost:4000/register', new_user)
+            const response = await fetch(`${process.env.REACT_APP_BACKEND}/register`, new_user)
             const responseParsed = await response.json()
             if (responseParsed.message) {
                 alert(responseParsed.message)
@@ -47,6 +47,7 @@ const Login = () => {
             }
             else {
                 window.localStorage.setItem("session_user", JSON.stringify(responseParsed))
+                window.localStorage.setItem("token", response.headers.get('Authorization'))
                 nav('/Homepage')
             }
         }

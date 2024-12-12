@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 const { resource } = require('../app');
 const router = express.Router();
+const sanitize = require('mongo-sanitize');
 /* The line `require('../models/schema');` is importing the schema definition for tasks from a file
 located at '../models/schema.js' or a similar path. This schema likely defines the structure of the
 Task model used in the application, including the fields like name, description, subject, due date,
@@ -14,7 +15,8 @@ const Goal = mongoose.model("Goal")
 
 router.get('/tasks/urgent/:id', async (req, res) => {
   const today = new Date();
-  const userId = req.params.id;
+  let userId = req.params.id;
+  userId = sanitize(userId);
   today.setHours(0, 0, 0, 0);
   const urgentTasks = await Task.find({ 
     user_id: userId, 
@@ -52,7 +54,15 @@ router.get('/task/:id', async (req, res) => {
 
 
 router.post('/tasks', async (req, res) => {
-  const { title, description, subject, due_date, priority, recurring, recurring_period, user_id} = req.body;
+  let { title, description, subject, due_date, priority, recurring, recurring_period, user_id} = req.body;
+  title = sanitize(title);
+  description = sanitize(description);
+  subject = sanitize(subject);
+  due_date = sanitize(due_date);
+  priority = sanitize(priority); 
+  recurring = sanitize(recurring);
+  recurring_period = sanitize(recurring_period);
+  user_id = sanitize(user_id);
   const due = new Date(due_date);
   const tasksToCreate = [];
 
@@ -108,14 +118,15 @@ router.post('/tasks', async (req, res) => {
 
 
 router.put('/tasks/:id/status', async (req, res) => {
-  const { status } = req.body;
+  let { status } = req.body;
+
+  status = sanitize(status);
 
   if (!["not_started", "ongoing", "finished"].includes(status)) {
     return res.status(400).json({ error: "Invalid status value" });
   }
   try {
     const updatedTask = await Task.findByIdAndUpdate(req.params.id, { status }, { new: true }).populate('goal');
-    console.log("updatedTask", updatedTask)
     if (!updatedTask) {
       return res.status(404).json({ error: "Task not found" });
     }
@@ -136,7 +147,8 @@ router.put('/tasks/:id/status', async (req, res) => {
 
 
 router.get('/tasks/:id', async (req, res) => {
-  const taskId = req.params.id;
+  let taskId = req.params.id;
+  taskId = sanitize(taskId);
   const task = await Task.findById(taskId);
   if (!task) {
     return res.status(404).json({ error: "Task not found" });
@@ -146,8 +158,25 @@ router.get('/tasks/:id', async (req, res) => {
 
 
 router.put('/tasks/:id', async (req, res) => {
+    let { name, description, subject, due, priority, recurring, recurring_period} = req.body;
+    name = sanitize(name);
+    description = sanitize(description);
+    subject = sanitize(subject);
+    due = sanitize(due);
+    priority = sanitize(priority); 
+    recurring = sanitize(recurring);
+    recurring_period = sanitize(recurring_period);
   try {
-    const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+    const updatedTaskData = {
+        name,
+        due,
+        description,
+        priority,
+        subject,
+        recurring,
+        recurring_period: recurring === "Yes" ? recurring_period : "",
+    }
+    const updatedTask = await Task.findByIdAndUpdate(sanitize(req.params.id), updatedTaskData, { new: true, runValidators: true })
     const goal = await Goal.findOne({ tasks: req.params.id });
     if (!updatedTask) {
         return res.status(404).json({ message: 'Task not found' })

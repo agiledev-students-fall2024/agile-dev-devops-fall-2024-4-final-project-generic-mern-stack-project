@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import "./Goals.css";
 import TaskModal from './TaskModal';
 import TaskAction from './TaskAction';
@@ -11,12 +11,25 @@ const Goals = () => {
     const [deleteGoal, setDeleteGoal] = useState(false);
     const [completeGoal, setCompleteGoal] = useState(false);
     const [trigger, setTrigger] = useState(false);
+    const nav = useNavigate();
 
     useEffect(() => {
         const collect = async () => {
             setLoading(true);
             const user = await JSON.parse(window.localStorage.getItem('session_user'));
-            const response = await fetch(`http://localhost:4000/goals/${user._id}`);
+            const token = window.localStorage.getItem('token');
+            const response = await fetch(`${process.env.REACT_APP_BACKEND}/goals/${user?._id}`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': token
+                }
+            });
+            if (response.status === 401 || response.error === "Invalid token" || response.error === "No token provided") {
+                nav('/');
+                return;
+            }
             const data = await response.json();
             setGoals(data);
             setLoading(false);

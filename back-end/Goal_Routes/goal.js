@@ -1,21 +1,19 @@
 const { Router } = require('express');
 const mongoose = require('mongoose');
-require('../models/goalschema');
-const Goal = mongoose.model("Goal")
+const Goal = mongoose.model("Goal");
 const Task = mongoose.model('Task');
+const sanitize = require('mongo-sanitize');
 
 
 const app = new Router();
 
 app.get('/goals/:id', async (req, res) => {
     const userId = req.params.id;
-    console.log("userId", userId)
+    sanitize(userId);
     try {
       const goals = await Goal.find({"user_id": userId}).populate('tasks');
-      console.log("goals", goals) 
       const enrichedGoals = goals.map(goal => {
         const completedTasks = goal.tasks.filter(task => task.status === 'finished');
-        console.log("taskscomplete", completedTasks)
         return {
             ...goal.toObject(),
             completed_tasks: completedTasks,
@@ -29,6 +27,7 @@ app.get('/goals/:id', async (req, res) => {
 
 app.delete('/delete/goals/:id', async (req, res) => {
     const goalId = req.params.id;
+    sanitize(goalId)
     try {
         const goal = await Goal.findByIdAndDelete(goalId);
         if (!goal) {
@@ -43,7 +42,11 @@ app.delete('/delete/goals/:id', async (req, res) => {
 
 app.post('/goals/new', async (req, res) => {
     try {
-        const { title, tasks, dueDate, user_id } = req.body;
+        let { title, tasks, dueDate, user_id } = req.body;
+        title = sanitize(title)
+        tasks = sanitize(tasks)
+        dueDate = sanitize(dueDate)
+        user_id = sanitize(user_id)
 
         const existingTasks = await Task.find({ _id: { $in: tasks } });
         if (existingTasks.length !== tasks.length) {

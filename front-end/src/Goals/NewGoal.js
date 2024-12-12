@@ -12,8 +12,15 @@ const NewGoal = () => {
 
     useEffect(() => {
         const fetchTasks = async () => {
-            const user = await JSON.parse(window.localStorage.getItem('session_user'));
-            const response = await fetch(`http://localhost:4000/task/${user._id}`);
+            const user = await JSON.parse(window.localStorage.getItem('session_user'))
+            const token = window.localStorage.getItem('token')
+            const response = await fetch(`${process.env.REACT_APP_BACKEND}/task/${user?._id}`,{
+                headers: { 'Content-Type': 'application/json', 'Authorization': token } 
+            });
+            if (response.status === 401 || response.error === "Invalid token" || response.error === "No token provided") {
+                navigate('/');
+                return;
+            }
             const data = await response.json();
             setTasks(data);
         };
@@ -37,12 +44,19 @@ const NewGoal = () => {
         e.preventDefault();
         //window.localStorage.getItem('session_user')
         const user = await JSON.parse(window.localStorage.getItem('session_user'))
+        const token = window.localStorage.getItem('token')
         const newGoal = { title, tasks: selectedTasks, dueDate, "user_id": user._id };
-        const response = await fetch('http://localhost:4000/goals/new', {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND}/goals/new`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json',
+                        'Authorization': token
+             },
             body: JSON.stringify(newGoal),
-        });
+        })
+        if (response.status === 401 || response.error === "Invalid token" || response.error === "No token provided") {
+            navigate('/');
+            return;
+        }
         if (response.ok) navigate('/Goals');
     };
 

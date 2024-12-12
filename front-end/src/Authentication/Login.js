@@ -6,6 +6,11 @@ const Login = () => {
     const [password, setPassword] = useState("")
     const nav = useNavigate()
 
+    useEffect(() => {
+        window.localStorage.setItem("session_user", JSON.stringify({}))
+        window.localStorage.setItem("token", "")
+    }, []);
+
     const handleUsername = (e) => {
         setUsername(e.target.value)
     }
@@ -29,7 +34,8 @@ const Login = () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(send)
           }
-        const response = await fetch('http://localhost:4000/login', user)
+        const response = await fetch(`${process.env.REACT_APP_BACKEND}/login`, user)
+        const token = response.headers.get('Authorization')
         const responseParsed = await response.json()
         if (responseParsed.error) {
             alert(responseParsed.error)
@@ -37,6 +43,7 @@ const Login = () => {
         }
         else {
             window.localStorage.setItem("session_user", JSON.stringify(responseParsed))
+            window.localStorage.setItem("token", token)
             nav('/Homepage')
         }
     }
